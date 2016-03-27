@@ -14,7 +14,8 @@
         <AssociationConnector Association="ListOfDealBaseModel.FK_Actions_ActionTriggers" ManuallyRouted="false" />
         <AssociationConnector Association="ListOfDealBaseModel.FK_Actions_DelegatePersons" ManuallyRouted="false" />
         <AssociationConnector Association="ListOfDealBaseModel.FK_Actions_Projects" ManuallyRouted="false" />
-        <AssociationConnector Association="ListOfDealBaseModel.FK_Projects_Projects" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ListOfDealBaseModel.ProejctType" Width="1.5" PointX="0.75" PointY="14.125" />
+        <AssociationConnector Association="ListOfDealBaseModel.FK_Projects_ProejctTypes" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

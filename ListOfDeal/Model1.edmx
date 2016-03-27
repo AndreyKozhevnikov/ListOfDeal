@@ -46,7 +46,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" />
-          <Property Name="TypeId" Type="int" />
+          <Property Name="TypeId" Type="int" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" />
           <Property Name="IsWork" Type="bit" />
           <Property Name="Comment" Type="varchar(max)" />
@@ -107,7 +107,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Projects_ProejctTypes">
-          <End Role="ProjectTypes" Type="Self.ProjectTypes" Multiplicity="0..1" />
+          <End Role="ProjectTypes" Type="Self.ProjectTypes" Multiplicity="1" />
           <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ProjectTypes">
@@ -202,7 +202,7 @@
           <Property Name="IsWork" Type="Boolean" />
           <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Actions" Relationship="Self.FK_Actions_Projects" FromRole="Projects" ToRole="Actions" />
-          <Property Name="TypeId" Type="Int32" />
+          <Property Name="TypeId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ProjectType" Relationship="ListOfDealBaseModel.FK_Projects_ProejctTypes1" FromRole="Project" ToRole="ProjectType" />
         </EntityType>
         <Association Name="FK_Actions_ActionStatuses">
@@ -290,7 +290,7 @@
           <NavigationProperty Name="Projects" Relationship="ListOfDealBaseModel.FK_Projects_ProejctTypes1" FromRole="ProjectType" ToRole="Project" />
         </EntityType>
         <Association Name="FK_Projects_ProejctTypes1">
-          <End Type="ListOfDealBaseModel.ProjectType" Role="ProjectType" Multiplicity="0..1" />
+          <End Type="ListOfDealBaseModel.ProjectType" Role="ProjectType" Multiplicity="1" />
           <End Type="ListOfDealBaseModel.Project" Role="Project" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ProjectType">

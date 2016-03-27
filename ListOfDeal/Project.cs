@@ -24,7 +24,7 @@ namespace ListOfDeal
         public Nullable<System.DateTime> DateCreated { get; set; }
         public Nullable<bool> IsWork { get; set; }
         public string Comment { get; set; }
-        public Nullable<int> TypeId { get; set; }
+        public int TypeId { get; set; }
     
         public virtual ICollection<Action> Actions { get; set; }
         public virtual ProjectType ProjectType { get; set; }

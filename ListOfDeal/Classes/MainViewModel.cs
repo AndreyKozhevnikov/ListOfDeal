@@ -45,6 +45,7 @@ namespace ListOfDeal {
 
         private void CreateNewProject() {
             CurrentProject = generalEntity.Projects.Create();
+            CurrentProject.TypeId = 1;
         }
         private void AddNewProject() {
             CurrentProject.DateCreated = DateTime.Now;

@@ -40,13 +40,6 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="ProejctTypes">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" />
-        </EntityType>
         <EntityType Name="Projects">
           <Key>
             <PropertyRef Name="Id" />
@@ -57,6 +50,13 @@
           <Property Name="DateCreated" Type="datetime" />
           <Property Name="IsWork" Type="bit" />
           <Property Name="Comment" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="ProjectTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_Actions_ActionStatuses">
           <End Role="ActionStatuses" Type="Self.ActionStatuses" Multiplicity="0..1" />
@@ -106,23 +106,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProejctTypes_ProejctTypes">
-          <End Role="ProejctTypes" Type="Self.ProejctTypes" Multiplicity="1" />
-          <End Role="ProejctTypes1" Type="Self.ProejctTypes" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="ProejctTypes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ProejctTypes1">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Projects_ProejctTypes">
-          <End Role="ProejctTypes" Type="Self.ProejctTypes" Multiplicity="0..1" />
+          <End Role="ProjectTypes" Type="Self.ProjectTypes" Multiplicity="0..1" />
           <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ProejctTypes">
+            <Principal Role="ProjectTypes">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Projects">
@@ -135,8 +123,8 @@
           <EntitySet Name="ActionStatuses" EntityType="Self.ActionStatuses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActionTriggers" EntityType="Self.ActionTriggers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DelegatePersons" EntityType="Self.DelegatePersons" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProejctTypes" EntityType="Self.ProejctTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProjectTypes" EntityType="Self.ProjectTypes" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Actions_ActionStatuses" Association="Self.FK_Actions_ActionStatuses">
             <End Role="ActionStatuses" EntitySet="ActionStatuses" />
             <End Role="Actions" EntitySet="Actions" />
@@ -153,12 +141,8 @@
             <End Role="Projects" EntitySet="Projects" />
             <End Role="Actions" EntitySet="Actions" />
           </AssociationSet>
-          <AssociationSet Name="FK_ProejctTypes_ProejctTypes" Association="Self.FK_ProejctTypes_ProejctTypes">
-            <End Role="ProejctTypes" EntitySet="ProejctTypes" />
-            <End Role="ProejctTypes1" EntitySet="ProejctTypes" />
-          </AssociationSet>
           <AssociationSet Name="FK_Projects_ProejctTypes" Association="Self.FK_Projects_ProejctTypes">
-            <End Role="ProejctTypes" EntitySet="ProejctTypes" />
+            <End Role="ProjectTypes" EntitySet="ProjectTypes" />
             <End Role="Projects" EntitySet="Projects" />
           </AssociationSet>
         </EntityContainer>
@@ -219,7 +203,7 @@
           <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Actions" Relationship="Self.FK_Actions_Projects" FromRole="Projects" ToRole="Actions" />
           <Property Name="TypeId" Type="Int32" />
-          <NavigationProperty Name="ProejctType" Relationship="ListOfDealBaseModel.FK_Projects_ProejctTypes" FromRole="Project" ToRole="ProejctType" />
+          <NavigationProperty Name="ProjectType" Relationship="ListOfDealBaseModel.FK_Projects_ProejctTypes1" FromRole="Project" ToRole="ProjectType" />
         </EntityType>
         <Association Name="FK_Actions_ActionStatuses">
           <End Role="ActionStatuses" Type="Self.ActionStatus" Multiplicity="0..1" />
@@ -291,25 +275,25 @@
             <End Role="Projects" EntitySet="Projects" />
             <End Role="Actions" EntitySet="Actions" />
           </AssociationSet>
-          <EntitySet Name="ProejctTypes" EntityType="ListOfDealBaseModel.ProejctType" />
-          <AssociationSet Name="FK_Projects_ProejctTypes" Association="ListOfDealBaseModel.FK_Projects_ProejctTypes">
-            <End Role="ProejctType" EntitySet="ProejctTypes" />
+          <EntitySet Name="ProjectTypes" EntityType="ListOfDealBaseModel.ProjectType" />
+          <AssociationSet Name="FK_Projects_ProejctTypes1" Association="ListOfDealBaseModel.FK_Projects_ProejctTypes1">
+            <End Role="ProjectType" EntitySet="ProjectTypes" />
             <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="ProejctType">
+        <EntityType Name="ProjectType">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Projects" Relationship="ListOfDealBaseModel.FK_Projects_ProejctTypes" FromRole="ProejctType" ToRole="Project" />
+          <NavigationProperty Name="Projects" Relationship="ListOfDealBaseModel.FK_Projects_ProejctTypes1" FromRole="ProjectType" ToRole="Project" />
         </EntityType>
-        <Association Name="FK_Projects_ProejctTypes">
-          <End Type="ListOfDealBaseModel.ProejctType" Role="ProejctType" Multiplicity="0..1" />
+        <Association Name="FK_Projects_ProejctTypes1">
+          <End Type="ListOfDealBaseModel.ProjectType" Role="ProjectType" Multiplicity="0..1" />
           <End Type="ListOfDealBaseModel.Project" Role="Project" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ProejctType">
+            <Principal Role="ProjectType">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Project">
@@ -374,9 +358,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ProejctTypes">
-            <EntityTypeMapping TypeName="ListOfDealBaseModel.ProejctType">
-              <MappingFragment StoreEntitySet="ProejctTypes">
+          <EntitySetMapping Name="ProjectTypes">
+            <EntityTypeMapping TypeName="ListOfDealBaseModel.ProjectType">
+              <MappingFragment StoreEntitySet="ProjectTypes">
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

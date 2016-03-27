@@ -27,6 +27,6 @@ namespace ListOfDeal
         public Nullable<int> TypeId { get; set; }
     
         public virtual ICollection<Action> Actions { get; set; }
-        public virtual ProejctType ProejctType { get; set; }
+        public virtual ProjectType ProjectType { get; set; }
     }
 }

@@ -12,9 +12,9 @@ namespace ListOfDeal
     using System;
     using System.Collections.Generic;
     
-    public partial class ProejctType
+    public partial class ProjectType
     {
-        public ProejctType()
+        public ProjectType()
         {
             this.Projects = new HashSet<Project>();
         }

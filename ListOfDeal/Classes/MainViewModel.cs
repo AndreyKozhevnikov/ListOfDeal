@@ -6,15 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace ListOfDeal {
-    public class MainViewModel {
+    public class MainViewModel:INotifyPropertyChanged {
         public MainViewModel() {
             InitializeData();
         }
         ListOfDealBaseEntities generalEntity;
         ICommand _addNewProjectCommand;
-
+        Project _currentProject;
         public ICommand AddNewProjectCommand {
             get {
                 if (_addNewProjectCommand == null)
@@ -26,12 +28,18 @@ namespace ListOfDeal {
     
 
         public ObservableCollection<Project> Projects { get; set; }
-        public Project CurrentProject { get; set; }
-    
+        public Project CurrentProject {
+            get { return _currentProject; }
+            set { _currentProject = value;
+            RaisePropertyChanged("CurrentProject");
+            }
+        }
+        public ObservableCollection<ProjectType> ProjectTypes { get; set; }
         
         void InitializeData() {
             generalEntity = new ListOfDealBaseEntities();
-            Projects = new ObservableCollection<Project>(generalEntity.Projects.ToList());
+            Projects = new ObservableCollection<Project>(generalEntity.Projects);
+            ProjectTypes = new ObservableCollection<ProjectType>(generalEntity.ProjectTypes);
             CreateNewProject();
         }
 
@@ -48,6 +56,12 @@ namespace ListOfDeal {
 
         internal void Test() {
             generalEntity.SaveChanges();
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void RaisePropertyChanged([CallerMemberName]String propertyName = "") {
+            if (PropertyChanged != null) {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

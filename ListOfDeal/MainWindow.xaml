@@ -14,18 +14,27 @@
                         <dxe:TextEdit EditValue="{Binding CurrentProject.Name}"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Type:">
-                        <dxe:ComboBoxEdit ItemsSource="{Binding ProjectTypes}"/>
+                        <dxe:ComboBoxEdit ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.TypeId}"/>
                     </dxlc:LayoutItem>
-                    <Button Content="Add project" Command="{Binding AddNewProjectCommand}"/>
-                    <Button Content="test" Click="Button_Click"/>
-                <dxg:GridControl ItemsSource="{Binding Projects}">
+                    <dxlc:LayoutItem Label="Comment:">
+                        <dxe:TextEdit EditValue="{Binding CurrentProject.Comment}"/>
+                    </dxlc:LayoutItem>
+                    <Button Content="Add project" Command="{Binding AddNewProjectCommand}" Height="20"/>
+                    <Button Content="test" Click="Button_Click" Height="20"/>
+                    <dxg:GridControl ItemsSource="{Binding Projects}">
                         <dxg:GridControl.Columns>
                             <dxg:GridColumn FieldName="Name"/>
                             <dxg:GridColumn FieldName="DateCreated"/>
+                            <dxg:GridColumn FieldName="TypeId">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Comment"/>
                         </dxg:GridControl.Columns>
                     </dxg:GridControl>
                 </dxlc:LayoutGroup>
             </dx:DXTabItem>
-        </dx:DXTabControl> 
+        </dx:DXTabControl>
     </Grid>
 </Window>

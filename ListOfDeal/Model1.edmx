@@ -45,10 +45,10 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="TypeId" Type="int" Nullable="false" />
-          <Property Name="DateCreated" Type="datetime" />
-          <Property Name="IsWork" Type="bit" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+          <Property Name="IsWork" Type="bit" Nullable="false" />
           <Property Name="Comment" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="ProjectTypes">
@@ -197,9 +197,9 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DateCreated" Type="DateTime" Precision="3" />
-          <Property Name="IsWork" Type="Boolean" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="IsWork" Type="Boolean" Nullable="false" />
           <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Actions" Relationship="Self.FK_Actions_Projects" FromRole="Projects" ToRole="Actions" />
           <Property Name="TypeId" Type="Int32" Nullable="false" />

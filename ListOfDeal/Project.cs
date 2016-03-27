@@ -21,8 +21,8 @@ namespace ListOfDeal
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public Nullable<System.DateTime> DateCreated { get; set; }
-        public Nullable<bool> IsWork { get; set; }
+        public System.DateTime DateCreated { get; set; }
+        public bool IsWork { get; set; }
         public string Comment { get; set; }
         public int TypeId { get; set; }
     

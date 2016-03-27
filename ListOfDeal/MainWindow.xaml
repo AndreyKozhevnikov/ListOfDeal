@@ -31,6 +31,7 @@
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
                             <dxg:GridColumn FieldName="Comment"/>
+                            <dxg:GridColumn FieldName="IsWork"/>
                         </dxg:GridControl.Columns>
                     </dxg:GridControl>
                 </dxlc:LayoutGroup>

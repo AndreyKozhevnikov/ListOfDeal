@@ -37,10 +37,21 @@ namespace ListOfDeal {
         public ObservableCollection<ProjectType> ProjectTypes { get; set; }
         
         void InitializeData() {
-            generalEntity = new ListOfDealBaseEntities();
+            ConnectToDataBase();
             Projects = new ObservableCollection<Project>(generalEntity.Projects);
             ProjectTypes = new ObservableCollection<ProjectType>(generalEntity.ProjectTypes);
             CreateNewProject();
+        }
+
+        private void ConnectToDataBase() {
+           
+            string machineName = System.Environment.MachineName;
+            if (machineName == "KOZHEVNIKOV-W8") {
+                generalEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWork");
+            }
+            else {
+                generalEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesHome");
+            }
         }
 
         private void CreateNewProject() {

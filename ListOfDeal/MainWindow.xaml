@@ -1,8 +1,31 @@
-﻿<Window x:Class="ListOfDeal.MainWindow"
+﻿<Window xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+        x:Class="ListOfDeal.MainWindow"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+            xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="700" Width="1200">
     <Grid>
-        
+        <dx:DXTabControl>
+            <dx:DXTabItem Header="Enter new project">
+                <dxlc:LayoutGroup Orientation="Vertical">
+                    <dxlc:LayoutItem Label="Name:">
+                        <dxe:TextEdit EditValue="{Binding CurrentProject.Name}"/>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Type:">
+                        <dxe:ComboBoxEdit ItemsSource="{Binding ProjectTypes}"/>
+                    </dxlc:LayoutItem>
+                    <Button Content="Add project" Command="{Binding AddNewProjectCommand}"/>
+                    <Button Content="test" Click="Button_Click"/>
+                <dxg:GridControl ItemsSource="{Binding Projects}">
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn FieldName="Name"/>
+                            <dxg:GridColumn FieldName="DateCreated"/>
+                        </dxg:GridControl.Columns>
+                    </dxg:GridControl>
+                </dxlc:LayoutGroup>
+            </dx:DXTabItem>
+        </dx:DXTabControl> 
     </Grid>
 </Window>

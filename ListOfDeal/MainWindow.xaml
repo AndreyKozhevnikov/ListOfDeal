@@ -33,6 +33,26 @@
                             <dxg:GridColumn FieldName="Comment"/>
                             <dxg:GridColumn FieldName="IsWork"/>
                         </dxg:GridControl.Columns>
+                        <dxg:GridControl.DetailDescriptor>
+                            <dxg:DataControlDetailDescriptor ItemsSourcePath="Actions">
+                                <dxg:DataControlDetailDescriptor.DataControl>
+                                    <dxg:GridControl>
+                                        <dxg:GridControl.Columns>
+                                            <dxg:GridColumn FieldName="Name"/>
+                                            <dxg:GridColumn FieldName="ActionTriggerId"/>
+                                            <dxg:GridColumn FieldName="Status"/>
+                                            <dxg:GridColumn FieldName="DateCreated"/>
+                                            <dxg:GridColumn FieldName="ScheduledTime"/>
+                                            <dxg:GridColumn FieldName="DelegatedTo"/>
+                                            <dxg:GridColumn FieldName="Comment"/>
+                                        </dxg:GridControl.Columns>
+                                    </dxg:GridControl>
+                                </dxg:DataControlDetailDescriptor.DataControl>
+                            </dxg:DataControlDetailDescriptor>
+                        </dxg:GridControl.DetailDescriptor>
+                        <!--<dxg:GridControl.View>
+                            <dxg:TableView/>
+                        </dxg:GridControl.View>-->
                     </dxg:GridControl>
                 </dxlc:LayoutGroup>
             </dx:DXTabItem>

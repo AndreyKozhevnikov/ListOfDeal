@@ -68,6 +68,10 @@ namespace ListOfDeal {
         }
 
         internal void Test() {
+            var a = generalEntity.Actions.Create();
+            a.Name = "testaction";
+            Projects[0].Actions.Add(a);
+
             generalEntity.SaveChanges();
         }
         public event PropertyChangedEventHandler PropertyChanged;

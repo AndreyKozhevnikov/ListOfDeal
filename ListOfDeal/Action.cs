@@ -16,10 +16,10 @@ namespace ListOfDeal
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public Nullable<int> ProjectId { get; set; }
+        public int ProjectId { get; set; }
         public Nullable<int> ActionTriggerId { get; set; }
-        public Nullable<int> Status { get; set; }
-        public Nullable<System.DateTime> DateCreated { get; set; }
+        public int Status { get; set; }
+        public System.DateTime DateCreated { get; set; }
         public Nullable<System.DateTime> ScheduledTime { get; set; }
         public Nullable<int> DelegatedTo { get; set; }
         public string Comment { get; set; }

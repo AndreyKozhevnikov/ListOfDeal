@@ -4,17 +4,17 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ListOfDealBaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ListOfDealBaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Actions">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" />
-          <Property Name="ProjectId" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProjectId" Type="int" Nullable="false" />
           <Property Name="ActionTriggerId" Type="int" />
-          <Property Name="Status" Type="int" />
-          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
           <Property Name="ScheduledTime" Type="datetime" />
           <Property Name="DelegatedTo" Type="int" />
           <Property Name="Comment" Type="varchar(max)" />
@@ -59,7 +59,7 @@
           <Property Name="Name" Type="varchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_Actions_ActionStatuses">
-          <End Role="ActionStatuses" Type="Self.ActionStatuses" Multiplicity="0..1" />
+          <End Role="ActionStatuses" Type="Self.ActionStatuses" Multiplicity="1" />
           <End Role="Actions" Type="Self.Actions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ActionStatuses">
@@ -95,7 +95,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Actions_Projects">
-          <End Role="Projects" Type="Self.Projects" Multiplicity="0..1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
           <End Role="Actions" Type="Self.Actions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Projects">
@@ -155,18 +155,18 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ProjectId" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProjectId" Type="Int32" Nullable="false" />
           <Property Name="ActionTriggerId" Type="Int32" />
-          <Property Name="Status" Type="Int32" />
-          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" Nullable="false" />
           <Property Name="ScheduledTime" Type="DateTime" Precision="3" />
           <Property Name="DelegatedTo" Type="Int32" />
           <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ActionStatus" Relationship="Self.FK_Actions_ActionStatuses" FromRole="Actions" ToRole="ActionStatuses" />
+          <NavigationProperty Name="ActionStatus" Relationship="ListOfDealBaseModel.FK_Actions_ActionStatuses" FromRole="Actions" ToRole="ActionStatuses" />
           <NavigationProperty Name="ActionTrigger" Relationship="Self.FK_Actions_ActionTriggers" FromRole="Actions" ToRole="ActionTriggers" />
           <NavigationProperty Name="DelegatePerson" Relationship="Self.FK_Actions_DelegatePersons" FromRole="Actions" ToRole="DelegatePersons" />
-          <NavigationProperty Name="Project" Relationship="Self.FK_Actions_Projects" FromRole="Actions" ToRole="Projects" />
+          <NavigationProperty Name="Project" Relationship="ListOfDealBaseModel.FK_Actions_Projects" FromRole="Actions" ToRole="Projects" />
         </EntityType>
         <EntityType Name="ActionStatus">
           <Key>
@@ -201,12 +201,12 @@
           <Property Name="DateCreated" Type="DateTime" Precision="3" Nullable="false" />
           <Property Name="IsWork" Type="Boolean" Nullable="false" />
           <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Actions" Relationship="Self.FK_Actions_Projects" FromRole="Projects" ToRole="Actions" />
+          <NavigationProperty Name="Actions" Relationship="ListOfDealBaseModel.FK_Actions_Projects" FromRole="Projects" ToRole="Actions" />
           <Property Name="TypeId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ProjectType" Relationship="ListOfDealBaseModel.FK_Projects_ProejctTypes1" FromRole="Project" ToRole="ProjectType" />
         </EntityType>
         <Association Name="FK_Actions_ActionStatuses">
-          <End Role="ActionStatuses" Type="Self.ActionStatus" Multiplicity="0..1" />
+          <End Role="ActionStatuses" Type="Self.ActionStatus" Multiplicity="1" />
           <End Role="Actions" Type="Self.Action" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ActionStatuses">
@@ -242,7 +242,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Actions_Projects">
-          <End Role="Projects" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="Projects" Type="Self.Project" Multiplicity="1" />
           <End Role="Actions" Type="Self.Action" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Projects">

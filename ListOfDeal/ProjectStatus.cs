@@ -12,22 +12,16 @@ namespace ListOfDeal
     using System;
     using System.Collections.Generic;
     
-    public partial class Project
+    public partial class ProjectStatus
     {
-        public Project()
+        public ProjectStatus()
         {
-            this.Actions = new HashSet<Action>();
+            this.Projects = new HashSet<Project>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public System.DateTime DateCreated { get; set; }
-        public string Comment { get; set; }
-        public int TypeId { get; set; }
-        public int StatusId { get; set; }
     
-        public virtual ICollection<Action> Actions { get; set; }
-        public virtual ProjectType ProjectType { get; set; }
-        public virtual ProjectStatus ProjectStatus { get; set; }
+        public virtual ICollection<Project> Projects { get; set; }
     }
 }

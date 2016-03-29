@@ -16,6 +16,9 @@
                     <dxlc:LayoutItem Label="Type:">
                         <dxe:ComboBoxEdit ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.TypeId}"/>
                     </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Status:">
+                        <dxe:ComboBoxEdit ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.StatusId}"/>
+                    </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Comment:">
                         <dxe:TextEdit EditValue="{Binding CurrentProject.Comment}"/>
                     </dxlc:LayoutItem>
@@ -31,7 +34,11 @@
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
                             <dxg:GridColumn FieldName="Comment"/>
-                            <dxg:GridColumn FieldName="IsWork"/>
+                            <dxg:GridColumn FieldName="StatusId">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
                         </dxg:GridControl.Columns>
                         <dxg:GridControl.DetailDescriptor>
                             <dxg:DataControlDetailDescriptor ItemsSourcePath="Actions">

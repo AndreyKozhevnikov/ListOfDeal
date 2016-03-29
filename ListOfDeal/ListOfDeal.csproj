@@ -137,6 +137,9 @@
     <Compile Include="Project.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="ProjectStatus.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="ProjectType.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

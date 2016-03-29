@@ -31,5 +31,6 @@ namespace ListOfDeal
         public virtual DbSet<DelegatePerson> DelegatePersons { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<ProjectType> ProjectTypes { get; set; }
+        public virtual DbSet<ProjectStatus> ProjectStatuses { get; set; }
     }
 }

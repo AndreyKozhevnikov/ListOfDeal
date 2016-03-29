@@ -35,11 +35,13 @@ namespace ListOfDeal {
             }
         }
         public ObservableCollection<ProjectType> ProjectTypes { get; set; }
+        public ObservableCollection<ProjectStatus> ProjectStatuses { get; set; }
         
         void InitializeData() {
             ConnectToDataBase();
             Projects = new ObservableCollection<Project>(generalEntity.Projects);
             ProjectTypes = new ObservableCollection<ProjectType>(generalEntity.ProjectTypes);
+            ProjectStatuses = new ObservableCollection<ProjectStatus>(generalEntity.ProjectStatuses);
             CreateNewProject();
         }
 
@@ -57,7 +59,7 @@ namespace ListOfDeal {
         private void CreateNewProject() {
             CurrentProject = generalEntity.Projects.Create();
             CurrentProject.TypeId = 1;
-            CurrentProject.IsWork = true;
+            CurrentProject.StatusId = 1;
         }
         private void AddNewProject() {
             CurrentProject.DateCreated = DateTime.Now;

@@ -57,9 +57,67 @@
                                 </dxg:DataControlDetailDescriptor.DataControl>
                             </dxg:DataControlDetailDescriptor>
                         </dxg:GridControl.DetailDescriptor>
-                        <!--<dxg:GridControl.View>
-                            <dxg:TableView/>
-                        </dxg:GridControl.View>-->
+
+                    </dxg:GridControl>
+                </dxlc:LayoutGroup>
+            </dx:DXTabItem>
+            <dx:DXTabItem Header="Projects">
+                <dxlc:LayoutGroup Orientation="Vertical">
+                    <dxlc:LayoutGroup>
+
+                        <dxg:GridControl ItemsSource="{Binding Projects}" x:Name="projectGrid" CurrentItem="{Binding SelectedProject,Mode=TwoWay}">
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn FieldName="Name"/>
+                                <dxg:GridColumn FieldName="DateCreated"/>
+                                <dxg:GridColumn FieldName="TypeId">
+                                    <dxg:GridColumn.EditSettings>
+                                        <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" />
+                                    </dxg:GridColumn.EditSettings>
+                                </dxg:GridColumn>
+                                <dxg:GridColumn FieldName="Comment"/>
+                                <dxg:GridColumn FieldName="StatusId">
+                                    <dxg:GridColumn.EditSettings>
+                                        <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" />
+                                    </dxg:GridColumn.EditSettings>
+                                </dxg:GridColumn>
+                            </dxg:GridControl.Columns>
+                            <dxg:GridControl.View>
+                                <dxg:TableView AllowEditing="False"/>
+                            </dxg:GridControl.View>
+                        </dxg:GridControl>
+                        <dxlc:LayoutGroup Orientation="Vertical">
+                            <dxlc:LayoutItem Label="Name:">
+                                <dxe:TextEdit EditValue="{Binding CurrentAction.Name}"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Trigger:">
+                                <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.TriggerId}" ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Status:">
+                                <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.StatusId}" ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="ScheduledTime:">
+                                <dxe:TextEdit EditValue="{Binding CurrentAction.ScheduledTime}"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="DelegatedTo:">
+                                <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.DelegatedTo}" ItemsSource="{Binding DelegatePersons}" ValueMember="Id" DisplayMember="Name" />
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Comment:">
+                                <dxe:TextEdit EditValue="{Binding CurrentAction.Comment}"/>
+                            </dxlc:LayoutItem>
+                            <Button Content="Add action" Command="{Binding AddActionCommand}"/>
+                        </dxlc:LayoutGroup>
+                    </dxlc:LayoutGroup>
+                    <dxg:GridControl ItemsSource="{Binding CurrentItem.ActionsList,ElementName=projectGrid}">
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn FieldName="Name"/>
+                            <dxg:GridColumn FieldName="TriggerId"/>
+                            <dxg:GridColumn FieldName="StatusId"/>
+                            <dxg:GridColumn FieldName="DateCreated"/>
+                            <dxg:GridColumn FieldName="ScheduledTime"/>
+                            <dxg:GridColumn FieldName="DelegatedTo"/>
+                            <dxg:GridColumn FieldName="Comment"/>
+                        </dxg:GridControl.Columns>
+
                     </dxg:GridControl>
                 </dxlc:LayoutGroup>
             </dx:DXTabItem>

@@ -12,8 +12,8 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ProjectId" Type="int" Nullable="false" />
-          <Property Name="ActionTriggerId" Type="int" />
-          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="TriggerId" Type="int" />
+          <Property Name="StatusId" Type="int" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Nullable="false" />
           <Property Name="ScheduledTime" Type="datetime" />
           <Property Name="DelegatedTo" Type="int" />
@@ -73,7 +73,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Actions">
-              <PropertyRef Name="Status" />
+              <PropertyRef Name="StatusId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -85,7 +85,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Actions">
-              <PropertyRef Name="ActionTriggerId" />
+              <PropertyRef Name="TriggerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -181,16 +181,16 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ProjectId" Type="Int32" Nullable="false" />
-          <Property Name="ActionTriggerId" Type="Int32" />
-          <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="DateCreated" Type="DateTime" Precision="3" Nullable="false" />
           <Property Name="ScheduledTime" Type="DateTime" Precision="3" />
           <Property Name="DelegatedTo" Type="Int32" />
           <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ActionStatus" Relationship="ListOfDealBaseModel.FK_Actions_ActionStatuses" FromRole="Actions" ToRole="ActionStatuses" />
-          <NavigationProperty Name="ActionTrigger" Relationship="Self.FK_Actions_ActionTriggers" FromRole="Actions" ToRole="ActionTriggers" />
           <NavigationProperty Name="DelegatePerson" Relationship="Self.FK_Actions_DelegatePersons" FromRole="Actions" ToRole="DelegatePersons" />
           <NavigationProperty Name="Project" Relationship="ListOfDealBaseModel.FK_Actions_Projects" FromRole="Actions" ToRole="Projects" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ActionStatus" Relationship="ListOfDealBaseModel.FK_Actions_ActionStatuses1" FromRole="Action" ToRole="ActionStatus" />
+          <Property Name="TriggerId" Type="Int32" />
+          <NavigationProperty Name="ActionTrigger" Relationship="ListOfDealBaseModel.FK_Actions_ActionTriggers1" FromRole="Action" ToRole="ActionTrigger" />
         </EntityType>
         <EntityType Name="ActionStatus">
           <Key>
@@ -198,7 +198,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Actions" Relationship="Self.FK_Actions_ActionStatuses" FromRole="ActionStatuses" ToRole="Actions" />
+          <NavigationProperty Name="Actions" Relationship="ListOfDealBaseModel.FK_Actions_ActionStatuses1" FromRole="ActionStatus" ToRole="Action" />
         </EntityType>
         <EntityType Name="ActionTrigger">
           <Key>
@@ -206,7 +206,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Actions" Relationship="Self.FK_Actions_ActionTriggers" FromRole="ActionTriggers" ToRole="Actions" />
+          <NavigationProperty Name="Actions" Relationship="ListOfDealBaseModel.FK_Actions_ActionTriggers1" FromRole="ActionTrigger" ToRole="Action" />
         </EntityType>
         <EntityType Name="DelegatePerson">
           <Key>
@@ -230,30 +230,6 @@
           <Property Name="StatusId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ProjectStatus" Relationship="ListOfDealBaseModel.FK_Projects_ProjectStatuses" FromRole="Project" ToRole="ProjectStatus" />
         </EntityType>
-        <Association Name="FK_Actions_ActionStatuses">
-          <End Role="ActionStatuses" Type="Self.ActionStatus" Multiplicity="1" />
-          <End Role="Actions" Type="Self.Action" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ActionStatuses">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Actions">
-              <PropertyRef Name="Status" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Actions_ActionTriggers">
-          <End Role="ActionTriggers" Type="Self.ActionTrigger" Multiplicity="0..1" />
-          <End Role="Actions" Type="Self.Action" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ActionTriggers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Actions">
-              <PropertyRef Name="ActionTriggerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Actions_DelegatePersons">
           <End Role="DelegatePersons" Type="Self.DelegatePerson" Multiplicity="0..1" />
           <End Role="Actions" Type="Self.Action" Multiplicity="*" />
@@ -284,14 +260,6 @@
           <EntitySet Name="ActionTriggers" EntityType="Self.ActionTrigger" />
           <EntitySet Name="DelegatePersons" EntityType="Self.DelegatePerson" />
           <EntitySet Name="Projects" EntityType="Self.Project" />
-          <AssociationSet Name="FK_Actions_ActionStatuses" Association="Self.FK_Actions_ActionStatuses">
-            <End Role="ActionStatuses" EntitySet="ActionStatuses" />
-            <End Role="Actions" EntitySet="Actions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Actions_ActionTriggers" Association="Self.FK_Actions_ActionTriggers">
-            <End Role="ActionTriggers" EntitySet="ActionTriggers" />
-            <End Role="Actions" EntitySet="Actions" />
-          </AssociationSet>
           <AssociationSet Name="FK_Actions_DelegatePersons" Association="Self.FK_Actions_DelegatePersons">
             <End Role="DelegatePersons" EntitySet="DelegatePersons" />
             <End Role="Actions" EntitySet="Actions" />
@@ -309,6 +277,14 @@
           <AssociationSet Name="FK_Projects_ProjectStatuses" Association="ListOfDealBaseModel.FK_Projects_ProjectStatuses">
             <End Role="ProjectStatus" EntitySet="ProjectStatuses" />
             <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Actions_ActionStatuses1" Association="ListOfDealBaseModel.FK_Actions_ActionStatuses1">
+            <End Role="ActionStatus" EntitySet="ActionStatuses" />
+            <End Role="Action" EntitySet="Actions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Actions_ActionTriggers1" Association="ListOfDealBaseModel.FK_Actions_ActionTriggers1">
+            <End Role="ActionTrigger" EntitySet="ActionTriggers" />
+            <End Role="Action" EntitySet="Actions" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="ProjectType">
@@ -351,6 +327,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Actions_ActionStatuses1">
+          <End Type="ListOfDealBaseModel.ActionStatus" Role="ActionStatus" Multiplicity="1" />
+          <End Type="ListOfDealBaseModel.Action" Role="Action" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActionStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Action">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Actions_ActionTriggers1">
+          <End Type="ListOfDealBaseModel.ActionTrigger" Role="ActionTrigger" Multiplicity="0..1" />
+          <End Type="ListOfDealBaseModel.Action" Role="Action" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActionTrigger">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Action">
+              <PropertyRef Name="TriggerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -360,11 +360,11 @@
           <EntitySetMapping Name="Actions">
             <EntityTypeMapping TypeName="ListOfDealBaseModel.Action">
               <MappingFragment StoreEntitySet="Actions">
+                <ScalarProperty Name="TriggerId" ColumnName="TriggerId" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
-                <ScalarProperty Name="ActionTriggerId" ColumnName="ActionTriggerId" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="ScheduledTime" ColumnName="ScheduledTime" />
                 <ScalarProperty Name="DelegatedTo" ColumnName="DelegatedTo" />

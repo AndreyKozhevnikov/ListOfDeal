@@ -21,7 +21,9 @@ namespace ListOfDeal {
      
         Project _currentProject;
         Action _currentAction;
+        Project _selectedProject;
 
+  
   
         public ICommand AddNewProjectCommand {
             get {
@@ -41,7 +43,6 @@ namespace ListOfDeal {
    
 
         public ObservableCollection<Project> Projects { get; set; }
-        public Project SelectedProject { get; set; }
         public Project CurrentProject {
             get { return _currentProject; }
             set { _currentProject = value;
@@ -52,6 +53,12 @@ namespace ListOfDeal {
             get { return _currentAction; }
             set { _currentAction = value;
             RaisePropertyChanged("CurrentAction");
+            }
+        }
+        public Project SelectedProject {
+            get { return _selectedProject; }
+            set { _selectedProject = value;
+            RaisePropertyChanged("SelectedProject");
             }
         }
         public ObservableCollection<ProjectType> ProjectTypes { get; set; }
@@ -94,6 +101,7 @@ namespace ListOfDeal {
         private void CreateNewAction() {
             CurrentAction = generalEntity.Actions.Create();
             CurrentAction.StatusId = 1;
+            CurrentAction.IsActive = false;
             
 
         }
@@ -143,6 +151,5 @@ namespace ListOfDeal {
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
         }
-
     }
 }

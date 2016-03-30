@@ -25,6 +25,7 @@ namespace ListOfDeal
         public string Comment { get; set; }
         public int TypeId { get; set; }
         public int StatusId { get; set; }
+        public Nullable<System.DateTime> CompletedTime { get; set; }
     
         public virtual ICollection<Action> Actions { get; set; }
         public virtual ProjectType ProjectType { get; set; }

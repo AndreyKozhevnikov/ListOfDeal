@@ -18,6 +18,8 @@
           <Property Name="ScheduledTime" Type="datetime" />
           <Property Name="DelegatedTo" Type="int" />
           <Property Name="Comment" Type="varchar(max)" />
+          <Property Name="CompletedTime" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <EntityType Name="ActionStatuses">
           <Key>
@@ -50,6 +52,7 @@
           <Property Name="DateCreated" Type="datetime" Nullable="false" />
           <Property Name="StatusId" Type="int" Nullable="false" />
           <Property Name="Comment" Type="varchar(max)" />
+          <Property Name="CompletedTime" Type="datetime" />
         </EntityType>
         <EntityType Name="ProjectStatuses">
           <Key>
@@ -191,6 +194,8 @@
           <NavigationProperty Name="ActionStatus" Relationship="ListOfDealBaseModel.FK_Actions_ActionStatuses1" FromRole="Action" ToRole="ActionStatus" />
           <Property Name="TriggerId" Type="Int32" />
           <NavigationProperty Name="ActionTrigger" Relationship="ListOfDealBaseModel.FK_Actions_ActionTriggers1" FromRole="Action" ToRole="ActionTrigger" />
+          <Property Name="CompletedTime" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
         </EntityType>
         <EntityType Name="ActionStatus">
           <Key>
@@ -229,6 +234,7 @@
           <NavigationProperty Name="ProjectType" Relationship="ListOfDealBaseModel.FK_Projects_ProejctTypes1" FromRole="Project" ToRole="ProjectType" />
           <Property Name="StatusId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ProjectStatus" Relationship="ListOfDealBaseModel.FK_Projects_ProjectStatuses" FromRole="Project" ToRole="ProjectStatus" />
+          <Property Name="CompletedTime" Type="DateTime" Precision="3" />
         </EntityType>
         <Association Name="FK_Actions_DelegatePersons">
           <End Role="DelegatePersons" Type="Self.DelegatePerson" Multiplicity="0..1" />
@@ -360,6 +366,8 @@
           <EntitySetMapping Name="Actions">
             <EntityTypeMapping TypeName="ListOfDealBaseModel.Action">
               <MappingFragment StoreEntitySet="Actions">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CompletedTime" ColumnName="CompletedTime" />
                 <ScalarProperty Name="TriggerId" ColumnName="TriggerId" />
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -399,6 +407,7 @@
           <EntitySetMapping Name="Projects">
             <EntityTypeMapping TypeName="ListOfDealBaseModel.Project">
               <MappingFragment StoreEntitySet="Projects">
+                <ScalarProperty Name="CompletedTime" ColumnName="CompletedTime" />
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

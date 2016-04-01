@@ -10,18 +10,18 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace ListOfDeal {
-    public class MainViewModel:INotifyPropertyChanged {
+    public class MainViewModel:MyBindableBase {
         public MainViewModel() {
             InitializeData();
         }
-        ListOfDealBaseEntities generalEntity;
+      public static  ListOfDealBaseEntities generalEntity;
         ICommand _addNewProjectCommand;
         ICommand _addActionCommand;
 
      
-        Project _currentProject;
-        Action _currentAction;
-        Project _selectedProject;
+        MyProject _currentProject;
+        MyAction _currentAction;
+        MyProject _selectedProject;
 
   
   
@@ -42,20 +42,20 @@ namespace ListOfDeal {
 
    
 
-        public ObservableCollection<Project> Projects { get; set; }
-        public Project CurrentProject {
+        public ObservableCollection<MyProject> Projects { get; set; }
+        public MyProject CurrentProject {
             get { return _currentProject; }
             set { _currentProject = value;
             RaisePropertyChanged("CurrentProject");
             }
         }
-        public Action CurrentAction {
+        public MyAction CurrentAction {
             get { return _currentAction; }
             set { _currentAction = value;
             RaisePropertyChanged("CurrentAction");
             }
         }
-        public Project SelectedProject {
+        public MyProject SelectedProject {
             get { return _selectedProject; }
             set { _selectedProject = value;
             RaisePropertyChanged("SelectedProject");
@@ -69,7 +69,10 @@ namespace ListOfDeal {
         
         void InitializeData() {
             ConnectToDataBase();
-            Projects = new ObservableCollection<Project>(generalEntity.Projects);
+            Projects = new ObservableCollection<MyProject>();
+            foreach (var p in generalEntity.Projects) {
+                Projects.Add(new MyProject(p));
+            }
             ProjectTypes = new ObservableCollection<ProjectType>(generalEntity.ProjectTypes);
             ProjectStatuses = new ObservableCollection<ProjectStatus>(generalEntity.ProjectStatuses);
             ActionTriggers = new ObservableCollection<ActionTrigger>(generalEntity.ActionTriggers);
@@ -94,12 +97,15 @@ namespace ListOfDeal {
         }
 
         private void CreateNewProject() {
-            CurrentProject = generalEntity.Projects.Create();
+          //  CurrentProject = generalEntity.Projects.Create();
+            CurrentProject = new MyProject();
             CurrentProject.TypeId = 1;
             CurrentProject.StatusId = 1;
         }
         private void CreateNewAction() {
-            CurrentAction = generalEntity.Actions.Create();
+            CurrentAction = new MyAction();
+
+          //  CurrentAction = generalEntity.Actions.Create();
             CurrentAction.StatusId = 1;
             CurrentAction.IsActive = false;
             
@@ -107,21 +113,22 @@ namespace ListOfDeal {
         }
         private void AddNewProject() {
             CurrentProject.DateCreated = DateTime.Now;
-            generalEntity.Projects.Add(CurrentProject);
+            CurrentProject.Save();
+            //generalEntity.Projects.Add(CurrentProject);
             Projects.Add(CurrentProject);
             generalEntity.SaveChanges();
             CreateNewProject();
         }
         private void AddAction() {
             CurrentAction.DateCreated = DateTime.Now;
-            SelectedProject.Actions.Add(CurrentAction);
+            SelectedProject.AddAction(CurrentAction);
            
             generalEntity.SaveChanges();
             SelectedProject.RaisePropertyChanged("ActionsList");
             CreateNewAction();
         }
         internal void Test() {
-            var a = generalEntity.Actions.Create();
+            var a = new MyAction();
             a.Name = "testaction";
             a.DateCreated = DateTime.Now;
             a.StatusId = 1;
@@ -130,26 +137,8 @@ namespace ListOfDeal {
 
             generalEntity.SaveChanges();
         }
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void RaisePropertyChanged([CallerMemberName]String propertyName = "") {
-            if (PropertyChanged != null) {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
+      
+    } 
 
-    public partial class Project:INotifyPropertyChanged {
-        public ObservableCollection<Action> ActionsList {
-            get {
-                return new ObservableCollection<Action>(this.Actions);
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void RaisePropertyChanged(string name) {
-            if (PropertyChanged != null) {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
-        }
-    }
+   
 }

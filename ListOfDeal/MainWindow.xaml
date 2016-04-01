@@ -16,46 +16,46 @@
             <dx:DXTabItem Header="Enter new project">
                 <dxlc:LayoutGroup Orientation="Vertical">
                     <dxlc:LayoutGroup>
-                    <dxlc:LayoutGroup Orientation="Vertical" x:Name="ProjectsGroup">
-                    <dxlc:LayoutItem Label="Name:">
-                        <dxe:TextEdit EditValue="{Binding CurrentProject.Name}"/>
-                    </dxlc:LayoutItem>
-                    <dxlc:LayoutItem Label="Type:">
-                        <dxe:ComboBoxEdit ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.TypeId}"/>
-                    </dxlc:LayoutItem>
-                    <dxlc:LayoutItem Label="Status:">
-                        <dxe:ComboBoxEdit ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.StatusId}"/>
-                    </dxlc:LayoutItem>
-                    <dxlc:LayoutItem Label="Comment:">
-                        <dxe:TextEdit EditValue="{Binding CurrentProject.Comment}"/>
-                    </dxlc:LayoutItem>
-                    <Button Content="Add project" Command="{Binding AddNewProjectCommand}" Height="20"/>
-                    <Button Content="test" Click="Button_Click" Height="20"/>
-                    </dxlc:LayoutGroup>
-                    <dxlc:LayoutGroup Orientation="Vertical" x:Name="ActionGroup" IsEnabled="{Binding SelectedProject,Converter={StaticResource objToBoolConverter}}">
-                        <dxlc:LayoutItem Label="Name:">
-                            <dxe:TextEdit EditValue="{Binding CurrentAction.Name}"/>
-                        </dxlc:LayoutItem>
-                        <dxlc:LayoutItem Label="Trigger:">
-                            <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.TriggerId}" ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name"/>
-                        </dxlc:LayoutItem>
-                        <dxlc:LayoutItem Label="Status:">
-                            <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.StatusId}" ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
-                        </dxlc:LayoutItem>
-                        <dxlc:LayoutItem Label="ScheduledTime:">
-                            <dxe:TextEdit EditValue="{Binding CurrentAction.ScheduledTime}"/>
-                        </dxlc:LayoutItem>
-                        <dxlc:LayoutItem Label="DelegatedTo:">
-                            <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.DelegatedTo}" ItemsSource="{Binding DelegatePersons}" ValueMember="Id" DisplayMember="Name" />
-                        </dxlc:LayoutItem>
+                        <dxlc:LayoutGroup Orientation="Vertical" x:Name="ProjectsGroup">
+                            <dxlc:LayoutItem Label="Name:">
+                                <dxe:TextEdit EditValue="{Binding CurrentProject.Name}"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Type:">
+                                <dxe:ComboBoxEdit ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.TypeId}"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Status:">
+                                <dxe:ComboBoxEdit ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.StatusId}"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Comment:">
+                                <dxe:TextEdit EditValue="{Binding CurrentProject.Comment}"/>
+                            </dxlc:LayoutItem>
+                            <Button Content="Add project" Command="{Binding AddNewProjectCommand}" Height="20"/>
+                            <Button Content="test" Click="Button_Click" Height="20"/>
+                        </dxlc:LayoutGroup>
+                        <dxlc:LayoutGroup Orientation="Vertical" x:Name="ActionGroup" IsEnabled="{Binding SelectedProject,Converter={StaticResource objToBoolConverter}}">
+                            <dxlc:LayoutItem Label="Name:">
+                                <dxe:TextEdit EditValue="{Binding CurrentAction.Name}"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Trigger:">
+                                <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.TriggerId}" ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Status:">
+                                <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.StatusId}" ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="ScheduledTime:">
+                                <dxe:TextEdit EditValue="{Binding CurrentAction.ScheduledTime}"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="DelegatedTo:">
+                                <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.DelegatedTo}" ItemsSource="{Binding DelegatePersons}" ValueMember="Id" DisplayMember="Name" />
+                            </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="IsActive:">
                                 <dxe:CheckEdit EditValue="{Binding CurrentAction.IsActive}"/>
                             </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="Comment:">
-                            <dxe:TextEdit EditValue="{Binding CurrentAction.Comment}"/>
-                        </dxlc:LayoutItem>
-                        <Button Content="Add action" Command="{Binding AddActionCommand}"/>
-                    </dxlc:LayoutGroup>
+                                <dxe:TextEdit EditValue="{Binding CurrentAction.Comment}"/>
+                            </dxlc:LayoutItem>
+                            <Button Content="Add action" Command="{Binding AddActionCommand}"/>
+                        </dxlc:LayoutGroup>
                     </dxlc:LayoutGroup>
                     <dxg:GridControl ItemsSource="{Binding Projects}" CurrentItem="{Binding SelectedProject,Mode=TwoWay}">
                         <dxg:GridControl.Columns>
@@ -74,7 +74,7 @@
                             </dxg:GridColumn>
                         </dxg:GridControl.Columns>
                         <dxg:GridControl.DetailDescriptor>
-                            <dxg:DataControlDetailDescriptor ItemsSourcePath="ActionsList">
+                            <dxg:DataControlDetailDescriptor ItemsSourcePath="Actions">
                                 <dxg:DataControlDetailDescriptor.DataControl>
                                     <dxg:GridControl >
                                         <dxg:GridControl.Columns>
@@ -95,24 +95,35 @@
                                                     <dxe:DateEditSettings/>
                                                 </dxg:GridColumn.EditSettings>
                                             </dxg:GridColumn>
-                                            <dxg:GridColumn FieldName="DelegatedTo">
+                                            <dxg:GridColumn FieldName="DelegatedTo" Header="test">
                                                 <dxg:GridColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <dxe:ComboBoxEdit x:Name="PART_Editor"   ItemsSource="{Binding Column.EditSettings.DataContext.DelegatePersons}" 
+                                                        <dxe:ComboBoxEdit x:Name="PART_Editor" 
+                                                                          ItemsSource="{Binding Column.EditSettings.DataContext.DelegatePersons}" 
                                                                                ValueMember="Id" DisplayMember="Name" 
                                                                                >
-                                                            <dxe:ComboBoxEdit.Style>
+                                                        </dxe:ComboBoxEdit>
+                                                    </DataTemplate>
+                                                </dxg:GridColumn.CellTemplate>
+                                            </dxg:GridColumn>
+                                            <dxg:GridColumn FieldName="TestInt">
+                                                <dxg:GridColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <dxe:ComboBoxEdit Name="PART_Editor"   ItemsSource="{Binding Column.EditSettings,Converter={local:custConverter}}" 
+                                                                               ValueMember="Id" DisplayMember="Name" 
+                                                                               >
+                                                            <!--<dxe:ComboBoxEdit.Style>
                                                                 <Style TargetType="dxe:ComboBoxEdit">
-                                                                <Setter Property="IsEnabled" Value="False"/>
-                                                                <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding RowData.Row.StatusId,Converter={local:custConverter}}" Value="3">
-                                                                        <Setter Property="IsEnabled" Value="True"/>
+                                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="3">
+                                                                            <Setter Property="IsEnabled" Value="True"/>
                                                                             <Setter Property="Tag" Value="testtag33"/>
                                                                         </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </dxe:ComboBoxEdit.Style>
-                                                    </dxe:ComboBoxEdit>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </dxe:ComboBoxEdit.Style>-->
+                                                        </dxe:ComboBoxEdit>
                                                     </DataTemplate>
                                                 </dxg:GridColumn.CellTemplate>
                                             </dxg:GridColumn>
@@ -128,7 +139,7 @@
                 </dxlc:LayoutGroup>
             </dx:DXTabItem>
             <dx:DXTabItem Header="Projects">
-                
+
             </dx:DXTabItem>
         </dx:DXTabControl>
     </Grid>

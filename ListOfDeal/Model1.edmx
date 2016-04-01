@@ -19,7 +19,8 @@
           <Property Name="DelegatedTo" Type="int" />
           <Property Name="Comment" Type="varchar(max)" />
           <Property Name="CompletedTime" Type="datetime" />
-          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="OrderNumber" Type="nchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="ActionStatuses">
           <Key>
@@ -195,7 +196,8 @@
           <Property Name="TriggerId" Type="Int32" />
           <NavigationProperty Name="ActionTrigger" Relationship="ListOfDealBaseModel.FK_Actions_ActionTriggers1" FromRole="Action" ToRole="ActionTrigger" />
           <Property Name="CompletedTime" Type="DateTime" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="OrderNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="ActionStatus">
           <Key>
@@ -366,6 +368,7 @@
           <EntitySetMapping Name="Actions">
             <EntityTypeMapping TypeName="ListOfDealBaseModel.Action">
               <MappingFragment StoreEntitySet="Actions">
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CompletedTime" ColumnName="CompletedTime" />
                 <ScalarProperty Name="TriggerId" ColumnName="TriggerId" />

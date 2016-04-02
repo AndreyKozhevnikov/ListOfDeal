@@ -97,15 +97,12 @@ namespace ListOfDeal {
         }
 
         private void CreateNewProject() {
-          //  CurrentProject = generalEntity.Projects.Create();
             CurrentProject = new MyProject();
             CurrentProject.TypeId = 1;
             CurrentProject.StatusId = 1;
         }
         private void CreateNewAction() {
             CurrentAction = new MyAction();
-
-          //  CurrentAction = generalEntity.Actions.Create();
             CurrentAction.StatusId = 1;
             CurrentAction.IsActive = false;
             
@@ -114,7 +111,6 @@ namespace ListOfDeal {
         private void AddNewProject() {
             CurrentProject.DateCreated = DateTime.Now;
             CurrentProject.Save();
-            //generalEntity.Projects.Add(CurrentProject);
             Projects.Add(CurrentProject);
             generalEntity.SaveChanges();
             CreateNewProject();
@@ -134,7 +130,7 @@ namespace ListOfDeal {
             //a.StatusId = 1;
             //a.TriggerId = 1;
             //Projects[0].Actions.Add(a);
-
+            var v = generalEntity.Projects.ToList();
             generalEntity.SaveChanges();
         }
       

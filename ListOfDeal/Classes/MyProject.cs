@@ -33,7 +33,7 @@ namespace ListOfDeal {
         }
 
         public void Save() {
-            if (parentEntity.Id < 0)
+            if (parentEntity.Id <= 0)
                 MainViewModel.generalEntity.Projects.Add(parentEntity);
             MainViewModel.generalEntity.SaveChanges();
         }

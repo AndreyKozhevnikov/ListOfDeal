@@ -20,7 +20,7 @@
           <Property Name="Comment" Type="varchar(max)" />
           <Property Name="CompletedTime" Type="datetime" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
-          <Property Name="OrderNumber" Type="nchar" MaxLength="10" />
+          <Property Name="OrderNumber" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ActionStatuses">
           <Key>
@@ -197,7 +197,7 @@
           <NavigationProperty Name="ActionTrigger" Relationship="ListOfDealBaseModel.FK_Actions_ActionTriggers1" FromRole="Action" ToRole="ActionTrigger" />
           <Property Name="CompletedTime" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="OrderNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="OrderNumber" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="ActionStatus">
           <Key>

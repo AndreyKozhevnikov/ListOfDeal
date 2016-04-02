@@ -25,7 +25,7 @@ namespace ListOfDeal
         public Nullable<int> TriggerId { get; set; }
         public Nullable<System.DateTime> CompletedTime { get; set; }
         public bool IsActive { get; set; }
-        public string OrderNumber { get; set; }
+        public int OrderNumber { get; set; }
     
         public virtual DelegatePerson DelegatePerson { get; set; }
         public virtual Project Project { get; set; }

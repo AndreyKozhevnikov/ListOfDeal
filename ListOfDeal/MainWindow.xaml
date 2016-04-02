@@ -118,6 +118,7 @@
                                             </dxg:GridColumn>
                                             <dxg:GridColumn FieldName="IsActive"/>
                                             <dxg:GridColumn FieldName="Comment"/>
+                                            <dxg:GridColumn FieldName="OrderNumber"/>
                                         </dxg:GridControl.Columns>
                                     </dxg:GridControl>
                                 </dxg:DataControlDetailDescriptor.DataControl>

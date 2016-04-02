@@ -19,11 +19,14 @@ namespace ListOfDeal {
 
         private void InitiateProject() {
             Actions = new ObservableCollection<MyAction>();
-            foreach (var a in parentEntity.Actions) {
+            var listAction = parentEntity.Actions.OrderBy(x => x.OrderNumber);
+            foreach (var a in listAction) {
                 Actions.Add(new MyAction(a));
             }
         }
         public void AddAction(MyAction act) {
+            var maxOrderNumber = Actions.Max(x => x.OrderNumber);
+            act.OrderNumber = maxOrderNumber + 1;
             Actions.Add(act);
             parentEntity.Actions.Add(act.parentEntity);
         }

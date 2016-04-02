@@ -85,6 +85,14 @@ namespace ListOfDeal {
                 parentEntity.Comment = value;
             }
         }
+        public int OrderNumber {
+            get {
+                return parentEntity.OrderNumber;
+            }
+            set {
+                parentEntity.OrderNumber = value;
+            }
+        }
 
     }
 }

@@ -10,7 +10,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace ListOfDeal {
-    public class MainViewModel:MyBindableBase {
+    public partial class MainViewModel:MyBindableBase {
         public MainViewModel() {
             InitializeData();
         }

@@ -91,6 +91,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.OrderNumber = value;
+                RaisePropertyChanged("OrderNumber");
             }
         }
 

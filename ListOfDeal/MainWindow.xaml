@@ -57,7 +57,10 @@
                             <Button Content="Add action" Command="{Binding AddActionCommand}"/>
                         </dxlc:LayoutGroup>
                     </dxlc:LayoutGroup>
-                    <dxg:GridControl ItemsSource="{Binding Projects}" CurrentItem="{Binding SelectedProject,Mode=TwoWay}">
+                    <dxg:GridControl ItemsSource="{Binding Projects}" CurrentItem="{Binding SelectedProject,Mode=TwoWay}" SelectionMode="Row">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:EventToCommand  Command="{Binding OpenEditProjectCommand}" EventName="MouseDoubleClick"/>
+                        </dxmvvm:Interaction.Behaviors>
                         <dxg:GridControl.Columns>
                             <dxg:GridColumn FieldName="Name"/>
                             <dxg:GridColumn FieldName="DateCreated"/>
@@ -120,12 +123,6 @@
                                             <dxg:GridColumn FieldName="Comment"/>
                                             <dxg:GridColumn FieldName="OrderNumber"/>
                                         </dxg:GridControl.Columns>
-                                        <dxg:GridControl.View>
-                                            <dxg:TableView EditorShowMode="MouseUpFocused"/>
-                                        </dxg:GridControl.View>
-                                        <dxmvvm:Interaction.Behaviors>
-                                            <dxg:GridDragDropManager AllowDrag="True" AllowDrop="True" />
-                                        </dxmvvm:Interaction.Behaviors>
                                     </dxg:GridControl>
                                 </dxg:DataControlDetailDescriptor.DataControl>
                             </dxg:DataControlDetailDescriptor>

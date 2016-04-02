@@ -95,34 +95,23 @@
                                                     <dxe:DateEditSettings/>
                                                 </dxg:GridColumn.EditSettings>
                                             </dxg:GridColumn>
-                                            <dxg:GridColumn FieldName="DelegatedTo" Header="test">
+                                            <dxg:GridColumn FieldName="DelegatedTo" >
                                                 <dxg:GridColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <dxe:ComboBoxEdit x:Name="PART_Editor" 
-                                                                          ItemsSource="{Binding Column.EditSettings.DataContext.DelegatePersons}" 
+                                                                          ItemsSource="{Binding DataContext.DelegatePersons, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=dxg:DataPresenter}}" 
                                                                                ValueMember="Id" DisplayMember="Name" 
                                                                                >
-                                                        </dxe:ComboBoxEdit>
-                                                    </DataTemplate>
-                                                </dxg:GridColumn.CellTemplate>
-                                            </dxg:GridColumn>
-                                            <dxg:GridColumn FieldName="TestInt">
-                                                <dxg:GridColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <dxe:ComboBoxEdit Name="PART_Editor"   ItemsSource="{Binding Column.EditSettings,Converter={local:custConverter}}" 
-                                                                               ValueMember="Id" DisplayMember="Name" 
-                                                                               >
-                                                            <!--<dxe:ComboBoxEdit.Style>
+                                                            <dxe:ComboBoxEdit.Style>
                                                                 <Style TargetType="dxe:ComboBoxEdit">
                                                                     <Setter Property="IsEnabled" Value="False"/>
                                                                     <Style.Triggers>
                                                                         <DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="3">
                                                                             <Setter Property="IsEnabled" Value="True"/>
-                                                                            <Setter Property="Tag" Value="testtag33"/>
                                                                         </DataTrigger>
                                                                     </Style.Triggers>
                                                                 </Style>
-                                                            </dxe:ComboBoxEdit.Style>-->
+                                                            </dxe:ComboBoxEdit.Style>
                                                         </dxe:ComboBoxEdit>
                                                     </DataTemplate>
                                                 </dxg:GridColumn.CellTemplate>

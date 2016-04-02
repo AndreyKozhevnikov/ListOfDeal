@@ -128,12 +128,12 @@ namespace ListOfDeal {
             CreateNewAction();
         }
         internal void Test() {
-            var a = new MyAction();
-            a.Name = "testaction";
-            a.DateCreated = DateTime.Now;
-            a.StatusId = 1;
-            a.TriggerId = 1;
-            Projects[0].Actions.Add(a);
+            //var a = new MyAction();
+            //a.Name = "testaction";
+            //a.DateCreated = DateTime.Now;
+            //a.StatusId = 1;
+            //a.TriggerId = 1;
+            //Projects[0].Actions.Add(a);
 
             generalEntity.SaveChanges();
         }

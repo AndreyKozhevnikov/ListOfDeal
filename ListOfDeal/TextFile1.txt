@@ -1,5 +1,5 @@
 ﻿1 custom Action - ok
-1. bind to master view from detail
+1. bind to master view from detail +
 2 action order id (change by drag drop)
 3 add new trigger, status
 4. is action need a separate status?

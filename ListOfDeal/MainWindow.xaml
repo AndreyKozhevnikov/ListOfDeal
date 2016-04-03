@@ -84,7 +84,11 @@
                                             <dxg:GridColumn FieldName="Name"/>
                                             <dxg:GridColumn FieldName="TriggerId">
                                                 <dxg:GridColumn.EditSettings>
-                                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name"/>
+                                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name">
+                                                        <dxe:ComboBoxEditSettings.Buttons>
+                                                            <dxe:ButtonInfo Content="+" Command="{Binding OpenNewInfoCommand}" CommandParameter="Trigger"/>
+                                                        </dxe:ComboBoxEditSettings.Buttons>
+                                                    </dxe:ComboBoxEditSettings>
                                                 </dxg:GridColumn.EditSettings>
                                             </dxg:GridColumn>
                                             <dxg:GridColumn FieldName="StatusId">

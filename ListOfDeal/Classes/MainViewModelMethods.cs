@@ -81,5 +81,22 @@ namespace ListOfDeal {
             ed.DataContext = this;
             ed.ShowDialog();
         }
+        private void OpenNewInfo(string st) {
+            CreateNewInfoWindow wnd = new CreateNewInfoWindow();
+            switch (st) {
+                case "Trigger":
+                    ActionTrigger trig = generalEntity.ActionTriggers.Create();
+                    wnd.DataContext = trig;
+                    wnd.ShowDialog();
+                    if (!string.IsNullOrEmpty(trig.Name)) {
+                        generalEntity.ActionTriggers.Add(trig);
+                        generalEntity.SaveChanges();
+                        ActionTriggers.Add(trig);
+                    }
+                    break;
+            }
+
+
+        }
     }
 }

@@ -16,7 +16,9 @@ namespace ListOfDeal {
         ICommand _addNewProjectCommand;
         ICommand _addActionCommand;
         ICommand _openEditProjectCommand;
+        ICommand _openNewInfoCommand;
 
+    
 
 
         MyProject _currentProject;
@@ -48,7 +50,14 @@ namespace ListOfDeal {
                 return _openEditProjectCommand;
             }
         }
+        public ICommand OpenNewInfoCommand {
+            get {
+                if (_openNewInfoCommand == null)
+                    _openNewInfoCommand = new DelegateCommand<string>(OpenNewInfo);
+                return _openNewInfoCommand; }
+        }
 
+   
 
         public ObservableCollection<MyProject> Projects { get; set; }
         public MyProject CurrentProject {

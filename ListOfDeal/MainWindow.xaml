@@ -142,14 +142,96 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Button Content="Get Data" Command="{Binding ProvideActiveActionsCommand}"/>
-                    <local:ActiveActionsView Tag="WaitedActionsGrid" Grid.Row="1"/>
+                    <dxg:GridControl Grid.Row="1" Tag="WaitedActionsGrid"
+                                     ItemsSource="{Binding ActiveActions}"
+                                     >
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:EventToCommand EventName="CustomRowFilter" PassEventArgsToCommand="True" Command="{Binding CustomRowFilterCommand}"/>
+                        </dxmvvm:Interaction.Behaviors>
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn FieldName="Name"/>
+                            <dxg:GridColumn FieldName="TriggerId" GroupIndex="0" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name" >
+                                        <dxe:ComboBoxEditSettings.Buttons>
+                                            <dxe:ButtonInfo Content="+" Command="{Binding OpenNewInfoCommand}" CommandParameter="Trigger"/>
+                                        </dxe:ComboBoxEditSettings.Buttons>
+                                    </dxe:ComboBoxEditSettings>
+                                </dxg:GridColumn.EditSettings>
+                                <dxg:GridColumn.GroupValueTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding DisplayText,Converter={local:CustomDisplayTextConverter}}" />
+                                    </DataTemplate>
+                                </dxg:GridColumn.GroupValueTemplate>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="DateCreated" ReadOnly="True"/>
+                            <dxg:GridColumn FieldName="Comment"/>
+                            <dxg:GridColumn FieldName="ProjectName" />
+                        </dxg:GridControl.Columns>
+                    </dxg:GridControl>
                 </Grid>
             </dx:DXTabItem>
             <dx:DXTabItem Header="Scheduled">
-                <local:ActiveActionsView Tag="ScheduledActionsGrid" />
+                <dxg:GridControl Grid.Row="1" Tag="ScheduledActionsGrid"
+                                     ItemsSource="{Binding ActiveActions}"
+                                     >
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:EventToCommand EventName="CustomRowFilter" PassEventArgsToCommand="True" Command="{Binding CustomRowFilterCommand}"/>
+                    </dxmvvm:Interaction.Behaviors>
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn FieldName="Name"/>
+                       
+                        <dxg:GridColumn FieldName="DateCreated" ReadOnly="True"/>
+                        <dxg:GridColumn FieldName="ScheduledTime">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:DateEditSettings/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="Comment"/>
+                        <dxg:GridColumn FieldName="ProjectName" />
+                    </dxg:GridControl.Columns>
+                </dxg:GridControl>
             </dx:DXTabItem>
             <dx:DXTabItem Header="Delegated">
-                <local:ActiveActionsView Tag="DelegatedActionsGrid" />
+                <dxg:GridControl Grid.Row="1" Tag="DelegatedActionsGrid"
+                                     ItemsSource="{Binding ActiveActions}"
+                                     >
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:EventToCommand EventName="CustomRowFilter" PassEventArgsToCommand="True" Command="{Binding CustomRowFilterCommand}"/>
+                    </dxmvvm:Interaction.Behaviors>
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn FieldName="Name"/>
+                     
+                        <dxg:GridColumn FieldName="DateCreated" ReadOnly="True"/>
+                        <dxg:GridColumn FieldName="DelegatedTo" GroupIndex="0">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <dxe:ComboBoxEdit x:Name="PART_Editor" 
+                                                                          ItemsSource="{Binding View.DataContext.DelegatePersons}" 
+                                                                               ValueMember="Id" DisplayMember="Name" 
+                                                                               >
+                                        <dxe:ComboBoxEdit.Style>
+                                            <Style TargetType="dxe:ComboBoxEdit">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="3">
+                                                        <Setter Property="IsEnabled" Value="True"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </dxe:ComboBoxEdit.Style>
+                                    </dxe:ComboBoxEdit>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:ComboBoxEditSettings   ItemsSource="{Binding DelegatePersons}" 
+                                                                               ValueMember="Id" DisplayMember="Name" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="Comment"/>
+                        <dxg:GridColumn FieldName="ProjectName" />
+                    </dxg:GridControl.Columns>
+                </dxg:GridControl>
             </dx:DXTabItem>
         </dx:DXTabControl>
     </Grid>

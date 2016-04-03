@@ -21,14 +21,37 @@ namespace ListOfDeal {
             Actions = new ObservableCollection<MyAction>();
             var listAction = parentEntity.Actions.OrderBy(x => x.OrderNumber);
             foreach (var a in listAction) {
-                Actions.Add(new MyAction(a));
+                MyAction act = new MyAction(a);
+                act.PropertyChanged+=act_PropertyChanged;
+                Actions.Add(act);
             }
         }
         public void AddAction(MyAction act) {
-            var maxOrderNumber = Actions.Max(x => x.OrderNumber);
-            act.OrderNumber = maxOrderNumber + 1;
+            if (Actions.Count == 0) {
+                act.OrderNumber = 0;
+                act.IsActive = true;
+            }
+            else {
+                var maxOrderNumber = Actions.Max(x => x.OrderNumber);
+                act.OrderNumber = maxOrderNumber + 1;
+            }
+            act.PropertyChanged += act_PropertyChanged;
             Actions.Add(act);
             parentEntity.Actions.Add(act.parentEntity);
+        }
+
+        void act_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+            if (e.PropertyName == "StatusId") {
+                MyAction act = sender as MyAction;
+                if (act.StatusId!=4)
+                    return;
+                var ind = act.OrderNumber + 1;
+                var targetAct = Actions.Where(x => x.OrderNumber == ind).FirstOrDefault();
+                if (targetAct != null&& !targetAct.IsActive) {
+                    targetAct.IsActive = true;
+                }
+
+            }
         }
         public void DeleteAction(MyAction act) {
             Actions.Remove(act);

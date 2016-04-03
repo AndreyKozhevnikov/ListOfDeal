@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using DevExpress.Xpf.Grid;
 
 namespace ListOfDeal {
     public partial class MainViewModel :MyBindableBase {
@@ -17,8 +18,10 @@ namespace ListOfDeal {
         ICommand _addActionCommand;
         ICommand _openEditProjectCommand;
         ICommand _openNewInfoCommand;
+        ICommand _provideActiveActionsCommand;
+        ICommand _customRowFilterCommand;
 
-    
+     
 
 
         MyProject _currentProject;
@@ -56,10 +59,25 @@ namespace ListOfDeal {
                     _openNewInfoCommand = new DelegateCommand<string>(OpenNewInfo);
                 return _openNewInfoCommand; }
         }
+        public ICommand ProvideActiveActionsCommand {
+            get {
+                if (_provideActiveActionsCommand == null)
+                    _provideActiveActionsCommand = new DelegateCommand(ProvideActiveActions);
+                return _provideActiveActionsCommand; }
+        }
+        public ICommand CustomRowFilterCommand {
+            get {
+                if (_customRowFilterCommand == null)
+                    _customRowFilterCommand = new DelegateCommand<RowFilterEventArgs>(CustomRowFilter);
+                return _customRowFilterCommand; }
+        }
 
+    
+    
+    
    
 
-        public ObservableCollection<MyProject> Projects { get; set; }
+     
         public MyProject CurrentProject {
             get { return _currentProject; }
             set {
@@ -81,13 +99,21 @@ namespace ListOfDeal {
                 RaisePropertyChanged("SelectedProject");
             }
         }
+        public ObservableCollection<MyProject> Projects { get; set; }
         public ObservableCollection<ProjectType> ProjectTypes { get; set; }
         public ObservableCollection<ProjectStatus> ProjectStatuses { get; set; }
         public ObservableCollection<ActionTrigger> ActionTriggers { get; set; }
         public ObservableCollection<ActionStatus> ActionStatuses { get; set; }
         public ObservableCollection<DelegatePerson> DelegatePersons { get; set; }
 
+        ObservableCollection<MyAction> _activeActions;
 
+        public ObservableCollection<MyAction> ActiveActions {
+            get { return _activeActions; }
+            set { _activeActions = value;
+            RaisePropertyChanged("ActiveActions");
+            }
+        }
 
     }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.Xpf.Grid;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -52,6 +53,9 @@ namespace ListOfDeal {
 
         }
         private void AddNewProject() {
+            if (string.IsNullOrEmpty(CurrentProject.Name))
+                return;
+
             CurrentProject.DateCreated = DateTime.Now;
             CurrentProject.Save();
             Projects.Add(CurrentProject);
@@ -95,8 +99,33 @@ namespace ListOfDeal {
                     }
                     break;
             }
+        }
+        private void ProvideActiveActions() {
+            var v = Projects.Where(x => x.StatusId == 1).SelectMany(x => x.Actions).ToList();
+            ActiveActions = new ObservableCollection<MyAction>(v);
+        }
+        private void CustomRowFilter(RowFilterEventArgs e) {
+            GridControl gc = e.Source as GridControl;
+            int needIndex = -1;
+            switch (gc.Tag.ToString()) {
+                case "WaitedActionsGrid":
+                    needIndex = 1;
+                    break;
+                case "ScheduledActionsGrid":
+                    needIndex = 2;
+                    break;
+                case "DelegatedActionsGrid":
+                    needIndex = 3;
+                    break;
 
-
+            }
+            var li = e.ListSourceRowIndex;
+            var act = gc.GetRowByListIndex(li) as MyAction;
+            if (act.IsActive && act.StatusId == needIndex)
+                e.Visible = true;
+            else
+                e.Visible = false;
+            e.Handled = true;
         }
     }
 }

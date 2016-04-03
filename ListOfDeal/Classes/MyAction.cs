@@ -33,6 +33,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.IsActive = value;
+                RaisePropertyChanged("IsActive");
             }
         }
 
@@ -92,6 +93,12 @@ namespace ListOfDeal {
             set {
                 parentEntity.OrderNumber = value;
                 RaisePropertyChanged("OrderNumber");
+            }
+        }
+
+        public string ProjectName {
+            get {
+                return parentEntity.Project.Name;
             }
         }
 

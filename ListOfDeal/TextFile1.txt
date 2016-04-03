@@ -1,5 +1,11 @@
 ﻿1 custom Action - ok
 1. bind to master view from detail +
 2 action order id (change by drag drop)+
-3 add new trigger, status
-4. is action need a separate status?
+3 add new trigger, status +
+4. is action need a separate status? (No. Trigger is enough)+
+5. change Action.IsActive automatically+
+6. Create action GridControl+
+7.1 group row names (trigger, delegated)
+7. Color both gridcontrols
+8. Validate Delegated
+9. Validate Scheduled

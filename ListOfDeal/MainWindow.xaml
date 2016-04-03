@@ -135,8 +135,21 @@
                     </dxg:GridControl>
                 </dxlc:LayoutGroup>
             </dx:DXTabItem>
-            <dx:DXTabItem Header="Projects">
-
+            <dx:DXTabItem Header="Waited">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="23"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button Content="Get Data" Command="{Binding ProvideActiveActionsCommand}"/>
+                    <local:ActiveActionsView Tag="WaitedActionsGrid" Grid.Row="1"/>
+                </Grid>
+            </dx:DXTabItem>
+            <dx:DXTabItem Header="Scheduled">
+                <local:ActiveActionsView Tag="ScheduledActionsGrid" />
+            </dx:DXTabItem>
+            <dx:DXTabItem Header="Delegated">
+                <local:ActiveActionsView Tag="DelegatedActionsGrid" />
             </dx:DXTabItem>
         </dx:DXTabControl>
     </Grid>

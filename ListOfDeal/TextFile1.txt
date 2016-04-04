@@ -6,7 +6,7 @@
 5. change Action.IsActive automatically+
 6. Create action GridControl+
 7.1 group row names (trigger, delegated)+
-7.2 comment multiline
+7.2 comment multiline+
 7. Color both gridcontrols
 8. Validate Delegated
 9. Validate Scheduled

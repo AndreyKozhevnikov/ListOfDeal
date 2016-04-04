@@ -52,7 +52,7 @@
                                 <dxe:CheckEdit EditValue="{Binding CurrentAction.IsActive}"/>
                             </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="Comment:">
-                                <dxe:TextEdit EditValue="{Binding CurrentAction.Comment}"/>
+                                <dxe:TextEdit EditValue="{Binding CurrentAction.Comment}" />
                             </dxlc:LayoutItem>
                             <Button Content="Add action" Command="{Binding AddActionCommand}"/>
                         </dxlc:LayoutGroup>
@@ -69,7 +69,11 @@
                                     <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="Comment"/>
+                            <dxg:GridColumn FieldName="Comment">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:MemoEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
                             <dxg:GridColumn FieldName="StatusId">
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" />
@@ -124,7 +128,11 @@
                                                 </dxg:GridColumn.CellTemplate>
                                             </dxg:GridColumn>
                                             <dxg:GridColumn FieldName="IsActive"/>
-                                            <dxg:GridColumn FieldName="Comment"/>
+                                            <dxg:GridColumn FieldName="Comment">
+                                                <dxg:GridColumn.EditSettings>
+                                                    <dxe:MemoEditSettings />
+                                                </dxg:GridColumn.EditSettings>
+                                            </dxg:GridColumn>
                                             <dxg:GridColumn FieldName="OrderNumber"/>
                                         </dxg:GridControl.Columns>
                                     </dxg:GridControl>
@@ -165,7 +173,11 @@
                                 </dxg:GridColumn.GroupValueTemplate>
                             </dxg:GridColumn>
                             <dxg:GridColumn FieldName="DateCreated" ReadOnly="True"/>
-                            <dxg:GridColumn FieldName="Comment"/>
+                            <dxg:GridColumn FieldName="Comment">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:MemoEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
                             <dxg:GridColumn FieldName="ProjectName" />
                         </dxg:GridControl.Columns>
                     </dxg:GridControl>
@@ -187,7 +199,11 @@
                                 <dxe:DateEditSettings/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="Comment"/>
+                        <dxg:GridColumn FieldName="Comment">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:MemoEditSettings />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
                         <dxg:GridColumn FieldName="ProjectName" />
                     </dxg:GridControl.Columns>
                 </dxg:GridControl>
@@ -228,7 +244,11 @@
                                                                                ValueMember="Id" DisplayMember="Name" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="Comment"/>
+                        <dxg:GridColumn FieldName="Comment">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:MemoEditSettings />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
                         <dxg:GridColumn FieldName="ProjectName" />
                     </dxg:GridControl.Columns>
                 </dxg:GridControl>

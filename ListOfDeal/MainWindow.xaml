@@ -21,7 +21,11 @@
                                 <dxe:TextEdit EditValue="{Binding CurrentProject.Name}"/>
                             </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="Type:">
-                                <dxe:ComboBoxEdit ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.TypeId}"/>
+                                <dxe:ComboBoxEdit ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.TypeId}">
+                                    <dxe:ComboBoxEdit.Buttons>
+                                        <dxe:ButtonInfo Content="+" Command="{Binding OpenNewInfoCommand}" CommandParameter="ProjectType"/>
+                                    </dxe:ComboBoxEdit.Buttons>
+                                </dxe:ComboBoxEdit>
                             </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="Status:">
                                 <dxe:ComboBoxEdit ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.StatusId}"/>
@@ -37,7 +41,11 @@
                                 <dxe:TextEdit EditValue="{Binding CurrentAction.Name}"/>
                             </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="Trigger:">
-                                <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.TriggerId}" ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name"/>
+                                <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.TriggerId}" ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name">
+                                    <dxe:ComboBoxEdit.Buttons>
+                                        <dxe:ButtonInfo Content="+" Command="{Binding OpenNewInfoCommand}" CommandParameter="Trigger"/>
+                                    </dxe:ComboBoxEdit.Buttons>
+                                </dxe:ComboBoxEdit>
                             </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="Status:">
                                 <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.StatusId}" ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
@@ -89,9 +97,7 @@
                                             <dxg:GridColumn FieldName="TriggerId">
                                                 <dxg:GridColumn.EditSettings>
                                                     <dxe:ComboBoxEditSettings ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name">
-                                                        <dxe:ComboBoxEditSettings.Buttons>
-                                                            <dxe:ButtonInfo Content="+" Command="{Binding OpenNewInfoCommand}" CommandParameter="Trigger"/>
-                                                        </dxe:ComboBoxEditSettings.Buttons>
+
                                                     </dxe:ComboBoxEditSettings>
                                                 </dxg:GridColumn.EditSettings>
                                             </dxg:GridColumn>
@@ -192,7 +198,7 @@
                     </dxmvvm:Interaction.Behaviors>
                     <dxg:GridControl.Columns>
                         <dxg:GridColumn FieldName="Name"/>
-                       
+
                         <dxg:GridColumn FieldName="DateCreated" ReadOnly="True"/>
                         <dxg:GridColumn FieldName="ScheduledTime">
                             <dxg:GridColumn.EditSettings>
@@ -217,7 +223,7 @@
                     </dxmvvm:Interaction.Behaviors>
                     <dxg:GridControl.Columns>
                         <dxg:GridColumn FieldName="Name"/>
-                     
+
                         <dxg:GridColumn FieldName="DateCreated" ReadOnly="True"/>
                         <dxg:GridColumn FieldName="DelegatedTo" GroupIndex="0">
                             <dxg:GridColumn.CellTemplate>

@@ -98,6 +98,17 @@ namespace ListOfDeal {
                         ActionTriggers.Add(trig);
                     }
                     break;
+                case "ProjectType":
+                    ProjectType tp = generalEntity.ProjectTypes.Create();
+                    wnd.DataContext = tp;
+                    wnd.ShowDialog();
+                    if (!string.IsNullOrEmpty(tp.Name)) {
+                        generalEntity.ProjectTypes.Add(tp);
+                        generalEntity.SaveChanges();
+                        ProjectTypes.Add(tp);
+                    }
+                    break;
+
             }
         }
         private void ProvideActiveActions() {

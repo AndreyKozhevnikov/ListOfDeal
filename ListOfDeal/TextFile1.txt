@@ -7,6 +7,8 @@
 6. Create action GridControl+
 7.1 group row names (trigger, delegated)+
 7.2 comment multiline+
+7.3 add new project type
 7. Color both gridcontrols
+8.1 Move from action to project button
 8. Validate Delegated
 9. Validate Scheduled

@@ -12,5 +12,6 @@
         <dxlc:LayoutItem Label="Name">
             <dxe:TextEdit EditValue="{Binding Name,Mode=TwoWay}"/>
         </dxlc:LayoutItem>
+        <Button Content="Ok" Click="Button_Click"/>
     </dxlc:LayoutGroup>
 </dx:DXWindow>

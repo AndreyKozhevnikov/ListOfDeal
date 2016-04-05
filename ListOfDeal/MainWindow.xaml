@@ -141,11 +141,20 @@
                                             </dxg:GridColumn>
                                             <dxg:GridColumn FieldName="OrderNumber"/>
                                         </dxg:GridControl.Columns>
+                                        <dxg:GridControl.View>
+                                            <dxg:TableView ShowGroupPanel="False"/>
+                                        </dxg:GridControl.View>
                                     </dxg:GridControl>
                                 </dxg:DataControlDetailDescriptor.DataControl>
                             </dxg:DataControlDetailDescriptor>
                         </dxg:GridControl.DetailDescriptor>
-
+                        <dxg:GridControl.View>
+                            <dxg:TableView >
+                                <dxg:TableView.FormatConditions>
+                                    <dxg:FormatCondition ApplyToRow="True" FieldName="StatusId" PredefinedFormatName="GreenFillWithDarkGreenText" Value1="1" ValueRule="Equal"/>
+                                </dxg:TableView.FormatConditions>
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
                     </dxg:GridControl>
                 </dxlc:LayoutGroup>
             </dx:DXTabItem>

@@ -7,7 +7,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:local="clr-namespace:ListOfDeal"
-        Title="MainWindow" Height="700" Width="1200">
+        Title="MainWindow" Height="700" Width="1200"
+             SnapsToDevicePixels="True" UseLayoutRounding="True"
+             >
     <Window.Resources>
         <dxmvvm:ObjectToBooleanConverter x:Key="objToBoolConverter"/>
     </Window.Resources>
@@ -73,7 +75,7 @@
                             <dxmvvm:EventToCommand  Command="{Binding OpenEditProjectCommand}" EventName="MouseDoubleClick"/>
                         </dxmvvm:Interaction.Behaviors>
                         <dxg:GridControl.Columns>
-                            <dxg:GridColumn FieldName="Name"/>
+                            <dxg:GridColumn FieldName="Name" Width="350"/>
                             <dxg:GridColumn FieldName="DateCreated"/>
                             <dxg:GridColumn FieldName="TypeId">
                                 <dxg:GridColumn.EditSettings>
@@ -97,7 +99,7 @@
                                 <dxg:DataControlDetailDescriptor.DataControl>
                                     <dxg:GridControl >
                                         <dxg:GridControl.Columns>
-                                            <dxg:GridColumn FieldName="Name"/>
+                                            <dxg:GridColumn FieldName="Name" Width="200"/>
                                             <dxg:GridColumn FieldName="TriggerId">
                                                 <dxg:GridColumn.EditSettings>
                                                     <dxe:ComboBoxEditSettings ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name">
@@ -143,7 +145,6 @@
                                                     <dxe:MemoEditSettings />
                                                 </dxg:GridColumn.EditSettings>
                                             </dxg:GridColumn>
-                                            <dxg:GridColumn FieldName="OrderNumber"/>
                                         </dxg:GridControl.Columns>
                                         <dxg:GridControl.View>
                                             <dxg:TableView ShowGroupPanel="False"/>

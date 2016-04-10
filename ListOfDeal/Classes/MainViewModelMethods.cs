@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,8 +43,8 @@ namespace ListOfDeal {
 
         private void CreateNewProject() {
             CurrentProject = new MyProject();
-            CurrentProject.TypeId = 1;
-            CurrentProject.StatusId = 1;
+            CurrentProject.TypeId = 11;
+            CurrentProject.StatusId = 2;
         }
         private void CreateNewAction() {
             CurrentAction = new MyAction();
@@ -59,14 +60,14 @@ namespace ListOfDeal {
             CurrentProject.DateCreated = DateTime.Now;
             CurrentProject.Save();
             Projects.Add(CurrentProject);
-            generalEntity.SaveChanges();
+            SaveChanges();
             CreateNewProject();
         }
         private void AddAction() {
             CurrentAction.DateCreated = DateTime.Now;
             SelectedProject.AddAction(CurrentAction);
 
-            generalEntity.SaveChanges();
+            SaveChanges();
             SelectedProject.RaisePropertyChanged("ActionsList");
             CreateNewAction();
         }
@@ -78,7 +79,7 @@ namespace ListOfDeal {
             //a.TriggerId = 1;
             //Projects[0].Actions.Add(a);
             var v = generalEntity.Projects.ToList();
-            generalEntity.SaveChanges();
+            SaveChanges();
         }
         private void OpenEditProject() {
             EditProject ed = new EditProject();
@@ -94,7 +95,7 @@ namespace ListOfDeal {
                     wnd.ShowDialog();
                     if (!string.IsNullOrEmpty(trig.Name)) {
                         generalEntity.ActionTriggers.Add(trig);
-                        generalEntity.SaveChanges();
+                        SaveChanges();
                         ActionTriggers.Add(trig);
                     }
                     break;
@@ -104,7 +105,7 @@ namespace ListOfDeal {
                     wnd.ShowDialog();
                     if (!string.IsNullOrEmpty(tp.Name)) {
                         generalEntity.ProjectTypes.Add(tp);
-                        generalEntity.SaveChanges();
+                        SaveChanges();
                         ProjectTypes.Add(tp);
                     }
                     break;
@@ -137,6 +138,26 @@ namespace ListOfDeal {
             else
                 e.Visible = false;
             e.Handled = true;
+        }
+
+        public static void SaveChanges() {
+            try {
+                // Your code...
+                // Could also be before try if you know the exception occurs in SaveChanges
+
+                generalEntity.SaveChanges();
+            }
+            catch (DbEntityValidationException e) {
+                foreach (var eve in e.EntityValidationErrors) {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors) {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+         
+            }
         }
     }
 }

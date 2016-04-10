@@ -60,6 +60,7 @@ namespace ListOfDeal {
             CurrentProject.DateCreated = DateTime.Now;
             CurrentProject.Save();
             Projects.Add(CurrentProject);
+            SelectedProject = CurrentProject;
             SaveChanges();
             CreateNewProject();
         }

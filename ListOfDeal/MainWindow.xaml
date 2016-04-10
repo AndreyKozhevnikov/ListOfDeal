@@ -67,7 +67,7 @@
                             <dxlc:LayoutItem Label="Comment:">
                                 <dxe:TextEdit EditValue="{Binding CurrentAction.Comment}" />
                             </dxlc:LayoutItem>
-                            <Button Content="Add action" Command="{Binding AddActionCommand}"/>
+                            <Button Content="{Binding SelectedProject.Name,StringFormat=Now {0}}" Command="{Binding AddActionCommand}"/>
                         </dxlc:LayoutGroup>
                     </dxlc:LayoutGroup>
                     <dxg:GridControl ItemsSource="{Binding Projects}" CurrentItem="{Binding SelectedProject,Mode=TwoWay}" SelectionMode="Row">
@@ -75,7 +75,7 @@
                             <dxmvvm:EventToCommand  Command="{Binding OpenEditProjectCommand}" EventName="MouseDoubleClick"/>
                         </dxmvvm:Interaction.Behaviors>
                         <dxg:GridControl.Columns>
-                            <dxg:GridColumn FieldName="Name" Width="350"/>
+                            <dxg:GridColumn FieldName="Name" Width="490"/>
                             <dxg:GridColumn FieldName="DateCreated"/>
                             <dxg:GridColumn FieldName="TypeId">
                                 <dxg:GridColumn.EditSettings>
@@ -99,7 +99,7 @@
                                 <dxg:DataControlDetailDescriptor.DataControl>
                                     <dxg:GridControl >
                                         <dxg:GridControl.Columns>
-                                            <dxg:GridColumn FieldName="Name" Width="200"/>
+                                            <dxg:GridColumn FieldName="Name" Width="325"/>
                                             <dxg:GridColumn FieldName="TriggerId">
                                                 <dxg:GridColumn.EditSettings>
                                                     <dxe:ComboBoxEditSettings ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name">
@@ -139,7 +139,7 @@
                                                     </DataTemplate>
                                                 </dxg:GridColumn.CellTemplate>
                                             </dxg:GridColumn>
-                                            <dxg:GridColumn FieldName="IsActive"/>
+                                            <dxg:GridColumn FieldName="IsActive" Width="70"/>
                                             <dxg:GridColumn FieldName="Comment">
                                                 <dxg:GridColumn.EditSettings>
                                                     <dxe:MemoEditSettings />

@@ -38,6 +38,7 @@ namespace ListOfDeal {
             act.PropertyChanged += act_PropertyChanged;
             Actions.Add(act);
             parentEntity.Actions.Add(act.parentEntity);
+            RaisePropertyChanged("Actions");
         }
 
         void act_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
@@ -86,6 +87,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.TypeId = value;
+                RaisePropertyChanged("TypeId");
             }
         }
         public int StatusId {
@@ -94,6 +96,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.StatusId = value;
+                RaisePropertyChanged("StatusId");
             }
         }
         public string Comment {

@@ -104,7 +104,14 @@ namespace ListOfDeal {
                 parentEntity.Comment = value;
             }
         }
-
+        public string DesiredResult {
+            get {
+                return parentEntity.DesiredResult;
+            }
+            set {
+                parentEntity.DesiredResult = value;
+            }
+        }
         public ObservableCollection<MyAction> Actions { get; set; }
     }
 }

@@ -33,6 +33,9 @@
                             <dxlc:LayoutItem Label="Comment:">
                                 <dxe:TextEdit EditValue="{Binding CurrentProject.Comment}"/>
                             </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="DesiredResult:">
+                                <dxe:TextEdit EditValue="{Binding CurrentProject.DesiredResult}"/>
+                            </dxlc:LayoutItem>
                             <Button Content="Add project" Command="{Binding AddNewProjectCommand}" Height="20"/>
                             <Button Content="test" Click="Button_Click" Height="20"/>
                         </dxlc:LayoutGroup>
@@ -82,6 +85,7 @@
                                     <dxe:MemoEditSettings />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="DesiredResult"/>
                             <dxg:GridColumn FieldName="StatusId">
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" />

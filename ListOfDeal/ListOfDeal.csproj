@@ -125,6 +125,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Classes\CustomDisplayTextConverter.cs" />
+    <Compile Include="Classes\ExpandButtonVisibilityConverter.cs" />
     <Compile Include="Classes\MainViewModelMethods.cs" />
     <Compile Include="Classes\MyAction.cs" />
     <Compile Include="Classes\ListOfDealBaseEntities.cs" />

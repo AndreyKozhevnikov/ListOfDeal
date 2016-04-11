@@ -89,9 +89,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.TypeId = value;
-                if (value == 3) {
-                    this.parentEntity.CompleteTime = DateTime.Now;
-                }
+              
                 RaisePropertyChanged("TypeId");
             }
         }
@@ -101,6 +99,9 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.StatusId = value;
+                if (value == 3) {
+                    this.parentEntity.CompleteTime = DateTime.Now;
+                }
                 RaisePropertyChanged("StatusId");
             }
         }

@@ -23,9 +23,9 @@ namespace ListOfDeal
         public string Comment { get; set; }
         public int StatusId { get; set; }
         public Nullable<int> TriggerId { get; set; }
-        public Nullable<System.DateTime> CompletedTime { get; set; }
         public bool IsActive { get; set; }
         public int OrderNumber { get; set; }
+        public Nullable<System.DateTime> CompleteTime { get; set; }
     
         public virtual DelegatePerson DelegatePerson { get; set; }
         public virtual Project Project { get; set; }

@@ -118,7 +118,7 @@
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
                             <dxg:GridColumn FieldName="ProjectName" />
-                            <dxg:GridColumn FieldName="ProjectType" GroupIndex="0">
+                            <dxg:GridColumn FieldName="ProjectType" GroupIndex="1">
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name"/>
                                 </dxg:GridColumn.EditSettings>

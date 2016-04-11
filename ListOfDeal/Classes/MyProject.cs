@@ -12,6 +12,8 @@ namespace ListOfDeal {
             parentEntity = _p;
             InitiateProject();
         }
+
+  
         public MyProject() {
             parentEntity = MainViewModel.generalEntity.Projects.Create();
             InitiateProject();
@@ -87,6 +89,9 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.TypeId = value;
+                if (value == 3) {
+                    this.parentEntity.CompleteTime = DateTime.Now;
+                }
                 RaisePropertyChanged("TypeId");
             }
         }

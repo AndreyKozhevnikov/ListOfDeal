@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 using DevExpress.Xpf.Grid;
 
 namespace ListOfDeal {
-    public partial class MainViewModel :MyBindableBase {
+    public partial class MainViewModel :MyBindableBase, ISupportServices {
 
         public static ListOfDealBaseEntities generalEntity;
         ICommand _addNewProjectCommand;
@@ -20,8 +20,9 @@ namespace ListOfDeal {
         ICommand _openNewInfoCommand;
         ICommand _provideActiveActionsCommand;
         ICommand _customRowFilterCommand;
+        ICommand _exportWaitedGridCommand;
 
-     
+  
 
 
         MyProject _currentProject;
@@ -71,7 +72,15 @@ namespace ListOfDeal {
                     _customRowFilterCommand = new DelegateCommand<RowFilterEventArgs>(CustomRowFilter);
                 return _customRowFilterCommand; }
         }
+        public ICommand ExportWaitedGridCommand {
+            get {
+                if (_exportWaitedGridCommand == null)
+                    _exportWaitedGridCommand = new DelegateCommand(ExportWaitedGrid);
+                return _exportWaitedGridCommand; }
+           
+        }
 
+   
     
     
     
@@ -115,6 +124,17 @@ namespace ListOfDeal {
             }
         }
 
+
+        IServiceContainer serviceContainer = null;
+        protected IServiceContainer ServiceContainer {
+            get {
+                if (serviceContainer == null)
+                    serviceContainer = new ServiceContainer(this);
+                return serviceContainer;
+            }
+        }
+        IServiceContainer ISupportServices.ServiceContainer { get { return ServiceContainer; } }
+        IExportToExcelService ExportToExcelService { get { return ServiceContainer.GetService<IExportToExcelService>(); } }
     }
 
 

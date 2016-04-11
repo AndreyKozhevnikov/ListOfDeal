@@ -16,6 +16,7 @@
     </Window.Resources>
     <Grid>
         <dx:DXTabControl>
+
             <dx:DXTabItem Header="Enter new project">
                 <dxlc:LayoutGroup Orientation="Vertical">
                     <dxlc:LayoutGroup>
@@ -81,14 +82,17 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="23"/>
+                        <RowDefinition Height="23"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Button Content="Get Data" Command="{Binding ProvideActiveActionsCommand}"/>
-                    <dxg:GridControl Grid.Row="1" Tag="WaitedActionsGrid"
-                                     ItemsSource="{Binding ActiveActions}"
+                    <Button Content="Export" Command="{Binding ExportWaitedGridCommand}" Grid.Row="1"/>
+                    <dxg:GridControl Grid.Row="2" Tag="WaitedActionsGrid" Name="WaitedActionsGrid"
+                                     ItemsSource="{Binding ActiveActions}" AutoExpandAllGroups="True"
                                      >
                         <dxmvvm:Interaction.Behaviors>
                             <dxmvvm:EventToCommand EventName="CustomRowFilter" PassEventArgsToCommand="True" Command="{Binding CustomRowFilterCommand}"/>
+                            <local:ExportToExcelService ExportTable="{Binding Path=View,ElementName=WaitedActionsGrid}"/>
                         </dxmvvm:Interaction.Behaviors>
                         <dxg:GridControl.Columns>
                             <dxg:GridColumn FieldName="Name" Width="550"/>

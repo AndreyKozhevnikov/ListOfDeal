@@ -141,6 +141,11 @@ namespace ListOfDeal {
             e.Handled = true;
         }
 
+        private void ExportWaitedGrid() {
+            ExportToExcelService.Export();
+        }
+     
+
         public static void SaveChanges() {
             try {
                 // Your code...

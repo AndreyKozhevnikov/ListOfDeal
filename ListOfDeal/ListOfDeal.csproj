@@ -95,6 +95,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\Services.cs" />
     <Compile Include="Views\ProjectsView.xaml.cs">
       <DependentUpon>ProjectsView.xaml</DependentUpon>
     </Compile>
@@ -127,7 +128,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Classes\CustomDisplayTextConverter.cs" />
+    <Compile Include="Classes\Converters.cs" />
     <Compile Include="Classes\ExpandButtonVisibilityConverter.cs" />
     <Compile Include="Classes\MainViewModelMethods.cs" />
     <Compile Include="Classes\MyAction.cs" />

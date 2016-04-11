@@ -26,7 +26,7 @@ namespace ListOfDeal {
 
         
         public void Export() {
-            ExportTable.ExportToXlsx(@"f:\dropbox\comon\Deals.xlsx");
+            ExportTable.ExportToXlsx(@"f:\dropbox\common\Deals.xlsx");
         }
     }
 }

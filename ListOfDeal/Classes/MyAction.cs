@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ListOfDeal {
+    [DebuggerDisplay("Name = {Name}")]
     public class MyAction:MyBindableBase {
       public  Action parentEntity;
         public MyAction(Action _parentEntity) {
@@ -24,6 +26,9 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.StatusId = value;
+                if (value == 4) {
+                    this.parentEntity.CompleteTime = DateTime.Now;
+                }
                 RaisePropertyChanged("StatusId");
             }
         }

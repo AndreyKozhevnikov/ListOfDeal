@@ -142,7 +142,7 @@
                         <dxg:GridColumn FieldName="Name"/>
 
                         <dxg:GridColumn FieldName="DateCreated" ReadOnly="True"/>
-                        <dxg:GridColumn FieldName="ScheduledTime">
+                        <dxg:GridColumn FieldName="ScheduledTime" GroupIndex="0">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:DateEditSettings/>
                             </dxg:GridColumn.EditSettings>

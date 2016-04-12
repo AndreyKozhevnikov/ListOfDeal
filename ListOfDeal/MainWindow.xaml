@@ -137,6 +137,7 @@
             <dx:DXTabItem Header="Scheduled">
                 <dxg:GridControl Grid.Row="1" Tag="ScheduledActionsGrid"
                                      ItemsSource="{Binding ActiveActions}"
+                                  AutoExpandAllGroups="True"
                                      >
                     <dxmvvm:Interaction.Behaviors>
                         <dxmvvm:EventToCommand EventName="CustomRowFilter" PassEventArgsToCommand="True" Command="{Binding CustomRowFilterCommand}"/>
@@ -162,6 +163,7 @@
             <dx:DXTabItem Header="Delegated">
                 <dxg:GridControl Grid.Row="1" Tag="DelegatedActionsGrid"
                                      ItemsSource="{Binding ActiveActions}"
+                                  AutoExpandAllGroups="True"
                                      >
                     <dxmvvm:Interaction.Behaviors>
                         <dxmvvm:EventToCommand EventName="CustomRowFilter" PassEventArgsToCommand="True" Command="{Binding CustomRowFilterCommand}"/>

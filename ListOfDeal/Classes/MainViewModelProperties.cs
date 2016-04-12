@@ -21,8 +21,8 @@ namespace ListOfDeal {
         ICommand _provideActiveActionsCommand;
         ICommand _customRowFilterCommand;
         ICommand _exportWaitedGridCommand;
+        ICommand _saveChangesCommand;
 
-  
 
 
         MyProject _currentProject;
@@ -80,7 +80,14 @@ namespace ListOfDeal {
            
         }
 
-   
+
+        public ICommand SaveChangesCommand {
+            get {
+                if (_saveChangesCommand == null)
+                    _saveChangesCommand = new DelegateCommand(SaveChanges);
+                return _saveChangesCommand; }
+        }
+  
     
     
     

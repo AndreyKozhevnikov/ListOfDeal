@@ -44,7 +44,7 @@
                                 <dxe:CheckEdit EditValue="{Binding CurrentProject.IsSimpleProject}" />
                             </dxlc:LayoutItem>
                             <Button Content="Add project" Command="{Binding AddNewProjectCommand}" Height="20"/>
-                            <Button Content="test" Click="Button_Click" Height="20"/>
+                            <Button Content="SaveChanges"  Height="20" Command="{Binding SaveChangesCommand}"/>
                         </dxlc:LayoutGroup>
                         <dxlc:LayoutGroup Orientation="Vertical" x:Name="ActionGroup" IsEnabled="{Binding SelectedProject,Converter={StaticResource objToBoolConverter}}">
                             <dxlc:LayoutItem Label="Name:">

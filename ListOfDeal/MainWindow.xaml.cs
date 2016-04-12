@@ -23,8 +23,9 @@ namespace ListOfDeal {
     /// </summary>
     public partial class MainWindow : DXWindow {
         public MainWindow() {
-            InitializeComponent();
+          
             this.DataContext = new MainViewModel();
+            InitializeComponent();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {

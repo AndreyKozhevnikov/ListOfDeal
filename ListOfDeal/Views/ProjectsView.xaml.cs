@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.Xpf.Grid;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,10 @@ namespace ListOfDeal {
     public partial class ProjectsView :UserControl {
         public ProjectsView() {
             InitializeComponent();
+        }
+
+        private void GridControl_Loaded(object sender, RoutedEventArgs e) {
+            (sender as GridControl).RefreshData();
         }
     }
 }

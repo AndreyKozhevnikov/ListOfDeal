@@ -14,15 +14,16 @@ namespace ListOfDeal {
         }
         void InitializeData() {
             ConnectToDataBase();
-            Projects = new ObservableCollection<MyProject>();
-            foreach (var p in generalEntity.Projects) {
-                Projects.Add(new MyProject(p));
-            }
+     
             ProjectTypes = new ObservableCollection<ProjectType>(generalEntity.ProjectTypes);
             ProjectStatuses = new ObservableCollection<ProjectStatus>(generalEntity.ProjectStatuses);
             ActionTriggers = new ObservableCollection<ActionTrigger>(generalEntity.ActionTriggers);
             ActionStatuses = new ObservableCollection<ActionStatus>(generalEntity.ActionStatuses);
             DelegatePersons = new ObservableCollection<DelegatePerson>(generalEntity.DelegatePersons);
+            Projects = new ObservableCollection<MyProject>();
+            foreach (var p in generalEntity.Projects) {
+                Projects.Add(new MyProject(p));
+            }
             CreateNewProject();
             CreateNewAction();
 

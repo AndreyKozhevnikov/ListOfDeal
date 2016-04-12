@@ -1,4 +1,5 @@
-﻿using DevExpress.Xpf.Grid;
+﻿using DevExpress.Data;
+using DevExpress.Xpf.Grid;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +16,7 @@ namespace ListOfDeal {
         }
         void InitializeData() {
             ConnectToDataBase();
-     
+
             ProjectTypes = new ObservableCollection<ProjectType>(generalEntity.ProjectTypes);
             ProjectStatuses = new ObservableCollection<ProjectStatus>(generalEntity.ProjectStatuses);
             ActionTriggers = new ObservableCollection<ActionTrigger>(generalEntity.ActionTriggers);
@@ -69,7 +70,7 @@ namespace ListOfDeal {
                 CurrentProject.AddAction(act);
             }
 
-           
+
             Projects.Add(CurrentProject);
             SelectedProject = CurrentProject;
             SaveChanges();
@@ -158,7 +159,7 @@ namespace ListOfDeal {
         private void ExportWaitedGrid() {
             ExportToExcelService.Export();
         }
-     
+
 
         public static void SaveChanges() {
             try {
@@ -176,7 +177,7 @@ namespace ListOfDeal {
                             ve.PropertyName, ve.ErrorMessage);
                     }
                 }
-         
+
             }
         }
         private void PreviewKeyProjects(KeyEventArgs e) {
@@ -192,8 +193,13 @@ namespace ListOfDeal {
         }
 
         private static bool IfCtrlEnterIsPressed(KeyEventArgs e) {
-           return (e.Key == Key.Enter && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) ;
+            return (e.Key == Key.Enter && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)));
         }
-
+        private void CustomSummary(CustomSummaryEventArgs obj) {
+            if (obj.SummaryProcess == CustomSummaryProcess.Finalize && Projects != null) {
+                var v = Projects.SelectMany(x => x.Actions).ToList();
+                obj.TotalValue =string.Format("Actions count={0}", v.Count);
+            }
+        }
     }
 }

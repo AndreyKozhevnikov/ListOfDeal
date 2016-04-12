@@ -13,6 +13,9 @@
     <dxg:GridControl ItemsSource="{Binding Projects}" CurrentItem="{Binding SelectedProject, Mode=TwoWay}" SelectionMode="Row"
                      Loaded="GridControl_Loaded"
                      >
+        <dxmvvm:Interaction.Behaviors>
+            <dxmvvm:EventToCommand EventName="CustomSummary" Command="{Binding CustomSummaryCommand}" PassEventArgsToCommand="True"/>
+        </dxmvvm:Interaction.Behaviors>
         <dxg:GridControl.Columns>
             <dxg:GridColumn FieldName="Name" Width="490"/>
             <dxg:GridColumn FieldName="DateCreated"/>
@@ -113,9 +116,7 @@
             </dxg:DataControlDetailDescriptor>
         </dxg:GridControl.DetailDescriptor>
         <dxg:GridControl.View>
-            <dxg:TableView 
-				ShowGroupedColumns="True"
-				>
+            <dxg:TableView 	ShowGroupedColumns="True" ShowFixedTotalSummary="True">
                 <dxg:TableView.FormatConditions>
                     <dxg:FormatCondition ApplyToRow="True" FieldName="StatusId" PredefinedFormatName="GreenFillWithDarkGreenText" Value1="1" ValueRule="Equal"/>
                     <dxg:FormatCondition FieldName="StatusId" Value1="{x:Null}" ValueRule="Expression" ApplyToRow="True" Expression="[StatusId] = '3'">
@@ -124,5 +125,9 @@
                 </dxg:TableView.FormatConditions>
             </dxg:TableView>
         </dxg:GridControl.View>
+        <dxg:GridControl.TotalSummary>
+            <dxg:GridSummaryItem SummaryType="Count" FieldName="Name" Alignment="Left"/>
+            <dxg:GridSummaryItem SummaryType="Custom" FieldName="TypeId" Alignment="Right"/>
+        </dxg:GridControl.TotalSummary>
     </dxg:GridControl>
 </UserControl>

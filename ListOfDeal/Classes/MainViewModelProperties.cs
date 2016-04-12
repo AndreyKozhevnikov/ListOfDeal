@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using DevExpress.Xpf.Grid;
+using DevExpress.Data;
 
 namespace ListOfDeal {
     public partial class MainViewModel :MyBindableBase, ISupportServices {
@@ -24,7 +25,18 @@ namespace ListOfDeal {
         ICommand _saveChangesCommand;
         ICommand _previewKeyProjectsCommand;
         ICommand _previewKeyActionsCommand;
+        ICommand _customSummaryCommand;
 
+        public ICommand CustomSummaryCommand {
+            get {
+                if (_customSummaryCommand == null)
+                    _customSummaryCommand = new DelegateCommand<CustomSummaryEventArgs>(CustomSummary);
+                return _customSummaryCommand;
+            
+            }
+        }
+
+    
 
         MyProject _currentProject;
         MyAction _currentAction;

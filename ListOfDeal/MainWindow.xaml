@@ -40,6 +40,9 @@
                             <dxlc:LayoutItem Label="DesiredResult:">
                                 <dxe:TextEdit EditValue="{Binding CurrentProject.DesiredResult}"/>
                             </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="IsSimpleProject">
+                                <dxe:CheckEdit EditValue="{Binding CurrentProject.IsSimpleProject}" />
+                            </dxlc:LayoutItem>
                             <Button Content="Add project" Command="{Binding AddNewProjectCommand}" Height="20"/>
                             <Button Content="test" Click="Button_Click" Height="20"/>
                         </dxlc:LayoutGroup>

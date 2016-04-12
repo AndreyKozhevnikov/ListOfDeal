@@ -60,6 +60,15 @@ namespace ListOfDeal {
 
             CurrentProject.DateCreated = DateTime.Now;
             CurrentProject.Save();
+            if (CurrentProject.IsSimpleProject) {
+                MyAction act = new MyAction();
+                act.Name = CurrentProject.Name;
+                act.StatusId = 1;
+                act.IsActive = true;
+                CurrentProject.AddAction(act);
+            }
+
+           
             Projects.Add(CurrentProject);
             SelectedProject = CurrentProject;
             SaveChanges();

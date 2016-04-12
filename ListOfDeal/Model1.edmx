@@ -55,6 +55,7 @@
           <Property Name="Comment" Type="varchar(max)" />
           <Property Name="CompleteTime" Type="datetime" />
           <Property Name="DesiredResult" Type="varchar(max)" />
+          <Property Name="IsSimpleProject" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ProjectStatuses">
           <Key>
@@ -239,6 +240,7 @@
           <NavigationProperty Name="ProjectStatus" Relationship="ListOfDealBaseModel.FK_Projects_ProjectStatuses" FromRole="Project" ToRole="ProjectStatus" />
           <Property Name="DesiredResult" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CompleteTime" Type="DateTime" Precision="3" />
+          <Property Name="IsSimpleProject" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_Actions_DelegatePersons">
           <End Role="DelegatePersons" Type="Self.DelegatePerson" Multiplicity="0..1" />
@@ -412,6 +414,7 @@
           <EntitySetMapping Name="Projects">
             <EntityTypeMapping TypeName="ListOfDealBaseModel.Project">
               <MappingFragment StoreEntitySet="Projects">
+                <ScalarProperty Name="IsSimpleProject" ColumnName="IsSimpleProject" />
                 <ScalarProperty Name="CompleteTime" ColumnName="CompleteTime" />
                 <ScalarProperty Name="DesiredResult" ColumnName="DesiredResult" />
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />

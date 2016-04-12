@@ -35,6 +35,7 @@
                     <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" />
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
+            <dxg:GridColumn FieldName="IsSimpleProject"/>
         </dxg:GridControl.Columns>
         <dxg:GridControl.DetailDescriptor>
             <dxg:DataControlDetailDescriptor ItemsSourcePath="Actions">

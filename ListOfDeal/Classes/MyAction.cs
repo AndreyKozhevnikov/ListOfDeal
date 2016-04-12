@@ -11,13 +11,12 @@ namespace ListOfDeal {
       public  Action parentEntity;
         public MyAction(Action _parentEntity) {
             parentEntity = _parentEntity;
-            TestInt = 1;
         }
 
         public MyAction() {
             var v = MainViewModel.generalEntity.Actions.Create();
             parentEntity = v;
-            TestInt = 1;
+            DateCreated = DateTime.Now;
         }
 
         public int StatusId {
@@ -74,7 +73,6 @@ namespace ListOfDeal {
                 parentEntity.ScheduledTime = value;
             }
         }
-        public int TestInt { get; set; }
         public int? DelegatedTo {
             get {
                 return parentEntity.DelegatedTo;

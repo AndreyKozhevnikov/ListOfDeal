@@ -121,6 +121,14 @@ namespace ListOfDeal {
                 parentEntity.DesiredResult = value;
             }
         }
+        public bool IsSimpleProject {
+            get {
+                return parentEntity.IsSimpleProject;
+            }
+            set {
+                parentEntity.IsSimpleProject = value;
+            }
+        }
         public ObservableCollection<MyAction> Actions { get; set; }
     }
 }

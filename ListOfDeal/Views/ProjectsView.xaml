@@ -13,9 +13,6 @@
     <dxg:GridControl ItemsSource="{Binding Projects}" CurrentItem="{Binding SelectedProject, Mode=TwoWay}" SelectionMode="Row"
                      Loaded="GridControl_Loaded"
                      >
-        <dxmvvm:Interaction.Behaviors>
-            <dxmvvm:EventToCommand  Command="{Binding OpenEditProjectCommand}" EventName="MouseDoubleClick"/>
-        </dxmvvm:Interaction.Behaviors>
         <dxg:GridControl.Columns>
             <dxg:GridColumn FieldName="Name" Width="490"/>
             <dxg:GridColumn FieldName="DateCreated"/>

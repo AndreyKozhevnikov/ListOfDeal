@@ -53,6 +53,9 @@ namespace ListOfDeal {
                 if (targetAct != null&& !targetAct.IsActive) {
                     targetAct.IsActive = true;
                 }
+                if (this.IsSimpleProject) {
+                    this.StatusId = 3;
+                }
 
             }
         }

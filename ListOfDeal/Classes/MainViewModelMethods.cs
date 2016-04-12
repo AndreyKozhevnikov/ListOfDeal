@@ -86,13 +86,14 @@ namespace ListOfDeal {
             CreateNewAction();
         }
         internal void Test() {
-            //var a = new MyAction();
-            //a.Name = "testaction";
-            //a.DateCreated = DateTime.Now;
-            //a.StatusId = 1;
-            //a.TriggerId = 1;
-            //Projects[0].Actions.Add(a);
-            var v = generalEntity.Projects.ToList();
+            var v = Projects.Where(x => x.Actions.Count == 0);
+            foreach (MyProject p in v) {
+                MyAction act = new MyAction();
+                act.Name = p.Name;
+                act.StatusId = 1;
+                act.DateCreated = DateTime.Now;
+                p.AddAction(act);
+            }
             SaveChanges();
         }
         private void OpenEditProject() {

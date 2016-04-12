@@ -99,7 +99,7 @@
         <dxg:GridControl.View>
             <dxg:TableView 
 				ShowGroupedColumns="True"
-				IsDetailButtonVisibleBinding="{Binding Row.Actions, Converter={local:ExpandButtonVisibilityConverter}}" >
+				>
                 <dxg:TableView.FormatConditions>
                     <dxg:FormatCondition ApplyToRow="True" FieldName="StatusId" PredefinedFormatName="GreenFillWithDarkGreenText" Value1="1" ValueRule="Equal"/>
                     <dxg:FormatCondition FieldName="StatusId" Value1="{x:Null}" ValueRule="Expression" ApplyToRow="True" Expression="[StatusId] = '3'">

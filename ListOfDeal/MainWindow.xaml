@@ -21,8 +21,11 @@
                 <dxlc:LayoutGroup Orientation="Vertical">
                     <dxlc:LayoutGroup>
                         <dxlc:LayoutGroup Orientation="Vertical" x:Name="ProjectsGroup">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:EventToCommand EventName="PreviewKeyDown" Command="{Binding PreviewKeyProjectsCommand}" PassEventArgsToCommand="True"/>
+                            </dxmvvm:Interaction.Behaviors>
                             <dxlc:LayoutItem Label="Name:">
-                                <dxe:TextEdit EditValue="{Binding CurrentProject.Name}"/>
+                                <dxe:TextEdit EditValue="{Binding CurrentProject.Name,UpdateSourceTrigger=PropertyChanged}"/>
                             </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="Type:">
                                 <dxe:ComboBoxEdit ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.TypeId}">
@@ -47,8 +50,11 @@
                             <Button Content="SaveChanges"  Height="20" Command="{Binding SaveChangesCommand}"/>
                         </dxlc:LayoutGroup>
                         <dxlc:LayoutGroup Orientation="Vertical" x:Name="ActionGroup" IsEnabled="{Binding SelectedProject,Converter={StaticResource objToBoolConverter}}">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:EventToCommand EventName="PreviewKeyDown" Command="{Binding PreviewKeyActionsCommand}" PassEventArgsToCommand="True"/>
+                            </dxmvvm:Interaction.Behaviors>
                             <dxlc:LayoutItem Label="Name:">
-                                <dxe:TextEdit EditValue="{Binding CurrentAction.Name}"/>
+                                <dxe:TextEdit EditValue="{Binding CurrentAction.Name,UpdateSourceTrigger=PropertyChanged}"/>
                             </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="Trigger:">
                                 <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.TriggerId}" ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name">

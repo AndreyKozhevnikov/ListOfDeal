@@ -6,6 +6,7 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ListOfDeal {
     public partial class MainViewModel {
@@ -54,7 +55,7 @@ namespace ListOfDeal {
 
 
         }
-        private void AddNewProject() {
+        private void AddProject() {
             if (string.IsNullOrEmpty(CurrentProject.Name))
                 return;
 
@@ -75,6 +76,8 @@ namespace ListOfDeal {
             CreateNewProject();
         }
         private void AddAction() {
+            if (string.IsNullOrEmpty(CurrentAction.Name))
+                return;
             CurrentAction.DateCreated = DateTime.Now;
             SelectedProject.AddAction(CurrentAction);
 
@@ -175,5 +178,21 @@ namespace ListOfDeal {
          
             }
         }
+        private void PreviewKeyProjects(KeyEventArgs e) {
+
+            if (IfCtrlEnterIsPressed(e)) {
+                AddProject();
+            }
+        }
+        private void PreviewKeyActions(KeyEventArgs e) {
+            if (IfCtrlEnterIsPressed(e)) {
+                AddAction();
+            }
+        }
+
+        private static bool IfCtrlEnterIsPressed(KeyEventArgs e) {
+           return (e.Key == Key.Enter && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) ;
+        }
+
     }
 }

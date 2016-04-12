@@ -22,7 +22,8 @@ namespace ListOfDeal {
         ICommand _customRowFilterCommand;
         ICommand _exportWaitedGridCommand;
         ICommand _saveChangesCommand;
-
+        ICommand _previewKeyProjectsCommand;
+        ICommand _previewKeyActionsCommand;
 
 
         MyProject _currentProject;
@@ -34,7 +35,7 @@ namespace ListOfDeal {
         public ICommand AddNewProjectCommand {
             get {
                 if (_addNewProjectCommand == null)
-                    _addNewProjectCommand = new DelegateCommand(AddNewProject);
+                    _addNewProjectCommand = new DelegateCommand(AddProject);
 
                 return _addNewProjectCommand;
             }
@@ -87,7 +88,20 @@ namespace ListOfDeal {
                     _saveChangesCommand = new DelegateCommand(SaveChanges);
                 return _saveChangesCommand; }
         }
-  
+        public ICommand PreviewKeyProjectsCommand {
+            get {
+                if (_previewKeyProjectsCommand == null)
+                    _previewKeyProjectsCommand = new DelegateCommand<KeyEventArgs>(PreviewKeyProjects);
+                return _previewKeyProjectsCommand;
+            }
+        }
+        public ICommand PreviewKeyActionsCommand {
+            get {
+                if (_previewKeyActionsCommand == null)
+                    _previewKeyActionsCommand = new DelegateCommand<KeyEventArgs>(PreviewKeyActions);
+                return _previewKeyActionsCommand;
+            }
+        }
     
     
     

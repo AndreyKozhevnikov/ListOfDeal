@@ -22,9 +22,17 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn FieldName="Comment">
-                <dxg:GridColumn.EditSettings>
-                    <dxe:MemoEditSettings />
-                </dxg:GridColumn.EditSettings>
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <dxe:MemoEdit Name="PART_Editor">
+                            <dxe:MemoEdit.DisplayTemplate>
+                                <ControlTemplate>
+                                    <TextBlock Text="{Binding Value}" Margin="3,2,0,0" MaxHeight="20"/>
+                                </ControlTemplate>
+                            </dxe:MemoEdit.DisplayTemplate>
+                        </dxe:MemoEdit>
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
             </dxg:GridColumn>
             <dxg:GridColumn FieldName="DesiredResult"/>
             <dxg:GridColumn FieldName="StatusId">
@@ -78,9 +86,17 @@
                         </dxg:GridColumn>
                         <dxg:GridColumn FieldName="IsActive" Width="70"/>
                         <dxg:GridColumn FieldName="Comment">
-                            <dxg:GridColumn.EditSettings>
-                                <dxe:MemoEditSettings />
-                            </dxg:GridColumn.EditSettings>
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <dxe:MemoEdit Name="PART_Editor">
+                                        <dxe:MemoEdit.DisplayTemplate>
+                                            <ControlTemplate>
+                                                <TextBlock Text="{Binding Value}" Margin="3,2,0,0" MaxHeight="20"/>
+                                            </ControlTemplate>
+                                        </dxe:MemoEdit.DisplayTemplate>
+                                    </dxe:MemoEdit>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
                     </dxg:GridControl.Columns>
                     <dxg:GridControl.View>

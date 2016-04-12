@@ -29,7 +29,7 @@ namespace ListOfDeal {
 
     public class custConverter :MarkupExtension, IValueConverter, IMultiValueConverter {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
-           
+            return "test";
             return value;
         }
 

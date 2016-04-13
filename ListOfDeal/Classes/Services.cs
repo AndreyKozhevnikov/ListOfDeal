@@ -15,18 +15,18 @@ namespace ListOfDeal {
     public class ExportToExcelService :ServiceBase, IExportToExcelService {
 
 
-        public TableView ExportTable {
-            get { return (TableView)GetValue(ExportTableProperty); }
+        public DataViewBase ExportTable {
+            get { return (DataViewBase)GetValue(ExportTableProperty); }
             set { SetValue(ExportTableProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for ExportTable.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ExportTableProperty =
-            DependencyProperty.Register("ExportTable", typeof(TableView), typeof(ExportToExcelService), new PropertyMetadata(null));
+            DependencyProperty.Register("ExportTable", typeof(DataViewBase), typeof(ExportToExcelService), new PropertyMetadata(null));
 
         
         public void Export() {
-            ExportTable.ExportToXlsx(@"f:\dropbox\common\Deals.xlsx");
+            (ExportTable as TableView).ExportToXlsx(@"f:\dropbox\common\Deals.xlsx");
         }
     }
 }

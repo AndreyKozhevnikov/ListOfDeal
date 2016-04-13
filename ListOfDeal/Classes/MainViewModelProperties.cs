@@ -26,22 +26,19 @@ namespace ListOfDeal {
         ICommand _previewKeyProjectsCommand;
         ICommand _previewKeyActionsCommand;
         ICommand _customSummaryCommand;
+        ICommand _goToParentProjectCommand;
 
-        public ICommand CustomSummaryCommand {
-            get {
-                if (_customSummaryCommand == null)
-                    _customSummaryCommand = new DelegateCommand<CustomSummaryEventArgs>(CustomSummary);
-                return _customSummaryCommand;
-            
-            }
-        }
-
+  
+     
     
 
         MyProject _currentProject;
         MyAction _currentAction;
         MyProject _selectedProject;
 
+        int _selectedTabIndex;
+
+    
 
 
         public ICommand AddNewProjectCommand {
@@ -114,7 +111,23 @@ namespace ListOfDeal {
                 return _previewKeyActionsCommand;
             }
         }
+        public ICommand CustomSummaryCommand {
+            get {
+                if (_customSummaryCommand == null)
+                    _customSummaryCommand = new DelegateCommand<CustomSummaryEventArgs>(CustomSummary);
+                return _customSummaryCommand;
+
+            }
+        }
+        public ICommand GoToParentProjectCommand {
+            get {
+                if (_goToParentProjectCommand == null)
+                    _goToParentProjectCommand = new DelegateCommand<MyAction>(GoToParentProject);
+                return _goToParentProjectCommand; }
+        }
+
     
+
     
     
    
@@ -154,6 +167,14 @@ namespace ListOfDeal {
             get { return _activeActions; }
             set { _activeActions = value;
             RaisePropertyChanged("ActiveActions");
+            }
+        }
+
+        public int SelectedTabIndex {
+            get { return _selectedTabIndex; }
+            set {
+                _selectedTabIndex = value;
+                RaisePropertyChanged("SelectedTabIndex");
             }
         }
 

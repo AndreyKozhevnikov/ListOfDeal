@@ -10,7 +10,7 @@
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" x:Class="ListOfDeal.ProjectsView" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <dxg:GridControl ItemsSource="{Binding Projects}" CurrentItem="{Binding SelectedProject, Mode=TwoWay}" SelectionMode="Row"
+    <dxg:GridControl ItemsSource="{Binding Projects}" CurrentItem="{Binding SelectedProject, Mode=TwoWay}" 
                      Loaded="GridControl_Loaded"
                      >
         <dxmvvm:Interaction.Behaviors>

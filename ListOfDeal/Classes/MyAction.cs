@@ -109,6 +109,11 @@ namespace ListOfDeal {
                 return parentEntity.Project.TypeId;
             }
         }
+        public int ProjectId {
+            get {
+                return parentEntity.Project.Id;
+            }
+        }
 
     }
 }

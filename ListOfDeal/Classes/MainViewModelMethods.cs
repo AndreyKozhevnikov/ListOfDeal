@@ -201,5 +201,10 @@ namespace ListOfDeal {
                 obj.TotalValue =string.Format("Actions count={0}", v.Count);
             }
         }
+        private void GoToParentProject(MyAction obj) {
+            SelectedTabIndex = 0;
+            MyProject p = Projects.Where(x => x.Id == obj.ProjectId).First();
+            SelectedProject = p;
+        }
     }
 }

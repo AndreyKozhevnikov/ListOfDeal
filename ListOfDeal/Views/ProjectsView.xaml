@@ -71,8 +71,7 @@
                                 <DataTemplate>
                                     <dxe:ComboBoxEdit x:Name="PART_Editor" 
 										ItemsSource="{Binding DataContext.DelegatePersons, RelativeSource={RelativeSource AncestorType={x:Type dxg:DataPresenter}, Mode=FindAncestor}}" 
-										ValueMember="Id" DisplayMember="Name" 
-                                                                               >
+										ValueMember="Id" DisplayMember="Name">
                                         <dxe:ComboBoxEdit.Style>
                                             <Style TargetType="{x:Type dxe:ComboBoxEdit}">
                                                 <Setter Property="IsEnabled" Value="False"/>
@@ -105,7 +104,7 @@
                     <dxg:GridControl.View>
                         <dxg:TableView ShowGroupPanel="False">
                             <dxg:TableView.FormatConditions>
-                                <dxg:FormatCondition ApplyToRow="True" FieldName="IsActive" PredefinedFormatName="GreenFillWithDarkGreenText" Value1="True" ValueRule="Equal"/>
+                                <dxg:FormatCondition ApplyToRow="True" FieldName="IsActive" PredefinedFormatName="GreenFillWithDarkGreenText" Expression="[IsActive] = True And [StatusId] &lt;&gt; 4"/>
                                 <dxg:FormatCondition FieldName="StatusId" Value1="{x:Null}" ValueRule="Expression" ApplyToRow="True" Expression="[StatusId] = '4'">
                                     <dx:Format Foreground="#FFD8D6CB" TextDecorations="{x:Null}"/>
                                 </dxg:FormatCondition>

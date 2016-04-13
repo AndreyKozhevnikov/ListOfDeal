@@ -49,7 +49,7 @@
                             <Button Content="Add project" Command="{Binding AddNewProjectCommand}" Height="20"/>
                             <Button Content="Open acitons" Command="{Binding OpenEditProjectCommand}" Height="20"/>
                             <Button Content="SaveChanges"  Height="20" Command="{Binding SaveChangesCommand}"/>
-                            <Button Content="test" Click="Button_Click"/>
+                            <!--<Button Content="test" Click="Button_Click"/>-->
                         </dxlc:LayoutGroup>
                         <dxlc:LayoutGroup Orientation="Vertical" x:Name="ActionGroup" IsEnabled="{Binding SelectedProject,Converter={StaticResource objToBoolConverter}}">
                             <dxmvvm:Interaction.Behaviors>

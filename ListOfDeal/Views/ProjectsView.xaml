@@ -128,5 +128,8 @@
             <dxg:GridSummaryItem SummaryType="Count" FieldName="Name" Alignment="Left"/>
             <dxg:GridSummaryItem SummaryType="Custom" FieldName="TypeId" Alignment="Right"/>
         </dxg:GridControl.TotalSummary>
+        <dxg:GridControl.GroupSummary>
+            <dxg:GridSummaryItem SummaryType="Count"/>
+        </dxg:GridControl.GroupSummary>
     </dxg:GridControl>
 </UserControl>

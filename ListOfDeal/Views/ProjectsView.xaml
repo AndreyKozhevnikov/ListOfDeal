@@ -18,7 +18,7 @@
         </dxmvvm:Interaction.Behaviors>
         <dxg:GridControl.Columns>
             <dxg:GridColumn FieldName="Name" Width="490"/>
-            <dxg:GridColumn FieldName="DateCreated"/>
+            <dxg:GridColumn FieldName="DateCreated" SortIndex="1" SortOrder="Ascending"/>
             <dxg:GridColumn FieldName="TypeId" GroupIndex="0">
                 <dxg:GridColumn.EditSettings>
                     <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" />
@@ -38,7 +38,7 @@
                 </dxg:GridColumn.CellTemplate>
             </dxg:GridColumn>
             <dxg:GridColumn FieldName="DesiredResult"/>
-            <dxg:GridColumn FieldName="StatusId">
+            <dxg:GridColumn FieldName="StatusId" SortIndex="0" SortOrder="Descending">
                 <dxg:GridColumn.EditSettings>
                     <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" />
                 </dxg:GridColumn.EditSettings>

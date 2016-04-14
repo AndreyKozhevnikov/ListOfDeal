@@ -80,7 +80,7 @@
                                 </dxe:ComboBoxEdit>
                             </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="Status:">
-                                <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.StatusId,UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
+                                <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.StatusId,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
                             </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="ScheduledTime:">
                                 <dxlc:LayoutItem.Style>

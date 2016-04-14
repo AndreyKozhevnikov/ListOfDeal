@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ListOfDeal {
     [DebuggerDisplay("Name = {Name}")]
-    public class MyAction:MyBindableBase {
+    public class MyAction:MyBindableBase,IDataErrorInfo {
       public  Action parentEntity;
         public MyAction(Action _parentEntity) {
             parentEntity = _parentEntity;
@@ -115,5 +116,27 @@ namespace ListOfDeal {
             }
         }
 
+
+        public string Error {
+            get {
+                if (StatusId == 2 && ScheduledTime == null)
+                    return "scheduled required";
+                if (StatusId == 3 && DelegatedTo == null)
+                    return "delegated required";
+                return null;
+            }
+        }
+
+        public string this[string columnName] {
+            get {
+                if (columnName == "StatusId") {
+                    if (StatusId == 2 && ScheduledTime == null)
+                        return "scheduled required";
+                    if (StatusId == 3 && DelegatedTo == null)
+                        return "delegated required";
+                }
+                return null;
+            }
+        }
     }
 }

@@ -80,12 +80,32 @@
                                 </dxe:ComboBoxEdit>
                             </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="Status:">
-                                <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.StatusId}" ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
+                                <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.StatusId,UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
                             </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="ScheduledTime:">
+                                <dxlc:LayoutItem.Style>
+                                    <Style TargetType="dxlc:LayoutItem">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CurrentAction.StatusId}" Value="2">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </dxlc:LayoutItem.Style>
                                 <dxe:DateEdit EditValue="{Binding CurrentAction.ScheduledTime}"/>
                             </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="DelegatedTo:">
+                                <dxlc:LayoutItem.Style>
+                                    <Style TargetType="dxlc:LayoutItem">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CurrentAction.StatusId}" Value="3">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </dxlc:LayoutItem.Style>
                                 <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.DelegatedTo}" ItemsSource="{Binding DelegatePersons}" ValueMember="Id" DisplayMember="Name" />
                             </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="IsActive:">
@@ -107,7 +127,7 @@
                                         </Style.Triggers>
                                     </Style>
                                 </Button.Style>
-                                </Button>
+                            </Button>
                         </dxlc:LayoutGroup>
                     </dxlc:LayoutGroup>
                     <local:ProjectsView/>
@@ -178,7 +198,7 @@
                                                        Command="{Binding View.DataContext.GoToParentProjectCommand}"
                                                        CommandParameter="{Binding Path=View.Grid.CurrentItem}"
                                                        >
-                                        </dxb:BarButtonItem>
+                                    </dxb:BarButtonItem>
                                 </dxg:TableView.RowCellMenuCustomizations>
                             </dxg:TableView>
                         </dxg:GridControl.View>

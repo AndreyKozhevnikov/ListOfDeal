@@ -62,9 +62,22 @@
                         </dxg:GridColumn>
                         <dxg:GridColumn FieldName="DateCreated" ReadOnly="True"/>
                         <dxg:GridColumn FieldName="ScheduledTime">
-                            <dxg:GridColumn.EditSettings>
-                                <dxe:DateEditSettings/>
-                            </dxg:GridColumn.EditSettings>
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <dxe:DateEdit Name="PART_Editor">
+                                        <dxe:DateEdit.Style>
+                                            <Style TargetType="{x:Type dxe:DateEdit}">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="2">
+                                                        <Setter Property="IsEnabled" Value="True"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </dxe:DateEdit.Style>
+                                    </dxe:DateEdit>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
                         <dxg:GridColumn FieldName="DelegatedTo" >
                             <dxg:GridColumn.CellTemplate>

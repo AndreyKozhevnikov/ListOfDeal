@@ -52,7 +52,20 @@
                             <Button Content="SaveChanges"  Height="20" Command="{Binding SaveChangesCommand}"/>
                             <Button Content="test" Click="Button_Click"/>
                         </dxlc:LayoutGroup>
-                        <dxlc:LayoutGroup Orientation="Vertical" x:Name="ActionGroup" IsEnabled="{Binding SelectedProject,Converter={StaticResource objToBoolConverter}}">
+                        <dxlc:LayoutGroup Orientation="Vertical" x:Name="ActionGroup" >
+                            <dxlc:LayoutGroup.Style>
+                                <Style TargetType="dxlc:LayoutGroup">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedAction,Converter={StaticResource objToBoolConverter}}" Value="True">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SelectedProject,Converter={StaticResource objToBoolConverter}}" Value="True">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </dxlc:LayoutGroup.Style>
                             <dxmvvm:Interaction.Behaviors>
                                 <dxmvvm:EventToCommand EventName="PreviewKeyDown" Command="{Binding PreviewKeyActionsCommand}" PassEventArgsToCommand="True"/>
                             </dxmvvm:Interaction.Behaviors>
@@ -81,7 +94,20 @@
                             <dxlc:LayoutItem Label="Comment:">
                                 <dxe:MemoEdit EditValue="{Binding CurrentAction.Comment}" />
                             </dxlc:LayoutItem>
-                            <Button Content="{Binding SelectedProject.Name,StringFormat=Now {0}}" Command="{Binding AddActionCommand}"/>
+                            <Button  Command="{Binding AddActionCommand}">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedProject,Converter={StaticResource objToBoolConverter}}" Value="True">
+                                                <Setter Property="Content" Value="{Binding SelectedProject.Name}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding SelectedAction,Converter={StaticResource objToBoolConverter}}" Value="True">
+                                                <Setter Property="Content" Value="{Binding SelectedAction.ProjectName}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                                </Button>
                         </dxlc:LayoutGroup>
                     </dxlc:LayoutGroup>
                     <local:ProjectsView/>

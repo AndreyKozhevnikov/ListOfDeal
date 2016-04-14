@@ -36,6 +36,10 @@ namespace ListOfDeal {
         MyAction _currentAction;
         MyProject _selectedProject;
 
+        MyAction _selectedAction;
+
+    
+
         int _selectedTabIndex;
 
     
@@ -154,6 +158,15 @@ namespace ListOfDeal {
                 RaisePropertyChanged("SelectedProject");
             }
         }
+
+        public MyAction SelectedAction {
+            get { return _selectedAction; }
+            set {
+                _selectedAction = value;
+                RaisePropertyChanged("SelectedAction");
+            }
+        }
+
         public ObservableCollection<MyProject> Projects { get; set; }
         public ObservableCollection<ProjectType> ProjectTypes { get; set; }
         public ObservableCollection<ProjectStatus> ProjectStatuses { get; set; }

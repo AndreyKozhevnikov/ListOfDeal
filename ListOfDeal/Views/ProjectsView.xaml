@@ -47,7 +47,7 @@
         </dxg:GridControl.Columns>
         <dxg:GridControl.DetailDescriptor>
             <dxg:DataControlDetailDescriptor ItemsSourcePath="Actions">
-                <dxg:GridControl >
+                <dxg:GridControl CurrentItem="{Binding SelectedAction,Mode=TwoWay}">
                     <dxg:GridControl.Columns>
                         <dxg:GridColumn FieldName="Name" Width="325"/>
                         <dxg:GridColumn FieldName="TriggerId">

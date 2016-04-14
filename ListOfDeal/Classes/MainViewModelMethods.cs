@@ -81,10 +81,22 @@ namespace ListOfDeal {
             if (string.IsNullOrEmpty(CurrentAction.Name))
                 return;
             CurrentAction.DateCreated = DateTime.Now;
-            SelectedProject.AddAction(CurrentAction);
+
+            MyProject projForSave = null;
+            if (SelectedProject != null) {
+                projForSave = SelectedProject;
+            }
+            else {
+                if (SelectedAction != null) {
+                    projForSave = GetProjectById(SelectedAction.ProjectId);
+                }
+            }
+            if (projForSave == null)
+                return;
+            projForSave.AddAction(CurrentAction);
 
             SaveChanges();
-            SelectedProject.RaisePropertyChanged("ActionsList");
+            projForSave.RaisePropertyChanged("ActionsList");
             CreateNewAction();
         }
         internal void Test() {
@@ -198,10 +210,15 @@ namespace ListOfDeal {
                 obj.TotalValue =string.Format("Actions count={0}", v.Count);
             }
         }
-        private void GoToParentProject(MyAction obj) {
+        private void GoToParentProject(MyAction act) {
             SelectedTabIndex = 0;
-            MyProject p = Projects.Where(x => x.Id == obj.ProjectId).First();
+            MyProject p = GetProjectById(act.ProjectId);
             SelectedProject = p;
+        }
+
+        MyProject GetProjectById(int id) {
+            var p = Projects.Where(x => x.Id == id).First();
+            return p;
         }
     }
 }

@@ -48,11 +48,12 @@ namespace ListOfDeal {
             CurrentProject = new MyProject();
             CurrentProject.TypeId = 11;
             CurrentProject.StatusId = 2;
+            CurrentProject.IsSimpleProject = true;
         }
         private void CreateNewAction() {
             CurrentAction = new MyAction();
             CurrentAction.StatusId = 1;
-            CurrentAction.IsActive = false;
+            CurrentAction.IsActive = true;
 
 
         }

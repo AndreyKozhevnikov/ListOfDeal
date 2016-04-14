@@ -88,13 +88,12 @@ namespace ListOfDeal {
             CreateNewAction();
         }
         internal void Test() {
-            var v = Projects.Where(x => x.Actions.Count == 0);
+            var v = Projects.Where(x => x.Actions.Count == 1);
             foreach (MyProject p in v) {
-                MyAction act = new MyAction();
-                act.Name = p.Name;
-                act.StatusId = 1;
-                act.DateCreated = DateTime.Now;
-                p.AddAction(act);
+                var act = p.Actions[0];
+                if (act.Name == p.Name) {
+                    p.IsSimpleProject = true;
+                }
             }
             SaveChanges();
         }
@@ -164,9 +163,6 @@ namespace ListOfDeal {
 
         public static void SaveChanges() {
             try {
-                // Your code...
-                // Could also be before try if you know the exception occurs in SaveChanges
-
                 generalEntity.SaveChanges();
             }
             catch (DbEntityValidationException e) {

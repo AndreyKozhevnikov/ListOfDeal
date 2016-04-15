@@ -201,7 +201,9 @@ namespace ListOfDeal {
             }
         }
         IServiceContainer ISupportServices.ServiceContainer { get { return ServiceContainer; } }
+
         IExportToExcelService ExportToExcelService { get { return ServiceContainer.GetService<IExportToExcelService>(); } }
+        IGridControlManagerService GridControlManagerService { get { return serviceContainer.GetService<IGridControlManagerService>(); } }
     }
 
 

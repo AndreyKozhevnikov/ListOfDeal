@@ -18,10 +18,11 @@
                     Color="Blue" />-->
     </UserControl.Resources>
     <dxg:GridControl ItemsSource="{Binding Projects}" CurrentItem="{Binding SelectedProject, Mode=TwoWay}" 
-                     Loaded="GridControl_Loaded"
+                     Loaded="GridControl_Loaded" x:Name="grid1"
                      >
         <dxmvvm:Interaction.Behaviors>
             <dxmvvm:EventToCommand EventName="CustomSummary" Command="{Binding CustomSummaryCommand}" PassEventArgsToCommand="True"/>
+            <local:GridControlManagerService Control="{Binding Path=.,ElementName=grid1}"/>
         </dxmvvm:Interaction.Behaviors>
         <dxg:GridControl.Columns>
             <dxg:GridColumn FieldName="Name" Width="490"/>

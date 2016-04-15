@@ -100,14 +100,15 @@ namespace ListOfDeal {
             CreateNewAction();
         }
         internal void Test() {
-            var v = Projects.Where(x => x.Actions.Count == 1);
-            foreach (MyProject p in v) {
-                var act = p.Actions[0];
-                if (act.Name == p.Name) {
-                    p.IsSimpleProject = true;
-                }
-            }
-            SaveChanges();
+            //var v = Projects.Where(x => x.Actions.Count == 1);
+            //foreach (MyProject p in v) {
+            //    var act = p.Actions[0];
+            //    if (act.Name == p.Name) {
+            //        p.IsSimpleProject = true;
+            //    }
+            //}
+            //SaveChanges();
+            GridControlManagerService.ExpandMasterRow(SelectedProject);
         }
         private void OpenEditProject() {
             EditProject ed = new EditProject();
@@ -214,6 +215,7 @@ namespace ListOfDeal {
             SelectedTabIndex = 0;
             MyProject p = GetProjectById(act.ProjectId);
             SelectedProject = p;
+            GridControlManagerService.ExpandMasterRow(p);
         }
 
         MyProject GetProjectById(int id) {

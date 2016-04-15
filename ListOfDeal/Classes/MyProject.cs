@@ -29,18 +29,25 @@ namespace ListOfDeal {
             }
         }
         public void AddAction(MyAction act) {
-            if (Actions.Count == 0) {
-                act.OrderNumber = 0;
-                act.IsActive = true;
+            if (IsSimpleProject && Actions.Count == 1) {
+                var targetAction = Actions[0];
+                targetAction.CopyProperties(act);
+                IsSimpleProject = false;
             }
             else {
-                var maxOrderNumber = Actions.Max(x => x.OrderNumber);
-                act.OrderNumber = maxOrderNumber + 1;
+                if (Actions.Count == 0) {
+                    act.OrderNumber = 0;
+                    act.IsActive = true;
+                }
+                else {
+                    var maxOrderNumber = Actions.Max(x => x.OrderNumber);
+                    act.OrderNumber = maxOrderNumber + 1;
+                }
+                act.PropertyChanged += act_PropertyChanged;
+                Actions.Add(act);
+                parentEntity.Actions.Add(act.parentEntity);
+                RaisePropertyChanged("Actions");
             }
-            act.PropertyChanged += act_PropertyChanged;
-            Actions.Add(act);
-            parentEntity.Actions.Add(act.parentEntity);
-            RaisePropertyChanged("Actions");
         }
 
         void act_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {

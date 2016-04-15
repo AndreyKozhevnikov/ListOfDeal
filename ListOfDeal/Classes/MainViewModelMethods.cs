@@ -53,7 +53,7 @@ namespace ListOfDeal {
         private void CreateNewAction() {
             CurrentAction = new MyAction();
             CurrentAction.StatusId = 1;
-            CurrentAction.IsActive = true;
+            CurrentAction.IsActive = false;
 
 
         }

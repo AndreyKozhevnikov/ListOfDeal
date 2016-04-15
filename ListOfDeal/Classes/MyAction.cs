@@ -19,7 +19,14 @@ namespace ListOfDeal {
             parentEntity = v;
             DateCreated = DateTime.Now;
         }
-
+        public string Name {
+            get {
+                return parentEntity.Name;
+            }
+            set {
+                parentEntity.Name = value;
+            }
+        }
         public int StatusId {
             get {
                 return parentEntity.StatusId;
@@ -48,14 +55,6 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.DateCreated = value;
-            }
-        }
-        public string Name {
-            get {
-                return parentEntity.Name;
-            }
-            set {
-                parentEntity.Name = value;
             }
         }
         public int? TriggerId {
@@ -88,6 +87,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.Comment = value;
+                RaisePropertyChanged("Comment");
             }
         }
         public int OrderNumber {
@@ -137,6 +137,17 @@ namespace ListOfDeal {
                 }
                 return null;
             }
+        }
+
+        internal void CopyProperties(MyAction act) {
+            this.Name = act.Name;
+            this.StatusId = act.StatusId;
+            this.TriggerId = act.TriggerId;
+            this.DelegatedTo = act.DelegatedTo;
+            this.ScheduledTime = act.ScheduledTime;
+            this.IsActive = act.IsActive;
+            this.Comment = act.Comment;
+            this.DateCreated = act.DateCreated;
         }
     }
 }

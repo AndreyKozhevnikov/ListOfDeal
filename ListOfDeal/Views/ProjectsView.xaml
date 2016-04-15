@@ -5,11 +5,18 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
              xmlns:local="clr-namespace:ListOfDeal"
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" x:Class="ListOfDeal.ProjectsView" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="{dxgt:GridRowThemeKey ResourceKey=BorderFocusedBrush, IsThemeIndependent=True}"
+                    Color="#00FA9A" />
+        <!--<SolidColorBrush x:Key="{dxgt:GridRowThemeKey ResourceKey=TextFocusedBrush, IsThemeIndependent=True}"
+                    Color="Blue" />-->
+    </UserControl.Resources>
     <dxg:GridControl ItemsSource="{Binding Projects}" CurrentItem="{Binding SelectedProject, Mode=TwoWay}" 
                      Loaded="GridControl_Loaded"
                      >
@@ -128,7 +135,7 @@
             </dxg:DataControlDetailDescriptor>
         </dxg:GridControl.DetailDescriptor>
         <dxg:GridControl.View>
-            <dxg:TableView 	ShowGroupedColumns="True" ShowFixedTotalSummary="True">
+            <dxg:TableView 	ShowGroupedColumns="True" ShowFixedTotalSummary="True" FadeSelectionOnLostFocus="False" >
                 <dxg:TableView.FormatConditions>
                     <dxg:FormatCondition ApplyToRow="True" FieldName="StatusId" PredefinedFormatName="GreenFillWithDarkGreenText" Value1="1" ValueRule="Equal"/>
                     <dxg:FormatCondition FieldName="StatusId" Value1="{x:Null}" ValueRule="Expression" ApplyToRow="True" Expression="[StatusId] = '3'">

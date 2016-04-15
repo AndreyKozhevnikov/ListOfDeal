@@ -137,6 +137,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.IsSimpleProject = value;
+                RaisePropertyChanged("IsSimpleProject");
             }
         }
         public int Id {

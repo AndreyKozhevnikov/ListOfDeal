@@ -37,28 +37,16 @@ namespace ListOfDeal {
     }
 
     public class GridControlManagerService : ServiceBase, IGridControlManagerService {
-
-
-        public GridControl Control {
-            get { return (GridControl)GetValue(ControlProperty); }
-            set { SetValue(ControlProperty, value); }
+        GridControl Control;
+        public void ExpandMasterRow(object obj) {
+            var rh = Control.DataController.FindRowByRowValue(obj);
+            Control.ExpandMasterRow(rh);
         }
 
-        // Using a DependencyProperty as the backing store for Control.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ControlProperty =
-            DependencyProperty.Register("Control", typeof(GridControl), typeof(GridControlManagerService), new PropertyMetadata(null));
-
-
-
-        public void ExpandMasterRow(object obj) {
-            //Control.ExpandMasterRow(1);
-            //Control.Tag = "234";
-            var rh = Control.DataController.FindRowByRowValue(obj);
-            Dispatcher.CurrentDispatcher.BeginInvoke((System.Action)(() => {
-                Control.ExpandMasterRow(rh);
-            }), DispatcherPriority.Background);
-
-         
+        protected override void OnAttached() {
+            var pc = this.AssociatedObject as ProjectsView;
+            this.Control= pc.grid1;
+            base.OnAttached();
         }
     }
 }

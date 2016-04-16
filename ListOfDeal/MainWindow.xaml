@@ -130,7 +130,11 @@
                             </Button>
                         </dxlc:LayoutGroup>
                     </dxlc:LayoutGroup>
-                    <local:ProjectsView/>
+                    <local:ProjectsView x:Name="mainProject">
+                        <dxmvvm:Interaction.Behaviors>
+                            <local:GridControlManagerService/>
+                        </dxmvvm:Interaction.Behaviors>
+                    </local:ProjectsView>
                 </dxlc:LayoutGroup>
             </dx:DXTabItem>
             <dx:DXTabItem Header="AllProjects">

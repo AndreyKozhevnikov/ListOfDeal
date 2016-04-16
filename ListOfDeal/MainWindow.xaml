@@ -15,6 +15,9 @@
     <Window.Resources>
         <dxmvvm:ObjectToBooleanConverter x:Key="objToBoolConverter"/>
     </Window.Resources>
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm:EventToCommand EventName="Closing" Command="{Binding SaveChangesCommand}"/>
+    </dxmvvm:Interaction.Behaviors>
     <Grid>
         <dx:DXTabControl SelectedIndex="{Binding SelectedTabIndex}">
 

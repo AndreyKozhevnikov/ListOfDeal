@@ -207,7 +207,7 @@ namespace ListOfDeal {
         }
         private void CustomSummary(CustomSummaryEventArgs obj) {
             if (obj.SummaryProcess == CustomSummaryProcess.Finalize && Projects != null) {
-                var v = Projects.SelectMany(x => x.Actions).ToList();
+                var v = Projects.SelectMany(x => x.Actions).Where(y=>y.StatusId!=4).ToList();
                 obj.TotalValue =string.Format("Actions count={0}", v.Count);
             }
         }

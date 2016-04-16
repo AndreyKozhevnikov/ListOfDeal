@@ -25,6 +25,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.Name = value;
+                RaisePropertyChanged("Name");
             }
         }
         public int StatusId {
@@ -55,6 +56,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.DateCreated = value;
+                RaisePropertyChanged("DateCreated");
             }
         }
         public int? TriggerId {

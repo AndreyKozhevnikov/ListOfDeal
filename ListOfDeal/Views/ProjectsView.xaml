@@ -18,7 +18,7 @@
                     Color="Blue" />-->
     </UserControl.Resources>
     <dxg:GridControl ItemsSource="{Binding Projects}" CurrentItem="{Binding SelectedProject, Mode=TwoWay}" 
-                     Loaded="GridControl_Loaded" x:Name="grid1"
+                     Loaded="GridControl_Loaded" x:Name="grid1" FilterString="[StatusId]!=3"
                      >
         <dxmvvm:Interaction.Behaviors>
             <dxmvvm:EventToCommand EventName="CustomSummary" Command="{Binding CustomSummaryCommand}" PassEventArgsToCommand="True"/>
@@ -45,7 +45,7 @@
                 </dxg:GridColumn.CellTemplate>
             </dxg:GridColumn>
             <dxg:GridColumn FieldName="DesiredResult"/>
-            <dxg:GridColumn FieldName="StatusId" SortIndex="0" SortOrder="Descending">
+            <dxg:GridColumn FieldName="StatusId" SortIndex="0" SortOrder="Descending" >
                 <dxg:GridColumn.EditSettings>
                     <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" />
                 </dxg:GridColumn.EditSettings>
@@ -54,7 +54,7 @@
         </dxg:GridControl.Columns>
         <dxg:GridControl.DetailDescriptor>
             <dxg:DataControlDetailDescriptor ItemsSourcePath="Actions">
-                <dxg:GridControl CurrentItem="{Binding SelectedAction,Mode=TwoWay}">
+                <dxg:GridControl CurrentItem="{Binding SelectedAction,Mode=TwoWay}" FilterString="[StatusId]!=4">
                     <dxg:GridControl.Columns>
                         <dxg:GridColumn FieldName="Name" Width="325"/>
                         <dxg:GridColumn FieldName="TriggerId">
@@ -67,7 +67,7 @@
                                 <dxe:ComboBoxEditSettings  ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="DateCreated" ReadOnly="True"/>
+                        <dxg:GridColumn FieldName="DateCreated" ReadOnly="True" SortIndex="0" SortOrder="Ascending"/>
                         <dxg:GridColumn FieldName="ScheduledTime">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
@@ -122,7 +122,7 @@
                         </dxg:GridColumn>
                     </dxg:GridControl.Columns>
                     <dxg:GridControl.View>
-                        <dxg:TableView ShowGroupPanel="False">
+                        <dxg:TableView ShowGroupPanel="False" ShowFilterPanelMode="Never">
                             <dxg:TableView.FormatConditions>
                                 <dxg:FormatCondition ApplyToRow="True" FieldName="IsActive" PredefinedFormatName="GreenFillWithDarkGreenText" Expression="[IsActive] = True And [StatusId] &lt;&gt; 4"/>
                                 <dxg:FormatCondition FieldName="StatusId" Value1="{x:Null}" ValueRule="Expression" ApplyToRow="True" Expression="[StatusId] = '4'">
@@ -135,7 +135,7 @@
             </dxg:DataControlDetailDescriptor>
         </dxg:GridControl.DetailDescriptor>
         <dxg:GridControl.View>
-            <dxg:TableView 	ShowGroupedColumns="True" ShowFixedTotalSummary="True" FadeSelectionOnLostFocus="False" >
+            <dxg:TableView 	ShowGroupedColumns="True" ShowFixedTotalSummary="True" FadeSelectionOnLostFocus="False" ShowFilterPanelMode="Never" >
                 <dxg:TableView.FormatConditions>
                     <dxg:FormatCondition ApplyToRow="True" FieldName="StatusId" PredefinedFormatName="GreenFillWithDarkGreenText" Value1="1" ValueRule="Equal"/>
                     <dxg:FormatCondition FieldName="StatusId" Value1="{x:Null}" ValueRule="Expression" ApplyToRow="True" Expression="[StatusId] = '3'">

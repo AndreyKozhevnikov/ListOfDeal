@@ -32,6 +32,7 @@ namespace ListOfDeal {
             if (IsSimpleProject && Actions.Count == 1) {
                 var targetAction = Actions[0];
                 targetAction.CopyProperties(act);
+                targetAction.IsActive = true;
                 IsSimpleProject = false;
             }
             else {

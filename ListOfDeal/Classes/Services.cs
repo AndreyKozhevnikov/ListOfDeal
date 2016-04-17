@@ -16,18 +16,47 @@ namespace ListOfDeal {
     public class ExportToExcelService :ServiceBase, IExportToExcelService {
 
 
-        public DataViewBase ExportTable {
-            get { return (DataViewBase)GetValue(ExportTableProperty); }
-            set { SetValue(ExportTableProperty, value); }
+        public GridControl ScheduledGrid {
+            get { return (GridControl)GetValue(SchedGridProperty); }
+            set { SetValue(SchedGridProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for ExportTable.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ExportTableProperty =
-            DependencyProperty.Register("ExportTable", typeof(DataViewBase), typeof(ExportToExcelService), new PropertyMetadata(null));
+        // Using a DependencyProperty as the backing store for SchedGrid.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SchedGridProperty =
+            DependencyProperty.Register("ScheduledGrid", typeof(GridControl), typeof(ExportToExcelService), new PropertyMetadata(null));
+
+
+
+        public GridControl DelegatedGrid {
+            get { return (GridControl)GetValue(DelegatedGridProperty); }
+            set { SetValue(DelegatedGridProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for DelegatedGrid.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DelegatedGridProperty =
+            DependencyProperty.Register("DelegatedGrid", typeof(GridControl), typeof(ExportToExcelService), new PropertyMetadata(null));
+
+
+
+
+        public GridControl WaitedGrid {
+            get { return (GridControl)GetValue(WaitedGridProperty); }
+            set { SetValue(WaitedGridProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for WaitedGrid.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty WaitedGridProperty =
+            DependencyProperty.Register("WaitedGrid", typeof(GridControl), typeof(ExportToExcelService), new PropertyMetadata(null));
+
+        
+
 
         
         public void Export() {
-            (ExportTable as TableView).ExportToXlsx(@"f:\dropbox\common\Deals.xlsx");
+            (WaitedGrid.View as TableView).ExportToXlsx(@"f:\dropbox\common\Deals.xlsx");
+            (ScheduledGrid.View as TableView).ExportToXlsx(@"f:\dropbox\common\DealsSched.xlsx");
+            (DelegatedGrid.View as TableView).ExportToXlsx(@"f:\dropbox\common\DealsDeleg.xlsx");
+            
         }
     }
 

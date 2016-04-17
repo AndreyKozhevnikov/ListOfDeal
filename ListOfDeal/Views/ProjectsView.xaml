@@ -67,7 +67,7 @@
                                 <dxe:ComboBoxEditSettings  ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="DateCreated" ReadOnly="True" SortIndex="0" SortOrder="Ascending"/>
+                        <dxg:GridColumn FieldName="DateCreated" ReadOnly="True" SortIndex="1" SortOrder="Ascending"/>
                         <dxg:GridColumn FieldName="ScheduledTime">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
@@ -120,6 +120,7 @@
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="OrderNumber" SortIndex="0" Visible="False"/>
                     </dxg:GridControl.Columns>
                     <dxg:GridControl.View>
                         <dxg:TableView ShowGroupPanel="False" ShowFilterPanelMode="Never">

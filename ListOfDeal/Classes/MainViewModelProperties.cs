@@ -21,7 +21,7 @@ namespace ListOfDeal {
         ICommand _openNewInfoCommand;
         ICommand _provideActiveActionsCommand;
         ICommand _customRowFilterCommand;
-        ICommand _exportWaitedGridCommand;
+        ICommand _exportGridsCommand;
         ICommand _saveChangesCommand;
         ICommand _previewKeyProjectsCommand;
         ICommand _previewKeyActionsCommand;
@@ -86,11 +86,11 @@ namespace ListOfDeal {
                     _customRowFilterCommand = new DelegateCommand<RowFilterEventArgs>(CustomRowFilter);
                 return _customRowFilterCommand; }
         }
-        public ICommand ExportWaitedGridCommand {
+        public ICommand ExportGridsCommand {
             get {
-                if (_exportWaitedGridCommand == null)
-                    _exportWaitedGridCommand = new DelegateCommand(ExportWaitedGrid);
-                return _exportWaitedGridCommand; }
+                if (_exportGridsCommand == null)
+                    _exportGridsCommand = new DelegateCommand(ExportGrids);
+                return _exportGridsCommand; }
            
         }
 

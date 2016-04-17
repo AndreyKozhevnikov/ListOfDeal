@@ -151,13 +151,16 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Button Content="Get Data" Command="{Binding ProvideActiveActionsCommand}"/>
-                    <Button Content="Export" Command="{Binding ExportWaitedGridCommand}" Grid.Row="1"/>
+                    <Button Content="Export" Command="{Binding ExportGridsCommand}" Grid.Row="1"/>
                     <dxg:GridControl Grid.Row="2" Tag="WaitedActionsGrid" Name="WaitedActionsGrid"
                                      ItemsSource="{Binding ActiveActions}" AutoExpandAllGroups="True"
                                      >
                         <dxmvvm:Interaction.Behaviors>
                             <dxmvvm:EventToCommand EventName="CustomRowFilter" PassEventArgsToCommand="True" Command="{Binding CustomRowFilterCommand}"/>
-                            <local:ExportToExcelService ExportTable="{Binding Path=View,ElementName=WaitedActionsGrid}"/>
+                            <local:ExportToExcelService ScheduledGrid="{Binding ElementName=ScheduledActionsGrid}"
+                                                        WaitedGrid="{Binding ElementName=WaitedActionsGrid}" 
+                                                        DelegatedGrid="{Binding ElementName=DelegatedActionsGrid}"
+                                                        x:Name="Waited"/>
                         </dxmvvm:Interaction.Behaviors>
                         <dxg:GridControl.Columns>
                             <dxg:GridColumn FieldName="Name" Width="550"/>
@@ -214,7 +217,7 @@
             </dx:DXTabItem>
             <dx:DXTabItem Header="Scheduled">
                 <dxg:GridControl Grid.Row="1" Tag="ScheduledActionsGrid"
-                                     ItemsSource="{Binding ActiveActions}"
+                                     ItemsSource="{Binding ActiveActions}" x:Name="ScheduledActionsGrid"
                                   AutoExpandAllGroups="True"
                                      >
                     <dxmvvm:Interaction.Behaviors>
@@ -255,7 +258,7 @@
                 </dxg:GridControl>
             </dx:DXTabItem>
             <dx:DXTabItem Header="Delegated">
-                <dxg:GridControl Grid.Row="1" Tag="DelegatedActionsGrid"
+                <dxg:GridControl Grid.Row="1" Tag="DelegatedActionsGrid" x:Name="DelegatedActionsGrid"
                                      ItemsSource="{Binding ActiveActions}"
                                   AutoExpandAllGroups="True"
                                      >

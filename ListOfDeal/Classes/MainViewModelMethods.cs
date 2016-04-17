@@ -169,7 +169,7 @@ namespace ListOfDeal {
             e.Handled = true;
         }
 
-        private void ExportWaitedGrid() {
+        private void ExportGrids() {
             ExportToExcelService.Export();
         }
 

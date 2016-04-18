@@ -18,7 +18,7 @@
                     Color="Blue" />-->
     </UserControl.Resources>
     <dxg:GridControl ItemsSource="{Binding Projects}" CurrentItem="{Binding SelectedProject, Mode=TwoWay}" 
-                     Loaded="GridControl_Loaded" x:Name="grid1" FilterString="[StatusId]!=3"
+                     Loaded="GridControl_Loaded" x:Name="grid1" 
                      >
         <dxmvvm:Interaction.Behaviors>
             <dxmvvm:EventToCommand EventName="CustomSummary" Command="{Binding CustomSummaryCommand}" PassEventArgsToCommand="True"/>
@@ -54,7 +54,7 @@
         </dxg:GridControl.Columns>
         <dxg:GridControl.DetailDescriptor>
             <dxg:DataControlDetailDescriptor ItemsSourcePath="Actions">
-                <dxg:GridControl CurrentItem="{Binding SelectedAction,Mode=TwoWay}" FilterString="[StatusId]!=4">
+                <dxg:GridControl CurrentItem="{Binding SelectedAction,Mode=TwoWay}">
                     <dxg:GridControl.Columns>
                         <dxg:GridColumn FieldName="Name" Width="325"/>
                         <dxg:GridColumn FieldName="TriggerId">

@@ -23,7 +23,8 @@ namespace ListOfDeal {
             ActionStatuses = new ObservableCollection<ActionStatus>(generalEntity.ActionStatuses);
             DelegatePersons = new ObservableCollection<DelegatePerson>(generalEntity.DelegatePersons);
             Projects = new ObservableCollection<MyProject>();
-            foreach (var p in generalEntity.Projects) {
+            var actProjects = generalEntity.Projects.Where(x => x.StatusId != 3);
+            foreach (var p in actProjects) {
                 Projects.Add(new MyProject(p));
             }
             CreateNewProject();

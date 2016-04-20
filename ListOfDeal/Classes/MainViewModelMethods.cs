@@ -208,8 +208,8 @@ namespace ListOfDeal {
         }
         private void CustomSummary(CustomSummaryEventArgs obj) {
             if (obj.SummaryProcess == CustomSummaryProcess.Finalize && Projects != null) {
-                var v = Projects.SelectMany(x => x.Actions).Where(y=>y.StatusId!=4).ToList();
-                obj.TotalValue =string.Format("Actions count={0}", v.Count);
+                var v = Projects.SelectMany(x => x.Actions).Where(y => y.StatusId != 4).ToList();
+                obj.TotalValue = string.Format("Actions count={0}", v.Count);
             }
         }
         private void GoToParentProject(MyAction act) {
@@ -231,22 +231,38 @@ namespace ListOfDeal {
             var count = (todayDate - minDate).Days;
             var dates = Enumerable.Range(0, count + 10).Select(offset => minDate.AddDays(offset)).ToList();
 
-            var startDates = allActions.GroupBy(x => x.DateCreated.Date).Select(d => new { dt = d.Key, cnt = d.Count() }).ToList();
-            var finishDates = allActions.Where(x=>x.CompleteTime.HasValue).GroupBy(x => x.CompleteTime.Value.Date).Select(d => new { dt = d.Key, cnt = d.Count() }).ToList();
+            var startDates = allActions.GroupBy(x => x.DateCreated.Date).Select(d => new { dt = d.Key, cntin = d.Count() }).ToList();
+            var finishDates = allActions.Where(x => x.CompleteTime.HasValue).GroupBy(x => x.CompleteTime.Value.Date).Select(d => new { dt = d.Key, cntout = d.Count() }).ToList();
 
-          var  DateCollection = new ObservableCollection<DayData>((from pd in dates
-                                                                   join sd in startDates on
-                                                                    pd.Date equals sd.dt
-                                                                   
-                                                                    into t
-                                                                from rt in t.DefaultIfEmpty(new { dt = DateTime.Today, cnt=0})
-                                                                orderby pd.Date
-                                                                select new DayData() {
-                                                                    TDate=rt.dt,
-                                                                    CountIn=rt.cnt
-                                                                }
-                                ).ToList());
+            var coll1 = from dt in dates
+                        join sd in startDates on
+                         dt.Date equals sd.dt
+                         into t
+                        from rt in t.DefaultIfEmpty(new { dt = DateTime.Today, cntin = 0 })
+                        select new {
+                            TDate = dt.Date,
+                            CountIn = rt.cntin
+                        };
 
+            var coll2 = from pd in coll1
+                        join fd in finishDates on
+                         pd.TDate equals fd.dt
+                         into result
+                        from result2 in result.DefaultIfEmpty(new { dt = DateTime.Today, cntout = 0 })
+                        orderby pd.TDate
+                        select new DayData() {
+                            TDate = pd.TDate,
+                            CountIn = pd.CountIn,
+                            CountOut = result2.cntout,
+                            Delta=pd.CountIn-result2.cntout
+                        };
+
+            ObservableCollection<DayData> AllDayData = new ObservableCollection<DayData>(coll2);
+            int k = 0;
+            foreach (DayData d in AllDayData) {
+                d.Summary = d.Delta + k;
+                k = d.Summary;
+            }
         }
     }
 }

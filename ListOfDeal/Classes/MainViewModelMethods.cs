@@ -223,5 +223,30 @@ namespace ListOfDeal {
             var p = Projects.Where(x => x.Id == id).First();
             return p;
         }
+
+        private void GetChartData() {
+            var allActions = generalEntity.Actions.ToList();
+            var minDate = allActions.Min(x => x.DateCreated).Date;
+            var todayDate = DateTime.Today;
+            var count = (todayDate - minDate).Days;
+            var dates = Enumerable.Range(0, count + 10).Select(offset => minDate.AddDays(offset)).ToList();
+
+            var startDates = allActions.GroupBy(x => x.DateCreated.Date).Select(d => new { dt = d.Key, cnt = d.Count() }).ToList();
+            var finishDates = allActions.Where(x=>x.CompleteTime.HasValue).GroupBy(x => x.CompleteTime.Value.Date).Select(d => new { dt = d.Key, cnt = d.Count() }).ToList();
+
+          var  DateCollection = new ObservableCollection<DayData>((from pd in dates
+                                                                   join sd in startDates on
+                                                                    pd.Date equals sd.dt
+                                                                   
+                                                                    into t
+                                                                from rt in t.DefaultIfEmpty(new { dt = DateTime.Today, cnt=0})
+                                                                orderby pd.Date
+                                                                select new DayData() {
+                                                                    TDate=rt.dt,
+                                                                    CountIn=rt.cnt
+                                                                }
+                                ).ToList());
+
+        }
     }
 }

@@ -27,7 +27,16 @@ namespace ListOfDeal {
         ICommand _previewKeyActionsCommand;
         ICommand _customSummaryCommand;
         ICommand _goToParentProjectCommand;
+        ICommand _getChartDataCommand;
 
+        public ICommand GetChartDataCommand {
+            get {
+                if (_getChartDataCommand == null)
+                    _getChartDataCommand = new DelegateCommand(GetChartData);
+                return _getChartDataCommand; }
+        }
+
+     
   
      
     

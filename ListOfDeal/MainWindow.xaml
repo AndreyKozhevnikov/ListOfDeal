@@ -319,6 +319,15 @@
                     </dxg:GridControl.View>
                 </dxg:GridControl>
             </dx:DXTabItem>
+            <dx:DXTabItem Header="Chart">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button Content="Get data chart" Command="{Binding GetChartDataCommand}"/>
+                </Grid>
+            </dx:DXTabItem>
         </dx:DXTabControl>
     </Grid>
 </dx:DXWindow>

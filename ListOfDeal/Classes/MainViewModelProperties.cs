@@ -33,13 +33,14 @@ namespace ListOfDeal {
             get {
                 if (_getChartDataCommand == null)
                     _getChartDataCommand = new DelegateCommand(GetChartData);
-                return _getChartDataCommand; }
+                return _getChartDataCommand;
+            }
         }
 
-     
-  
-     
-    
+
+
+
+
 
         MyProject _currentProject;
         MyAction _currentAction;
@@ -47,11 +48,11 @@ namespace ListOfDeal {
 
         MyAction _selectedAction;
 
-    
+
 
         int _selectedTabIndex;
 
-    
+
 
 
         public ICommand AddNewProjectCommand {
@@ -81,26 +82,30 @@ namespace ListOfDeal {
             get {
                 if (_openNewInfoCommand == null)
                     _openNewInfoCommand = new DelegateCommand<string>(OpenNewInfo);
-                return _openNewInfoCommand; }
+                return _openNewInfoCommand;
+            }
         }
         public ICommand ProvideActiveActionsCommand {
             get {
                 if (_provideActiveActionsCommand == null)
                     _provideActiveActionsCommand = new DelegateCommand(ProvideActiveActions);
-                return _provideActiveActionsCommand; }
+                return _provideActiveActionsCommand;
+            }
         }
         public ICommand CustomRowFilterCommand {
             get {
                 if (_customRowFilterCommand == null)
                     _customRowFilterCommand = new DelegateCommand<RowFilterEventArgs>(CustomRowFilter);
-                return _customRowFilterCommand; }
+                return _customRowFilterCommand;
+            }
         }
         public ICommand ExportGridsCommand {
             get {
                 if (_exportGridsCommand == null)
                     _exportGridsCommand = new DelegateCommand(ExportGrids);
-                return _exportGridsCommand; }
-           
+                return _exportGridsCommand;
+            }
+
         }
 
 
@@ -108,7 +113,8 @@ namespace ListOfDeal {
             get {
                 if (_saveChangesCommand == null)
                     _saveChangesCommand = new DelegateCommand(SaveChanges);
-                return _saveChangesCommand; }
+                return _saveChangesCommand;
+            }
         }
         public ICommand PreviewKeyProjectsCommand {
             get {
@@ -136,16 +142,17 @@ namespace ListOfDeal {
             get {
                 if (_goToParentProjectCommand == null)
                     _goToParentProjectCommand = new DelegateCommand<MyAction>(GoToParentProject);
-                return _goToParentProjectCommand; }
+                return _goToParentProjectCommand;
+            }
         }
 
-    
 
-    
-    
-   
 
-     
+
+
+
+
+
         public MyProject CurrentProject {
             get { return _currentProject; }
             set {
@@ -182,13 +189,22 @@ namespace ListOfDeal {
         public ObservableCollection<ActionTrigger> ActionTriggers { get; set; }
         public ObservableCollection<ActionStatus> ActionStatuses { get; set; }
         public ObservableCollection<DelegatePerson> DelegatePersons { get; set; }
+        ObservableCollection<DayData> _allDayData;
+
+        public ObservableCollection<DayData> AllDayData {
+            get { return _allDayData; }
+            set { _allDayData = value;
+            RaisePropertyChanged("AllDayData");
+            }
+        }
 
         ObservableCollection<MyAction> _activeActions;
 
         public ObservableCollection<MyAction> ActiveActions {
             get { return _activeActions; }
-            set { _activeActions = value;
-            RaisePropertyChanged("ActiveActions");
+            set {
+                _activeActions = value;
+                RaisePropertyChanged("ActiveActions");
             }
         }
 

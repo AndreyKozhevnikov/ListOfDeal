@@ -254,15 +254,17 @@ namespace ListOfDeal {
                             TDate = pd.TDate,
                             CountIn = pd.CountIn,
                             CountOut = result2.cntout,
-                            Delta=pd.CountIn-result2.cntout
+                            Delta = pd.CountIn - result2.cntout
                         };
 
-            ObservableCollection<DayData> AllDayData = new ObservableCollection<DayData>(coll2);
+            var col3 = coll2.ToList();
+          
             int k = 0;
-            foreach (DayData d in AllDayData) {
+            foreach (DayData d in col3) {
                 d.Summary = d.Delta + k;
                 k = d.Summary;
             }
+            AllDayData = new ObservableCollection<DayData>(col3);
         }
     }
 }

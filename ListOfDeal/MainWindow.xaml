@@ -328,7 +328,7 @@
                     </Grid.RowDefinitions>
                     <Button Content="Get data chart" Command="{Binding GetChartDataCommand}"/>
                     <dxc:ChartControl Grid.Row="1" >
-                        <dxc:XYDiagram2D  EnableAxisYNavigation="True" EnableAxisXNavigation="True" >
+                        <dxc:XYDiagram2D>
                             <dxc:XYDiagram2D.AxisY>
                                 <dxc:AxisY2D>
                                     <dxc:AxisY2D.WholeRange>

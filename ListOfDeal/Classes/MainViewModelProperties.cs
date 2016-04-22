@@ -51,7 +51,14 @@ namespace ListOfDeal {
 
 
         int _selectedTabIndex;
+        int _chartMinValue;
 
+        public int ChartMinValue {
+            get { return _chartMinValue; }
+            set { _chartMinValue = value;
+            RaisePropertyChanged("ChartMinValue");
+            }
+        }
 
 
 

@@ -229,7 +229,7 @@ namespace ListOfDeal {
             var minDate = allActions.Min(x => x.DateCreated).Date;
             var todayDate = DateTime.Today;
             var count = (todayDate - minDate).Days;
-            var dates = Enumerable.Range(0, count + 10).Select(offset => minDate.AddDays(offset)).ToList();
+            var dates = Enumerable.Range(0, count).Select(offset => minDate.AddDays(offset)).ToList();
 
             var startDates = allActions.GroupBy(x => x.DateCreated.Date).Select(d => new { dt = d.Key, cntin = d.Count() }).ToList();
             var finishDates = allActions.Where(x => x.CompleteTime.HasValue).GroupBy(x => x.CompleteTime.Value.Date).Select(d => new { dt = d.Key, cntout = d.Count() }).ToList();
@@ -264,6 +264,8 @@ namespace ListOfDeal {
                 d.Summary = d.Delta + k;
                 k = d.Summary;
             }
+            ChartMinValue = col3.Where(x=>x.TDate>new DateTime(2016,4,10)).Min(x => x.Summary)-10;
+            col3.RemoveAt(0);
             AllDayData = new ObservableCollection<DayData>(col3);
         }
     }

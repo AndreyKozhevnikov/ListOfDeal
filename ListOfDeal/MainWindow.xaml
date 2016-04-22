@@ -328,10 +328,14 @@
                     </Grid.RowDefinitions>
                     <Button Content="Get data chart" Command="{Binding GetChartDataCommand}"/>
                     <dxc:ChartControl Grid.Row="1" >
-                        <dxc:ChartControl.CrosshairOptions>
-                            <dxc:CrosshairOptions GroupHeaderPattern="{}{A:MMM yy}"/>
-                        </dxc:ChartControl.CrosshairOptions>
                         <dxc:XYDiagram2D  EnableAxisYNavigation="True" EnableAxisXNavigation="True" >
+                            <dxc:XYDiagram2D.AxisY>
+                                <dxc:AxisY2D>
+                                    <dxc:AxisY2D.WholeRange>
+                                        <dxc:Range MinValue="{Binding ChartMinValue}"/>
+                                    </dxc:AxisY2D.WholeRange>
+                                </dxc:AxisY2D>
+                            </dxc:XYDiagram2D.AxisY>
                             <dxc:XYDiagram2D.SecondaryAxesY>
                                 <dxc:SecondaryAxisY2D Name="secondaryAxisY"  />
                             </dxc:XYDiagram2D.SecondaryAxesY>
@@ -339,19 +343,23 @@
                                        ArgumentDataMember="TDate"
                                        DisplayName="Sum"
                                        DataSource="{Binding AllDayData}"
+                                               LabelsVisibility="True"
                                        >
+                                <dxc:LineSeries2D.Label>
+                                    <dxc:SeriesLabel ResolveOverlappingMode="Default"
+                                                     TextPattern="{}{V:F2}"/>
+                                </dxc:LineSeries2D.Label>
                             </dxc:LineSeries2D>
-
                             <dxc:BarSideBySideSeries2D Name="series1"
                                                             dxc:XYDiagram2D.SeriesAxisY="{Binding ElementName=secondaryAxisY}" 
                                                           ValueDataMember="CountIn"
                                        ArgumentDataMember="TDate"
                                        DisplayName="In"
                                        DataSource="{Binding AllDayData}"
+                                                        LabelsVisibility="True"
                                                        >
                                 <dxc:BarSideBySideSeries2D.Label>
                                     <dxc:SeriesLabel ResolveOverlappingMode="Default"
-                                               
                                                      TextPattern="{}{V:F2}"/>
                                 </dxc:BarSideBySideSeries2D.Label>
 
@@ -369,14 +377,7 @@
                                                      Visibility="Visible"
                                                      TextPattern="{}{V:F2}"/>
                                 </dxc:BarSideBySideSeries2D.Label>
-
                             </dxc:BarSideBySideSeries2D>
-                            <!--<dxc:LineSeries2D  ValueDataMember="SumAll"
-                                       DisplayName="All"
-                                       ArgumentDataMember="DayDate" 
-                              dxc:XYDiagram2D.SeriesAxisY="{Binding ElementName=secondaryAxisY}" 
-                                       DataSource="{Binding DateChartCollection}">
-                            </dxc:LineSeries2D>-->
                         </dxc:XYDiagram2D>
                         <dxc:ChartControl.Legend>
                             <dxc:Legend/>

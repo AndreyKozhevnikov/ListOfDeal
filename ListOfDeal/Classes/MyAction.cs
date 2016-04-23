@@ -140,7 +140,11 @@ namespace ListOfDeal {
                 return null;
             }
         }
-
+        public DateTime? CompleteTime {
+            get {
+                return parentEntity.CompleteTime;
+            }
+        }
         internal void CopyProperties(MyAction act) {
             this.Name = act.Name;
             this.StatusId = act.StatusId;

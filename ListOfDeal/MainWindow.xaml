@@ -44,6 +44,9 @@
             <dx:DXTabItem Header="Chart">
                 <views:ChartView/>
             </dx:DXTabItem>
+            <dx:DXTabItem Header="History">
+                <views:HistoryView/>
+            </dx:DXTabItem>
         </dx:DXTabControl>
     </Grid>
 </dx:DXWindow>

@@ -56,6 +56,16 @@ namespace ListOfDeal {
         ICommand _customSummaryCommand;
         ICommand _goToParentProjectCommand;
         ICommand _getChartDataCommand;
+        ICommand _getActionsHistoryCommand;
+
+        public ICommand GetActionsHistoryCommand {
+            get {
+                if (_getActionsHistoryCommand == null)
+                    _getActionsHistoryCommand = new DelegateCommand(GetActionsHistory);
+                return _getActionsHistoryCommand; }
+        }
+
+   
         public ICommand AddNewProjectCommand {
             get {
                 if (_addNewProjectCommand == null)
@@ -194,7 +204,14 @@ namespace ListOfDeal {
         ObservableCollection<MyAction> _waitedActions;
         ObservableCollection<MyAction> _scheduledActions;
         ObservableCollection<MyAction> _delegatedActions;
- 
+        ObservableCollection<HistoryActionItem> _actionsHistoryCollection;
+
+        public ObservableCollection<HistoryActionItem> ActionsHistoryCollection {
+            get { return _actionsHistoryCollection; }
+            set { _actionsHistoryCollection = value;
+            RaisePropertyChanged("ActionsHistoryCollection");
+            }
+        }
         public ObservableCollection<DayData> AllDayData {
             get { return _allDayData; }
             set {

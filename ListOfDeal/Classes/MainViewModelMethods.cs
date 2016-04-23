@@ -259,5 +259,16 @@ namespace ListOfDeal {
             col3.RemoveAt(0);
             AllDayData = new ObservableCollection<DayData>(col3);
         }
+        private void GetActionsHistory() {
+            var allActEnt = generalEntity.Actions;
+            var allAct = new List<MyAction>();
+            foreach (Action a in allActEnt) {
+                allAct.Add(new MyAction(a));
+            }
+            var complAct = allAct.Where(x => x.CompleteTime != null);
+            allAct.Concat(complAct);
+            var v1 = allAct.Select(x => new HistoryActionItem { Action = x, IsCompleted = x.CompleteTime.HasValue, FinalDate = x.CompleteTime.HasValue ?  x.CompleteTime:x.DateCreated  });
+            ActionsHistoryCollection = new ObservableCollection<HistoryActionItem>(v1);
+        }
     }
 }

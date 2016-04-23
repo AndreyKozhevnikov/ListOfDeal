@@ -11,6 +11,7 @@ using System.Windows.Input;
 
 namespace ListOfDeal {
     public partial class MainViewModel {
+
         public MainViewModel() {
             InitializeData();
         }
@@ -43,6 +44,13 @@ namespace ListOfDeal {
             else {
                 generalEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesHome");
             }
+#if DEBUG
+            if (machineName == "KOZHEVNIKOV-W8")
+                generalEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWorkTest");
+            else
+                generalEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesHomeTest");
+#endif
+
         }
 
         private void CreateNewProject() {
@@ -229,7 +237,7 @@ namespace ListOfDeal {
             var minDate = allActions.Min(x => x.DateCreated).Date;
             var todayDate = DateTime.Today;
             var count = (todayDate - minDate).Days;
-            var dates = Enumerable.Range(0, count+1).Select(offset => minDate.AddDays(offset)).ToList();
+            var dates = Enumerable.Range(0, count + 1).Select(offset => minDate.AddDays(offset)).ToList();
 
             var startDates = allActions.GroupBy(x => x.DateCreated.Date).Select(d => new { dt = d.Key, cntin = d.Count() }).ToList();
             var finishDates = allActions.Where(x => x.CompleteTime.HasValue).GroupBy(x => x.CompleteTime.Value.Date).Select(d => new { dt = d.Key, cntout = d.Count() }).ToList();
@@ -258,13 +266,13 @@ namespace ListOfDeal {
                         };
 
             var col3 = coll2.ToList();
-          
+
             int k = 0;
             foreach (DayData d in col3) {
                 d.Summary = d.Delta + k;
                 k = d.Summary;
             }
-            ChartMinValue = col3.Where(x=>x.TDate>new DateTime(2016,4,10)).Min(x => x.Summary)-10;
+            ChartMinValue = col3.Where(x => x.TDate > new DateTime(2016, 4, 10)).Min(x => x.Summary) - 10;
             col3.RemoveAt(0);
             AllDayData = new ObservableCollection<DayData>(col3);
         }

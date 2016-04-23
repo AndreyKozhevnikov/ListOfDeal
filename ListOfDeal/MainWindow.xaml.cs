@@ -26,6 +26,9 @@ namespace ListOfDeal {
           
             this.DataContext = new MainViewModel();
             InitializeComponent();
+#if DEBUG
+            this.Title = this.Title + " Debug mode";
+#endif
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {

@@ -151,7 +151,7 @@ namespace ListOfDeal {
             }
         }
         private void ProvideActions() {
-            var allActions = Projects.Where(x => x.StatusId == 1).SelectMany(x => x.Actions);
+            var allActions = Projects.Where(x => x.StatusId == 1).SelectMany(x => x.Actions).Where(x=>x.IsActive);
             var actActions = allActions.Where(x => x.StatusId == 1);
             var shedActions = allActions.Where(x => x.StatusId == 2);
             var delActions = allActions.Where(x => x.StatusId == 3);

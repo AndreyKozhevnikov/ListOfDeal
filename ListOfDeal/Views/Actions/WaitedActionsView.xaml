@@ -16,14 +16,11 @@
             <RowDefinition Height="23"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button Content="Get Data" Command="{Binding ProvideActiveActionsCommand}"/>
+        <Button Content="Get Data" Command="{Binding ProvideActionsCommand}"/>
         <Button Content="Export" Command="{Binding ExportGridsCommand}" Grid.Row="1"/>
-        <dxg:GridControl Grid.Row="2" Tag="WaitedActionsGrid" x:Name="InnerGrid" x:FieldModifier="public"
-                                     ItemsSource="{Binding ActiveActions}" AutoExpandAllGroups="True"
+        <dxg:GridControl Grid.Row="2" x:Name="InnerGrid" x:FieldModifier="public"
+                                     ItemsSource="{Binding WaitedActions}" AutoExpandAllGroups="True"
                                      >
-            <dxmvvm:Interaction.Behaviors>
-                <dxmvvm:EventToCommand EventName="CustomRowFilter" PassEventArgsToCommand="True" Command="{Binding CustomRowFilterCommand}"/>
-            </dxmvvm:Interaction.Behaviors>
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Name" Width="550"/>
                 <dxg:GridColumn FieldName="TriggerId" GroupIndex="0" >

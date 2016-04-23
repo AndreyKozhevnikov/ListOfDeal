@@ -15,27 +15,9 @@ namespace ListOfDeal {
     public partial class MainViewModel :MyBindableBase, ISupportServices {
 
         public static ListOfDealBaseEntities generalEntity;
-        ICommand _addNewProjectCommand;
-        ICommand _addActionCommand;
-        ICommand _openEditProjectCommand;
-        ICommand _openNewInfoCommand;
-        ICommand _provideActiveActionsCommand;
-        ICommand _customRowFilterCommand;
-        ICommand _exportGridsCommand;
-        ICommand _saveChangesCommand;
-        ICommand _previewKeyProjectsCommand;
-        ICommand _previewKeyActionsCommand;
-        ICommand _customSummaryCommand;
-        ICommand _goToParentProjectCommand;
-        ICommand _getChartDataCommand;
+        
 
-        public ICommand GetChartDataCommand {
-            get {
-                if (_getChartDataCommand == null)
-                    _getChartDataCommand = new DelegateCommand(GetChartData);
-                return _getChartDataCommand;
-            }
-        }
+        
 
 
 
@@ -55,13 +37,25 @@ namespace ListOfDeal {
 
         public int ChartMinValue {
             get { return _chartMinValue; }
-            set { _chartMinValue = value;
-            RaisePropertyChanged("ChartMinValue");
+            set {
+                _chartMinValue = value;
+                RaisePropertyChanged("ChartMinValue");
             }
         }
 
-
-
+        #region Commands
+        ICommand _addNewProjectCommand;
+        ICommand _addActionCommand;
+        ICommand _openEditProjectCommand;
+        ICommand _openNewInfoCommand;
+        ICommand _provideActionsCommand;
+        ICommand _exportGridsCommand;
+        ICommand _saveChangesCommand;
+        ICommand _previewKeyProjectsCommand;
+        ICommand _previewKeyActionsCommand;
+        ICommand _customSummaryCommand;
+        ICommand _goToParentProjectCommand;
+        ICommand _getChartDataCommand;
         public ICommand AddNewProjectCommand {
             get {
                 if (_addNewProjectCommand == null)
@@ -92,20 +86,14 @@ namespace ListOfDeal {
                 return _openNewInfoCommand;
             }
         }
-        public ICommand ProvideActiveActionsCommand {
+        public ICommand ProvideActionsCommand {
             get {
-                if (_provideActiveActionsCommand == null)
-                    _provideActiveActionsCommand = new DelegateCommand(ProvideActiveActions);
-                return _provideActiveActionsCommand;
+                if (_provideActionsCommand == null)
+                    _provideActionsCommand = new DelegateCommand(ProvideActions);
+                return _provideActionsCommand;
             }
         }
-        public ICommand CustomRowFilterCommand {
-            get {
-                if (_customRowFilterCommand == null)
-                    _customRowFilterCommand = new DelegateCommand<RowFilterEventArgs>(CustomRowFilter);
-                return _customRowFilterCommand;
-            }
-        }
+  
         public ICommand ExportGridsCommand {
             get {
                 if (_exportGridsCommand == null)
@@ -152,8 +140,14 @@ namespace ListOfDeal {
                 return _goToParentProjectCommand;
             }
         }
-
-
+        public ICommand GetChartDataCommand {
+            get {
+                if (_getChartDataCommand == null)
+                    _getChartDataCommand = new DelegateCommand(GetChartData);
+                return _getChartDataCommand;
+            }
+        }
+        #endregion
 
 
 
@@ -197,21 +191,37 @@ namespace ListOfDeal {
         public ObservableCollection<ActionStatus> ActionStatuses { get; set; }
         public ObservableCollection<DelegatePerson> DelegatePersons { get; set; }
         ObservableCollection<DayData> _allDayData;
-
+        ObservableCollection<MyAction> _waitedActions;
+        ObservableCollection<MyAction> _scheduledActions;
+        ObservableCollection<MyAction> _delegatedActions;
+ 
         public ObservableCollection<DayData> AllDayData {
             get { return _allDayData; }
-            set { _allDayData = value;
-            RaisePropertyChanged("AllDayData");
+            set {
+                _allDayData = value;
+                RaisePropertyChanged("AllDayData");
             }
         }
 
-        ObservableCollection<MyAction> _activeActions;
-
-        public ObservableCollection<MyAction> ActiveActions {
-            get { return _activeActions; }
+        public ObservableCollection<MyAction> WaitedActions {
+            get { return _waitedActions; }
             set {
-                _activeActions = value;
-                RaisePropertyChanged("ActiveActions");
+                _waitedActions = value;
+                RaisePropertyChanged("WaitedActions");
+            }
+        }
+        public ObservableCollection<MyAction> ScheduledActions {
+            get { return _scheduledActions; }
+            set {
+                _scheduledActions = value;
+                RaisePropertyChanged("ScheduledActions");
+            }
+        }
+        public ObservableCollection<MyAction> DelegatedActions {
+            get { return _delegatedActions; }
+            set {
+                _delegatedActions = value;
+                RaisePropertyChanged("DelegatedActions");
             }
         }
 

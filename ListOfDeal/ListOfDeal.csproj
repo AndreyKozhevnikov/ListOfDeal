@@ -103,18 +103,41 @@
     </ApplicationDefinition>
     <Compile Include="Classes\DayData.cs" />
     <Compile Include="Classes\Services.cs" />
+    <Compile Include="Views\ChartView.xaml.cs">
+      <DependentUpon>ChartView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Actions\DelegatedActionsView.xaml.cs">
+      <DependentUpon>DelegatedActionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EnterNewProjectView.xaml.cs">
+      <DependentUpon>EnterNewProjectView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ProjectsView.xaml.cs">
       <DependentUpon>ProjectsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Actions\ScheduledActionsView.xaml.cs">
+      <DependentUpon>ScheduledActionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Actions\WaitedActionsView.xaml.cs">
+      <DependentUpon>WaitedActionsView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ActiveActionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CreateNewInfo.xaml">
+    <Page Include="Views\ChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditProject.xaml">
+    <Page Include="Views\PopupWindows\CreateNewInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Actions\DelegatedActionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PopupWindows\EditProject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -148,17 +171,29 @@
     <Compile Include="Views\ActiveActionsView.xaml.cs">
       <DependentUpon>ActiveActionsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CreateNewInfo.xaml.cs">
+    <Compile Include="Views\PopupWindows\CreateNewInfo.xaml.cs">
       <DependentUpon>CreateNewInfo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditProject.xaml.cs">
+    <Compile Include="Views\PopupWindows\EditProject.xaml.cs">
       <DependentUpon>EditProject.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\EnterNewProjectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ProjectsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Actions\ScheduledActionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Actions\WaitedActionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -240,9 +275,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\done_eM5_1.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\done_9Lq_1.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

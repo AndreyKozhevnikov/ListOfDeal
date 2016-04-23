@@ -1,0 +1,133 @@
+﻿<UserControl x:Class="ListOfDeal.Views.EnterNewProjectView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:local="clr-namespace:ListOfDeal"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:views="clr-namespace:ListOfDeal.Views"  
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <dxmvvm:ObjectToBooleanConverter x:Key="objToBoolConverter"/>
+    </UserControl.Resources>
+    <dxlc:LayoutGroup Orientation="Vertical">
+        <dxlc:LayoutGroup>
+            <dxlc:LayoutGroup Orientation="Vertical" x:Name="ProjectsGroup">
+                <dxmvvm:Interaction.Behaviors>
+                    <dxmvvm:EventToCommand EventName="PreviewKeyDown" Command="{Binding PreviewKeyProjectsCommand}" PassEventArgsToCommand="True"/>
+                </dxmvvm:Interaction.Behaviors>
+                <dxlc:LayoutItem Label="Name:">
+                    <dxe:TextEdit EditValue="{Binding CurrentProject.Name,UpdateSourceTrigger=PropertyChanged}"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Type:">
+                    <dxe:ComboBoxEdit ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.TypeId}">
+                        <dxe:ComboBoxEdit.Buttons>
+                            <dxe:ButtonInfo Content="+" Command="{Binding OpenNewInfoCommand}" CommandParameter="ProjectType"/>
+                        </dxe:ComboBoxEdit.Buttons>
+                    </dxe:ComboBoxEdit>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Status:">
+                    <dxe:ComboBoxEdit ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.StatusId}"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Comment:">
+                    <dxe:MemoEdit EditValue="{Binding CurrentProject.Comment}"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="DesiredResult:">
+                    <dxe:TextEdit EditValue="{Binding CurrentProject.DesiredResult}"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="IsSimpleProject">
+                    <dxe:CheckEdit EditValue="{Binding CurrentProject.IsSimpleProject}" />
+                </dxlc:LayoutItem>
+                <Button Content="Add project" Command="{Binding AddNewProjectCommand}" Height="20"/>
+                <Button Content="Open acitons" Command="{Binding OpenEditProjectCommand}" Height="20"/>
+                <Button Content="SaveChanges"  Height="20" Command="{Binding SaveChangesCommand}"/>
+                <Button Content="test" Click="Button_Click" Height="35"/>
+            </dxlc:LayoutGroup>
+            <dxlc:LayoutGroup Orientation="Vertical" x:Name="ActionGroup" >
+                <dxlc:LayoutGroup.Style>
+                    <Style TargetType="dxlc:LayoutGroup">
+                        <Setter Property="IsEnabled" Value="False"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedAction,Converter={StaticResource objToBoolConverter}}" Value="True">
+                                <Setter Property="IsEnabled" Value="True"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedProject,Converter={StaticResource objToBoolConverter}}" Value="True">
+                                <Setter Property="IsEnabled" Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </dxlc:LayoutGroup.Style>
+                <dxmvvm:Interaction.Behaviors>
+                    <dxmvvm:EventToCommand EventName="PreviewKeyDown" Command="{Binding PreviewKeyActionsCommand}" PassEventArgsToCommand="True"/>
+                </dxmvvm:Interaction.Behaviors>
+                <dxlc:LayoutItem Label="Name:">
+                    <dxe:TextEdit EditValue="{Binding CurrentAction.Name,UpdateSourceTrigger=PropertyChanged}"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Trigger:">
+                    <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.TriggerId}" ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name">
+                        <dxe:ComboBoxEdit.Buttons>
+                            <dxe:ButtonInfo Content="+" Command="{Binding OpenNewInfoCommand}" CommandParameter="Trigger"/>
+                        </dxe:ComboBoxEdit.Buttons>
+                    </dxe:ComboBoxEdit>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Status:">
+                    <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.StatusId,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="ScheduledTime:">
+                    <dxlc:LayoutItem.Style>
+                        <Style TargetType="dxlc:LayoutItem">
+                            <Setter Property="IsEnabled" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentAction.StatusId}" Value="2">
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </dxlc:LayoutItem.Style>
+                    <dxe:DateEdit EditValue="{Binding CurrentAction.ScheduledTime}"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="DelegatedTo:">
+                    <dxlc:LayoutItem.Style>
+                        <Style TargetType="dxlc:LayoutItem">
+                            <Setter Property="IsEnabled" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentAction.StatusId}" Value="3">
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </dxlc:LayoutItem.Style>
+                    <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.DelegatedTo}" ItemsSource="{Binding DelegatePersons}" ValueMember="Id" DisplayMember="Name" />
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="IsActive:">
+                    <dxe:CheckEdit EditValue="{Binding CurrentAction.IsActive}"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Comment:">
+                    <dxe:MemoEdit EditValue="{Binding CurrentAction.Comment}" />
+                </dxlc:LayoutItem>
+                <Button  Command="{Binding AddActionCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedProject,Converter={StaticResource objToBoolConverter}}" Value="True">
+                                    <Setter Property="Content" Value="{Binding SelectedProject.Name}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SelectedAction,Converter={StaticResource objToBoolConverter}}" Value="True">
+                                    <Setter Property="Content" Value="{Binding SelectedAction.ProjectName}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </dxlc:LayoutGroup>
+        </dxlc:LayoutGroup>
+        <views:ProjectsView x:Name="mainProject">
+            <dxmvvm:Interaction.Behaviors>
+                <local:GridControlManagerService/>
+            </dxmvvm:Interaction.Behaviors>
+        </views:ProjectsView>
+    </dxlc:LayoutGroup>
+</UserControl>

@@ -1,5 +1,6 @@
 ﻿using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Grid;
+using ListOfDeal.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;

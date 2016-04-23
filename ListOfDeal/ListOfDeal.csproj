@@ -121,10 +121,6 @@
     <Compile Include="Views\Actions\WaitedActionsView.xaml.cs">
       <DependentUpon>WaitedActionsView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\ActiveActionsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -167,9 +163,6 @@
     <Compile Include="Classes\MyProject.cs" />
     <Compile Include="DelegatePerson.cs">
       <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ActiveActionsView.xaml.cs">
-      <DependentUpon>ActiveActionsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PopupWindows\CreateNewInfo.xaml.cs">
       <DependentUpon>CreateNewInfo.xaml</DependentUpon>

@@ -46,7 +46,7 @@
                 </dxg:GridColumn.CellTemplate>
             </dxg:GridColumn>
             <dxg:GridColumn FieldName="DesiredResult"/>
-            <dxg:GridColumn FieldName="StatusId" SortIndex="0" SortOrder="Descending" >
+            <dxg:GridColumn FieldName="StatusId">
                 <dxmvvm:Interaction.Behaviors>
                     <dxmvvm:EventToCommand EventName="Validate" Command="{Binding ValidateColumnCommand}" PassEventArgsToCommand="True"/>
                 </dxmvvm:Interaction.Behaviors>

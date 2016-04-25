@@ -12,12 +12,12 @@ using DevExpress.Xpf.Grid;
 using DevExpress.Data;
 
 namespace ListOfDeal {
-    public partial class MainViewModel :MyBindableBase, ISupportServices {
+    public partial class MainViewModel : MyBindableBase, ISupportServices {
 
         public static ListOfDealBaseEntities generalEntity;
-        
 
-        
+
+
 
 
 
@@ -57,15 +57,27 @@ namespace ListOfDeal {
         ICommand _goToParentProjectCommand;
         ICommand _getChartDataCommand;
         ICommand _getActionsHistoryCommand;
+        ICommand _validateColumnCommand;
 
+        public ICommand ValidateColumnCommand {
+            get {
+                if (_validateColumnCommand == null)
+                    _validateColumnCommand = new DelegateCommand<GridRowValidationEventArgs>(ValidateColumn);
+                return _validateColumnCommand;
+            }
+
+        }
+
+   
         public ICommand GetActionsHistoryCommand {
             get {
                 if (_getActionsHistoryCommand == null)
                     _getActionsHistoryCommand = new DelegateCommand(GetActionsHistory);
-                return _getActionsHistoryCommand; }
+                return _getActionsHistoryCommand;
+            }
         }
 
-   
+
         public ICommand AddNewProjectCommand {
             get {
                 if (_addNewProjectCommand == null)
@@ -103,7 +115,7 @@ namespace ListOfDeal {
                 return _provideActionsCommand;
             }
         }
-  
+
         public ICommand ExportGridsCommand {
             get {
                 if (_exportGridsCommand == null)
@@ -208,8 +220,9 @@ namespace ListOfDeal {
 
         public ObservableCollection<HistoryActionItem> ActionsHistoryCollection {
             get { return _actionsHistoryCollection; }
-            set { _actionsHistoryCollection = value;
-            RaisePropertyChanged("ActionsHistoryCollection");
+            set {
+                _actionsHistoryCollection = value;
+                RaisePropertyChanged("ActionsHistoryCollection");
             }
         }
         public ObservableCollection<DayData> AllDayData {

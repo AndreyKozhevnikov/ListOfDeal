@@ -46,7 +46,7 @@ namespace ListOfDeal {
             }
 #if DEBUG
             if (machineName == "KOZHEVNIKOV-W8")
-                generalEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWorkTest");
+                generalEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWork");
             else
                 generalEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesHomeTest");
 #endif
@@ -269,6 +269,16 @@ namespace ListOfDeal {
             allAct.Concat(complAct);
             var v1 = allAct.Select(x => new HistoryActionItem { Action = x, IsCompleted = x.CompleteTime.HasValue, FinalDate = x.CompleteTime.HasValue ?  x.CompleteTime:x.DateCreated  });
             ActionsHistoryCollection = new ObservableCollection<HistoryActionItem>(v1);
+        }
+        private void ValidateColumn(GridRowValidationEventArgs e) {
+            MyProject p = e.Row as MyProject;
+            var v =(int) e.Value;
+            if (v == 3 && p.Actions.Where(x=>x.StatusId!=4).Count()>0) {
+                e.ErrorContent = "there are active actions";
+                e.IsValid = false;
+                e.Handled = true;
+            }
+            
         }
     }
 }

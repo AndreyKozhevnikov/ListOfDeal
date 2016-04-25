@@ -13,6 +13,7 @@
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Action.ProjectName" Width="400"/>
                 <dxg:GridColumn FieldName="Action.Name" Width="400"/>
+                <dxg:GridColumn FieldName="Action.Comment" Width="400"/>
                 <dxg:GridColumn FieldName="FinalDate" GroupInterval="Date" GroupIndex="0"/>
                 <dxg:GridColumn FieldName="IsCompleted" GroupIndex="1"/>
             </dxg:GridControl.Columns>

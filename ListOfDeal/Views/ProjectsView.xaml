@@ -26,7 +26,7 @@
         </dxmvvm:Interaction.Behaviors>
         <dxg:GridControl.Columns>
             <dxg:GridColumn FieldName="Name" Width="490"/>
-            <dxg:GridColumn FieldName="DateCreated" SortIndex="1" SortOrder="Ascending" AllowEditing="False"/>
+            <dxg:GridColumn FieldName="DateCreated" AllowEditing="False"/>
             <dxg:GridColumn FieldName="TypeId" GroupIndex="0">
                 <dxg:GridColumn.EditSettings>
                     <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" />

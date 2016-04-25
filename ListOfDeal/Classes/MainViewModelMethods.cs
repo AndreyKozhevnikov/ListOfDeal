@@ -24,7 +24,7 @@ namespace ListOfDeal {
             ActionStatuses = new ObservableCollection<ActionStatus>(generalEntity.ActionStatuses);
             DelegatePersons = new ObservableCollection<DelegatePerson>(generalEntity.DelegatePersons);
             Projects = new ObservableCollection<MyProject>();
-            var actProjects = generalEntity.Projects.Where(x => x.StatusId != 3).OrderByDescending(x=>x.StatusId);
+            var actProjects = generalEntity.Projects.Where(x => x.StatusId != 3).OrderBy(x=>x.StatusId).ThenBy(x=>x.DateCreated);
             foreach (var p in actProjects) {
                 Projects.Add(new MyProject(p));
             }

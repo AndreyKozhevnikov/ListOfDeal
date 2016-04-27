@@ -74,8 +74,8 @@ namespace ListOfDeal {
         }
 
         protected override void OnAttached() {
-            var pc = this.AssociatedObject as ProjectsView;
-            this.Control= pc.grid1;
+            var pc = this.AssociatedObject as GridControl;
+            this.Control= pc;
             base.OnAttached();
         }
     }

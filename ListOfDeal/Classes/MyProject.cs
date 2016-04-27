@@ -21,12 +21,13 @@ namespace ListOfDeal {
 
         private void InitiateProject() {
             Actions = new ObservableCollection<MyAction>();
-            var listAction = parentEntity.Actions.Where(x=>x.StatusId!=4);
+            var listAction = parentEntity.Actions.Where(x => x.StatusId != 4).OrderBy(x => x.OrderNumber);
             foreach (var a in listAction) {
                 MyAction act = new MyAction(a);
                 act.PropertyChanged+=act_PropertyChanged;
                 Actions.Add(act);
             }
+         
         }
         public void AddAction(MyAction act) {
             if (IsSimpleProject && Actions.Count == 1) {

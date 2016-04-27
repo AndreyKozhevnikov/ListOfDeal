@@ -34,9 +34,6 @@
             <dx:DXTabItem Header="Enter new project">
                 <views:EnterNewProjectView/>
             </dx:DXTabItem>
-            <dx:DXTabItem Header="AllProjects">
-                <views:ProjectsView/>
-            </dx:DXTabItem>
             <dx:DXTabItem Header="Waited">
                 <views:WaitedActionsView x:Name="WaitedActionsView"/>
             </dx:DXTabItem>

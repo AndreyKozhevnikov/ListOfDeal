@@ -53,7 +53,7 @@
                                                             dxc:XYDiagram2D.SeriesAxisY="{Binding ElementName=secondaryAxisY}" 
                                                           ValueDataMember="CountOut"
                                        ArgumentDataMember="TDate"
-                                       DisplayName="In"
+                                       DisplayName="Out"
                                        DataSource="{Binding AllDayData}"
                                                        LabelsVisibility="True"
                                                        >

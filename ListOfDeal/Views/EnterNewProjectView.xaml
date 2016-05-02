@@ -136,11 +136,12 @@
                 <dxmvvm:Interaction.Behaviors>
                     <local:GridControlManagerService/>
                     <dxmvvm:EventToCommand EventName="CustomSummary" Command="{Binding CustomSummaryCommand}" PassEventArgsToCommand="True"/>
+                    <dxmvvm:EventToCommand EventName="CustomColumnSort" Command="{Binding CustomColumnSortCommand}" PassEventArgsToCommand="True"/>
                     </dxmvvm:Interaction.Behaviors>
                     <dxg:GridControl.Columns>
                         <dxg:GridColumn FieldName="Name" Width="490"/>
                         <dxg:GridColumn FieldName="DateCreated" AllowEditing="False"/>
-                        <dxg:GridColumn FieldName="TypeId" GroupIndex="0">
+                        <dxg:GridColumn FieldName="TypeId" GroupIndex="0" SortMode="Custom">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" />
                             </dxg:GridColumn.EditSettings>

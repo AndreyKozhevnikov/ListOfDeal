@@ -70,6 +70,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="OrderNumber" Type="int" />
         </EntityType>
         <Association Name="FK_Actions_ActionStatuses">
           <End Role="ActionStatuses" Type="Self.ActionStatuses" Multiplicity="1" />
@@ -306,6 +307,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Projects" Relationship="ListOfDealBaseModel.FK_Projects_ProejctTypes1" FromRole="ProjectType" ToRole="Project" />
+          <Property Name="OrderNumber" Type="Int32" />
         </EntityType>
         <Association Name="FK_Projects_ProejctTypes1">
           <End Type="ListOfDealBaseModel.ProjectType" Role="ProjectType" Multiplicity="1" />
@@ -429,6 +431,7 @@
           <EntitySetMapping Name="ProjectTypes">
             <EntityTypeMapping TypeName="ListOfDealBaseModel.ProjectType">
               <MappingFragment StoreEntitySet="ProjectTypes">
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

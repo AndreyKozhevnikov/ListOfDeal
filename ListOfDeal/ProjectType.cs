@@ -21,6 +21,7 @@ namespace ListOfDeal
     
         public int Id { get; set; }
         public string Name { get; set; }
+        public Nullable<int> OrderNumber { get; set; }
     
         public virtual ICollection<Project> Projects { get; set; }
     }

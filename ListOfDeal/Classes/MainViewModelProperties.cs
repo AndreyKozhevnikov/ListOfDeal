@@ -58,7 +58,16 @@ namespace ListOfDeal {
         ICommand _getChartDataCommand;
         ICommand _getActionsHistoryCommand;
         ICommand _validateColumnCommand;
+        ICommand _customColumnSortCommand;
 
+        public ICommand CustomColumnSortCommand {
+            get {
+                if (_customColumnSortCommand == null)
+                    _customColumnSortCommand = new DelegateCommand<CustomColumnSortEventArgs>(CustomColumnSort);
+                return _customColumnSortCommand; }
+        }
+
+   
         public ICommand ValidateColumnCommand {
             get {
                 if (_validateColumnCommand == null)

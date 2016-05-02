@@ -18,13 +18,13 @@ namespace ListOfDeal {
         void InitializeData() {
             ConnectToDataBase();
 
-            ProjectTypes = new ObservableCollection<ProjectType>(generalEntity.ProjectTypes);
+            ProjectTypes = new ObservableCollection<ProjectType>(generalEntity.ProjectTypes.OrderBy(x => x.OrderNumber));
             ProjectStatuses = new ObservableCollection<ProjectStatus>(generalEntity.ProjectStatuses);
             ActionTriggers = new ObservableCollection<ActionTrigger>(generalEntity.ActionTriggers);
             ActionStatuses = new ObservableCollection<ActionStatus>(generalEntity.ActionStatuses);
             DelegatePersons = new ObservableCollection<DelegatePerson>(generalEntity.DelegatePersons);
             Projects = new ObservableCollection<MyProject>();
-            var actProjects = generalEntity.Projects.Where(x => x.StatusId != 3).OrderBy(x=>x.StatusId).ThenBy(x=>x.DateCreated);
+            var actProjects = generalEntity.Projects.Where(x => x.StatusId != 3).OrderBy(x => x.StatusId).ThenBy(x => x.DateCreated);
             foreach (var p in actProjects) {
                 Projects.Add(new MyProject(p));
             }
@@ -151,11 +151,11 @@ namespace ListOfDeal {
             }
         }
         private void ProvideActions() {
-            var allActions = Projects.Where(x => x.StatusId == 1).SelectMany(x => x.Actions).Where(x=>x.IsActive);
+            var allActions = Projects.Where(x => x.StatusId == 1).SelectMany(x => x.Actions).Where(x => x.IsActive);
             var actActions = allActions.Where(x => x.StatusId == 1);
             var shedActions = allActions.Where(x => x.StatusId == 2);
             var delActions = allActions.Where(x => x.StatusId == 3);
-          
+
             WaitedActions = new ObservableCollection<MyAction>(actActions);
             ScheduledActions = new ObservableCollection<MyAction>(shedActions);
             DelegatedActions = new ObservableCollection<MyAction>(delActions);
@@ -267,18 +267,29 @@ namespace ListOfDeal {
             }
             var complAct = allAct.Where(x => x.CompleteTime != null);
             allAct.Concat(complAct);
-            var v1 = allAct.Select(x => new HistoryActionItem { Action = x, IsCompleted = x.CompleteTime.HasValue, FinalDate = x.CompleteTime.HasValue ?  x.CompleteTime:x.DateCreated  });
+            var v1 = allAct.Select(x => new HistoryActionItem { Action = x, IsCompleted = x.CompleteTime.HasValue, FinalDate = x.CompleteTime.HasValue ? x.CompleteTime : x.DateCreated });
             ActionsHistoryCollection = new ObservableCollection<HistoryActionItem>(v1);
         }
         private void ValidateColumn(GridRowValidationEventArgs e) {
             MyProject p = e.Row as MyProject;
-            var v =(int) e.Value;
-            if (v == 3 && p.Actions.Where(x=>x.StatusId!=4).Count()>0) {
+            var v = (int)e.Value;
+            if (v == 3 && p.Actions.Where(x => x.StatusId != 4).Count() > 0) {
                 e.ErrorContent = "there are active actions";
                 e.IsValid = false;
                 e.Handled = true;
             }
-            
+
         }
+        private void CustomColumnSort(CustomColumnSortEventArgs e) {
+            var v1 = (int)e.Value1;
+            var v2 = (int)e.Value2;
+
+            var ordNum1 = (int)this.ProjectTypes.Where(x => x.Id == v1).First().OrderNumber;
+            var ordNum2 = (int)this.ProjectTypes.Where(x => x.Id == v2).First().OrderNumber;
+
+            e.Result = Comparer<int>.Default.Compare(ordNum1, ordNum2);
+            e.Handled = true;
+        }
+
     }
 }

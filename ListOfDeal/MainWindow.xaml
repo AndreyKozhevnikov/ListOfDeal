@@ -19,6 +19,11 @@
     <dx:DXWindow.Resources>
         <Style TargetType="dxe:ComboBoxEdit">
             <Setter Property="IsTextEditable" Value="False"/>
+            <Style.Triggers>
+                <Trigger Property="Name" Value="editor">
+                    <Setter Property="IsTextEditable" Value="True"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </dx:DXWindow.Resources>
     <dxmvvm:Interaction.Behaviors>

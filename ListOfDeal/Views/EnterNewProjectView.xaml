@@ -19,258 +19,221 @@
                     Color="#00FA9A" />
     </UserControl.Resources>
     <dxlc:LayoutControl>
-    <dxlc:LayoutGroup Orientation="Vertical">
-        <dxlc:LayoutGroup x:Name="lGroupExpand" IsCollapsible="True" View="GroupBox" Header="Add project/action"> 
-            <dxlc:LayoutGroup Orientation="Vertical" x:Name="ProjectsGroup">
-                <dxmvvm:Interaction.Behaviors>
-                    <dxmvvm:EventToCommand EventName="PreviewKeyDown" Command="{Binding PreviewKeyProjectsCommand}" PassEventArgsToCommand="True"/>
-                </dxmvvm:Interaction.Behaviors>
-                <dxlc:LayoutItem Label="Name:">
-                    <dxe:TextEdit EditValue="{Binding CurrentProject.Name,UpdateSourceTrigger=PropertyChanged}"/>
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Type:">
-                    <dxe:ComboBoxEdit ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.TypeId}">
-                        <dxe:ComboBoxEdit.Buttons>
-                            <dxe:ButtonInfo Content="+" Command="{Binding OpenNewInfoCommand}" CommandParameter="ProjectType"/>
-                        </dxe:ComboBoxEdit.Buttons>
-                    </dxe:ComboBoxEdit>
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Status:">
-                    <dxe:ComboBoxEdit ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.StatusId}"/>
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Comment:">
-                    <dxe:MemoEdit EditValue="{Binding CurrentProject.Comment}"/>
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="DesiredResult:">
-                    <dxe:TextEdit EditValue="{Binding CurrentProject.DesiredResult}"/>
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="IsSimpleProject">
-                    <dxe:CheckEdit EditValue="{Binding CurrentProject.IsSimpleProject}" />
-                </dxlc:LayoutItem>
-                <Button Content="Add project" Command="{Binding AddNewProjectCommand}" Height="20"/>
-                <Button Content="Open acitons" Command="{Binding OpenEditProjectCommand}" Height="20"/>
-                <Button Content="SaveChanges"  Height="20" Command="{Binding SaveChangesCommand}"/>
-                <Button Content="test" Click="Button_Click" Height="35"/>
-            </dxlc:LayoutGroup>
-            <dxlc:LayoutGroup Orientation="Vertical" x:Name="ActionGroup" >
-                <dxlc:LayoutGroup.Style>
-                    <Style TargetType="dxlc:LayoutGroup">
-                        <Setter Property="IsEnabled" Value="False"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding SelectedAction,Converter={StaticResource objToBoolConverter}}" Value="True">
-                                <Setter Property="IsEnabled" Value="True"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding SelectedProject,Converter={StaticResource objToBoolConverter}}" Value="True">
-                                <Setter Property="IsEnabled" Value="True"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </dxlc:LayoutGroup.Style>
-                <dxmvvm:Interaction.Behaviors>
-                    <dxmvvm:EventToCommand EventName="PreviewKeyDown" Command="{Binding PreviewKeyActionsCommand}" PassEventArgsToCommand="True"/>
-                </dxmvvm:Interaction.Behaviors>
-                <dxlc:LayoutItem Label="Name:">
-                    <dxe:TextEdit EditValue="{Binding CurrentAction.Name,UpdateSourceTrigger=PropertyChanged}"/>
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Trigger:">
-                    <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.TriggerId}" ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name">
-                        <dxe:ComboBoxEdit.Buttons>
-                            <dxe:ButtonInfo Content="+" Command="{Binding OpenNewInfoCommand}" CommandParameter="Trigger"/>
-                        </dxe:ComboBoxEdit.Buttons>
-                    </dxe:ComboBoxEdit>
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Status:">
-                    <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.StatusId,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="ScheduledTime:">
-                    <dxlc:LayoutItem.Style>
-                        <Style TargetType="dxlc:LayoutItem">
+        <dxlc:LayoutGroup Orientation="Vertical">
+            <dxlc:LayoutGroup>
+                <dxlc:LayoutGroup Orientation="Vertical" x:Name="ProjectsGroup">
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:EventToCommand EventName="PreviewKeyDown" Command="{Binding PreviewKeyProjectsCommand}" PassEventArgsToCommand="True"/>
+                    </dxmvvm:Interaction.Behaviors>
+                    <dxlc:LayoutGroup>
+                        <dxlc:LayoutItem Label="Name:">
+                            <dxe:TextEdit EditValue="{Binding CurrentProject.Name,UpdateSourceTrigger=PropertyChanged}"/>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="Type:">
+                            <dxe:ComboBoxEdit ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.TypeId}">
+                                <dxe:ComboBoxEdit.Buttons>
+                                    <dxe:ButtonInfo Content="+" Command="{Binding OpenNewInfoCommand}" CommandParameter="ProjectType"/>
+                                </dxe:ComboBoxEdit.Buttons>
+                            </dxe:ComboBoxEdit>
+                        </dxlc:LayoutItem>
+                    </dxlc:LayoutGroup>
+                    <dxlc:LayoutGroup>
+                        <dxlc:LayoutItem Label="Status:">
+                            <dxe:ComboBoxEdit ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.StatusId}"/>
+                        </dxlc:LayoutItem>
+                        <Button Content="Add project" Command="{Binding AddNewProjectCommand}" Height="20"/>
+                        <Button Content="Open acitons" Command="{Binding OpenEditProjectCommand}" Height="20"/>
+                    </dxlc:LayoutGroup>
+
+                </dxlc:LayoutGroup>
+                <dxlc:LayoutGroup Orientation="Vertical" x:Name="ActionGroup" >
+                    <dxlc:LayoutGroup.Style>
+                        <Style TargetType="dxlc:LayoutGroup">
                             <Setter Property="IsEnabled" Value="False"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding CurrentAction.StatusId}" Value="2">
-                                    <Setter Property="IsEnabled" Value="True"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </dxlc:LayoutItem.Style>
-                    <dxe:DateEdit EditValue="{Binding CurrentAction.ScheduledTime}"/>
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="DelegatedTo:">
-                    <dxlc:LayoutItem.Style>
-                        <Style TargetType="dxlc:LayoutItem">
-                            <Setter Property="IsEnabled" Value="False"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding CurrentAction.StatusId}" Value="3">
-                                    <Setter Property="IsEnabled" Value="True"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </dxlc:LayoutItem.Style>
-                    <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.DelegatedTo}" ItemsSource="{Binding DelegatePersons}" ValueMember="Id" DisplayMember="Name" />
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="IsActive:">
-                    <dxe:CheckEdit EditValue="{Binding CurrentAction.IsActive}"/>
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Comment:">
-                    <dxe:MemoEdit EditValue="{Binding CurrentAction.Comment}" />
-                </dxlc:LayoutItem>
-                <Button  Command="{Binding AddActionCommand}">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedProject,Converter={StaticResource objToBoolConverter}}" Value="True">
-                                    <Setter Property="Content" Value="{Binding SelectedProject.Name}"/>
-                                </DataTrigger>
                                 <DataTrigger Binding="{Binding SelectedAction,Converter={StaticResource objToBoolConverter}}" Value="True">
-                                    <Setter Property="Content" Value="{Binding SelectedAction.ProjectName}"/>
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SelectedProject,Converter={StaticResource objToBoolConverter}}" Value="True">
+                                    <Setter Property="IsEnabled" Value="True"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </Button.Style>
-                </Button>
+                    </dxlc:LayoutGroup.Style>
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:EventToCommand EventName="PreviewKeyDown" Command="{Binding PreviewKeyActionsCommand}" PassEventArgsToCommand="True"/>
+                    </dxmvvm:Interaction.Behaviors>
+                    <dxlc:LayoutGroup>
+                        <dxlc:LayoutItem Label="Name:">
+                            <dxe:TextEdit EditValue="{Binding CurrentAction.Name,UpdateSourceTrigger=PropertyChanged}"/>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="Status:">
+                            <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.StatusId,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
+                        </dxlc:LayoutItem>
+                    </dxlc:LayoutGroup>
+                    <dxlc:LayoutGroup>
+                        <Button Content="SaveChanges"  Height="20" Command="{Binding SaveChangesCommand}"/>
+                        <Button Content="Collapse"  Height="20"/>
+                        <!--<Button Content="test" Click="Button_Click" Height="35"/>-->
+                        <Button  Command="{Binding AddActionCommand}" Height="20">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedProject,Converter={StaticResource objToBoolConverter}}" Value="True">
+                                            <Setter Property="Content" Value="{Binding SelectedProject.Name}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SelectedAction,Converter={StaticResource objToBoolConverter}}" Value="True">
+                                            <Setter Property="Content" Value="{Binding SelectedAction.ProjectName}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </dxlc:LayoutGroup>
+
+                </dxlc:LayoutGroup>
             </dxlc:LayoutGroup>
-        </dxlc:LayoutGroup>
-                <dxg:GridControl ItemsSource="{Binding Projects}" CurrentItem="{Binding SelectedProject, Mode=TwoWay}" 
+            <dxg:GridControl ItemsSource="{Binding Projects}" CurrentItem="{Binding SelectedProject, Mode=TwoWay}" 
                      Loaded="GridControl_Loaded" x:Name="grid1" 
                      >
                 <dxmvvm:Interaction.Behaviors>
                     <local:GridControlManagerService/>
                     <dxmvvm:EventToCommand EventName="CustomSummary" Command="{Binding CustomSummaryCommand}" PassEventArgsToCommand="True"/>
                     <dxmvvm:EventToCommand EventName="CustomColumnSort" Command="{Binding CustomColumnSortCommand}" PassEventArgsToCommand="True"/>
-                    </dxmvvm:Interaction.Behaviors>
-                    <dxg:GridControl.Columns>
-                        <dxg:GridColumn FieldName="Name" Width="490"/>
-                        <dxg:GridColumn FieldName="DateCreated" AllowEditing="False"/>
-                        <dxg:GridColumn FieldName="TypeId" GroupIndex="0" SortMode="Custom">
-                            <dxg:GridColumn.EditSettings>
-                                <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" />
-                            </dxg:GridColumn.EditSettings>
-                        </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="Comment">
-                            <dxg:GridColumn.CellTemplate>
-                                <DataTemplate>
-                                    <dxe:MemoEdit Name="PART_Editor">
-                                        <dxe:MemoEdit.DisplayTemplate>
-                                            <ControlTemplate>
-                                                <TextBlock Text="{Binding Value}" Margin="3,2,0,0" MaxHeight="20"/>
-                                            </ControlTemplate>
-                                        </dxe:MemoEdit.DisplayTemplate>
-                                    </dxe:MemoEdit>
-                                </DataTemplate>
-                            </dxg:GridColumn.CellTemplate>
-                        </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="DesiredResult"/>
-                        <dxg:GridColumn FieldName="StatusId">
-                            <dxmvvm:Interaction.Behaviors>
-                                <dxmvvm:EventToCommand EventName="Validate" Command="{Binding ValidateColumnCommand}" PassEventArgsToCommand="True"/>
-                            </dxmvvm:Interaction.Behaviors>
-                            <dxg:GridColumn.EditSettings>
-                                <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" />
-                            </dxg:GridColumn.EditSettings>
-                        </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="IsSimpleProject"/>
-                    </dxg:GridControl.Columns>
-                    <dxg:GridControl.DetailDescriptor>
-                        <dxg:DataControlDetailDescriptor ItemsSourcePath="Actions">
-                            <dxg:GridControl CurrentItem="{Binding SelectedAction,Mode=TwoWay}">
-                                <dxg:GridControl.Columns>
-                                    <dxg:GridColumn FieldName="Name" Width="325"/>
-                                    <dxg:GridColumn FieldName="TriggerId">
-                                        <dxg:GridColumn.EditSettings>
-                                            <dxe:ComboBoxEditSettings ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name"/>
-                                        </dxg:GridColumn.EditSettings>
-                                    </dxg:GridColumn>
-                                    <dxg:GridColumn FieldName="StatusId">
-                                        <dxg:GridColumn.EditSettings>
-                                            <dxe:ComboBoxEditSettings  ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
-                                        </dxg:GridColumn.EditSettings>
-                                    </dxg:GridColumn>
-                                    <dxg:GridColumn FieldName="DateCreated" AllowEditing="False" />
-                                    <dxg:GridColumn FieldName="ScheduledTime">
-                                        <dxg:GridColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <dxe:DateEdit Name="PART_Editor">
-                                                    <dxe:DateEdit.Style>
-                                                        <Style TargetType="{x:Type dxe:DateEdit}">
-                                                            <Setter Property="IsEnabled" Value="False"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="2">
-                                                                    <Setter Property="IsEnabled" Value="True"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </dxe:DateEdit.Style>
-                                                </dxe:DateEdit>
-                                            </DataTemplate>
-                                        </dxg:GridColumn.CellTemplate>
-                                    </dxg:GridColumn>
-                                    <dxg:GridColumn FieldName="DelegatedTo" >
-                                        <dxg:GridColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <dxe:ComboBoxEdit x:Name="PART_Editor" 
+                </dxmvvm:Interaction.Behaviors>
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn FieldName="Name" Width="490"/>
+                    <dxg:GridColumn FieldName="DateCreated" AllowEditing="False"/>
+                    <dxg:GridColumn FieldName="TypeId" GroupIndex="0" SortMode="Custom">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectTypes}" ValueMember="Id" DisplayMember="Name" />
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="Comment">
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <dxe:MemoEdit Name="PART_Editor">
+                                    <dxe:MemoEdit.DisplayTemplate>
+                                        <ControlTemplate>
+                                            <TextBlock Text="{Binding Value}" Margin="3,2,0,0" MaxHeight="20"/>
+                                        </ControlTemplate>
+                                    </dxe:MemoEdit.DisplayTemplate>
+                                </dxe:MemoEdit>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="DesiredResult"/>
+                    <dxg:GridColumn FieldName="StatusId">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:EventToCommand EventName="Validate" Command="{Binding ValidateColumnCommand}" PassEventArgsToCommand="True"/>
+                        </dxmvvm:Interaction.Behaviors>
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:ComboBoxEditSettings ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" />
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="IsSimpleProject"/>
+                </dxg:GridControl.Columns>
+                <dxg:GridControl.DetailDescriptor>
+                    <dxg:DataControlDetailDescriptor ItemsSourcePath="Actions">
+                        <dxg:GridControl CurrentItem="{Binding SelectedAction,Mode=TwoWay}">
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn FieldName="Name" Width="325"/>
+                                <dxg:GridColumn FieldName="TriggerId">
+                                    <dxg:GridColumn.EditSettings>
+                                        <dxe:ComboBoxEditSettings ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name"/>
+                                    </dxg:GridColumn.EditSettings>
+                                </dxg:GridColumn>
+                                <dxg:GridColumn FieldName="StatusId">
+                                    <dxg:GridColumn.EditSettings>
+                                        <dxe:ComboBoxEditSettings  ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
+                                    </dxg:GridColumn.EditSettings>
+                                </dxg:GridColumn>
+                                <dxg:GridColumn FieldName="DateCreated" AllowEditing="False" />
+                                <dxg:GridColumn FieldName="ScheduledTime">
+                                    <dxg:GridColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dxe:DateEdit Name="PART_Editor">
+                                                <dxe:DateEdit.Style>
+                                                    <Style TargetType="{x:Type dxe:DateEdit}">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="2">
+                                                                <Setter Property="IsEnabled" Value="True"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </dxe:DateEdit.Style>
+                                            </dxe:DateEdit>
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellTemplate>
+                                </dxg:GridColumn>
+                                <dxg:GridColumn FieldName="DelegatedTo" >
+                                    <dxg:GridColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dxe:ComboBoxEdit x:Name="PART_Editor" 
 										ItemsSource="{Binding DataContext.DelegatePersons, RelativeSource={RelativeSource AncestorType={x:Type dxg:DataPresenter}, Mode=FindAncestor}}" 
 										ValueMember="Id" DisplayMember="Name">
-                                                    <dxe:ComboBoxEdit.Style>
-                                                        <Style TargetType="{x:Type dxe:ComboBoxEdit}">
-                                                            <Setter Property="IsEnabled" Value="False"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="3">
-                                                                    <Setter Property="IsEnabled" Value="True"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </dxe:ComboBoxEdit.Style>
-                                                </dxe:ComboBoxEdit>
-                                            </DataTemplate>
-                                        </dxg:GridColumn.CellTemplate>
-                                    </dxg:GridColumn>
-                                    <dxg:GridColumn FieldName="IsActive" Width="70"/>
-                                    <dxg:GridColumn FieldName="Comment">
-                                        <dxg:GridColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <dxe:MemoEdit Name="PART_Editor">
-                                                    <dxe:MemoEdit.DisplayTemplate>
-                                                        <ControlTemplate>
-                                                            <TextBlock Text="{Binding Value}" Margin="3,2,0,0" MaxHeight="20"/>
-                                                        </ControlTemplate>
-                                                    </dxe:MemoEdit.DisplayTemplate>
-                                                </dxe:MemoEdit>
-                                            </DataTemplate>
-                                        </dxg:GridColumn.CellTemplate>
-                                    </dxg:GridColumn>
-                                    <dxg:GridColumn FieldName="OrderNumber"  Visible="False"/>
-                                </dxg:GridControl.Columns>
-                                <dxg:GridControl.View>
-                                    <dxg:TableView ShowGroupPanel="False" ShowFilterPanelMode="Never">
-                                        <dxg:TableView.FormatConditions>
-                                            <dxg:FormatCondition ApplyToRow="True" FieldName="IsActive" PredefinedFormatName="GreenFillWithDarkGreenText" Expression="[IsActive] = True And [StatusId] &lt;&gt; 4"/>
-                                            <dxg:FormatCondition FieldName="StatusId" Value1="{x:Null}" ValueRule="Expression" ApplyToRow="True" Expression="[StatusId] = '4'">
-                                                <dx:Format Foreground="#FFD8D6CB" TextDecorations="{x:Null}"/>
-                                            </dxg:FormatCondition>
-                                        </dxg:TableView.FormatConditions>
-                                    </dxg:TableView>
-                                </dxg:GridControl.View>
-                            </dxg:GridControl>
-                        </dxg:DataControlDetailDescriptor>
-                    </dxg:GridControl.DetailDescriptor>
-                    <dxg:GridControl.View>
-                        <dxg:TableView 	ShowGroupedColumns="True" ShowFixedTotalSummary="True" FadeSelectionOnLostFocus="False" ShowFilterPanelMode="Never" >
-                            <dxg:TableView.FormatConditions>
-                                <dxg:FormatCondition ApplyToRow="True" FieldName="StatusId" PredefinedFormatName="GreenFillWithDarkGreenText" Value1="1" ValueRule="Equal"/>
-                                <dxg:FormatCondition FieldName="StatusId" Value1="{x:Null}" ValueRule="Expression" ApplyToRow="True" Expression="[StatusId] = '3'">
-                                    <dx:Format Foreground="#FFD8D6CB" TextDecorations="{x:Null}"/>
-                                </dxg:FormatCondition>
-                            </dxg:TableView.FormatConditions>
-                        </dxg:TableView>
-                    </dxg:GridControl.View>
-                    <dxg:GridControl.TotalSummary>
-                        <dxg:GridSummaryItem SummaryType="Count" FieldName="Name" Alignment="Left"/>
-                        <dxg:GridSummaryItem SummaryType="Custom" FieldName="TypeId" Alignment="Right"/>
-                    </dxg:GridControl.TotalSummary>
-                    <dxg:GridControl.GroupSummary>
-                        <dxg:GridSummaryItem SummaryType="Count"/>
-                    </dxg:GridControl.GroupSummary>
-                </dxg:GridControl>
+                                                <dxe:ComboBoxEdit.Style>
+                                                    <Style TargetType="{x:Type dxe:ComboBoxEdit}">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="3">
+                                                                <Setter Property="IsEnabled" Value="True"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </dxe:ComboBoxEdit.Style>
+                                            </dxe:ComboBoxEdit>
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellTemplate>
+                                </dxg:GridColumn>
+                                <dxg:GridColumn FieldName="IsActive" Width="70"/>
+                                <dxg:GridColumn FieldName="Comment">
+                                    <dxg:GridColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dxe:MemoEdit Name="PART_Editor">
+                                                <dxe:MemoEdit.DisplayTemplate>
+                                                    <ControlTemplate>
+                                                        <TextBlock Text="{Binding Value}" Margin="3,2,0,0" MaxHeight="20"/>
+                                                    </ControlTemplate>
+                                                </dxe:MemoEdit.DisplayTemplate>
+                                            </dxe:MemoEdit>
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellTemplate>
+                                </dxg:GridColumn>
+                                <dxg:GridColumn FieldName="OrderNumber"  Visible="False"/>
+                            </dxg:GridControl.Columns>
+                            <dxg:GridControl.View>
+                                <dxg:TableView ShowGroupPanel="False" ShowFilterPanelMode="Never">
+                                    <dxg:TableView.FormatConditions>
+                                        <dxg:FormatCondition ApplyToRow="True" FieldName="IsActive" PredefinedFormatName="GreenFillWithDarkGreenText" Expression="[IsActive] = True And [StatusId] &lt;&gt; 4"/>
+                                        <dxg:FormatCondition FieldName="StatusId" Value1="{x:Null}" ValueRule="Expression" ApplyToRow="True" Expression="[StatusId] = '4'">
+                                            <dx:Format Foreground="#FFD8D6CB" TextDecorations="{x:Null}"/>
+                                        </dxg:FormatCondition>
+                                    </dxg:TableView.FormatConditions>
+                                </dxg:TableView>
+                            </dxg:GridControl.View>
+                        </dxg:GridControl>
+                    </dxg:DataControlDetailDescriptor>
+                </dxg:GridControl.DetailDescriptor>
+                <dxg:GridControl.View>
+                    <dxg:TableView 	ShowGroupedColumns="True" ShowGroupPanel="False" ShowFixedTotalSummary="True" FadeSelectionOnLostFocus="False" ShowFilterPanelMode="Never" >
+                        <dxg:TableView.FormatConditions>
+                            <dxg:FormatCondition ApplyToRow="True" FieldName="StatusId" PredefinedFormatName="GreenFillWithDarkGreenText" Value1="1" ValueRule="Equal"/>
+                            <dxg:FormatCondition FieldName="StatusId" Value1="{x:Null}" ValueRule="Expression" ApplyToRow="True" Expression="[StatusId] = '3'">
+                                <dx:Format Foreground="#FFD8D6CB" TextDecorations="{x:Null}"/>
+                            </dxg:FormatCondition>
+                        </dxg:TableView.FormatConditions>
+                    </dxg:TableView>
+                </dxg:GridControl.View>
+                <dxg:GridControl.TotalSummary>
+                    <dxg:GridSummaryItem SummaryType="Count" FieldName="Name" Alignment="Left"/>
+                    <dxg:GridSummaryItem SummaryType="Custom" FieldName="TypeId" Alignment="Right"/>
+                </dxg:GridControl.TotalSummary>
+                <dxg:GridControl.GroupSummary>
+                    <dxg:GridSummaryItem SummaryType="Count"/>
+                </dxg:GridControl.GroupSummary>
+            </dxg:GridControl>
 
         </dxlc:LayoutGroup>
     </dxlc:LayoutControl>

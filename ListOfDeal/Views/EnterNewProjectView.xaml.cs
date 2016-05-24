@@ -29,5 +29,9 @@ namespace ListOfDeal.Views {
         private void GridControl_Loaded(object sender, RoutedEventArgs e) {
             (sender as GridControl).RefreshData();
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e) {
+            grid1.CollapseAllGroups();
+        }
     }
 }

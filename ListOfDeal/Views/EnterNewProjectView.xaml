@@ -42,7 +42,8 @@
                             <dxe:ComboBoxEdit ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.StatusId}"/>
                         </dxlc:LayoutItem>
                         <Button Content="Add project" Command="{Binding AddNewProjectCommand}" Height="20"/>
-                        <Button Content="Open acitons" Command="{Binding OpenEditProjectCommand}" Height="20"/>
+                        <Button Content="Open actions" Command="{Binding OpenEditProjectCommand}" Height="20"/>
+                        <Button Content="Collapse"  Height="20" Click="Button_Click_1"/>
                     </dxlc:LayoutGroup>
 
                 </dxlc:LayoutGroup>
@@ -73,7 +74,7 @@
                     </dxlc:LayoutGroup>
                     <dxlc:LayoutGroup>
                         <Button Content="SaveChanges"  Height="20" Command="{Binding SaveChangesCommand}"/>
-                        <Button Content="Collapse"  Height="20"/>
+                      
                         <!--<Button Content="test" Click="Button_Click" Height="35"/>-->
                         <Button  Command="{Binding AddActionCommand}" Height="20">
                             <Button.Style>

@@ -16,6 +16,7 @@ namespace ListOfDeal {
             InitializeData();
         }
         void InitializeData() {
+            WLConnector wl = new WLConnector();
             ConnectToDataBase();
 
             ProjectTypes = new ObservableCollection<ProjectType>(generalEntity.ProjectTypes.OrderBy(x => x.OrderNumber));
@@ -30,6 +31,8 @@ namespace ListOfDeal {
             }
             CreateNewProject();
             CreateNewAction();
+
+        
 
         }
 

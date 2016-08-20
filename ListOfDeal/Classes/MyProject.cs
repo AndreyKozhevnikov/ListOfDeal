@@ -6,14 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ListOfDeal {
-    public class MyProject :MyBindableBase {
+    public class MyProject : MyBindableBase {
         Project parentEntity;
         public MyProject(Project _p) {
             parentEntity = _p;
             InitiateProject();
         }
 
-  
+
         public MyProject() {
             parentEntity = MainViewModel.generalEntity.Projects.Create();
             InitiateProject();
@@ -24,10 +24,10 @@ namespace ListOfDeal {
             var listAction = parentEntity.Actions.Where(x => x.StatusId != 4).OrderBy(x => x.OrderNumber);
             foreach (var a in listAction) {
                 MyAction act = new MyAction(a);
-                act.PropertyChanged+=act_PropertyChanged;
+                act.PropertyChanged += act_PropertyChanged;
                 Actions.Add(act);
             }
-         
+
         }
         public void AddAction(MyAction act) {
             if (IsSimpleProject && Actions.Count == 1) {
@@ -55,15 +55,15 @@ namespace ListOfDeal {
         void act_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
             if (e.PropertyName == "StatusId") {
                 MyAction act = sender as MyAction;
-                if (act.StatusId!=4)
+                if (act.StatusId != 4)
                     return;
                 var ind = act.OrderNumber + 1;
                 var targetAct = Actions.Where(x => x.OrderNumber == ind).FirstOrDefault();
-                if (targetAct != null&& !targetAct.IsActive) {
+                if (targetAct != null && !targetAct.IsActive) {
                     targetAct.IsActive = true;
                 }
                 if (this.IsSimpleProject) {
-                    this.StatusId = 3;
+                    this.StatusId = ProjectStatusEnum.Done;
                 }
 
             }
@@ -101,17 +101,17 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.TypeId = value;
-              
+
                 RaisePropertyChanged("TypeId");
             }
         }
-        public int StatusId {
+        public ProjectStatusEnum StatusId {
             get {
-                return parentEntity.StatusId;
+                return (ProjectStatusEnum)parentEntity.StatusId;
             }
             set {
-                parentEntity.StatusId = value;
-                if (value == 3) {
+                parentEntity.StatusId = (int)value;
+                if ((ProjectStatusEnum)value == ProjectStatusEnum.Done) {
                     this.parentEntity.CompleteTime = DateTime.Now;
                 }
                 RaisePropertyChanged("StatusId");
@@ -148,5 +148,10 @@ namespace ListOfDeal {
             }
         }
         public ObservableCollection<MyAction> Actions { get; set; }
+    }
+
+
+    public enum ProjectStatusEnum {
+        InWork = 1, Delayed = 2, Done = 3
     }
 }

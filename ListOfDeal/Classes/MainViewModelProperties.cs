@@ -218,7 +218,6 @@ namespace ListOfDeal {
 
         public ObservableCollection<MyProject> Projects { get; set; }
         public ObservableCollection<ProjectType> ProjectTypes { get; set; }
-        public ObservableCollection<ProjectStatus> ProjectStatuses { get; set; }
         public ObservableCollection<ActionTrigger> ActionTriggers { get; set; }
         public ObservableCollection<ActionStatus> ActionStatuses { get; set; }
         public ObservableCollection<DelegatePerson> DelegatePersons { get; set; }

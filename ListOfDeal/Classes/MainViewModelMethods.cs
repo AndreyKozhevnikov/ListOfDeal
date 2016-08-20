@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace ListOfDeal {
    public interface IMainViewModel {
-
+      ObservableCollection<MyProject> Projects { get; set; }
     }
     public partial class MainViewModel:IMainViewModel {
 
@@ -24,7 +24,7 @@ namespace ListOfDeal {
             ConnectToDataBase();
 
             ProjectTypes = new ObservableCollection<ProjectType>(generalEntity.ProjectTypes.OrderBy(x => x.OrderNumber));
-            ProjectStatuses = new ObservableCollection<ProjectStatus>(generalEntity.ProjectStatuses);
+          
             ActionTriggers = new ObservableCollection<ActionTrigger>(generalEntity.ActionTriggers);
             ActionStatuses = new ObservableCollection<ActionStatus>(generalEntity.ActionStatuses);
             DelegatePersons = new ObservableCollection<DelegatePerson>(generalEntity.DelegatePersons);
@@ -63,7 +63,7 @@ namespace ListOfDeal {
         private void CreateNewProject() {
             CurrentProject = new MyProject();
             CurrentProject.TypeId = 11;
-            CurrentProject.StatusId = 2;
+            CurrentProject.StatusId = ProjectStatusEnum.Delayed;
             CurrentProject.IsSimpleProject = true;
         }
         private void CreateNewAction() {
@@ -158,7 +158,7 @@ namespace ListOfDeal {
             }
         }
         private void ProvideActions() {
-            var allActions = Projects.Where(x => x.StatusId == 1).SelectMany(x => x.Actions).Where(x => x.IsActive);
+            var allActions = Projects.Where(x => x.StatusId == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.IsActive);
             var actActions = allActions.Where(x => x.StatusId == 1);
             var shedActions = allActions.Where(x => x.StatusId == 2);
             var delActions = allActions.Where(x => x.StatusId == 3);

@@ -30,7 +30,6 @@ namespace ListOfDeal
     
         public virtual DelegatePerson DelegatePerson { get; set; }
         public virtual Project Project { get; set; }
-        public virtual ActionStatus ActionStatus { get; set; }
         public virtual ActionTrigger ActionTrigger { get; set; }
     }
 }

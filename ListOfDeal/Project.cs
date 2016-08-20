@@ -31,6 +31,5 @@ namespace ListOfDeal
     
         public virtual ICollection<Action> Actions { get; set; }
         public virtual ProjectType ProjectType { get; set; }
-        public virtual ProjectStatus ProjectStatus { get; set; }
     }
 }

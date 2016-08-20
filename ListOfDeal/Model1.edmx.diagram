@@ -6,7 +6,6 @@
     <edmx:Diagrams>
       <Diagram DiagramId="d15191ca1561459dad69331948269f28" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="ListOfDealBaseModel.Action" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="ListOfDealBaseModel.ActionStatus" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="ListOfDealBaseModel.ActionTrigger" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
         <EntityTypeShape EntityType="ListOfDealBaseModel.DelegatePerson" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
         <EntityTypeShape EntityType="ListOfDealBaseModel.Project" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
@@ -14,9 +13,6 @@
         <AssociationConnector Association="ListOfDealBaseModel.FK_Actions_Projects" ManuallyRouted="false" />
         <EntityTypeShape EntityType="ListOfDealBaseModel.ProjectType" Width="1.5" PointX="0.875" PointY="13.5" />
         <AssociationConnector Association="ListOfDealBaseModel.FK_Projects_ProejctTypes1" />
-        <EntityTypeShape EntityType="ListOfDealBaseModel.ProjectStatus" Width="1.5" PointX="5.375" PointY="0.875" />
-        <AssociationConnector Association="ListOfDealBaseModel.FK_Projects_ProjectStatuses" />
-        <AssociationConnector Association="ListOfDealBaseModel.FK_Actions_ActionStatuses1" />
         <AssociationConnector Association="ListOfDealBaseModel.FK_Actions_ActionTriggers1" />
       </Diagram>
     </edmx:Diagrams>

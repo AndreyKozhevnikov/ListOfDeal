@@ -26,11 +26,9 @@ namespace ListOfDeal
         }
     
         public virtual DbSet<Action> Actions { get; set; }
-        public virtual DbSet<ActionStatus> ActionStatuses { get; set; }
         public virtual DbSet<ActionTrigger> ActionTriggers { get; set; }
         public virtual DbSet<DelegatePerson> DelegatePersons { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<ProjectType> ProjectTypes { get; set; }
-        public virtual DbSet<ProjectStatus> ProjectStatuses { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace ListOfDeal {
 
 
 
-
+        WLProcessor wlProcessor;
 
         MyProject _currentProject;
         MyAction _currentAction;

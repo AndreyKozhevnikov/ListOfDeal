@@ -15,8 +15,9 @@ namespace ListOfDeal {
         public MainViewModel() {
             InitializeData();
         }
+     
         void InitializeData() {
-            WLConnector wl = new WLConnector();
+           
             ConnectToDataBase();
 
             ProjectTypes = new ObservableCollection<ProjectType>(generalEntity.ProjectTypes.OrderBy(x => x.OrderNumber));
@@ -32,11 +33,16 @@ namespace ListOfDeal {
             CreateNewProject();
             CreateNewAction();
 
-        
+          
 
         }
 
-
+        void CreateWlProcessor() {
+            wlProcessor = new WLProcessor();
+            wlProcessor.PopulateActions(WaitedActions);
+            wlProcessor.CreateWlConnector(new WLConnector());
+            wlProcessor.CreateWlTasks();
+        }
 
         private void ConnectToDataBase() {
 
@@ -162,6 +168,8 @@ namespace ListOfDeal {
             WaitedActions = new ObservableCollection<MyAction>(actActions);
             ScheduledActions = new ObservableCollection<MyAction>(shedActions);
             DelegatedActions = new ObservableCollection<MyAction>(delActions);
+
+            CreateWlProcessor();
         }
 
         private void ExportGrids() {

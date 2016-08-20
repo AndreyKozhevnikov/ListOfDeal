@@ -145,6 +145,14 @@ namespace ListOfDeal {
                 return parentEntity.CompleteTime;
             }
         }
+        public int? WLId {
+            get {
+                return parentEntity.WLId;
+            }
+            set {
+                parentEntity.WLId = value;
+            }
+        }
         internal void CopyProperties(MyAction act) {
             this.Name = act.Name;
             this.StatusId = act.StatusId;

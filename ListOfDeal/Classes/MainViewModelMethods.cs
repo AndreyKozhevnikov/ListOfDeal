@@ -10,7 +10,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ListOfDeal {
-    public partial class MainViewModel {
+   public interface IMainViewModel {
+
+    }
+    public partial class MainViewModel:IMainViewModel {
 
         public MainViewModel() {
             InitializeData();
@@ -33,16 +36,11 @@ namespace ListOfDeal {
             CreateNewProject();
             CreateNewAction();
 
-          
+            WLViewModel = new WunderListViewModel(this);
 
         }
 
-        void CreateWlProcessor() {
-            wlProcessor = new WLProcessor();
-            wlProcessor.PopulateActions(WaitedActions);
-            wlProcessor.CreateWlConnector(new WLConnector());
-            wlProcessor.CreateWlTasks();
-        }
+       
 
         private void ConnectToDataBase() {
 
@@ -169,7 +167,7 @@ namespace ListOfDeal {
             ScheduledActions = new ObservableCollection<MyAction>(shedActions);
             DelegatedActions = new ObservableCollection<MyAction>(delActions);
 
-            CreateWlProcessor();
+         
         }
 
         private void ExportGrids() {

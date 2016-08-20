@@ -116,6 +116,7 @@
     <Compile Include="Classes\Services.cs" />
     <Compile Include="Classes\WLConnector.cs" />
     <Compile Include="Classes\WLProcessor.cs" />
+    <Compile Include="Classes\WunderListViewModel.cs" />
     <Compile Include="Views\ChartView.xaml.cs">
       <DependentUpon>ChartView.xaml</DependentUpon>
     </Compile>
@@ -133,6 +134,9 @@
     </Compile>
     <Compile Include="Views\Actions\WaitedActionsView.xaml.cs">
       <DependentUpon>WaitedActionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WunderListView.xaml.cs">
+      <DependentUpon>WunderListView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ChartView.xaml">
       <SubType>Designer</SubType>
@@ -200,6 +204,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Actions\WaitedActionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WunderListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

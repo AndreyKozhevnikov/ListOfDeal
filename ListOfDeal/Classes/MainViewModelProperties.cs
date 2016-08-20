@@ -22,7 +22,7 @@ namespace ListOfDeal {
 
 
 
-        WLProcessor wlProcessor;
+    
 
         MyProject _currentProject;
         MyAction _currentAction;
@@ -214,6 +214,7 @@ namespace ListOfDeal {
                 RaisePropertyChanged("SelectedAction");
             }
         }
+        public WunderListViewModel WLViewModel { get; set; }
 
         public ObservableCollection<MyProject> Projects { get; set; }
         public ObservableCollection<ProjectType> ProjectTypes { get; set; }

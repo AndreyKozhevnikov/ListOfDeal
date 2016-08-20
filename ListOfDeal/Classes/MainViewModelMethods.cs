@@ -26,7 +26,6 @@ namespace ListOfDeal {
             ProjectTypes = new ObservableCollection<ProjectType>(generalEntity.ProjectTypes.OrderBy(x => x.OrderNumber));
           
             ActionTriggers = new ObservableCollection<ActionTrigger>(generalEntity.ActionTriggers);
-          //  ActionStatuses = new ObservableCollection<ActionStatus>(generalEntity.ActionStatuses);
             DelegatePersons = new ObservableCollection<DelegatePerson>(generalEntity.DelegatePersons);
             Projects = new ObservableCollection<MyProject>();
             var actProjects = generalEntity.Projects.Where(x => x.StatusId != 3).OrderBy(x => x.StatusId).ThenBy(x => x.DateCreated);

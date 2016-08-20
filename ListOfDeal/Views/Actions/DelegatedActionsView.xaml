@@ -8,6 +8,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ListOfDeal"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <dxg:GridControl Grid.Row="1" x:Name="InnerGrid"
@@ -50,9 +51,15 @@
             </dxg:GridColumn>
             <dxg:GridColumn FieldName="ProjectName" />
             <dxg:GridColumn FieldName="StatusId">
-                <dxg:GridColumn.EditSettings>
-                    <dxe:ComboBoxEditSettings  ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
-                </dxg:GridColumn.EditSettings>
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <dxe:ComboBoxEdit Name="PART_Editor">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum}"/>
+                            </dxmvvm:Interaction.Behaviors>
+                        </dxe:ComboBoxEdit>
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
             </dxg:GridColumn>
         </dxg:GridControl.Columns>
         <dxg:GridControl.View>

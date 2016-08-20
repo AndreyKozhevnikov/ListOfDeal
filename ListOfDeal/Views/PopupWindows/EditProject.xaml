@@ -6,6 +6,7 @@
      xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:local="clr-namespace:ListOfDeal"
     Title="EditProject" Height="350" Width="1200"
     >
 
@@ -19,9 +20,15 @@
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
                 <dxg:GridColumn FieldName="StatusId">
-                    <dxg:GridColumn.EditSettings>
-                        <dxe:ComboBoxEditSettings  ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
-                    </dxg:GridColumn.EditSettings>
+                    <dxg:GridColumn.CellTemplate>
+                        <DataTemplate>
+                            <dxe:ComboBoxEdit Name="PART_Editor">
+                                <dxmvvm:Interaction.Behaviors>
+                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum}"/>
+                                </dxmvvm:Interaction.Behaviors>
+                            </dxe:ComboBoxEdit>
+                        </DataTemplate>
+                    </dxg:GridColumn.CellTemplate>
                 </dxg:GridColumn>
                 <dxg:GridColumn FieldName="DateCreated" ReadOnly="True"/>
                 <dxg:GridColumn FieldName="ScheduledTime">

@@ -55,7 +55,7 @@ namespace ListOfDeal {
         void act_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
             if (e.PropertyName == "StatusId") {
                 MyAction act = sender as MyAction;
-                if (act.StatusId != 4)
+                if (act.StatusId != ActionsStatusEnum.Completed)
                     return;
                 var ind = act.OrderNumber + 1;
                 var targetAct = Actions.Where(x => x.OrderNumber == ind).FirstOrDefault();

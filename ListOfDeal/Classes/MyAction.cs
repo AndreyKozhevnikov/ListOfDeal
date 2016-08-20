@@ -28,13 +28,13 @@ namespace ListOfDeal {
                 RaisePropertyChanged("Name");
             }
         }
-        public int StatusId {
+        public ActionsStatusEnum StatusId {
             get {
-                return parentEntity.StatusId;
+                return (ActionsStatusEnum)parentEntity.StatusId;
             }
             set {
-                parentEntity.StatusId = value;
-                if (value == 4) {
+                parentEntity.StatusId =(int) value;
+                if (value == ActionsStatusEnum.Completed) {
                     this.parentEntity.CompleteTime = DateTime.Now;
                 }
                 RaisePropertyChanged("StatusId");
@@ -121,9 +121,9 @@ namespace ListOfDeal {
 
         public string Error {
             get {
-                if (StatusId == 2 && ScheduledTime == null)
+                if (StatusId == ActionsStatusEnum.Scheduled && ScheduledTime == null)
                     return "scheduled required";
-                if (StatusId == 3 && DelegatedTo == null)
+                if (StatusId == ActionsStatusEnum.Delegated && DelegatedTo == null)
                     return "delegated required";
                 return null;
             }
@@ -132,9 +132,9 @@ namespace ListOfDeal {
         public string this[string columnName] {
             get {
                 if (columnName == "StatusId") {
-                    if (StatusId == 2 && ScheduledTime == null)
+                    if (StatusId == ActionsStatusEnum.Scheduled && ScheduledTime == null)
                         return "scheduled required";
-                    if (StatusId == 3 && DelegatedTo == null)
+                    if (StatusId == ActionsStatusEnum.Delegated && DelegatedTo == null)
                         return "delegated required";
                 }
                 return null;
@@ -163,5 +163,13 @@ namespace ListOfDeal {
             this.Comment = act.Comment;
             this.DateCreated = act.DateCreated;
         }
+    }
+
+    public enum ActionsStatusEnum {
+        Waited=1,
+        Scheduled=2,
+        Delegated=3,
+        Completed=4
+        
     }
 }

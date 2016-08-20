@@ -74,12 +74,17 @@
                             <dxe:TextEdit EditValue="{Binding CurrentAction.Name,UpdateSourceTrigger=PropertyChanged}"/>
                         </dxlc:LayoutItem>
                         <dxlc:LayoutItem Label="Status:">
-                            <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.StatusId,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
+                            <dxe:ComboBoxEdit 
+                                EditValue="{Binding CurrentAction.StatusId,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}">
+                                <dxmvvm:Interaction.Behaviors>
+                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum}"/>
+                                </dxmvvm:Interaction.Behaviors>
+                            </dxe:ComboBoxEdit>
                         </dxlc:LayoutItem>
                     </dxlc:LayoutGroup>
                     <dxlc:LayoutGroup>
                         <Button Content="SaveChanges"  Height="20" Command="{Binding SaveChangesCommand}"/>
-                      
+
                         <!--<Button Content="test" Click="Button_Click" Height="35"/>-->
                         <Button  Command="{Binding AddActionCommand}" Height="20">
                             <Button.Style>
@@ -156,9 +161,15 @@
                                     </dxg:GridColumn.EditSettings>
                                 </dxg:GridColumn>
                                 <dxg:GridColumn FieldName="StatusId">
-                                    <dxg:GridColumn.EditSettings>
-                                        <dxe:ComboBoxEditSettings  ItemsSource="{Binding ActionStatuses}" ValueMember="Id" DisplayMember="Name"/>
-                                    </dxg:GridColumn.EditSettings>
+                                    <dxg:GridColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dxe:ComboBoxEdit Name="PART_Editor">
+                                                <dxmvvm:Interaction.Behaviors>
+                                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum}"/>
+                                                </dxmvvm:Interaction.Behaviors>
+                                            </dxe:ComboBoxEdit>
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellTemplate>
                                 </dxg:GridColumn>
                                 <dxg:GridColumn FieldName="DateCreated" AllowEditing="False" />
                                 <dxg:GridColumn FieldName="ScheduledTime">
@@ -169,7 +180,8 @@
                                                     <Style TargetType="{x:Type dxe:DateEdit}">
                                                         <Setter Property="IsEnabled" Value="False"/>
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="2">
+                                                            <!--<DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="2">-->
+                                                            <DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="{x:Static local:ActionsStatusEnum.Scheduled}">
                                                                 <Setter Property="IsEnabled" Value="True"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>
@@ -189,7 +201,7 @@
                                                     <Style TargetType="{x:Type dxe:ComboBoxEdit}">
                                                         <Setter Property="IsEnabled" Value="False"/>
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="3">
+                                                            <DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="{x:Static local:ActionsStatusEnum.Delegated}">
                                                                 <Setter Property="IsEnabled" Value="True"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>
@@ -218,8 +230,8 @@
                             <dxg:GridControl.View>
                                 <dxg:TableView ShowGroupPanel="False" ShowFilterPanelMode="Never">
                                     <dxg:TableView.FormatConditions>
-                                        <dxg:FormatCondition ApplyToRow="True" FieldName="IsActive" PredefinedFormatName="GreenFillWithDarkGreenText" Expression="[IsActive] = True And [StatusId] &lt;&gt; 4"/>
-                                        <dxg:FormatCondition FieldName="StatusId" Value1="{x:Null}" ValueRule="Expression" ApplyToRow="True" Expression="[StatusId] = '4'">
+                                        <dxg:FormatCondition ApplyToRow="True" FieldName="IsActive" PredefinedFormatName="GreenFillWithDarkGreenText" Expression="[IsActive] = True And [StatusId] !='Completed'"/>
+                                        <dxg:FormatCondition FieldName="StatusId" Value1="{x:Null}" ValueRule="Expression" ApplyToRow="True" Expression="[StatusId] = 'Completed'">
                                             <dx:Format Foreground="#FFD8D6CB" TextDecorations="{x:Null}"/>
                                         </dxg:FormatCondition>
                                     </dxg:TableView.FormatConditions>

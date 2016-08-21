@@ -76,6 +76,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\..\THelper2\THelper\THelper\bin\Debug\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\WunderListConsole\WunderListConsole\bin\Debug\Newtonsoft.Json.dll</HintPath>
@@ -117,6 +120,7 @@
     <Compile Include="Classes\WLConnector.cs" />
     <Compile Include="Classes\WLProcessor.cs" />
     <Compile Include="Classes\WunderListViewModel.cs" />
+    <Compile Include="IListOfDealBaseEntities.cs" />
     <Compile Include="Views\ChartView.xaml.cs">
       <DependentUpon>ChartView.xaml</DependentUpon>
     </Compile>

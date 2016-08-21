@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,18 +21,45 @@ namespace ListOfDeal {
             var emptyActions = allActions.Where(x => x.WLId == null);
             if (emptyActions.Count() == 0)
                 return;
-          //  emptyActions = emptyActions.Take(1);
+         //   emptyActions = emptyActions.Take(1);
             foreach (var act in emptyActions) {
                 string title = act.Name;
                 var wlTask = wlConnector.CreateTask(title);
                 act.WLId = wlTask.id;
             }
-            MainViewModel.generalEntity.SaveChanges();
+            MainViewModel.SaveChanges();
         }
     }
 
     [TestFixture]
     public class WLProcessorTest {
-    
+        [Test]
+        public void CreateWlTasks() {
+            //arrange
+            var actList = new ObservableCollection<MyAction>();
+            actList.Add(new MyAction(new Action() { Name = "act1" }));
+            actList.Add(new MyAction(new Action() { Name = "act2",WLId=123 }));
+            actList.Add(new MyAction(new Action() { Name = "act3" }));
+            WLProcessor wlProc = new WLProcessor();
+            var mockWlConnector = new Mock<IWLConnector>();
+          
+            mockWlConnector.Setup(x => x.CreateTask("act1")).Returns(new WLTask() { id = 234 });
+            mockWlConnector.Setup(x => x.CreateTask("act3")).Returns(new WLTask() { id = 345 });
+            wlProc.CreateWlConnector(mockWlConnector.Object);
+            wlProc.PopulateActions(actList);
+
+            var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
+            MainViewModel.generalEntity = mockGeneralEntity.Object;
+            //act
+            wlProc.CreateWlTasks();
+            //assert
+            mockWlConnector.Verify(x => x.CreateTask("act1"), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("act3"), Times.Once);
+            Assert.AreEqual(234, actList[0].WLId);
+            Assert.AreEqual(345, actList[2].WLId);
+            mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Once);
+
+
+        }
     }
 }

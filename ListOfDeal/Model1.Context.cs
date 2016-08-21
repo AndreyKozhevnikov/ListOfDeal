@@ -13,13 +13,12 @@ namespace ListOfDeal
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ListOfDealBaseEntities : DbContext
-    {
+    public partial class ListOfDealBaseEntities : DbContext, IListOfDealBaseEntities {
         public ListOfDealBaseEntities()
             : base("name=ListOfDealBaseEntities")
         {
         }
-    
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();

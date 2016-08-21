@@ -14,7 +14,7 @@ using DevExpress.Data;
 namespace ListOfDeal {
     public partial class MainViewModel : MyBindableBase, ISupportServices {
 
-        public static ListOfDealBaseEntities generalEntity;
+        public static IListOfDealBaseEntities generalEntity;
 
 
 

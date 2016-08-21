@@ -21,7 +21,7 @@ namespace ListOfDeal {
             var emptyActions = allActions.Where(x => x.WLId == null);
             if (emptyActions.Count() == 0)
                 return;
-         //   emptyActions = emptyActions.Take(1);
+            //   emptyActions = emptyActions.Take(1);
             foreach (var act in emptyActions) {
                 string title = act.Name;
                 var wlTask = wlConnector.CreateTask(title);
@@ -60,6 +60,23 @@ namespace ListOfDeal {
             mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Once);
 
 
+        }
+        [Test]
+        public void CreateWlTasks_NullAction() {
+            //arrange
+            var actList = new ObservableCollection<MyAction>();
+
+            WLProcessor wlProc = new WLProcessor();
+            var mockWlConnector = new Mock<IWLConnector>(MockBehavior.Strict);
+            wlProc.CreateWlConnector(mockWlConnector.Object);
+            wlProc.PopulateActions(actList);
+
+            var mockGeneralEntity = new Mock<IListOfDealBaseEntities>(MockBehavior.Strict);
+            MainViewModel.generalEntity = mockGeneralEntity.Object;
+            //act
+            wlProc.CreateWlTasks();
+            //assert
+            //nothing should be done
         }
     }
 }

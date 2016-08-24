@@ -9,13 +9,16 @@ using System.Threading.Tasks;
 
 namespace ListOfDeal {
     public class WLProcessor {
-        ObservableCollection<MyAction> allActions;
+        List<MyAction> allActions;
+        List<WLTask> allTasks;
         IWLConnector wlConnector;
-        public void PopulateActions(ObservableCollection<MyAction> _actions) {
+        const int MyListId = 262335124;
+        public void PopulateActions(List<MyAction> _actions) {
             allActions = _actions;
         }
         public void CreateWlConnector(IWLConnector _conn) {
             wlConnector = _conn;
+        //    (wlConnector as WLConnector).Start();
         }
         public void CreateWlTasks() {
             var emptyActions = allActions.Where(x => x.WLId == null);
@@ -24,10 +27,24 @@ namespace ListOfDeal {
             //   emptyActions = emptyActions.Take(1);
             foreach (var act in emptyActions) {
                 string title = act.Name;
-                var wlTask = wlConnector.CreateTask(title);
+                var wlTask = wlConnector.CreateTask(title,MyListId);
                 act.WLId = wlTask.id;
             }
             MainViewModel.SaveChanges();
+        }
+     
+        public void HandleCompletedActions() {
+            allTasks = GetAllActiveTasks();
+            var lstwlIdinLod = allActions.Select(x =>(int) x.WLId);
+            var lstwlIdInWL = allTasks.Select(x => x.id);
+            var diff = lstwlIdinLod.Except(lstwlIdInWL);
+            foreach (int tskId in diff) {
+                Console.WriteLine(tskId.ToString());
+            }
+            
+        }
+        List<WLTask> GetAllActiveTasks() {
+            return wlConnector.GetTasksForList(MyListId);
         }
     }
 
@@ -36,15 +53,15 @@ namespace ListOfDeal {
         [Test]
         public void CreateWlTasks() {
             //arrange
-            var actList = new ObservableCollection<MyAction>();
+            var actList = new List<MyAction>();
             actList.Add(new MyAction(new Action() { Name = "act1" }));
             actList.Add(new MyAction(new Action() { Name = "act2",WLId=123 }));
             actList.Add(new MyAction(new Action() { Name = "act3" }));
             WLProcessor wlProc = new WLProcessor();
             var mockWlConnector = new Mock<IWLConnector>();
           
-            mockWlConnector.Setup(x => x.CreateTask("act1")).Returns(new WLTask() { id = 234 });
-            mockWlConnector.Setup(x => x.CreateTask("act3")).Returns(new WLTask() { id = 345 });
+            mockWlConnector.Setup(x => x.CreateTask("act1",It.IsAny<int>())).Returns(new WLTask() { id = 234 });
+            mockWlConnector.Setup(x => x.CreateTask("act3", It.IsAny<int>())).Returns(new WLTask() { id = 345 });
             wlProc.CreateWlConnector(mockWlConnector.Object);
             wlProc.PopulateActions(actList);
 
@@ -53,8 +70,8 @@ namespace ListOfDeal {
             //act
             wlProc.CreateWlTasks();
             //assert
-            mockWlConnector.Verify(x => x.CreateTask("act1"), Times.Once);
-            mockWlConnector.Verify(x => x.CreateTask("act3"), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("act1", It.IsAny<int>()), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("act3", It.IsAny<int>()), Times.Once);
             Assert.AreEqual(234, actList[0].WLId);
             Assert.AreEqual(345, actList[2].WLId);
             mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Once);
@@ -64,7 +81,7 @@ namespace ListOfDeal {
         [Test]
         public void CreateWlTasks_NullAction() {
             //arrange
-            var actList = new ObservableCollection<MyAction>();
+            var actList = new List<MyAction>();
 
             WLProcessor wlProc = new WLProcessor();
             var mockWlConnector = new Mock<IWLConnector>(MockBehavior.Strict);
@@ -77,6 +94,21 @@ namespace ListOfDeal {
             wlProc.CreateWlTasks();
             //assert
             //nothing should be done
+        }
+
+        [Test]
+        public void CompleteAction() {
+            //arrange
+            var actList = new List<MyAction>();
+            WLProcessor wlProc = new WLProcessor();
+            var mockWlConnector = new Mock<IWLConnector>(MockBehavior.Strict);
+            wlProc.CreateWlConnector(mockWlConnector.Object);
+            wlProc.PopulateActions(actList);
+
+
+            //act
+
+
         }
     }
 }

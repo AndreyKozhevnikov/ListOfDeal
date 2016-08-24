@@ -17,6 +17,7 @@ namespace ListOfDeal {
         }
         ICommand _getActionsCommand;
         ICommand _createTasksCommand;
+        ICommand _handleCompletedActions;
         public ICommand GetActionsCommand {
             get {
                 if (_getActionsCommand == null)
@@ -35,8 +36,17 @@ namespace ListOfDeal {
 
          
         }
+
+        public ICommand HandleCompletedActions {
+            get {
+                if (_handleCompletedActions == null)
+                    _handleCompletedActions = new DelegateCommand(HandleCompletedLODActions);
+                return _handleCompletedActions;
+            }
+        }
+
         WLProcessor wlProcessor;
-        ObservableCollection<MyAction> lodActions;
+        List<MyAction> lodActions;
         
         void CreateWlProcessor() {
             wlProcessor = new WLProcessor();
@@ -49,8 +59,11 @@ namespace ListOfDeal {
         }
         private void GetActions() {
             var lst = parentViewModel.Projects.Where(x => x.StatusId == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.IsActive);
-            lodActions = new ObservableCollection<MyAction>(lst);
+            lodActions = lst.ToList();
             CreateWlProcessor();
+        }
+        void HandleCompletedLODActions() {
+            wlProcessor.HandleCompletedActions();
         }
     }
 }

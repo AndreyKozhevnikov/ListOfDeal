@@ -18,7 +18,7 @@ namespace ListOfDeal {
         List<WLList> GetAllLists();
         List<WLTask> GetTasksForList(int listId);
         WLTask GetTask(WLTask task);
-        WLTask CreateTask(string title);
+        WLTask CreateTask(string title,int listId);
         WLTask UpdateTask(WLTask task);
     }
     public class WLConnector: IWLConnector {
@@ -28,7 +28,7 @@ namespace ListOfDeal {
         }
         string accessToken;
         string clientId;
-        const int MyListId = 262335124;
+      
         void GetSettings() {
             var st = ListOfDeal.Properties.Resources.settings.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             clientId = st[0];
@@ -56,16 +56,16 @@ namespace ListOfDeal {
         public void Start() {
 
             var lst = GetAllLists();
-            var list = GetTasksForList(MyListId);
-            var t0 = CreateTask("test");
+            var list = GetTasksForList(262335124);
+            var t0 = CreateTask("test", 262335124);
             var t1 = UpdateTask(t0);
             var t2 = GetTask(t0);
             //    DeleteTask(t2);
 
         }
-        public WLTask CreateTask(string title) {
+        public WLTask CreateTask(string title,int listId) {
             string st = "http://a.wunderlist.com/api/v1/tasks";
-            JsonCreator.Add("list_id", MyListId);
+            JsonCreator.Add("list_id", listId);
             JsonCreator.Add("title", title);
             string json = JsonCreator.GetString();
             var responseText = GetHttpRequestResponse(st, "POST", json);

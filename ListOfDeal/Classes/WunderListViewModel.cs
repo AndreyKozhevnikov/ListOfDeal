@@ -17,7 +17,7 @@ namespace ListOfDeal {
         }
         ICommand _getActionsCommand;
         ICommand _createTasksCommand;
-        ICommand _handleCompletedActions;
+        ICommand _handleCompletedWlTasks;
         public ICommand GetActionsCommand {
             get {
                 if (_getActionsCommand == null)
@@ -37,11 +37,11 @@ namespace ListOfDeal {
          
         }
 
-        public ICommand HandleCompletedActions {
+        public ICommand HandleCompletedWlTasks {
             get {
-                if (_handleCompletedActions == null)
-                    _handleCompletedActions = new DelegateCommand(HandleCompletedLODActions);
-                return _handleCompletedActions;
+                if (_handleCompletedWlTasks == null)
+                    _handleCompletedWlTasks = new DelegateCommand(HandleCompletedLODActions);
+                return _handleCompletedWlTasks;
             }
         }
 

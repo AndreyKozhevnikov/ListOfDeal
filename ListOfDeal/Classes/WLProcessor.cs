@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,13 +34,16 @@ namespace ListOfDeal {
             MainViewModel.SaveChanges();
         }
      
-        public void HandleCompletedActions() {
+        public void HandleCompletedWLTasks() {
             allTasks = GetAllActiveTasks();
             var lstwlIdinLod = allActions.Select(x =>(int) x.WLId);
             var lstwlIdInWL = allTasks.Select(x => x.id);
             var diff = lstwlIdinLod.Except(lstwlIdInWL);
+      
             foreach (int tskId in diff) {
-                Console.WriteLine(tskId.ToString());
+                Debug.Print(tskId.ToString());
+                allActions.Where(x => x.WLId == tskId).First().StatusId = ActionsStatusEnum.Completed;
+
             }
             
         }
@@ -97,16 +101,29 @@ namespace ListOfDeal {
         }
 
         [Test]
-        public void CompleteAction() {
+        public void HandleCompletedWLTasks() {
             //arrange
             var actList = new List<MyAction>();
+            var myAction = new MyAction(new Action() { Name = "Action1", WLId = 1 });
+            var myAction1 = new MyAction(new Action() { Name = "Action2", WLId = 2 });
+            var myAction2 = new MyAction(new Action() { Name = "Action3", WLId = 3 });
+
+            actList.Add(myAction);
+            actList.Add(myAction1);
+            actList.Add(myAction2);
+
+            var taskList = new List<WLTask>();
+            taskList.Add(new WLTask() { id = 1 });
+            taskList.Add(new WLTask() { id = 3 });
             WLProcessor wlProc = new WLProcessor();
             var mockWlConnector = new Mock<IWLConnector>(MockBehavior.Strict);
+            mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(taskList);
             wlProc.CreateWlConnector(mockWlConnector.Object);
             wlProc.PopulateActions(actList);
-
-
             //act
+            wlProc.HandleCompletedWLTasks();
+            //assert
+            Assert.AreEqual(ActionsStatusEnum.Completed, myAction1.StatusId);
 
 
         }

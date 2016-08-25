@@ -63,7 +63,7 @@ namespace ListOfDeal {
             CreateWlProcessor();
         }
         void HandleCompletedLODActions() {
-            wlProcessor.HandleCompletedActions();
+            wlProcessor.HandleCompletedWLTasks();
         }
     }
 }

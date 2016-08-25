@@ -19,7 +19,7 @@ namespace ListOfDeal {
         }
         public void CreateWlConnector(IWLConnector _conn) {
             wlConnector = _conn;
-        //    (wlConnector as WLConnector).Start();
+            (wlConnector as WLConnector).Start();
         }
         public void CreateWlTasks() {
             var emptyActions = allActions.Where(x => x.WLId == null);

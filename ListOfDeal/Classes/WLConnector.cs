@@ -20,6 +20,7 @@ namespace ListOfDeal {
         WLTask GetTask(WLTask task);
         WLTask CreateTask(string title,int listId);
         WLTask UpdateTask(WLTask task);
+        WLNote CreateNote(int taskId, string content);
     }
     public class WLConnector: IWLConnector {
         public WLConnector() {
@@ -57,9 +58,13 @@ namespace ListOfDeal {
 
             var lst = GetAllLists();
             var list = GetTasksForList(262335124);
-            var t0 = CreateTask("test", 262335124);
-            var t1 = UpdateTask(t0);
-            var t2 = GetTask(t0);
+            var tsk = list[1];
+          var v=  CreateNote(tsk.id, "#LODId=123");
+            var tsk1 = list[0];
+            var v1 = CreateNote(tsk.id, "#LODId=123");
+            //var t0 = CreateTask("test", 262335124);
+            //var t1 = UpdateTask(t0);
+            //var t2 = GetTask(t0);
             //    DeleteTask(t2);
 
         }
@@ -114,6 +119,16 @@ namespace ListOfDeal {
             var responseText = GetHttpRequestResponse(st2, "DELETE");
 
 
+        }
+
+        public WLNote CreateNote(int taskId,string content) {
+            string st = "http://a.wunderlist.com/api/v1/notes";
+            JsonCreator.Add("task_id", taskId);
+            JsonCreator.Add("content", content);
+            string json = JsonCreator.GetString();
+            var responseText = GetHttpRequestResponse(st, "POST", json);
+            var wlNote = JsonConvert.DeserializeObject<WLNote>(responseText);
+            return wlNote;
         }
 
         public void ReadAllJSON() {
@@ -402,7 +417,7 @@ namespace ListOfDeal {
         public string type { get; set; }
     }
 
-    public class Note {
+    public class WLNote {
         public int id { get; set; }
         public int revision { get; set; }
         public string content { get; set; }
@@ -432,7 +447,7 @@ namespace ListOfDeal {
         public List<WLTask> tasks { get; set; }
         public List<Reminder> reminders { get; set; }
         public List<Subtask> subtasks { get; set; }
-        public List<Note> notes { get; set; }
+        public List<WLNote> notes { get; set; }
         public List<TaskPosition> task_positions { get; set; }
         public List<SubtaskPosition> subtask_positions { get; set; }
     }

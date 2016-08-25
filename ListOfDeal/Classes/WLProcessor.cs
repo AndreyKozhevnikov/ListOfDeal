@@ -42,7 +42,7 @@ namespace ListOfDeal {
       
             foreach (int tskId in diff) {
                 Debug.Print(tskId.ToString());
-                allActions.Where(x => x.WLId == tskId).First().StatusId = ActionsStatusEnum.Completed;
+                allActions.Where(x => x.WLId == tskId).First().Status = ActionsStatusEnum.Completed;
 
             }
             
@@ -123,7 +123,7 @@ namespace ListOfDeal {
             //act
             wlProc.HandleCompletedWLTasks();
             //assert
-            Assert.AreEqual(ActionsStatusEnum.Completed, myAction1.StatusId);
+            Assert.AreEqual(ActionsStatusEnum.Completed, myAction1.Status);
 
 
         }

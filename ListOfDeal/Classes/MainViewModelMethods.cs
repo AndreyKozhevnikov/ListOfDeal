@@ -62,12 +62,12 @@ namespace ListOfDeal {
         private void CreateNewProject() {
             CurrentProject = new MyProject();
             CurrentProject.TypeId = 11;
-            CurrentProject.StatusId = ProjectStatusEnum.Delayed;
+            CurrentProject.Status = ProjectStatusEnum.Delayed;
             CurrentProject.IsSimpleProject = true;
         }
         private void CreateNewAction() {
             CurrentAction = new MyAction();
-            CurrentAction.StatusId =ActionsStatusEnum.Waited;
+            CurrentAction.Status =ActionsStatusEnum.Waited;
             CurrentAction.IsActive = false;
 
 
@@ -81,7 +81,7 @@ namespace ListOfDeal {
             if (CurrentProject.IsSimpleProject) {
                 MyAction act = new MyAction();
                 act.Name = CurrentProject.Name;
-                act.StatusId =ActionsStatusEnum.Waited;
+                act.Status =ActionsStatusEnum.Waited;
                 act.IsActive = true;
                 CurrentProject.AddAction(act);
             }
@@ -157,10 +157,10 @@ namespace ListOfDeal {
             }
         }
         private void ProvideActions() {
-            var allActions = Projects.Where(x => x.StatusId == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.IsActive);
-            var actActions = allActions.Where(x => x.StatusId == ActionsStatusEnum.Waited);
-            var shedActions = allActions.Where(x => x.StatusId == ActionsStatusEnum.Scheduled);
-            var delActions = allActions.Where(x => x.StatusId == ActionsStatusEnum.Delegated);
+            var allActions = Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.IsActive);
+            var actActions = allActions.Where(x => x.Status == ActionsStatusEnum.Waited);
+            var shedActions = allActions.Where(x => x.Status == ActionsStatusEnum.Scheduled);
+            var delActions = allActions.Where(x => x.Status == ActionsStatusEnum.Delegated);
 
             WaitedActions = new ObservableCollection<MyAction>(actActions);
             ScheduledActions = new ObservableCollection<MyAction>(shedActions);
@@ -207,7 +207,7 @@ namespace ListOfDeal {
         }
         private void CustomSummary(CustomSummaryEventArgs obj) {
             if (obj.SummaryProcess == CustomSummaryProcess.Finalize && Projects != null) {
-                var v = Projects.SelectMany(x => x.Actions).Where(y => y.StatusId != ActionsStatusEnum.Completed).ToList();
+                var v = Projects.SelectMany(x => x.Actions).Where(y => y.Status != ActionsStatusEnum.Completed).ToList();
                 obj.TotalValue = string.Format("Actions count={0}", v.Count);
             }
         }
@@ -281,7 +281,7 @@ namespace ListOfDeal {
         private void ValidateColumn(GridRowValidationEventArgs e) {
             MyProject p = e.Row as MyProject;
             var v = (int)e.Value;
-            if (v == 3 && p.Actions.Where(x => x.StatusId != ActionsStatusEnum.Completed).Count() > 0) {
+            if (v == 3 && p.Actions.Where(x => x.Status != ActionsStatusEnum.Completed).Count() > 0) {
                 e.ErrorContent = "there are active actions";
                 e.IsValid = false;
                 e.Handled = true;

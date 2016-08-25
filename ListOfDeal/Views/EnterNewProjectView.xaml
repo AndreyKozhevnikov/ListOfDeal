@@ -40,7 +40,7 @@
                     <dxlc:LayoutGroup>
                         <dxlc:LayoutItem Label="Status:">
                             <!--<dxe:ComboBoxEdit ItemsSource="{Binding ProjectStatuses}" ValueMember="Id" DisplayMember="Name" EditValue="{Binding CurrentProject.StatusId}"/>-->
-                            <dxe:ComboBoxEdit EditValue="{Binding CurrentProject.StatusId}">
+                            <dxe:ComboBoxEdit EditValue="{Binding CurrentProject.Status}">
                                 <dxmvvm:Interaction.Behaviors>
                                     <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ProjectStatusEnum}"/>
                                 </dxmvvm:Interaction.Behaviors>
@@ -75,7 +75,7 @@
                         </dxlc:LayoutItem>
                         <dxlc:LayoutItem Label="Status:">
                             <dxe:ComboBoxEdit 
-                                EditValue="{Binding CurrentAction.StatusId,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}">
+                                EditValue="{Binding CurrentAction.Status,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}">
                                 <dxmvvm:Interaction.Behaviors>
                                     <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum}"/>
                                 </dxmvvm:Interaction.Behaviors>
@@ -134,7 +134,7 @@
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
                     <dxg:GridColumn FieldName="DesiredResult"/>
-                    <dxg:GridColumn FieldName="StatusId">
+                    <dxg:GridColumn FieldName="Status">
                         <dxmvvm:Interaction.Behaviors>
                             <dxmvvm:EventToCommand EventName="Validate" Command="{Binding ValidateColumnCommand}" PassEventArgsToCommand="True"/>
                         </dxmvvm:Interaction.Behaviors>
@@ -160,7 +160,7 @@
                                         <dxe:ComboBoxEditSettings ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name"/>
                                     </dxg:GridColumn.EditSettings>
                                 </dxg:GridColumn>
-                                <dxg:GridColumn FieldName="StatusId">
+                                <dxg:GridColumn FieldName="Status">
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
                                             <dxe:ComboBoxEdit Name="PART_Editor">
@@ -181,7 +181,7 @@
                                                         <Setter Property="IsEnabled" Value="False"/>
                                                         <Style.Triggers>
                                                             <!--<DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="2">-->
-                                                            <DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="{x:Static local:ActionsStatusEnum.Scheduled}">
+                                                            <DataTrigger Binding="{Binding RowData.Row.Status}" Value="{x:Static local:ActionsStatusEnum.Scheduled}">
                                                                 <Setter Property="IsEnabled" Value="True"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>
@@ -201,7 +201,7 @@
                                                     <Style TargetType="{x:Type dxe:ComboBoxEdit}">
                                                         <Setter Property="IsEnabled" Value="False"/>
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="{x:Static local:ActionsStatusEnum.Delegated}">
+                                                            <DataTrigger Binding="{Binding RowData.Row.Status}" Value="{x:Static local:ActionsStatusEnum.Delegated}">
                                                                 <Setter Property="IsEnabled" Value="True"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>
@@ -230,8 +230,8 @@
                             <dxg:GridControl.View>
                                 <dxg:TableView ShowGroupPanel="False" ShowFilterPanelMode="Never">
                                     <dxg:TableView.FormatConditions>
-                                        <dxg:FormatCondition ApplyToRow="True" FieldName="IsActive" PredefinedFormatName="GreenFillWithDarkGreenText" Expression="[IsActive] = True And [StatusId] !='Completed'"/>
-                                        <dxg:FormatCondition FieldName="StatusId" Value1="{x:Null}" ValueRule="Expression" ApplyToRow="True" Expression="[StatusId] = 'Completed'">
+                                        <dxg:FormatCondition ApplyToRow="True" FieldName="IsActive" PredefinedFormatName="GreenFillWithDarkGreenText" Expression="[IsActive] = True And [Status] !='Completed'"/>
+                                        <dxg:FormatCondition FieldName="Status" Value1="{x:Null}" ValueRule="Expression" ApplyToRow="True" Expression="[Status] = 'Completed'">
                                             <dx:Format Foreground="#FFD8D6CB" TextDecorations="{x:Null}"/>
                                         </dxg:FormatCondition>
                                     </dxg:TableView.FormatConditions>
@@ -245,10 +245,10 @@
                         <dxg:TableView.FormatConditions>
                             <dxg:FormatCondition ApplyToRow="True" 
                                                  PredefinedFormatName="GreenFillWithDarkGreenText"
-                                                 Expression="[StatusId]='InWork'"
+                                                 Expression="[Status]='InWork'"
                                                  />
-                            <dxg:FormatCondition FieldName="StatusId" Value1="{x:Null}" ValueRule="Expression" 
-                                                 ApplyToRow="True" Expression="[StatusId] = 'Done'">
+                            <dxg:FormatCondition FieldName="Status" Value1="{x:Null}" ValueRule="Expression" 
+                                                 ApplyToRow="True" Expression="[Status] = 'Done'">
                                 <dx:Format Foreground="#FFD8D6CB" TextDecorations="{x:Null}"/>
                             </dxg:FormatCondition>
                         </dxg:TableView.FormatConditions>

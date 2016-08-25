@@ -19,7 +19,7 @@
                         <dxe:ComboBoxEditSettings ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name"/>
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
-                <dxg:GridColumn FieldName="StatusId">
+                <dxg:GridColumn FieldName="Status">
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
                             <dxe:ComboBoxEdit Name="PART_Editor">
@@ -47,7 +47,7 @@
                                     <Style TargetType="dxe:ComboBoxEdit">
                                         <Setter Property="IsEnabled" Value="False"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RowData.Row.StatusId}" Value="3">
+                                            <DataTrigger Binding="{Binding RowData.Row.Status}" Value="3">
                                                 <Setter Property="IsEnabled" Value="True"/>
                                             </DataTrigger>
                                         </Style.Triggers>

@@ -28,7 +28,7 @@ namespace ListOfDeal {
                 RaisePropertyChanged("Name");
             }
         }
-        public ActionsStatusEnum StatusId {
+        public ActionsStatusEnum Status {
             get {
                 return (ActionsStatusEnum)parentEntity.StatusId;
             }
@@ -37,7 +37,7 @@ namespace ListOfDeal {
                 if (value == ActionsStatusEnum.Completed) {
                     this.parentEntity.CompleteTime = DateTime.Now;
                 }
-                RaisePropertyChanged("StatusId");
+                RaisePropertyChanged("Status");
             }
         }
         public bool IsActive {
@@ -121,9 +121,9 @@ namespace ListOfDeal {
 
         public string Error {
             get {
-                if (StatusId == ActionsStatusEnum.Scheduled && ScheduledTime == null)
+                if (Status == ActionsStatusEnum.Scheduled && ScheduledTime == null)
                     return "scheduled required";
-                if (StatusId == ActionsStatusEnum.Delegated && DelegatedTo == null)
+                if (Status == ActionsStatusEnum.Delegated && DelegatedTo == null)
                     return "delegated required";
                 return null;
             }
@@ -131,10 +131,10 @@ namespace ListOfDeal {
 
         public string this[string columnName] {
             get {
-                if (columnName == "StatusId") {
-                    if (StatusId == ActionsStatusEnum.Scheduled && ScheduledTime == null)
+                if (columnName == "Status") {
+                    if (Status == ActionsStatusEnum.Scheduled && ScheduledTime == null)
                         return "scheduled required";
-                    if (StatusId == ActionsStatusEnum.Delegated && DelegatedTo == null)
+                    if (Status == ActionsStatusEnum.Delegated && DelegatedTo == null)
                         return "delegated required";
                 }
                 return null;
@@ -155,7 +155,7 @@ namespace ListOfDeal {
         }
         internal void CopyProperties(MyAction act) {
             this.Name = act.Name;
-            this.StatusId = act.StatusId;
+            this.Status = act.Status;
             this.TriggerId = act.TriggerId;
             this.DelegatedTo = act.DelegatedTo;
             this.ScheduledTime = act.ScheduledTime;

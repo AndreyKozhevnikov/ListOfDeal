@@ -58,7 +58,7 @@ namespace ListOfDeal {
             wlProcessor.CreateWlTasks();
         }
         private void GetActions() {
-            var lst = parentViewModel.Projects.Where(x => x.StatusId == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.IsActive);
+            var lst = parentViewModel.Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.IsActive);
             lodActions = lst.ToList();
             CreateWlProcessor();
         }

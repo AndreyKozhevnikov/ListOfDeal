@@ -53,9 +53,9 @@ namespace ListOfDeal {
         }
 
         void act_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-            if (e.PropertyName == "StatusId") {
+            if (e.PropertyName == "Status") {
                 MyAction act = sender as MyAction;
-                if (act.StatusId != ActionsStatusEnum.Completed)
+                if (act.Status != ActionsStatusEnum.Completed)
                     return;
                 var ind = act.OrderNumber + 1;
                 var targetAct = Actions.Where(x => x.OrderNumber == ind).FirstOrDefault();
@@ -63,7 +63,7 @@ namespace ListOfDeal {
                     targetAct.IsActive = true;
                 }
                 if (this.IsSimpleProject) {
-                    this.StatusId = ProjectStatusEnum.Done;
+                    this.Status = ProjectStatusEnum.Done;
                 }
 
             }
@@ -105,7 +105,7 @@ namespace ListOfDeal {
                 RaisePropertyChanged("TypeId");
             }
         }
-        public ProjectStatusEnum StatusId {
+        public ProjectStatusEnum Status {
             get {
                 return (ProjectStatusEnum)parentEntity.StatusId;
             }
@@ -114,7 +114,7 @@ namespace ListOfDeal {
                 if ((ProjectStatusEnum)value == ProjectStatusEnum.Done) {
                     this.parentEntity.CompleteTime = DateTime.Now;
                 }
-                RaisePropertyChanged("StatusId");
+                RaisePropertyChanged("Status");
             }
         }
         public string Comment {

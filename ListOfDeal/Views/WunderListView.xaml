@@ -10,7 +10,8 @@
         <StackPanel >
             <Button Content="Get Data" Command="{Binding GetActionsCommand}"/>
             <Button Content="Create tasks" Command="{Binding CreateTasksCommand}"/>
-            <Button Content="Handle completed WLTasks" Command="{Binding HandleCompletedWlTasks}"/>
+            <Button Content="Handle completed WLTasks" Command="{Binding HandleCompletedWlTasksCommand}"/>
+            <Button Content="Handle completed Actions" Command="{Binding HandleCompletedActionsCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>

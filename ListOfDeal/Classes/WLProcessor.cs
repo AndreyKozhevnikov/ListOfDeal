@@ -50,6 +50,10 @@ namespace ListOfDeal {
         List<WLTask> GetAllActiveTasks() {
             return wlConnector.GetTasksForList(MyListId);
         }
+        public void HandleCompletedLODActions() {
+
+        }
+
     }
 
     [TestFixture]

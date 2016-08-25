@@ -18,6 +18,7 @@ namespace ListOfDeal {
         ICommand _getActionsCommand;
         ICommand _createTasksCommand;
         ICommand _handleCompletedWlTasks;
+       ICommand _handleCompletedActionsCommand;
         public ICommand GetActionsCommand {
             get {
                 if (_getActionsCommand == null)
@@ -37,11 +38,19 @@ namespace ListOfDeal {
          
         }
 
-        public ICommand HandleCompletedWlTasks {
+        public ICommand HandleCompletedWlTasksCommand {
             get {
                 if (_handleCompletedWlTasks == null)
-                    _handleCompletedWlTasks = new DelegateCommand(HandleCompletedLODActions);
+                    _handleCompletedWlTasks = new DelegateCommand(HandleCompletedWLTasks);
                 return _handleCompletedWlTasks;
+            }
+        }
+
+        public ICommand HandleCompletedActionsCommand {
+            get {
+                if (_handleCompletedActionsCommand == null)
+                    _handleCompletedActionsCommand = new DelegateCommand(HandleCompletedActions);
+                return _handleCompletedActionsCommand;
             }
         }
 
@@ -62,8 +71,11 @@ namespace ListOfDeal {
             lodActions = lst.ToList();
             CreateWlProcessor();
         }
-        void HandleCompletedLODActions() {
+        void HandleCompletedWLTasks() {
             wlProcessor.HandleCompletedWLTasks();
+        }
+        void HandleCompletedActions() {
+            wlProcessor.HandleCompletedLODActions();
         }
     }
 }

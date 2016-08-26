@@ -27,6 +27,7 @@ namespace ListOfDeal
         public int OrderNumber { get; set; }
         public Nullable<System.DateTime> CompleteTime { get; set; }
         public Nullable<int> WLId { get; set; }
+        public int WLTaskStatus { get; set; }
     
         public virtual DelegatePerson DelegatePerson { get; set; }
         public virtual Project Project { get; set; }

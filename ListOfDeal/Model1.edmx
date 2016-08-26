@@ -22,6 +22,7 @@
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="OrderNumber" Type="int" Nullable="false" />
           <Property Name="WLId" Type="int" />
+          <Property Name="WLTaskStatus" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ActionTriggers">
           <Key>
@@ -154,6 +155,7 @@
           <Property Name="OrderNumber" Type="Int32" Nullable="false" />
           <Property Name="CompleteTime" Type="DateTime" Precision="3" />
           <Property Name="WLId" Type="Int32" />
+          <Property Name="WLTaskStatus" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="ActionTrigger">
           <Key>
@@ -276,6 +278,7 @@
           <EntitySetMapping Name="Actions">
             <EntityTypeMapping TypeName="ListOfDealBaseModel.Action">
               <MappingFragment StoreEntitySet="Actions">
+                <ScalarProperty Name="WLTaskStatus" ColumnName="WLTaskStatus" />
                 <ScalarProperty Name="WLId" ColumnName="WLId" />
                 <ScalarProperty Name="CompleteTime" ColumnName="CompleteTime" />
                 <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />

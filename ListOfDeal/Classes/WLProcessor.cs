@@ -42,6 +42,7 @@ namespace ListOfDeal {
         }
 
         public void HandleCompletedWLTasks() {
+            MainViewModel.SaveChanges();
             allTasks = GetAllActiveTasks();
             allActions = GetActiveActions();
             var lstwlIdinLod = allActions.Select(x => (int)x.WLId);
@@ -51,8 +52,8 @@ namespace ListOfDeal {
             foreach (int tskId in diff) {
                 Debug.Print(tskId.ToString());
                 allActions.Where(x => x.WLId == tskId).First().Status = ActionsStatusEnum.Completed;
-
             }
+            MainViewModel.SaveChanges();
 
         }
         List<WLTask> GetAllActiveTasks() {
@@ -65,6 +66,7 @@ namespace ListOfDeal {
 
 
         public void HandleCompletedLODActions() {
+            MainViewModel.SaveChanges();
             var lst = MainViewModel.generalEntity.Actions.Where(x => x.WLTaskStatus == 2).ToList();
             foreach (var act in lst) {
                 var wlId = (int)act.WLId;
@@ -72,7 +74,7 @@ namespace ListOfDeal {
                 act.WLId = null;
                 act.WLTaskStatus = 0;
             }
-            MainViewModel.generalEntity.SaveChanges();
+            MainViewModel.SaveChanges();
         }
 
 
@@ -137,6 +139,10 @@ namespace ListOfDeal {
         [Test]
         public void HandleCompletedWLTasks() {
             //arrange
+
+            var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
+            MainViewModel.generalEntity = mockGeneralEntity.Object;
+
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
             projCollection.Add(proj);
@@ -163,7 +169,7 @@ namespace ListOfDeal {
             wlProc.HandleCompletedWLTasks();
             //assert
             Assert.AreEqual(ActionsStatusEnum.Completed, myAction2.Status);
-
+            mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
 
         }
         [Test]
@@ -196,7 +202,7 @@ namespace ListOfDeal {
             Assert.AreEqual(1, lstAct[0].WLTaskStatus);
             Assert.AreEqual(null, lstAct[1].WLId);
             Assert.AreEqual(0, lstAct[1].WLTaskStatus);
-            mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Once);
+            mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
 
         }
     }

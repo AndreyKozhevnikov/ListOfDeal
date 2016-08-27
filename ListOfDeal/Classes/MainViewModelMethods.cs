@@ -12,6 +12,7 @@ using System.Windows.Input;
 namespace ListOfDeal {
    public interface IMainViewModel {
       ObservableCollection<MyProject> Projects { get; set; }
+       
     }
     public partial class MainViewModel:IMainViewModel {
 

@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace ListOfDeal {
     [DebuggerDisplay("Name = {Name}")]
-    public class MyAction:MyBindableBase,IDataErrorInfo {
-      public  Action parentEntity;
+    public class MyAction : MyBindableBase, IDataErrorInfo {
+        public Action parentEntity;
         public MyAction(Action _parentEntity) {
             parentEntity = _parentEntity;
         }
@@ -34,11 +34,11 @@ namespace ListOfDeal {
                 return (ActionsStatusEnum)parentEntity.StatusId;
             }
             set {
-                parentEntity.StatusId =(int) value;
+                parentEntity.StatusId = (int)value;
                 if (value == ActionsStatusEnum.Completed) {
                     this.parentEntity.CompleteTime = DateTime.Now;
-                    this.parentEntity.WLTaskStatus = 2;
                     this.IsActive = false;
+                    SetDeleteTaskIfNeeded();
                 }
                 RaisePropertyChanged("Status");
             }
@@ -164,6 +164,10 @@ namespace ListOfDeal {
         //        parentEntity.WLTaskStatus = (int)value;
         //    }
         //}
+        public void SetDeleteTaskIfNeeded() {
+            if (WLId != null)
+                this.parentEntity.WLTaskStatus = 2;
+        }
         internal void CopyProperties(MyAction act) {
             this.Name = act.Name;
             this.Status = act.Status;
@@ -177,10 +181,10 @@ namespace ListOfDeal {
     }
 
     public enum ActionsStatusEnum {
-        Waited=1,
-        Scheduled=2,
-        Delegated=3,
-        Completed=4
+        Waited = 1,
+        Scheduled = 2,
+        Delegated = 3,
+        Completed = 4
     }
     //public enum WLTaskStatusEnum {
     //    NoWLTask=0,
@@ -193,6 +197,7 @@ namespace ListOfDeal {
         public void CompleteAction() {
             //arrange
             MyAction act = new MyAction(new Action());
+            act.WLId = 123;
             act.IsActive = true;
             //act
             act.Status = ActionsStatusEnum.Completed;
@@ -200,6 +205,17 @@ namespace ListOfDeal {
             Assert.AreEqual(2, act.parentEntity.WLTaskStatus);
             Assert.AreNotEqual(null, act.parentEntity.CompleteTime);
             Assert.AreEqual(false, act.parentEntity.IsActive);
+        }
+        [Test]
+        public void CompleteAction_withoutWLId() {
+            //arrange
+            MyAction act = new MyAction(new Action());
+            act.IsActive = true;
+            //act
+            act.Status = ActionsStatusEnum.Completed;
+            //assert
+            Assert.AreEqual(0, act.parentEntity.WLTaskStatus);
+
         }
     }
 }

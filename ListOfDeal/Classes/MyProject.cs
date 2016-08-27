@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ListOfDeal {
     public class MyProject : MyBindableBase {
-        Project parentEntity;
+      public  Project parentEntity;
         public MyProject(Project _p) {
             parentEntity = _p;
             InitiateProject();
@@ -111,8 +112,14 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.StatusId = (int)value;
-                if ((ProjectStatusEnum)value == ProjectStatusEnum.Done) {
-                    this.parentEntity.CompleteTime = DateTime.Now;
+
+                if ((ProjectStatusEnum)value != ProjectStatusEnum.InWork) {
+                    foreach(var act in Actions) {
+                        act.SetDeleteTaskIfNeeded();
+                    }
+                    if ((ProjectStatusEnum)value == ProjectStatusEnum.Done) {
+                        this.parentEntity.CompleteTime = DateTime.Now;
+                    }
                 }
                 RaisePropertyChanged("Status");
             }
@@ -153,5 +160,53 @@ namespace ListOfDeal {
 
     public enum ProjectStatusEnum {
         InWork = 1, Delayed = 2, Done = 3
+    }
+
+    [TestFixture]
+    public class MyProjectTests {
+        [Test]
+        public void SetStatusDone() {
+            //arrange
+            MyProject pr = new MyProject(new Project());
+            //act
+            pr.Status = ProjectStatusEnum.Done;
+            //assert
+            Assert.AreNotEqual(null, pr.parentEntity.CompleteTime);
+        }
+
+        [Test]
+        public void SetProjectIsNotInWork() {
+            //arrange
+            MyProject pr = new MyProject(new Project());
+            var myAction = new MyAction(new Action());
+            myAction.WLId = 123;
+            var myAction1 = new MyAction(new Action());
+            pr.Actions.Add(myAction);
+            pr.Actions.Add(myAction1);
+            //act
+            pr.Status = ProjectStatusEnum.Delayed;
+            //assert
+            Assert.AreEqual(2, myAction.parentEntity.WLTaskStatus);
+            Assert.AreEqual(0, myAction1.parentEntity.WLTaskStatus);
+
+          
+        }
+        [Test]
+        public void SetProjectIsNotInWork_Done() {
+            //arrange
+            MyProject pr = new MyProject(new Project());
+            var myAction = new MyAction(new Action());
+            myAction.WLId = 123;
+            var myAction1 = new MyAction(new Action());
+            pr.Actions.Add(myAction);
+            pr.Actions.Add(myAction1);
+            //act
+            pr.Status = ProjectStatusEnum.Done;
+            //assert
+            Assert.AreEqual(2, myAction.parentEntity.WLTaskStatus);
+            Assert.AreEqual(0, myAction1.parentEntity.WLTaskStatus);
+
+            Assert.AreNotEqual(null, pr.parentEntity.CompleteTime);
+        }
     }
 }

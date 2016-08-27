@@ -15,15 +15,15 @@ namespace ListOfDeal {
             parentViewModel = _mainVM;
           
         }
-        ICommand _getActionsCommand;
+        ICommand _createProcessorCommand;
         ICommand _createTasksCommand;
         ICommand _handleCompletedWlTasks;
        ICommand _handleCompletedActionsCommand;
-        public ICommand GetActionsCommand {
+        public ICommand CreateProcessorCommand {
             get {
-                if (_getActionsCommand == null)
-                    _getActionsCommand = new DelegateCommand(GetActions);
-                return _getActionsCommand;
+                if (_createProcessorCommand == null)
+                    _createProcessorCommand = new DelegateCommand(CreateProcessor);
+                return _createProcessorCommand;
             }
         }
 
@@ -55,20 +55,20 @@ namespace ListOfDeal {
         }
 
         WLProcessor wlProcessor;
-        List<MyAction> lodActions;
+   //     List<MyAction> lodActions;
         
         void CreateWlProcessor() {
-            wlProcessor = new WLProcessor();
+            wlProcessor = new WLProcessor(parentViewModel);
             wlProcessor.CreateWlConnector(new WLConnector());
-            wlProcessor.PopulateActions(lodActions);
+          //  wlProcessor.PopulateActions(lodActions);
         }
         void CreateTasks() {
 
             wlProcessor.CreateWlTasks();
         }
-        private void GetActions() {
-            var lst = parentViewModel.Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.IsActive);
-            lodActions = lst.ToList();
+        private void CreateProcessor() {
+            //var lst = parentViewModel.Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.IsActive);
+            //lodActions = lst.ToList();
             CreateWlProcessor();
         }
         void HandleCompletedWLTasks() {

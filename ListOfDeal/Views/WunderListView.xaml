@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <StackPanel >
-            <Button Content="Get Data" Command="{Binding GetActionsCommand}"/>
+            <Button Content="Create processor" Command="{Binding CreateProcessorCommand}"/>
             <Button Content="Create tasks" Command="{Binding CreateTasksCommand}"/>
             <Button Content="Handle completed WLTasks" Command="{Binding HandleCompletedWlTasksCommand}"/>
             <Button Content="Handle completed Actions" Command="{Binding HandleCompletedActionsCommand}"/>

@@ -14,45 +14,59 @@ namespace ListOfDeal {
         List<WLTask> allTasks;
         IWLConnector wlConnector;
         const int MyListId = 262335124;
-        public void PopulateActions(List<MyAction> _actions) {
-            allActions = _actions;
+
+        //public void PopulateActions(List<MyAction> _actions) {
+        //    allActions = _actions;
+        //}
+        IMainViewModel parentVM;
+        public WLProcessor(IMainViewModel _parentVM) {
+            parentVM = _parentVM;
         }
         public void CreateWlConnector(IWLConnector _conn) {
             wlConnector = _conn;
-            (wlConnector as WLConnector).Start();
+            //  (wlConnector as WLConnector).Start();
         }
         public void CreateWlTasks() {
+            allActions = GetActiveActions();
             var emptyActions = allActions.Where(x => x.WLId == null);
             if (emptyActions.Count() == 0)
                 return;
             //   emptyActions = emptyActions.Take(1);
             foreach (var act in emptyActions) {
                 string title = act.Name;
-                var wlTask = wlConnector.CreateTask(title,MyListId);
+                var wlTask = wlConnector.CreateTask(title, MyListId);
                 act.WLId = wlTask.id;
             }
             MainViewModel.SaveChanges();
         }
-     
+
         public void HandleCompletedWLTasks() {
             allTasks = GetAllActiveTasks();
-            var lstwlIdinLod = allActions.Select(x =>(int) x.WLId);
+            allActions = GetActiveActions();
+            var lstwlIdinLod = allActions.Select(x => (int)x.WLId);
             var lstwlIdInWL = allTasks.Select(x => x.id);
             var diff = lstwlIdinLod.Except(lstwlIdInWL);
-      
+
             foreach (int tskId in diff) {
                 Debug.Print(tskId.ToString());
                 allActions.Where(x => x.WLId == tskId).First().Status = ActionsStatusEnum.Completed;
 
             }
-            
+
         }
         List<WLTask> GetAllActiveTasks() {
             return wlConnector.GetTasksForList(MyListId);
         }
+        List<MyAction> GetActiveActions() {
+            var lst = parentVM.Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.IsActive).ToList();
+            return lst;
+        }
+
+
         public void HandleCompletedLODActions() {
 
         }
+
 
     }
 
@@ -61,17 +75,22 @@ namespace ListOfDeal {
         [Test]
         public void CreateWlTasks() {
             //arrange
-            var actList = new List<MyAction>();
-            actList.Add(new MyAction(new Action() { Name = "act1" }));
-            actList.Add(new MyAction(new Action() { Name = "act2",WLId=123 }));
-            actList.Add(new MyAction(new Action() { Name = "act3" }));
-            WLProcessor wlProc = new WLProcessor();
+            var projCollection = new ObservableCollection<MyProject>();
+            var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            projCollection.Add(proj);
+            proj.Actions.Add(new MyAction(new Action() { Name = "act1",IsActive=true }));
+            proj.Actions.Add(new MyAction(new Action() { Name = "act2", WLId = 123,IsActive=true }));
+            proj.Actions.Add(new MyAction(new Action() { Name = "act3",IsActive=true }));
+            
+            var mockMainVM = new Mock<IMainViewModel>();
+            mockMainVM.Setup(x => x.Projects).Returns(projCollection);
+            WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>();
-          
-            mockWlConnector.Setup(x => x.CreateTask("act1",It.IsAny<int>())).Returns(new WLTask() { id = 234 });
+
+            mockWlConnector.Setup(x => x.CreateTask("act1", It.IsAny<int>())).Returns(new WLTask() { id = 234 });
             mockWlConnector.Setup(x => x.CreateTask("act3", It.IsAny<int>())).Returns(new WLTask() { id = 345 });
             wlProc.CreateWlConnector(mockWlConnector.Object);
-            wlProc.PopulateActions(actList);
+            // wlProc.PopulateActions(actList);
 
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
             MainViewModel.generalEntity = mockGeneralEntity.Object;
@@ -80,8 +99,8 @@ namespace ListOfDeal {
             //assert
             mockWlConnector.Verify(x => x.CreateTask("act1", It.IsAny<int>()), Times.Once);
             mockWlConnector.Verify(x => x.CreateTask("act3", It.IsAny<int>()), Times.Once);
-            Assert.AreEqual(234, actList[0].WLId);
-            Assert.AreEqual(345, actList[2].WLId);
+            Assert.AreEqual(234, proj.Actions[0].WLId);
+            Assert.AreEqual(345, proj.Actions[2].WLId);
             mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Once);
 
 
@@ -89,12 +108,15 @@ namespace ListOfDeal {
         [Test]
         public void CreateWlTasks_NullAction() {
             //arrange
-            var actList = new List<MyAction>();
-
-            WLProcessor wlProc = new WLProcessor();
+            var projCollection = new ObservableCollection<MyProject>();
+            var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            projCollection.Add(proj);
+            var mockMainVM = new Mock<IMainViewModel>();
+            mockMainVM.Setup(x => x.Projects).Returns(projCollection);
+            WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>(MockBehavior.Strict);
             wlProc.CreateWlConnector(mockWlConnector.Object);
-            wlProc.PopulateActions(actList);
+            // wlProc.PopulateActions(actList);
 
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>(MockBehavior.Strict);
             MainViewModel.generalEntity = mockGeneralEntity.Object;
@@ -107,27 +129,32 @@ namespace ListOfDeal {
         [Test]
         public void HandleCompletedWLTasks() {
             //arrange
-            var actList = new List<MyAction>();
-            var myAction = new MyAction(new Action() { Name = "Action1", WLId = 1 });
-            var myAction1 = new MyAction(new Action() { Name = "Action2", WLId = 2 });
-            var myAction2 = new MyAction(new Action() { Name = "Action3", WLId = 3 });
+            var projCollection = new ObservableCollection<MyProject>();
+            var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            projCollection.Add(proj);
+            var myAction1 = new MyAction(new Action() { Name = "Action1", WLId = 1,IsActive=true });
+            var myAction2 = new MyAction(new Action() { Name = "Action2", WLId = 2,IsActive=true });
+            var myAction3 = new MyAction(new Action() { Name = "Action3", WLId = 3,IsActive=true });
 
-            actList.Add(myAction);
-            actList.Add(myAction1);
-            actList.Add(myAction2);
+         
+            proj.Actions.Add(myAction1);
+            proj.Actions.Add(myAction2);
+            proj.Actions.Add(myAction3);
 
             var taskList = new List<WLTask>();
             taskList.Add(new WLTask() { id = 1 });
             taskList.Add(new WLTask() { id = 3 });
-            WLProcessor wlProc = new WLProcessor();
+            var mockMainVM = new Mock<IMainViewModel>();
+            mockMainVM.Setup(x => x.Projects).Returns(projCollection);
+            WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>(MockBehavior.Strict);
             mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(taskList);
             wlProc.CreateWlConnector(mockWlConnector.Object);
-            wlProc.PopulateActions(actList);
+            // wlProc.PopulateActions(actList);
             //act
             wlProc.HandleCompletedWLTasks();
             //assert
-            Assert.AreEqual(ActionsStatusEnum.Completed, myAction1.Status);
+            Assert.AreEqual(ActionsStatusEnum.Completed, myAction2.Status);
 
 
         }

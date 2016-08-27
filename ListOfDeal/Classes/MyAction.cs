@@ -38,6 +38,7 @@ namespace ListOfDeal {
                 if (value == ActionsStatusEnum.Completed) {
                     this.parentEntity.CompleteTime = DateTime.Now;
                     this.parentEntity.WLTaskStatus = 2;
+                    this.IsActive = false;
                 }
                 RaisePropertyChanged("Status");
             }
@@ -186,17 +187,19 @@ namespace ListOfDeal {
     //    WLTaskActive=1,
     //    WLTaskNeedToDelete=2
     //}
-    [TestFixture]
+    [TestFixture] //todo -case action become active and then become inactive
     public class MyActionTest {
         [Test]
         public void CompleteAction() {
             //arrange
             MyAction act = new MyAction(new Action());
+            act.IsActive = true;
             //act
             act.Status = ActionsStatusEnum.Completed;
             //assert
             Assert.AreEqual(2, act.parentEntity.WLTaskStatus);
             Assert.AreNotEqual(null, act.parentEntity.CompleteTime);
+            Assert.AreEqual(false, act.parentEntity.IsActive);
         }
     }
 }

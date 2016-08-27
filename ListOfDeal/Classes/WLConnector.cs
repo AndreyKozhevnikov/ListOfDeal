@@ -117,7 +117,7 @@ namespace ListOfDeal {
         public WLTask CompleteTask(int wlId) {
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, wlId);
-            var revision = GetTask(wlId).revision;
+            var revision = GetTask(wlId).revision; //TODO improve
 
             JsonCreator.Add("revision", revision);
           //  JsonCreator.Add("title", "NewTestTitle3" + DateTime.Now.Millisecond);

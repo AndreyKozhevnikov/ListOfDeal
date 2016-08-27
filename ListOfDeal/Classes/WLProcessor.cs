@@ -68,8 +68,11 @@ namespace ListOfDeal {
             var lst = MainViewModel.generalEntity.Actions.Where(x => x.WLTaskStatus == 2).ToList();
             foreach (var act in lst) {
                 var wlId = (int)act.WLId;
-                wlConnector.CompleteTask(wlId);
+                wlConnector.CompleteTask(wlId); 
+                act.WLId = null;
+                act.WLTaskStatus = 0;
             }
+            MainViewModel.generalEntity.SaveChanges();
         }
 
 
@@ -171,8 +174,8 @@ namespace ListOfDeal {
             MainViewModel.generalEntity = mockGeneralEntity.Object;
             var lstMock = new Mock<IDbSet<Action>>();
             var lstAct = new List<Action>();
-            lstAct.Add(new Action() { WLId = 123, WLTaskStatus = 1 });
-            lstAct.Add(new Action() { WLId = 234, WLTaskStatus = 2 });
+            lstAct.Add(new Action() { WLId = 123, WLTaskStatus = 1 ,IsActive=true});
+            lstAct.Add(new Action() { WLId = 234, WLTaskStatus = 2 ,IsActive=true});
 
             var querAct = lstAct.AsQueryable();
             lstMock.Setup(m => m.Provider).Returns(querAct.Provider);
@@ -190,6 +193,10 @@ namespace ListOfDeal {
             wlProc.HandleCompletedLODActions();
             //assert
             mockWlConnector.Verify(x => x.CompleteTask(234), Times.Once);
+            Assert.AreEqual(1, lstAct[0].WLTaskStatus);
+            Assert.AreEqual(null, lstAct[1].WLId);
+            Assert.AreEqual(0, lstAct[1].WLTaskStatus);
+            mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Once);
 
         }
     }

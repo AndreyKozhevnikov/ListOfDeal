@@ -153,6 +153,14 @@ namespace ListOfDeal {
                 parentEntity.WLId = value;
             }
         }
+        public WLTaskStatusEnum WLTaskStatus {
+            get {
+                return (WLTaskStatusEnum) parentEntity.WLTaskStatus;
+            }
+            set {
+                parentEntity.WLTaskStatus = (int)value;
+            }
+        }
         internal void CopyProperties(MyAction act) {
             this.Name = act.Name;
             this.Status = act.Status;
@@ -170,6 +178,11 @@ namespace ListOfDeal {
         Scheduled=2,
         Delegated=3,
         Completed=4
-        
     }
+    public enum WLTaskStatusEnum {
+        NoWLTask=0,
+        WLTaskActive=1,
+        WLTaskNeedToDelete=2
+    }
+    
 }

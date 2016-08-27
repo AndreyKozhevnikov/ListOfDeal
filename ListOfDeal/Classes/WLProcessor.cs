@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -64,7 +65,11 @@ namespace ListOfDeal {
 
 
         public void HandleCompletedLODActions() {
-
+            var lst = MainViewModel.generalEntity.Actions.Where(x => x.WLTaskStatus == 2).ToList();
+            foreach (var act in lst) {
+                var wlId = (int)act.WLId;
+                wlConnector.CompleteTask(wlId);
+            }
         }
 
 
@@ -78,10 +83,10 @@ namespace ListOfDeal {
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
             projCollection.Add(proj);
-            proj.Actions.Add(new MyAction(new Action() { Name = "act1",IsActive=true }));
-            proj.Actions.Add(new MyAction(new Action() { Name = "act2", WLId = 123,IsActive=true }));
-            proj.Actions.Add(new MyAction(new Action() { Name = "act3",IsActive=true }));
-            
+            proj.Actions.Add(new MyAction(new Action() { Name = "act1", IsActive = true }));
+            proj.Actions.Add(new MyAction(new Action() { Name = "act2", WLId = 123, IsActive = true }));
+            proj.Actions.Add(new MyAction(new Action() { Name = "act3", IsActive = true }));
+
             var mockMainVM = new Mock<IMainViewModel>();
             mockMainVM.Setup(x => x.Projects).Returns(projCollection);
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
@@ -132,11 +137,11 @@ namespace ListOfDeal {
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
             projCollection.Add(proj);
-            var myAction1 = new MyAction(new Action() { Name = "Action1", WLId = 1,IsActive=true });
-            var myAction2 = new MyAction(new Action() { Name = "Action2", WLId = 2,IsActive=true });
-            var myAction3 = new MyAction(new Action() { Name = "Action3", WLId = 3,IsActive=true });
+            var myAction1 = new MyAction(new Action() { Name = "Action1", WLId = 1, IsActive = true });
+            var myAction2 = new MyAction(new Action() { Name = "Action2", WLId = 2, IsActive = true });
+            var myAction3 = new MyAction(new Action() { Name = "Action3", WLId = 3, IsActive = true });
 
-         
+
             proj.Actions.Add(myAction1);
             proj.Actions.Add(myAction2);
             proj.Actions.Add(myAction3);
@@ -156,6 +161,35 @@ namespace ListOfDeal {
             //assert
             Assert.AreEqual(ActionsStatusEnum.Completed, myAction2.Status);
 
+
+        }
+        [Test]
+        public void HandleCompletedActions() {
+            //arrange
+            WLProcessor wlProc = new WLProcessor(null);
+            var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
+            MainViewModel.generalEntity = mockGeneralEntity.Object;
+            var lstMock = new Mock<IDbSet<Action>>();
+            var lstAct = new List<Action>();
+            lstAct.Add(new Action() { WLId = 123, WLTaskStatus = 1 });
+            lstAct.Add(new Action() { WLId = 234, WLTaskStatus = 2 });
+
+            var querAct = lstAct.AsQueryable();
+            lstMock.Setup(m => m.Provider).Returns(querAct.Provider);
+            lstMock.Setup(m => m.Expression).Returns(querAct.Expression);
+            lstMock.Setup(m => m.ElementType).Returns(querAct.ElementType);
+            lstMock.Setup(m => m.GetEnumerator()).Returns(querAct.GetEnumerator());
+
+            mockGeneralEntity.Setup(x => x.Actions).Returns(lstMock.Object);
+            var mockWlConnector = new Mock<IWLConnector>(MockBehavior.Strict);
+            mockWlConnector.Setup(x => x.CompleteTask(234)).Returns(new WLTask());
+
+            wlProc.CreateWlConnector(mockWlConnector.Object);
+
+            //act
+            wlProc.HandleCompletedLODActions();
+            //assert
+            mockWlConnector.Verify(x => x.CompleteTask(234), Times.Once);
 
         }
     }

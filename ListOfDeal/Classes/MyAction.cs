@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -36,6 +37,7 @@ namespace ListOfDeal {
                 parentEntity.StatusId =(int) value;
                 if (value == ActionsStatusEnum.Completed) {
                     this.parentEntity.CompleteTime = DateTime.Now;
+                    this.parentEntity.WLTaskStatus = 2;
                 }
                 RaisePropertyChanged("Status");
             }
@@ -153,14 +155,14 @@ namespace ListOfDeal {
                 parentEntity.WLId = value;
             }
         }
-        public WLTaskStatusEnum WLTaskStatus {
-            get {
-                return (WLTaskStatusEnum) parentEntity.WLTaskStatus;
-            }
-            set {
-                parentEntity.WLTaskStatus = (int)value;
-            }
-        }
+        //public WLTaskStatusEnum WLTaskStatus {
+        //    get {
+        //        return (WLTaskStatusEnum) parentEntity.WLTaskStatus;
+        //    }
+        //    set {
+        //        parentEntity.WLTaskStatus = (int)value;
+        //    }
+        //}
         internal void CopyProperties(MyAction act) {
             this.Name = act.Name;
             this.Status = act.Status;
@@ -179,10 +181,22 @@ namespace ListOfDeal {
         Delegated=3,
         Completed=4
     }
-    public enum WLTaskStatusEnum {
-        NoWLTask=0,
-        WLTaskActive=1,
-        WLTaskNeedToDelete=2
+    //public enum WLTaskStatusEnum {
+    //    NoWLTask=0,
+    //    WLTaskActive=1,
+    //    WLTaskNeedToDelete=2
+    //}
+    [TestFixture]
+    public class MyActionTest {
+        [Test]
+        public void CompleteAction() {
+            //arrange
+            MyAction act = new MyAction(new Action());
+            //act
+            act.Status = ActionsStatusEnum.Completed;
+            //assert
+            Assert.AreEqual(2, act.parentEntity.WLTaskStatus);
+            Assert.AreNotEqual(null, act.parentEntity.CompleteTime);
+        }
     }
-    
 }

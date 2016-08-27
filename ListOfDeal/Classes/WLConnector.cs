@@ -17,9 +17,10 @@ namespace ListOfDeal {
     public interface IWLConnector {
         List<WLList> GetAllLists();
         List<WLTask> GetTasksForList(int listId);
-        WLTask GetTask(WLTask task);
+        WLTask GetTask(int taskId);
         WLTask CreateTask(string title,int listId);
         WLTask UpdateTask(WLTask task);
+        WLTask CompleteTask(int wlId);
         WLNote CreateNote(int taskId, string content);
     }
     public class WLConnector: IWLConnector {
@@ -85,9 +86,9 @@ namespace ListOfDeal {
             return model;
         }
 
-        public WLTask GetTask(WLTask task) {
+        public WLTask GetTask(int taskId) {
             string st = "http://a.wunderlist.com/api/v1/tasks";
-            string st2 = string.Format(@"{0}/{1}", st, task.id);
+            string st2 = string.Format(@"{0}/{1}", st, taskId);
             var responseText = GetHttpRequestResponse(st2, "GET");
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
@@ -107,6 +108,20 @@ namespace ListOfDeal {
             JsonCreator.Add("revision", task.revision);
             JsonCreator.Add("title", "NewTestTitle3" + DateTime.Now.Millisecond);
             //  JsonCreator.Add("completed", true);
+            string json = JsonCreator.GetString();
+            json = json.Replace("True", "true");
+            var responseText = GetHttpRequestResponse(st2, "PATCH", json);
+            var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
+            return wlTask;
+        }
+        public WLTask CompleteTask(int wlId) {
+            string st = "http://a.wunderlist.com/api/v1/tasks";
+            string st2 = string.Format(@"{0}/{1}", st, wlId);
+            var revision = GetTask(wlId).revision;
+
+            JsonCreator.Add("revision", revision);
+          //  JsonCreator.Add("title", "NewTestTitle3" + DateTime.Now.Millisecond);
+            JsonCreator.Add("completed", true);
             string json = JsonCreator.GetString();
             json = json.Replace("True", "true");
             var responseText = GetHttpRequestResponse(st2, "PATCH", json);
@@ -137,6 +152,7 @@ namespace ListOfDeal {
             sr.Close();
             var v = JsonConvert.DeserializeObject<RootObject>(st);
         }
+      
 
 #if needNewToken
         const string authorizationEndpoint = "https://www.wunderlist.com/oauth/authorize";

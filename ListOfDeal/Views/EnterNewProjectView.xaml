@@ -147,11 +147,11 @@
                 </dxmvvm:Interaction.Behaviors>
                 <dxg:GridControl.Columns>
                     <dxg:GridColumn Width="490" FieldName="Name" />
-                    <dxg:GridColumn AllowEditing="False" FieldName="DateCreated" />
+                    <dxg:GridColumn AllowEditing="False" FieldName="DateCreated" SortOrder="Ascending" SortIndex="0" />
                     <dxg:GridColumn
                         FieldName="TypeId"
                         GroupIndex="0"
-                        SortMode="Custom">
+                        SortMode="Custom" SortOrder="Ascending">
                         <dxg:GridColumn.EditSettings>
                             <dxe:ComboBoxEditSettings
                                 DisplayMember="Name"
@@ -324,7 +324,7 @@
                             </dxg:FormatCondition>
                             <dxg:FormatCondition
                                 ApplyToRow="True"
-                                Expression="GetActiveActions([Actions]) = 0"
+                                Expression="GetActiveActions([Actions]) = 0 and [Status]!='Done'"
                                 FieldName="Actions">
                                 <dx:Format Background="#FFA589C7" />
                             </dxg:FormatCondition>

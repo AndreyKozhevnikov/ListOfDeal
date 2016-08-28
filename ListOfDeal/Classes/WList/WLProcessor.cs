@@ -25,33 +25,42 @@ namespace ListOfDeal {
         }
         public void CreateWlConnector(IWLConnector _conn) {
             wlConnector = _conn;
+            
             //  (wlConnector as WLConnector).Start();
         }
         public void CreateWlTasks() {
+            RaiseLog("Start creating tasks");
+            MainViewModel.SaveChanges();
             allActions = GetActiveActions();
             var emptyActions = allActions.Where(x => x.WLId == null);
-            if (emptyActions.Count() == 0)
+            var v = emptyActions.Count();
+            RaiseLog(string.Format("new task count={0}", v));
+            if (v == 0)
                 return;
             //   emptyActions = emptyActions.Take(1);
             foreach (var act in emptyActions) {
                 string title = act.Name;
                 var wlTask = wlConnector.CreateTask(title, MyListId);
                 act.WLId = wlTask.id;
+                string message = string.Format("title={0},new task's id={1}", wlTask.title, wlTask.id);
             }
             MainViewModel.SaveChanges();
         }
 
         public void HandleCompletedWLTasks() {
+            RaiseLog("Start handle completed  WLtasks");
             MainViewModel.SaveChanges();
             allTasks = GetAllActiveTasks();
             allActions = GetActiveActions();
             var lstwlIdinLod = allActions.Select(x => (int)x.WLId);
             var lstwlIdInWL = allTasks.Select(x => x.id);
             var diff = lstwlIdinLod.Except(lstwlIdInWL);
-
+            RaiseLog(string.Format("wlId in LOD - {0}, wlId in WL-{1}",lstwlIdinLod.Count(),lstwlIdInWL.Count()));
             foreach (int tskId in diff) {
                 Debug.Print(tskId.ToString());
-                allActions.Where(x => x.WLId == tskId).First().Status = ActionsStatusEnum.Completed;
+                var act = allActions.Where(x => x.WLId == tskId).First();
+                act.Status = ActionsStatusEnum.Completed;
+                RaiseLog(string.Format("complete action - {0} {1}",act.Name,act.parentEntity.Id));
             }
             MainViewModel.SaveChanges();
 
@@ -66,20 +75,23 @@ namespace ListOfDeal {
 
 
         public void HandleCompletedLODActions() {
+            RaiseLog("Start handle completed  LODActions");
             MainViewModel.SaveChanges();
             var lst = MainViewModel.generalEntity.Actions.Where(x => x.WLTaskStatus == 2).ToList();
+            RaiseLog(string.Format("amount actions - {0}", lst.Count));
             foreach (var act in lst) {
                 var wlId = (int)act.WLId;
                 wlConnector.CompleteTask(wlId); 
                 act.WLId = null;
                 act.WLTaskStatus = 0;
+                RaiseLog(string.Format("complete task of actions {0} {1}", act.Name, act.Id));
             }
             MainViewModel.SaveChanges();
         }
 
         void RaiseLog(string st) {
             if (Logged != null)
-                Logged(null);
+                Logged(new WLEventArgs( st));
             
         } 
     }
@@ -116,7 +128,7 @@ namespace ListOfDeal {
             mockWlConnector.Verify(x => x.CreateTask("act3", It.IsAny<int>()), Times.Once);
             Assert.AreEqual(234, proj.Actions[0].WLId);
             Assert.AreEqual(345, proj.Actions[2].WLId);
-            mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Once);
+            mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
 
 
         }
@@ -134,11 +146,13 @@ namespace ListOfDeal {
             // wlProc.PopulateActions(actList);
 
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>(MockBehavior.Strict);
+            mockGeneralEntity.Setup(x => x.SaveChanges()).Returns(0);
             MainViewModel.generalEntity = mockGeneralEntity.Object;
             //act
             wlProc.CreateWlTasks();
             //assert
             //nothing should be done
+            mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Once);
         }
 
         [Test]
@@ -209,6 +223,39 @@ namespace ListOfDeal {
             Assert.AreEqual(0, lstAct[1].WLTaskStatus);
             mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
 
+        }
+
+        [Test]
+        public void RaiseLog() {
+            //arrange
+            var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
+            MainViewModel.generalEntity = mockGeneralEntity.Object;
+
+            var lstMock = new Mock<IDbSet<Action>>();
+            var lstAct = new List<Action>();
+            //lstAct.Add(new Action() { WLId = 123, WLTaskStatus = 1, IsActive = true });
+            //lstAct.Add(new Action() { WLId = 234, WLTaskStatus = 2, IsActive = true });
+
+            var querAct = lstAct.AsQueryable();
+            lstMock.Setup(m => m.Provider).Returns(querAct.Provider);
+            lstMock.Setup(m => m.Expression).Returns(querAct.Expression);
+            lstMock.Setup(m => m.ElementType).Returns(querAct.ElementType);
+            lstMock.Setup(m => m.GetEnumerator()).Returns(querAct.GetEnumerator());
+
+            mockGeneralEntity.Setup(x => x.Actions).Returns(lstMock.Object);
+
+            WLProcessor proc = new WLProcessor(null);
+            logList = new List<string>();
+            proc.Logged += Proc_Logged;
+            //act
+            proc.HandleCompletedLODActions();
+            //assert
+            Assert.AreEqual(2, logList.Count);
+
+        }
+        List<string> logList;
+        private void Proc_Logged(WLEventArgs e) {
+            logList.Add(e.Message);
         }
     }
 }

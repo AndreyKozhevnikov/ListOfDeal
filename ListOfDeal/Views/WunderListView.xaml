@@ -7,12 +7,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="6*"/>
+        </Grid.RowDefinitions>
         <StackPanel >
             <Button Content="Create processor" Command="{Binding CreateProcessorCommand}"/>
             <Button Content="Create tasks" Command="{Binding CreateTasksCommand}"/>
             <Button Content="Handle completed WLTasks" Command="{Binding HandleCompletedWlTasksCommand}"/>
             <Button Content="Handle completed Actions" Command="{Binding HandleCompletedActionsCommand}"/>
-            <ListBox ItemsSource="{Binding Logs}"/>
         </StackPanel>
+        <ListBox ItemsSource="{Binding Logs}" Grid.Row="1"/>
     </Grid>
 </UserControl>

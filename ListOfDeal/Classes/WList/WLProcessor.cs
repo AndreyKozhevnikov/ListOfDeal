@@ -78,7 +78,12 @@ namespace ListOfDeal {
 
         }
         List<WLTask> GetAllActiveTasks() {
-            return wlConnector.GetTasksForList(MyListId);
+            var v0= wlConnector.GetTasksForList(MyListId);
+            var v1 = wlConnector.GetTasksForList(MySchedId);
+            var v2 = wlConnector.GetTasksForList(MyBuyId);
+            var v4 = v0.Concat(v1);
+            var v5 = v4.Concat(v2).ToList();
+            return v5;
         }
         List<MyAction> GetActiveActions() {
             var lst = parentVM.Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.IsActive).ToList();
@@ -274,6 +279,70 @@ namespace ListOfDeal {
             mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
 
         }
+        [Test]
+        public void HandleCompletedWLTasks_Buy_Scheduled() {
+            //arrange
+
+            var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
+            MainViewModel.generalEntity = mockGeneralEntity.Object;
+
+            var projCollection = new ObservableCollection<MyProject>();
+            var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            projCollection.Add(proj);
+            for (int i = 0; i < 7; i++) {
+                var a = new MyAction(new Action() { Name = "Action" + i, WLId = i, IsActive = true }) { Status = ActionsStatusEnum.Waited };
+                proj.Actions.Add(a);
+            }
+
+            //var myAction1 = new MyAction(new Action() { Name = "Action1", WLId = 1, IsActive = true });
+            //var myAction2 = new MyAction(new Action() { Name = "Action2", WLId = 2, IsActive = true });
+            //var myAction3 = new MyAction(new Action() { Name = "Action3", WLId = 3, IsActive = true });
+            //var myAction4 = new MyAction(new Action() { Name = "Action4", WLId = 4, IsActive = true });
+            //var myAction5 = new MyAction(new Action() { Name = "Action5", WLId = 5, IsActive = true });
+            //var myAction6 = new MyAction(new Action() { Name = "Action6", WLId = 6, IsActive = true });
+            //var myAction7 = new MyAction(new Action() { Name = "Action7", WLId = 7, IsActive = true });
+
+            //proj.Actions.Add(myAction1);
+            //proj.Actions.Add(myAction2);
+            //proj.Actions.Add(myAction3);
+            //proj.Actions.Add(myAction4);
+            //proj.Actions.Add(myAction5);
+            //proj.Actions.Add(myAction6);
+            //proj.Actions.Add(myAction7);
+
+            var taskList = new List<WLTask>();
+            taskList.Add(new WLTask() { id = 0 });
+            taskList.Add(new WLTask() { id = 2 });
+
+            var taskListSched = new List<WLTask>();
+            taskListSched.Add(new WLTask() { id = 3 });
+
+            var taskListBuy = new List<WLTask>();
+            taskListBuy.Add(new WLTask() { id = 5 });
+
+            var mockMainVM = new Mock<IMainViewModel>();
+            mockMainVM.Setup(x => x.Projects).Returns(projCollection);
+            WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
+            var mockWlConnector = new Mock<IWLConnector>(MockBehavior.Strict);
+            mockWlConnector.Setup(x => x.GetTasksForList(wlProc.MyListId)).Returns(taskList);
+            mockWlConnector.Setup(x => x.GetTasksForList(wlProc.MySchedId)).Returns(taskListSched);
+            mockWlConnector.Setup(x => x.GetTasksForList(wlProc.MyBuyId)).Returns(taskListBuy);
+            wlProc.CreateWlConnector(mockWlConnector.Object);
+            // wlProc.PopulateActions(actList);
+            //act
+            wlProc.HandleCompletedWLTasks();
+            //assert
+            Assert.AreEqual(ActionsStatusEnum.Completed, proj.Actions[1].Status);
+            Assert.AreEqual(ActionsStatusEnum.Completed, proj.Actions[4].Status);
+            Assert.AreEqual(ActionsStatusEnum.Completed, proj.Actions[6].Status);
+            Assert.AreEqual(ActionsStatusEnum.Waited, proj.Actions[0].Status);
+            Assert.AreEqual(ActionsStatusEnum.Waited, proj.Actions[2].Status);
+            Assert.AreEqual(ActionsStatusEnum.Waited, proj.Actions[3].Status);
+            Assert.AreEqual(ActionsStatusEnum.Waited, proj.Actions[5].Status);
+            mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
+
+        }
+
         [Test]
         public void HandleCompletedActions() {
             //arrange

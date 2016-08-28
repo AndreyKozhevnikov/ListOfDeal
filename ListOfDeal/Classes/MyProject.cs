@@ -66,7 +66,7 @@ namespace ListOfDeal {
                 if (this.IsSimpleProject) {
                     this.Status = ProjectStatusEnum.Done;
                 }
-
+                RaisePropertyChanged("Actions");
             }
         }
         public void DeleteAction(MyAction act) {

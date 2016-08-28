@@ -1,6 +1,8 @@
-﻿using DevExpress.Xpf.Grid;
+﻿using DevExpress.Data.Filtering;
+using DevExpress.Xpf.Grid;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +23,7 @@ namespace ListOfDeal.Views {
     public partial class EnterNewProjectView :UserControl {
         public EnterNewProjectView() {
             InitializeComponent();
+            CriteriaOperator.RegisterCustomFunction(new GetActiveActionsFunction());
         }
         private void Button_Click(object sender, RoutedEventArgs e) {
             MainViewModel vm = this.DataContext as MainViewModel;
@@ -32,6 +35,22 @@ namespace ListOfDeal.Views {
 
         private void Button_Click_1(object sender, RoutedEventArgs e) {
             grid1.CollapseAllGroups();
+        }
+    }
+
+    public class GetActiveActionsFunction : ICustomFunctionOperator {
+
+        public string Name {
+            get { return "GetActiveActions"; }
+        }
+
+        public Type ResultType(params Type[] operands) {
+            return typeof(bool);
+        }
+
+        public object Evaluate(params object[] operands) {
+            var actions = operands[0] as ObservableCollection<MyAction>;
+            return actions.Where(x => x.IsActive == true).Count();
         }
     }
 }

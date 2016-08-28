@@ -147,11 +147,11 @@
                 </dxmvvm:Interaction.Behaviors>
                 <dxg:GridControl.Columns>
                     <dxg:GridColumn Width="490" FieldName="Name" />
-                    <dxg:GridColumn AllowEditing="False" FieldName="DateCreated" SortOrder="Ascending" SortIndex="0" />
+                    <dxg:GridColumn AllowEditing="False" FieldName="DateCreated" />
                     <dxg:GridColumn
                         FieldName="TypeId"
                         GroupIndex="0"
-                        SortMode="Custom" SortOrder="Ascending">
+                        SortMode="Custom" >
                         <dxg:GridColumn.EditSettings>
                             <dxe:ComboBoxEditSettings
                                 DisplayMember="Name"

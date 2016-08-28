@@ -18,19 +18,20 @@ namespace ListOfDeal {
         List<WLList> GetAllLists();
         List<WLTask> GetTasksForList(int listId);
         WLTask GetTask(int taskId);
-        WLTask CreateTask(string title,int listId);
+        WLTask CreateTask(string title, int listId, DateTime? DueDate=null);
+  
         WLTask UpdateTask(WLTask task);
         WLTask CompleteTask(int wlId);
         WLNote CreateNote(int taskId, string content);
     }
-    public class WLConnector: IWLConnector {
+    public class WLConnector : IWLConnector {
         public WLConnector() {
             GetSettings();
-          //  var v = GetAllLists();
+            //  var v = GetAllLists();
         }
         string accessToken;
         string clientId;
-      
+
         void GetSettings() {
             var st = ListOfDeal.Properties.Resources.settings.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             clientId = st[0];
@@ -57,22 +58,32 @@ namespace ListOfDeal {
         }
         public void Start() {
 
-            var lst = GetAllLists();
-            var list = GetTasksForList(262335124);
-            var tsk = list[1];
-          var v=  CreateNote(tsk.id, "#LODId=123");
-            var tsk1 = list[0];
-            var v1 = CreateNote(tsk.id, "#LODId=123");
-            //var t0 = CreateTask("test", 262335124);
+            //var lst = GetAllLists();
+            //var list = GetTasksForList(262335124);
+            //var tsk = list[1];
+            //var v = CreateNote(tsk.id, "#LODId=123");
+            //var tsk1 = list[0];
+            //var v1 = CreateNote(tsk.id, "#LODId=123");
+            var t0 = CreateTask("not scheduled", 262335124);
+            var t1 = CreateTask("scheduled", 262630772, new DateTime(2016, 8, 30));
             //var t1 = UpdateTask(t0);
             //var t2 = GetTask(t0);
             //    DeleteTask(t2);
-
         }
-        public WLTask CreateTask(string title,int listId) {
+        //public WLTask CreateTask(string title, int listId) {
+        //    return CreateTaskCore(title, listId);
+        //}
+        //public WLTask CreateTask(string title, int listId, DateTime? dueDate) {
+        //    string dt = dueDate.Value.ToString("yyyy-MM-dd");
+        //    return CreateTaskCore(title, listId, dt);
+        //}
+        public WLTask CreateTask(string title, int listId, DateTime? dueDate = null) {
             string st = "http://a.wunderlist.com/api/v1/tasks";
             JsonCreator.Add("list_id", listId);
             JsonCreator.Add("title", title);
+            if (dueDate != null) {
+                JsonCreator.Add("due_date", dueDate.Value.ToString("yyyy-MM-dd"));
+            }
             string json = JsonCreator.GetString();
             var responseText = GetHttpRequestResponse(st, "POST", json);
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
@@ -120,7 +131,7 @@ namespace ListOfDeal {
             var revision = GetTask(wlId).revision; //TODO improve
 
             JsonCreator.Add("revision", revision);
-          //  JsonCreator.Add("title", "NewTestTitle3" + DateTime.Now.Millisecond);
+            //  JsonCreator.Add("title", "NewTestTitle3" + DateTime.Now.Millisecond);
             JsonCreator.Add("completed", true);
             string json = JsonCreator.GetString();
             json = json.Replace("True", "true");
@@ -136,7 +147,7 @@ namespace ListOfDeal {
 
         }
 
-        public WLNote CreateNote(int taskId,string content) {
+        public WLNote CreateNote(int taskId, string content) {
             string st = "http://a.wunderlist.com/api/v1/notes";
             JsonCreator.Add("task_id", taskId);
             JsonCreator.Add("content", content);
@@ -152,7 +163,7 @@ namespace ListOfDeal {
             sr.Close();
             var v = JsonConvert.DeserializeObject<RootObject>(st);
         }
-      
+
 
 #if needNewToken
         const string authorizationEndpoint = "https://www.wunderlist.com/oauth/authorize";

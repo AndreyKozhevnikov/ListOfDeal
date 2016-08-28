@@ -28,7 +28,7 @@ namespace ListOfDeal {
         public void CreateWlConnector(IWLConnector _conn) {
             wlConnector = _conn;
 
-            //(wlConnector as WLConnector).Start();
+          //  (wlConnector as WLConnector).Start();
         }
         public void CreateWlTasks() {
             RaiseLog("Start creating tasks");
@@ -46,12 +46,17 @@ namespace ListOfDeal {
                 int targetListId=-1;
                 targetListId = MyListId;
                 if (act.Status == ActionsStatusEnum.Scheduled) {//scheduled action
-                    targetListId= MySchedId;
+                    wlTask = wlConnector.CreateTask(title, MySchedId,act.ScheduledTime);
                 }
-                if (act.ProjectType == 10) { //to buy action
-                    targetListId = MyBuyId;
+                else {
+                    if (act.ProjectType == 10) { //to buy action
+                        targetListId = MyBuyId;
+                    }
+                    else {
+                        targetListId = MyListId;
+                    }
+                    wlTask = wlConnector.CreateTask(title, targetListId);
                 }
-                wlTask = wlConnector.CreateTask(title, targetListId);
                 act.WLId = wlTask.id;
                 string message = string.Format("title={0}, list id - {1}, new task's id={2}", wlTask.title, wlTask.list_id, wlTask.id);
                 RaiseLog(message);
@@ -133,8 +138,8 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>();
 
-            mockWlConnector.Setup(x => x.CreateTask("act1", It.IsAny<int>())).Returns(new WLTask() { id = 234 });
-            mockWlConnector.Setup(x => x.CreateTask("act3", It.IsAny<int>())).Returns(new WLTask() { id = 345 });
+            mockWlConnector.Setup(x => x.CreateTask("act1", It.IsAny<int>(),null)).Returns(new WLTask() { id = 234 });
+            mockWlConnector.Setup(x => x.CreateTask("act3", It.IsAny<int>(),null)).Returns(new WLTask() { id = 345 });
             wlProc.CreateWlConnector(mockWlConnector.Object);
             // wlProc.PopulateActions(actList);
 
@@ -143,8 +148,8 @@ namespace ListOfDeal {
             //act
             wlProc.CreateWlTasks();
             //assert
-            mockWlConnector.Verify(x => x.CreateTask("act1", It.IsAny<int>()), Times.Once);
-            mockWlConnector.Verify(x => x.CreateTask("act3", It.IsAny<int>()), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("act1", It.IsAny<int>(),null), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("act3", It.IsAny<int>(),null), Times.Once);
             Assert.AreEqual(234, proj.Actions[0].WLId);
             Assert.AreEqual(345, proj.Actions[2].WLId);
             mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
@@ -179,7 +184,7 @@ namespace ListOfDeal {
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
             projCollection.Add(proj);
-            proj.Actions.Add(new MyAction(new Action() { Name = "act1", IsActive = true, StatusId = 2 , Project = new Project() }));
+            proj.Actions.Add(new MyAction(new Action() { Name = "act1", IsActive = true, StatusId = 2 , ScheduledTime=new DateTime(2016,8,28), Project = new Project() }));
             proj.Actions.Add(new MyAction(new Action() { Name = "act2", IsActive = true , Project = new Project() }));
 
 
@@ -188,8 +193,8 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>();
 
-            mockWlConnector.Setup(x => x.CreateTask("act1", It.IsAny<int>())).Returns(new WLTask() { id = 234 });
-            mockWlConnector.Setup(x => x.CreateTask("act2", It.IsAny<int>())).Returns(new WLTask() { id = 345 });
+            mockWlConnector.Setup(x => x.CreateTask("act1", It.IsAny<int>(),It.IsAny<DateTime>())).Returns(new WLTask() { id = 234 ,due_date="2016-08-28"});
+            mockWlConnector.Setup(x => x.CreateTask("act2", It.IsAny<int>(),null)).Returns(new WLTask() { id = 345 });
             wlProc.CreateWlConnector(mockWlConnector.Object);
             // wlProc.PopulateActions(actList);
 
@@ -198,8 +203,8 @@ namespace ListOfDeal {
             //act
             wlProc.CreateWlTasks();
             //assert
-            mockWlConnector.Verify(x => x.CreateTask("act1", wlProc.MySchedId), Times.Once);
-            mockWlConnector.Verify(x => x.CreateTask("act2", wlProc.MyListId), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("act1", wlProc.MySchedId,new DateTime(2016,8,28)), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("act2", wlProc.MyListId,null), Times.Once);
             Assert.AreEqual(234, proj.Actions[0].WLId);
             Assert.AreEqual(345, proj.Actions[1].WLId);
             mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
@@ -226,8 +231,8 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>();
 
-            mockWlConnector.Setup(x => x.CreateTask("act1", It.IsAny<int>())).Returns(new WLTask() { id = 234 });
-            mockWlConnector.Setup(x => x.CreateTask("act2", It.IsAny<int>())).Returns(new WLTask() { id = 345 });
+            mockWlConnector.Setup(x => x.CreateTask("act1", It.IsAny<int>(),null)).Returns(new WLTask() { id = 234 });
+            mockWlConnector.Setup(x => x.CreateTask("act2", It.IsAny<int>(),null)).Returns(new WLTask() { id = 345 });
             wlProc.CreateWlConnector(mockWlConnector.Object);
             // wlProc.PopulateActions(actList);
 
@@ -236,8 +241,8 @@ namespace ListOfDeal {
             //act
             wlProc.CreateWlTasks();
             //assert
-            mockWlConnector.Verify(x => x.CreateTask("act1", wlProc.MyBuyId), Times.Once);
-            mockWlConnector.Verify(x => x.CreateTask("act2", wlProc.MyListId), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("act1", wlProc.MyBuyId,null), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("act2", wlProc.MyListId,null), Times.Once);
             Assert.AreEqual(234, proj.Actions[0].WLId);
             Assert.AreEqual(345, proj.Actions[1].WLId);
             mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));

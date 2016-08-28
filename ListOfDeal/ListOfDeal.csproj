@@ -117,9 +117,9 @@
     <Compile Include="Classes\DayData.cs" />
     <Compile Include="Classes\HistoryActionItem.cs" />
     <Compile Include="Classes\Services.cs" />
-    <Compile Include="Classes\WLConnector.cs" />
-    <Compile Include="Classes\WLProcessor.cs" />
-    <Compile Include="Classes\WunderListViewModel.cs" />
+    <Compile Include="Classes\WList\WLConnector.cs" />
+    <Compile Include="Classes\WList\WLProcessor.cs" />
+    <Compile Include="Classes\WList\WunderListViewModel.cs" />
     <Compile Include="IListOfDealBaseEntities.cs" />
     <Compile Include="Views\ChartView.xaml.cs">
       <DependentUpon>ChartView.xaml</DependentUpon>

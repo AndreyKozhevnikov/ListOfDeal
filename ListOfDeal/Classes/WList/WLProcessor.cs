@@ -76,9 +76,8 @@ namespace ListOfDeal {
             }
             MainViewModel.SaveChanges();
         }
-
-
     }
+
 
     [TestFixture]
     public class WLProcessorTest {

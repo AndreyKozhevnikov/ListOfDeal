@@ -3,6 +3,7 @@ using DevExpress.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,15 +11,20 @@ using System.Windows.Input;
 
 namespace ListOfDeal {
     public class WunderListViewModel {
+
+      public  ObservableCollection<string> Logs { get; set; }
+        StreamWriter logWriter;
         IMainViewModel parentViewModel;
         public WunderListViewModel(IMainViewModel _mainVM) {
             parentViewModel = _mainVM;
-          
+            Logs = new ObservableCollection<string>();
+            string fileName = string.Format("logs{0}", DateTime.Today.ToString("ddMMMyyyy"));
+            logWriter = new StreamWriter(fileName, true);
         }
         ICommand _createProcessorCommand;
         ICommand _createTasksCommand;
         ICommand _handleCompletedWlTasks;
-       ICommand _handleCompletedActionsCommand;
+        ICommand _handleCompletedActionsCommand;
         public ICommand CreateProcessorCommand {
             get {
                 if (_createProcessorCommand == null)
@@ -27,7 +33,7 @@ namespace ListOfDeal {
             }
         }
 
-     
+
         public ICommand CreateTasksCommand {
             get {
                 if (_createTasksCommand == null)
@@ -35,7 +41,7 @@ namespace ListOfDeal {
                 return _createTasksCommand;
             }
 
-         
+
         }
 
         public ICommand HandleCompletedWlTasksCommand {
@@ -55,13 +61,25 @@ namespace ListOfDeal {
         }
 
         WLProcessor wlProcessor;
-   //     List<MyAction> lodActions;
-        
+        //     List<MyAction> lodActions;
+
         void CreateWlProcessor() {
             wlProcessor = new WLProcessor(parentViewModel);
             wlProcessor.CreateWlConnector(new WLConnector());
-          //  wlProcessor.PopulateActions(lodActions);
+            wlProcessor.Logged += WlProcessor_Logged;
+         
+            //  wlProcessor.PopulateActions(lodActions);
         }
+
+        private void WlProcessor_Logged(WLEventArgs e) {
+            string st = string.Format("{0}  --  {1}", e.DTime, e.Message);
+            Logs.Add(st);
+            if (logWriter != null) {
+                logWriter.WriteLine(st);
+                logWriter.Flush();
+            }
+        }
+
         void CreateTasks() {
 
             wlProcessor.CreateWlTasks();

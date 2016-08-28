@@ -43,6 +43,7 @@ namespace ListOfDeal {
                 var wlTask = wlConnector.CreateTask(title, MyListId);
                 act.WLId = wlTask.id;
                 string message = string.Format("title={0},new task's id={1}", wlTask.title, wlTask.id);
+                RaiseLog(message);
             }
             MainViewModel.SaveChanges();
         }

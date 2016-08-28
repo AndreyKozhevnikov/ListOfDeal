@@ -18,7 +18,7 @@ namespace ListOfDeal {
         public WunderListViewModel(IMainViewModel _mainVM) {
             parentViewModel = _mainVM;
             Logs = new ObservableCollection<string>();
-            string fileName = string.Format("logs{0}", DateTime.Today.ToString("ddMMMyyyy"));
+            string fileName = string.Format("logs{0}.log", DateTime.Today.ToString("ddMMMyyyy"));
             logWriter = new StreamWriter(fileName, true);
         }
         ICommand _createProcessorCommand;

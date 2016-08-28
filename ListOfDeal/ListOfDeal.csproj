@@ -118,6 +118,7 @@
     <Compile Include="Classes\HistoryActionItem.cs" />
     <Compile Include="Classes\Services.cs" />
     <Compile Include="Classes\WList\WLConnector.cs" />
+    <Compile Include="Classes\WList\WLLogger.cs" />
     <Compile Include="Classes\WList\WLProcessor.cs" />
     <Compile Include="Classes\WList\WunderListViewModel.cs" />
     <Compile Include="IListOfDealBaseEntities.cs" />

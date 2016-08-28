@@ -15,7 +15,7 @@ namespace ListOfDeal {
         List<WLTask> allTasks;
         IWLConnector wlConnector;
         const int MyListId = 262335124;
-
+        public event WLEventHandler Logged;
         //public void PopulateActions(List<MyAction> _actions) {
         //    allActions = _actions;
         //}
@@ -76,6 +76,12 @@ namespace ListOfDeal {
             }
             MainViewModel.SaveChanges();
         }
+
+        void RaiseLog(string st) {
+            if (Logged != null)
+                Logged(null);
+            
+        } 
     }
 
 

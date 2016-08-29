@@ -58,7 +58,7 @@ namespace ListOfDeal {
         }
         public void Start() {
 
-            //var lst = GetAllLists();
+          var lst = GetAllLists();
             //var list = GetTasksForList(262335124);
             //var tsk = list[1];
             //var v = CreateNote(tsk.id, "#LODId=123");

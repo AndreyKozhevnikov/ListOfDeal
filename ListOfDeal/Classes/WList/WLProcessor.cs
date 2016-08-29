@@ -14,9 +14,16 @@ namespace ListOfDeal {
         List<MyAction> allActions;
         List<WLTask> allTasks;
         IWLConnector wlConnector;
+#if RELEASE
         public int MyListId = 262335124;
         public int MySchedId = 262630772;
         public int MyBuyId = 263773374;
+#endif
+#if DEBUG
+        public int MyListId = 263984253;
+        public int MySchedId = 263984274;
+        public int MyBuyId = 263984295;
+#endif
         public event WLEventHandler Logged;
         //public void PopulateActions(List<MyAction> _actions) {
         //    allActions = _actions;
@@ -28,10 +35,10 @@ namespace ListOfDeal {
         public void CreateWlConnector(IWLConnector _conn) {
             wlConnector = _conn;
 
-          //  (wlConnector as WLConnector).Start();
+         //   (wlConnector as WLConnector).Start();
         }
         public void CreateWlTasks() {
-            RaiseLog("Start creating tasks");
+            RaiseLog("===========Start creating tasks==========");
             MainViewModel.SaveChanges();
             allActions = GetActiveActions();
             var emptyActions = allActions.Where(x => x.WLId == null);
@@ -65,7 +72,7 @@ namespace ListOfDeal {
         }
 
         public void HandleCompletedWLTasks() {
-            RaiseLog("Start handle completed  WLtasks");
+            RaiseLog("==========Start handle completed  WLtasks==========");
             MainViewModel.SaveChanges();
             allTasks = GetAllActiveTasks();
             allActions = GetActiveActions().Where(x => x.WLId != null).ToList();
@@ -99,7 +106,7 @@ namespace ListOfDeal {
 
 
         public void HandleCompletedLODActions() {
-            RaiseLog("Start handle completed  LODActions");
+            RaiseLog("==========Start handle completed  LODActions==========");
             MainViewModel.SaveChanges();
             var lst = MainViewModel.generalEntity.Actions.Where(x => x.WLTaskStatus == 2).ToList();
             RaiseLog(string.Format("amount actions - {0}", lst.Count));

@@ -49,6 +49,17 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.IsActive = value;
+                if (value) {
+                    if (WLId == null) {
+                        parentEntity.WLTaskStatus = 0;
+                    }
+                    else {
+                        parentEntity.WLTaskStatus = 1;
+                    }
+                }
+                else {
+                    SetDeleteTaskIfNeeded();
+                }
                 RaisePropertyChanged("IsActive");
             }
         }
@@ -216,6 +227,43 @@ namespace ListOfDeal {
             //assert
             Assert.AreEqual(0, act.parentEntity.WLTaskStatus);
 
+        }
+
+        [Test]
+        public void SetIsActiveSetWLStatus() {
+            //arrange
+            MyAction act = new MyAction(new Action());
+            act.IsActive = true;
+            act.parentEntity.WLId = 123;
+            act.parentEntity.WLTaskStatus = 1;
+            //act
+            act.IsActive = false;
+            //asssert
+            Assert.AreEqual(2, act.parentEntity.WLTaskStatus);
+        }
+        [Test]
+        public void SetIsActiveSetWLStatus_2() {
+            //arrange
+            MyAction act = new MyAction(new Action());
+            act.IsActive = true;
+            act.parentEntity.WLId = 123;
+            act.parentEntity.WLTaskStatus = 1;
+            //act
+            act.IsActive = false;
+            act.IsActive = true;
+            //asssert
+            Assert.AreEqual(1, act.parentEntity.WLTaskStatus);
+        }
+        [Test]
+        public void SetIsActiveSetWLStatus_3() {
+            //arrange
+            MyAction act = new MyAction(new Action());
+            act.IsActive = true;
+            //act
+            act.IsActive = false;
+            act.IsActive = true;
+            //asssert
+            Assert.AreEqual(0, act.parentEntity.WLTaskStatus);
         }
     }
 }

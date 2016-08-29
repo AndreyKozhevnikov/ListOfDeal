@@ -14,7 +14,7 @@ namespace ListOfDeal {
         List<MyAction> allActions;
         List<WLTask> allTasks;
         IWLConnector wlConnector;
-#if RELEASE
+#if !DEBUG
         public int MyListId = 262335124;
         public int MySchedId = 262630772;
         public int MyBuyId = 263773374;

@@ -146,6 +146,9 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.IsSimpleProject = value;
+                foreach(var act in Actions) {
+                    act.parentEntity.WLTaskStatus = 1;
+                }
                 RaisePropertyChanged("IsSimpleProject");
             }
         }

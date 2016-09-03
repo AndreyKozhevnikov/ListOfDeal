@@ -25,6 +25,7 @@ namespace ListOfDeal {
         ICommand _createTasksCommand;
         ICommand _handleCompletedWlTasks;
         ICommand _handleCompletedActionsCommand;
+        ICommand _handleChangedLODActionsCommand;
         public ICommand CreateProcessorCommand {
             get {
                 if (_createProcessorCommand == null)
@@ -58,6 +59,18 @@ namespace ListOfDeal {
                     _handleCompletedActionsCommand = new DelegateCommand(HandleCompletedActions);
                 return _handleCompletedActionsCommand;
             }
+        }
+
+        public ICommand HandleChangedActionsCommand {
+            get {
+                if (_handleChangedLODActionsCommand == null)
+                    _handleChangedLODActionsCommand = new DelegateCommand(HandleChangedLODActions);
+                return _handleChangedLODActionsCommand;
+            }
+        }
+
+        private void HandleChangedLODActions() {
+            wlProcessor.HandleChangedLODActions();
         }
 
         WLProcessor wlProcessor;

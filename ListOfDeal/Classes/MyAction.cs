@@ -26,6 +26,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.Name = value;
+                parentEntity.WLTaskStatus = 1;
                 RaisePropertyChanged("Name");
             }
         }
@@ -131,12 +132,6 @@ namespace ListOfDeal {
                 return parentEntity.Project.Id;
             }
         }
-        public bool IsParentProjectSimple {
-            get {
-                return parentEntity.Project.IsSimpleProject;
-            }
-        }
-
 
         public string Error {
             get {
@@ -193,6 +188,16 @@ namespace ListOfDeal {
             this.IsActive = act.IsActive;
             this.Comment = act.Comment;
             this.DateCreated = act.DateCreated;
+        }
+
+        internal string GetWLTitle() {
+            string title;
+            if (parentEntity.Project.IsSimpleProject)
+                title = this.Name;
+
+            else
+                title = string.Format("{0} - {1}", this.ProjectName, this.Name);
+            return title;
         }
     }
 
@@ -269,6 +274,28 @@ namespace ListOfDeal {
             act.IsActive = true;
             //asssert
             Assert.AreEqual(0, act.parentEntity.WLTaskStatus);
+        }
+
+        [Test]
+        public void SetWLStatusWhenNameIsChanged() {
+            //arrange
+            MyAction act = new MyAction(new Action() { Name = "Name1" });
+            //act
+            act.Name = "NewName1";
+            //assert
+            Assert.AreEqual(1, act.parentEntity.WLTaskStatus);
+        }
+        [Test]
+        public void SetWLStatusWhenIsSimpePropertyIsChanged() {
+            //arrange
+            MyProject proj = new MyProject(new Project());
+            proj.IsSimpleProject = true;
+            MyAction act = new MyAction(new Action() { Name = "Name1" });
+            proj.Actions.Add(act);
+            //act
+            proj.IsSimpleProject = false;
+            //assert
+            Assert.AreEqual(1, act.parentEntity.WLTaskStatus);
         }
     }
 }

@@ -409,6 +409,48 @@ namespace ListOfDeal {
         private void Proc_Logged(WLEventArgs e) {
             logList.Add(e.Message);
         }
+
+        [Test]
+        public void HandleChangedLODActions_Name() {
+            //arrange 
+            //var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
+            //MainViewModel.generalEntity = mockGeneralEntity.Object;
+          
+       
+            var proj = new MyProject(new Project()) {Status=ProjectStatusEnum.InWork };
+            proj.IsSimpleProject = true;
+            proj.Actions.Add(new MyAction(new Action() { Name = "Newact1",WLId=1,WLTaskStatus=1 ,IsActive=true,Project=proj.parentEntity}));
+            proj.Actions.Add(new MyAction(new Action() { Name = "act2",WLId=2, IsActive = true, Project = proj.parentEntity }));
+            var proj2 = new MyProject(new Project()) {Name="NotSimpleProject", Status = ProjectStatusEnum.InWork };
+            proj2.IsSimpleProject = false;
+            proj2.Actions.Add(new MyAction(new Action() { Name = "act3", WLId = 3, IsActive = true, Project = proj2.parentEntity }));
+            proj2.Actions.Add(new MyAction(new Action() { Name = "Newact4", WLId = 4,WLTaskStatus=1, IsActive = true, Project = proj2.parentEntity }));
+            var mockMainVM = new Mock<IMainViewModel>();
+            var projCollection = new ObservableCollection<MyProject>();
+            projCollection.Add(proj);
+            projCollection.Add(proj2);
+            mockMainVM.Setup(x => x.Projects).Returns(projCollection);
+            WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
+
+            var mockWlConnector = new Mock<IWLConnector>();
+            var taskList = new List<WLTask>();
+            taskList.Add(new WLTask() { id = 1,title="act1" });
+            taskList.Add(new WLTask() { id = 2,title="act2" });
+            taskList.Add(new WLTask() { id = 3, title = "act3" });
+            taskList.Add(new WLTask() { id = 4, title = "act4" });
+            mockWlConnector.Setup(x => x.GetTasksForList(263984253)).Returns(taskList);
+            mockWlConnector.Setup(x => x.GetTasksForList(263984274)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetTasksForList(263984295)).Returns(new List<WLTask>());
+            wlProc.CreateWlConnector(mockWlConnector.Object);
+            //act
+            wlProc.HandleChangedLODActions();
+            //assert
+            mockWlConnector.Verify(x => x.ChangeTitleOfTask(1, "Newact1"), Times.Once);
+            mockWlConnector.Verify(x => x.ChangeTitleOfTask(4, "NotSimpleProject - Newact4"), Times.Once);
+            Assert.AreEqual(0, proj.Actions[0].parentEntity.WLTaskStatus);
+            Assert.AreEqual(0, proj2.Actions[1].parentEntity.WLTaskStatus);
+        }
+
     }
 
 }

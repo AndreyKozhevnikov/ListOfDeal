@@ -48,12 +48,7 @@ namespace ListOfDeal {
                 return;
             //   emptyActions = emptyActions.Take(1);
             foreach (var act in emptyActions) {
-                string title;
-                if (act.IsParentProjectSimple)
-                    title = act.Name;
-
-                else
-                    title = string.Format("{0} - {1}", act.ProjectName, act.Name);
+                string title = act.GetWLTitle();
                 WLTask wlTask;
                 int targetListId = -1;
                 targetListId = MyListId;
@@ -124,6 +119,23 @@ namespace ListOfDeal {
                 RaiseLog(string.Format("complete task of actions {0} {1}", act.Name, act.Id));
             }
             MainViewModel.SaveChanges();
+        }
+
+        public void HandleChangedLODActions() {
+            RaiseLog("==========Start HandleChangedLODActions==========");
+            var lst = GetActiveActions();
+            var changedActions =lst.Where(x => x.parentEntity.WLTaskStatus == 1).ToList();
+            RaiseLog(string.Format("There are {0} actions to change", changedActions.Count));
+            allTasks = GetAllActiveTasks();
+            foreach(var act in changedActions) {
+                string wlTitle = act.GetWLTitle();
+                var wlTask = allTasks.Where(x => x.id == act.WLId).First();
+                if (wlTitle != wlTask.title) {
+                    wlConnector.ChangeTitleOfTask(wlTask.id, wlTitle);
+                    RaiseLog(string.Format("change name to  {0}",wlTitle));
+                }
+                act.parentEntity.WLTaskStatus = 0;
+            }
         }
 
         void RaiseLog(string st) {

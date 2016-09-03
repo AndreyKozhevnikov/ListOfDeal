@@ -138,14 +138,18 @@ namespace ListOfDeal {
 
         }
 
-        [Test]
-        public void CreateWlTasks_AddProjectName() {
+   
+
+
+
+             [Test]
+        public void CreateWlTasks_AddProjectName_OnlyForNonSimple() {
             //arrange
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
             projCollection.Add(proj);
-            proj.Actions.Add(new MyAction(new Action() { Name = "act2", IsActive = true, Project = new Project() { Name = "MyTestProject" } }));
-
+            proj.Actions.Add(new MyAction(new Action() { Name = "act1", IsActive = true, Project = new Project() { Name = "MySimpleProject",IsSimpleProject=true } }));
+            proj.Actions.Add(new MyAction(new Action() { Name = "act2", IsActive = true, Project = new Project() { Name = "MyNonSimpleProject", IsSimpleProject = false } }));
 
             var mockMainVM = new Mock<IMainViewModel>();
             mockMainVM.Setup(x => x.Projects).Returns(projCollection);
@@ -161,7 +165,8 @@ namespace ListOfDeal {
             //act
             wlProc.CreateWlTasks();
             //assert
-            mockWlConnector.Verify(x => x.CreateTask("MyTestProject - act2", wlProc.MyListId, null), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("act1", wlProc.MyListId, null), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("MyNonSimpleProject - act2", wlProc.MyListId, null), Times.Once);
 
 
 

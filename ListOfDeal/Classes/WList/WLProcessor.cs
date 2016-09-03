@@ -35,7 +35,7 @@ namespace ListOfDeal {
         public void CreateWlConnector(IWLConnector _conn) {
             wlConnector = _conn;
 
-         //   (wlConnector as WLConnector).Start();
+            //   (wlConnector as WLConnector).Start();
         }
         public void CreateWlTasks() {
             RaiseLog("===========Start creating tasks==========");
@@ -48,12 +48,17 @@ namespace ListOfDeal {
                 return;
             //   emptyActions = emptyActions.Take(1);
             foreach (var act in emptyActions) {
-                string title =string.Format("{0} - {1}",act.ProjectName, act.Name);
+                string title;
+                if (act.IsParentProjectSimple)
+                    title = act.Name;
+
+                else
+                    title = string.Format("{0} - {1}", act.ProjectName, act.Name);
                 WLTask wlTask;
-                int targetListId=-1;
+                int targetListId = -1;
                 targetListId = MyListId;
                 if (act.Status == ActionsStatusEnum.Scheduled) {//scheduled action
-                    wlTask = wlConnector.CreateTask(title, MySchedId,act.ScheduledTime);
+                    wlTask = wlConnector.CreateTask(title, MySchedId, act.ScheduledTime);
                 }
                 else {
                     if (act.ProjectType == 10) { //to buy action
@@ -65,6 +70,7 @@ namespace ListOfDeal {
                     wlTask = wlConnector.CreateTask(title, targetListId);
                 }
                 act.WLId = wlTask.id;
+                //  act.parentEntity.WLTaskStatus = 1;
                 string message = string.Format("title={0}, list id - {1}, new task's id={2}", wlTask.title, wlTask.list_id, wlTask.id);
                 RaiseLog(message);
             }
@@ -92,7 +98,7 @@ namespace ListOfDeal {
 
         }
         List<WLTask> GetAllActiveTasks() {
-            var v0= wlConnector.GetTasksForList(MyListId);
+            var v0 = wlConnector.GetTasksForList(MyListId);
             var v1 = wlConnector.GetTasksForList(MySchedId);
             var v2 = wlConnector.GetTasksForList(MyBuyId);
             var v4 = v0.Concat(v1);

@@ -131,6 +131,11 @@ namespace ListOfDeal {
                 return parentEntity.Project.Id;
             }
         }
+        public bool IsParentProjectSimple {
+            get {
+                return parentEntity.Project.IsSimpleProject;
+            }
+        }
 
 
         public string Error {

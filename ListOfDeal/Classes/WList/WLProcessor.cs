@@ -34,13 +34,18 @@ namespace ListOfDeal {
         }
         public void CreateWlConnector(IWLConnector _conn) {
             wlConnector = _conn;
-
+            UpdateData();
             //   (wlConnector as WLConnector).Start();
         }
+
+        private void UpdateData() {
+            allActions = GetActiveActions();
+            allTasks = GetAllActiveTasks();
+        }
+
         public void CreateWlTasks() {
             RaiseLog("===========Start creating tasks==========");
             MainViewModel.SaveChanges();
-            allActions = GetActiveActions();
             var emptyActions = allActions.Where(x => x.WLId == null);
             var v = emptyActions.Count();
             RaiseLog(string.Format("new task count={0}", v));
@@ -65,6 +70,7 @@ namespace ListOfDeal {
                     wlTask = wlConnector.CreateTask(title, targetListId);
                 }
                 act.WLId = wlTask.id;
+                act.WLTaskRevision = wlTask.revision;
                 //  act.parentEntity.WLTaskStatus = 1;
                 string message = string.Format("title={0}, list id - {1}, new task's id={2}", wlTask.title, wlTask.list_id, wlTask.id);
                 RaiseLog(message);
@@ -76,14 +82,14 @@ namespace ListOfDeal {
             RaiseLog("==========Start handle completed  WLtasks==========");
             MainViewModel.SaveChanges();
             allTasks = GetAllActiveTasks();
-            allActions = GetActiveActions().Where(x => x.WLId != null).ToList();
-            var lstwlIdinLod = allActions.Select(x => (int)x.WLId);
+            var actionsWithTasks = allActions.Where(x => x.WLId != null).ToList();
+            var lstwlIdinLod = actionsWithTasks.Select(x => (int)x.WLId);
             var lstwlIdInWL = allTasks.Select(x => x.id);
             var diff = lstwlIdinLod.Except(lstwlIdInWL);
             RaiseLog(string.Format("wlId in LOD - {0}, wlId in WL-{1}", lstwlIdinLod.Count(), lstwlIdInWL.Count()));
             foreach (int tskId in diff) {
                 Debug.Print(tskId.ToString());
-                var act = allActions.Where(x => x.WLId == tskId).First();
+                var act = actionsWithTasks.Where(x => x.WLId == tskId).First();
                 act.WLId = null;
                 act.parentEntity.WLTaskStatus = 0;
                 act.Status = ActionsStatusEnum.Completed;
@@ -109,7 +115,7 @@ namespace ListOfDeal {
         public void HandleCompletedLODActions() {
             RaiseLog("==========Start handle completed  LODActions==========");
             MainViewModel.SaveChanges();
-            var lst = MainViewModel.generalEntity.Actions.Where(x => x.WLTaskStatus == 2).ToList();
+            var lst = MainViewModel.generalEntity.Actions.Where(x => x.WLTaskStatus == 2).ToList(); //improve?
             RaiseLog(string.Format("amount actions - {0}", lst.Count));
             foreach (var act in lst) {
                 var wlId = (int)act.WLId;
@@ -123,21 +129,46 @@ namespace ListOfDeal {
 
         public void HandleChangedLODActions() {
             RaiseLog("==========Start HandleChangedLODActions==========");
-            var lst = GetActiveActions();
-            var changedActions =lst.Where(x => x.parentEntity.WLTaskStatus == 1).ToList();
+            var changedActions = allActions.Where(x => x.parentEntity.WLTaskStatus == 1).ToList();
             RaiseLog(string.Format("There are {0} actions to change", changedActions.Count));
             allTasks = GetAllActiveTasks();
-            foreach(var act in changedActions) {
+            foreach (var act in changedActions) {
                 string wlTitle = act.GetWLTitle();
                 var wlTask = allTasks.Where(x => x.id == act.WLId).First();
+                WLTask resTask = null;
+
                 if (wlTitle != wlTask.title) {
-                    wlConnector.ChangeTitleOfTask(wlTask.id, wlTitle);
-                    RaiseLog(string.Format("change name to  {0}",wlTitle));
+                    resTask = wlConnector.ChangeTitleOfTask(wlTask.id, wlTitle);
+                    RaiseLog(string.Format("change name to  {0}", wlTitle));
+                }
+
+                if (resTask != null) {
+                    act.WLTaskRevision = resTask.revision;
+                }
+                else {
+                    RaiseLog("!There are no changes in the act: " + act.Name);
                 }
                 act.parentEntity.WLTaskStatus = 0;
             }
         }
 
+        public void HandleChangedWLTask() {
+            RaiseLog("==========Start HandleChangedWLTask==========");
+            var actionsWithTasks = allActions.Where(x => x.WLId != null).ToList();
+            foreach (var act in actionsWithTasks) {
+                var tsk = allTasks.Where(x => x.id == act.WLId).First();
+                if (act.WLTaskRevision != tsk.revision) {
+                    RaiseLog(string.Format("act has old revision {0}", act.Name));
+                    if (act.Name != tsk.title) {
+                        RaiseLog(string.Format("act is changing name from {0} to {1}", act.Name, tsk.title));
+                        act.Name = tsk.title;
+                        act.parentEntity.WLTaskStatus = 0;
+                    }
+                    act.WLTaskRevision = tsk.revision;
+                }
+            }
+            RaiseLog("==========End HandleChangedWLTask==========");
+        }
         void RaiseLog(string st) {
             if (Logged != null)
                 Logged(new WLEventArgs(st));

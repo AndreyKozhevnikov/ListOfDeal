@@ -159,6 +159,14 @@ namespace ListOfDeal {
                 return parentEntity.CompleteTime;
             }
         }
+        public int? WLTaskRevision {
+            get {
+                return parentEntity.WLTaskRevision;
+            }
+            set {
+                parentEntity.WLTaskRevision = value;
+            }
+        }
         public int? WLId {
             get {
                 return parentEntity.WLId;

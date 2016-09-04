@@ -26,6 +26,7 @@ namespace ListOfDeal {
         ICommand _handleCompletedWlTasks;
         ICommand _handleCompletedActionsCommand;
         ICommand _handleChangedLODActionsCommand;
+        ICommand _handleChangedWLTaskCommand;
         public ICommand CreateProcessorCommand {
             get {
                 if (_createProcessorCommand == null)
@@ -68,10 +69,20 @@ namespace ListOfDeal {
                 return _handleChangedLODActionsCommand;
             }
         }
-
+        public ICommand HandleChangedWLTaskCommand {
+            get {
+                if (_handleChangedWLTaskCommand == null)
+                    _handleChangedWLTaskCommand = new DelegateCommand(HandleChangedWLTask);
+                return _handleChangedWLTaskCommand;
+            }
+        }
         private void HandleChangedLODActions() {
             wlProcessor.HandleChangedLODActions();
         }
+        void HandleChangedWLTask() {
+            wlProcessor.HandleChangedWLTask();
+        }
+
 
         WLProcessor wlProcessor;
         //     List<MyAction> lodActions;

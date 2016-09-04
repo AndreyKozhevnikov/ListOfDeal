@@ -35,7 +35,8 @@ namespace ListOfDeal {
         public void CreateWlConnector(IWLConnector _conn) {
             wlConnector = _conn;
             UpdateData();
-            //   (wlConnector as WLConnector).Start();
+
+              // (wlConnector as WLConnector).Start();
         }
 
         private void UpdateData() {
@@ -129,7 +130,7 @@ namespace ListOfDeal {
 
         public void HandleChangedLODActions() {
             RaiseLog("==========Start HandleChangedLODActions==========");
-            var changedActions = allActions.Where(x => x.WLTaskStatus ==WLTaskStatusEnum.NeedToUpdateWlTask).ToList();
+            var changedActions = allActions.Where(x => x.WLTaskStatus == WLTaskStatusEnum.UpdateNeeded).ToList();
             RaiseLog(string.Format("There are {0} actions to change", changedActions.Count));
             allTasks = GetAllActiveTasks();
             foreach (var act in changedActions) {
@@ -140,6 +141,13 @@ namespace ListOfDeal {
                 if (wlTitle != wlTask.title) {
                     resTask = wlConnector.ChangeTitleOfTask(wlTask.id, wlTitle);
                     RaiseLog(string.Format("change name to  {0}", wlTitle));
+                }
+                if (act.ScheduledTime != null) {
+                    string currDT = WLConnector.ConvertToWLDate(act.ScheduledTime.Value);
+                    if (currDT != wlTask.due_date) {
+                        resTask= wlConnector.ChangeScheduledTime(wlTask.id, currDT);
+                        RaiseLog("action {0} change scheduled time to {1}", act.Name, currDT);
+                    }
                 }
 
                 if (resTask != null) {
@@ -169,10 +177,15 @@ namespace ListOfDeal {
             }
             RaiseLog("==========End HandleChangedWLTask==========");
         }
-        void RaiseLog(string st) {
+        internal void RaiseLog(string st) {
             if (Logged != null)
                 Logged(new WLEventArgs(st));
 
+        }
+        internal void RaiseLog(string format, params object[] par) {
+            string st = string.Format(format, par);
+            if (Logged != null)
+                Logged(new WLEventArgs(st));
         }
     }
 

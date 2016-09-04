@@ -16,10 +16,11 @@ using System.Threading.Tasks;
 namespace ListOfDeal {
     public interface IWLConnector {
         WLTask ChangeTitleOfTask(int wlId, string newName);
+        WLTask ChangeScheduledTime(int wlId, string dueTime);
         List<WLList> GetAllLists();
         List<WLTask> GetTasksForList(int listId);
         WLTask GetTask(int taskId);
-        WLTask CreateTask(string title, int listId, DateTime? DueDate = null);
+        WLTask CreateTask(string title, int listId, DateTime? dueDate = null);
 
         WLTask UpdateTask(WLTask task);
         WLTask CompleteTask(int wlId);
@@ -83,7 +84,7 @@ namespace ListOfDeal {
             JsonCreator.Add("list_id", listId);
             JsonCreator.Add("title", title);
             if (dueDate != null) {
-                JsonCreator.Add("due_date", dueDate.Value.ToString("yyyy-MM-dd"));
+                JsonCreator.Add("due_date", ConvertToWLDate(dueDate.Value));
             }
             string json = JsonCreator.GetString();
             var responseText = GetHttpRequestResponse(st, "POST", json);
@@ -132,7 +133,6 @@ namespace ListOfDeal {
             var revision = GetTask(wlId).revision; //TODO improve
 
             JsonCreator.Add("revision", revision);
-            //  JsonCreator.Add("title", "NewTestTitle3" + DateTime.Now.Millisecond);
             JsonCreator.Add("completed", true);
             string json = JsonCreator.GetString();
             json = json.Replace("True", "true");
@@ -147,6 +147,19 @@ namespace ListOfDeal {
 
             JsonCreator.Add("revision", revision);
             JsonCreator.Add("title", newTitle);
+            //  JsonCreator.Add("completed", true);
+            string json = JsonCreator.GetString();
+            json = json.Replace("True", "true");
+            var responseText = GetHttpRequestResponse(st2, "PATCH", json);
+            var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
+            return wlTask;
+        }
+        public WLTask ChangeScheduledTime(int wlId, string dueDate) {
+            string st = "http://a.wunderlist.com/api/v1/tasks";
+            string st2 = string.Format(@"{0}/{1}", st, wlId);
+            var revision = GetTask(wlId).revision; //TODO improve
+            JsonCreator.Add("revision", revision);
+            JsonCreator.Add("due_date", dueDate);
             //  JsonCreator.Add("completed", true);
             string json = JsonCreator.GetString();
             json = json.Replace("True", "true");
@@ -177,6 +190,10 @@ namespace ListOfDeal {
             string st = sr.ReadToEnd();
             sr.Close();
             var v = JsonConvert.DeserializeObject<RootObject>(st);
+        }
+
+    public static string ConvertToWLDate(DateTime dt) {
+            return dt.ToString("yyyy-MM-dd");
         }
 
 

@@ -147,7 +147,7 @@ namespace ListOfDeal {
             set {
                 parentEntity.IsSimpleProject = value;
                 foreach(var act in Actions) {
-                    act.WLTaskStatus = WLTaskStatusEnum.NeedToUpdateWlTask;
+                    act.WLTaskStatus = WLTaskStatusEnum.UpdateNeeded;
                 }
                 RaisePropertyChanged("IsSimpleProject");
             }
@@ -189,7 +189,7 @@ namespace ListOfDeal {
             //act
             pr.Status = ProjectStatusEnum.Delayed;
             //assert
-            Assert.AreEqual(WLTaskStatusEnum.NeedToDeleteWLTask, myAction.WLTaskStatus);
+            Assert.AreEqual(WLTaskStatusEnum.DeletingNeeded, myAction.WLTaskStatus);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, myAction1.WLTaskStatus);
 
           
@@ -206,7 +206,7 @@ namespace ListOfDeal {
             //act
             pr.Status = ProjectStatusEnum.Done;
             //assert
-            Assert.AreEqual(WLTaskStatusEnum.NeedToDeleteWLTask, myAction.WLTaskStatus);
+            Assert.AreEqual(WLTaskStatusEnum.DeletingNeeded, myAction.WLTaskStatus);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, myAction1.WLTaskStatus);
 
             Assert.AreNotEqual(null, pr.parentEntity.CompleteTime);

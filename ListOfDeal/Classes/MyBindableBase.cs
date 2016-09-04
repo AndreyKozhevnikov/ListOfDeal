@@ -15,6 +15,5 @@ namespace ListOfDeal {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
     }
 }

@@ -91,7 +91,7 @@ namespace ListOfDeal {
                 Debug.Print(tskId.ToString());
                 var act = actionsWithTasks.Where(x => x.WLId == tskId).First();
                 act.WLId = null;
-                act.parentEntity.WLTaskStatus = 0;
+                act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
                 act.Status = ActionsStatusEnum.Completed;
                 RaiseLog(string.Format("complete action - {0} {1}", act.Name, act.parentEntity.Id));
             }
@@ -129,7 +129,7 @@ namespace ListOfDeal {
 
         public void HandleChangedLODActions() {
             RaiseLog("==========Start HandleChangedLODActions==========");
-            var changedActions = allActions.Where(x => x.parentEntity.WLTaskStatus == 1).ToList();
+            var changedActions = allActions.Where(x => x.WLTaskStatus ==WLTaskStatusEnum.NeedToUpdateWlTask).ToList();
             RaiseLog(string.Format("There are {0} actions to change", changedActions.Count));
             allTasks = GetAllActiveTasks();
             foreach (var act in changedActions) {
@@ -148,7 +148,7 @@ namespace ListOfDeal {
                 else {
                     RaiseLog("!There are no changes in the act: " + act.Name);
                 }
-                act.parentEntity.WLTaskStatus = 0;
+                act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
             }
         }
 
@@ -162,7 +162,7 @@ namespace ListOfDeal {
                     if (act.Name != tsk.title) {
                         RaiseLog(string.Format("act is changing name from {0} to {1}", act.Name, tsk.title));
                         act.Name = tsk.title;
-                        act.parentEntity.WLTaskStatus = 0;
+                        act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
                     }
                     act.WLTaskRevision = tsk.revision;
                 }

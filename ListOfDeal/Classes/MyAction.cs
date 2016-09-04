@@ -26,7 +26,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.Name = value;
-                parentEntity.WLTaskStatus = 1;
+              WLTaskStatus = WLTaskStatusEnum.NeedToUpdateWlTask;
                 RaisePropertyChanged("Name");
             }
         }
@@ -50,15 +50,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.IsActive = value;
-                if (value) {
-                    if (WLId == null) {
-                        parentEntity.WLTaskStatus = 0;
-                    }
-                    else {
-                        parentEntity.WLTaskStatus = 1;
-                    }
-                }
-                else {
+                if (!value) {
                     SetDeleteTaskIfNeeded();
                 }
                 RaisePropertyChanged("IsActive");
@@ -175,17 +167,17 @@ namespace ListOfDeal {
                 parentEntity.WLId = value;
             }
         }
-        //public WLTaskStatusEnum WLTaskStatus {
-        //    get {
-        //        return (WLTaskStatusEnum) parentEntity.WLTaskStatus;
-        //    }
-        //    set {
-        //        parentEntity.WLTaskStatus = (int)value;
-        //    }
-        //}
+        public WLTaskStatusEnum WLTaskStatus {
+            get {
+                return (WLTaskStatusEnum)parentEntity.WLTaskStatus;
+            }
+            set {
+                parentEntity.WLTaskStatus = (int)value;
+            }
+        }
         public void SetDeleteTaskIfNeeded() {
             if (WLId != null)
-                this.parentEntity.WLTaskStatus = 2;
+                this.WLTaskStatus = WLTaskStatusEnum.NeedToDeleteWLTask;
         }
         internal void CopyProperties(MyAction act) {
             this.Name = act.Name;
@@ -215,11 +207,11 @@ namespace ListOfDeal {
         Delegated = 3,
         Completed = 4
     }
-    //public enum WLTaskStatusEnum {
-    //    NoWLTask=0,
-    //    WLTaskActive=1,
-    //    WLTaskNeedToDelete=2
-    //}
+    public enum WLTaskStatusEnum {
+        UpToDateWLTask = 0,
+        NeedToUpdateWlTask = 1,
+        NeedToDeleteWLTask = 2
+    }
     [TestFixture] //todo -case action become active and then become inactive
     public class MyActionTest {
         [Test]
@@ -231,7 +223,7 @@ namespace ListOfDeal {
             //act
             act.Status = ActionsStatusEnum.Completed;
             //assert
-            Assert.AreEqual(2, act.parentEntity.WLTaskStatus);
+            Assert.AreEqual(WLTaskStatusEnum.NeedToDeleteWLTask, act.WLTaskStatus);
             Assert.AreNotEqual(null, act.parentEntity.CompleteTime);
             Assert.AreEqual(false, act.parentEntity.IsActive);
         }
@@ -243,7 +235,7 @@ namespace ListOfDeal {
             //act
             act.Status = ActionsStatusEnum.Completed;
             //assert
-            Assert.AreEqual(0, act.parentEntity.WLTaskStatus);
+            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, act.WLTaskStatus);
 
         }
 
@@ -253,25 +245,12 @@ namespace ListOfDeal {
             MyAction act = new MyAction(new Action());
             act.IsActive = true;
             act.parentEntity.WLId = 123;
-            act.parentEntity.WLTaskStatus = 1;
             //act
             act.IsActive = false;
             //asssert
-            Assert.AreEqual(2, act.parentEntity.WLTaskStatus);
+            Assert.AreEqual(WLTaskStatusEnum.NeedToDeleteWLTask, act.WLTaskStatus);
         }
-        [Test]
-        public void SetIsActiveSetWLStatus_2() {
-            //arrange
-            MyAction act = new MyAction(new Action());
-            act.IsActive = true;
-            act.parentEntity.WLId = 123;
-            act.parentEntity.WLTaskStatus = 1;
-            //act
-            act.IsActive = false;
-            act.IsActive = true;
-            //asssert
-            Assert.AreEqual(1, act.parentEntity.WLTaskStatus);
-        }
+
         [Test]
         public void SetIsActiveSetWLStatus_3() {
             //arrange
@@ -281,7 +260,7 @@ namespace ListOfDeal {
             act.IsActive = false;
             act.IsActive = true;
             //asssert
-            Assert.AreEqual(0, act.parentEntity.WLTaskStatus);
+            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, act.WLTaskStatus);
         }
 
         [Test]
@@ -291,7 +270,7 @@ namespace ListOfDeal {
             //act
             act.Name = "NewName1";
             //assert
-            Assert.AreEqual(1, act.parentEntity.WLTaskStatus);
+            Assert.AreEqual(WLTaskStatusEnum.NeedToUpdateWlTask, act.WLTaskStatus);
         }
         [Test]
         public void SetWLStatusWhenIsSimpePropertyIsChanged() {
@@ -303,7 +282,7 @@ namespace ListOfDeal {
             //act
             proj.IsSimpleProject = false;
             //assert
-            Assert.AreEqual(1, act.parentEntity.WLTaskStatus);
+            Assert.AreEqual(WLTaskStatusEnum.NeedToUpdateWlTask, act.WLTaskStatus);
         }
     }
 }

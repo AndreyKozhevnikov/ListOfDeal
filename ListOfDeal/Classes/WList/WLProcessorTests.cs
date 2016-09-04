@@ -269,7 +269,7 @@ namespace ListOfDeal {
             //assert
             Assert.AreEqual(ActionsStatusEnum.Completed, myAction1.Status);
             Assert.AreEqual(null, myAction1.WLId);
-            Assert.AreEqual(0, myAction1.parentEntity.WLTaskStatus);
+            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, myAction1.WLTaskStatus);
 
         }
         [Test]
@@ -482,8 +482,8 @@ namespace ListOfDeal {
             //assert
             mockWlConnector.Verify(x => x.ChangeTitleOfTask(1, "Newact1"), Times.Once);
             mockWlConnector.Verify(x => x.ChangeTitleOfTask(4, "NotSimpleProject - Newact4"), Times.Once);
-            Assert.AreEqual(0, proj.Actions[0].parentEntity.WLTaskStatus);
-            Assert.AreEqual(0, proj2.Actions[1].parentEntity.WLTaskStatus);
+            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj.Actions[0].WLTaskStatus);
+            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj2.Actions[1].WLTaskStatus);
         }
         [Test]
         public void HandleChangedLODActions_SchouldUpdateWLRevision() {
@@ -497,7 +497,7 @@ namespace ListOfDeal {
             var myAction1 = new MyAction(new Action());
             myAction1.Name = "Newact1";
             myAction1.WLId = 1;
-            myAction1.parentEntity.WLTaskStatus = 1;
+            myAction1.WLTaskStatus = WLTaskStatusEnum.NeedToUpdateWlTask;
             myAction1.IsActive = true;
             myAction1.parentEntity.Project = proj.parentEntity;
             proj.Actions.Add(myAction1);
@@ -593,7 +593,7 @@ namespace ListOfDeal {
             //act
             wlProc.HandleChangedWLTask();
             //assert
-            Assert.AreEqual(0,act1.parentEntity.WLTaskStatus);
+            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask,act1.WLTaskStatus);
         }
 
     }

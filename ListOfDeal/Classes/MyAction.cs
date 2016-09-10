@@ -36,11 +36,15 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.StatusId = (int)value;
+                if (value != ActionsStatusEnum.Scheduled) {
+                    this.ScheduledTime = null;
+                }
                 if (value == ActionsStatusEnum.Completed) {
                     this.parentEntity.CompleteTime = DateTime.Now;
                     this.IsActive = false;
                     SetDeleteTaskIfNeeded();
                 }
+             
                 RaisePropertyChanged("Status");
             }
         }
@@ -80,6 +84,9 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.ScheduledTime = value;
+                if (value.HasValue) {
+                    this.Status = ActionsStatusEnum.Scheduled;
+                }
                 SetWLStatusUpdatedIfNeeded();
             }
         }
@@ -325,6 +332,27 @@ namespace ListOfDeal {
             proj.IsSimpleProject = false;
             //assert
             Assert.AreEqual(WLTaskStatusEnum.UpdateNeeded, act.WLTaskStatus);
+        }
+
+        [Test]
+        public void SetScheduledTimeSetStatusToScheduled() {
+            //arrange
+            MyAction act = new MyAction(new Action());
+            //act
+            act.ScheduledTime = new DateTime(2016, 9, 10);
+            //assert
+            Assert.AreEqual(ActionsStatusEnum.Scheduled, act.Status);
+        }
+        [Test]
+        public void SetStatusToNonScheduledShoulNullScheduledTime() {
+            //arrange
+            MyAction act = new MyAction(new Action());
+            act.Status = ActionsStatusEnum.Scheduled;
+            act.ScheduledTime= new DateTime(2016, 9, 10);
+            //act
+            act.Status = ActionsStatusEnum.Waited;
+            //assert
+            Assert.AreEqual(false, act.ScheduledTime.HasValue);
         }
     }
 }

@@ -472,6 +472,7 @@ namespace ListOfDeal {
             proj.IsSimpleProject = true;
             proj.Actions.Add(new MyAction(new Action() { Name = "Newact1", WLId = 1, WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity }));
             proj.Actions.Add(new MyAction(new Action() { Name = "act2", WLId = 2, IsActive = true, Project = proj.parentEntity }));
+
             var proj2 = new MyProject(new Project()) { Name = "NotSimpleProject", Status = ProjectStatusEnum.InWork };
             proj2.IsSimpleProject = false;
             proj2.Actions.Add(new MyAction(new Action() { Name = "act3", WLId = 3, IsActive = true, Project = proj2.parentEntity }));
@@ -501,6 +502,8 @@ namespace ListOfDeal {
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj.Actions[0].WLTaskStatus);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj2.Actions[1].WLTaskStatus);
         }
+
+   
         [Test]
         public void HandleChangedLODActions_SchouldUpdateWLRevision() {
             //arrange 
@@ -621,12 +624,14 @@ namespace ListOfDeal {
             var mockMainVM = new Mock<IMainViewModel>();
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project());
+            proj.IsSimpleProject = true;
             proj.Status = ProjectStatusEnum.InWork;
             var act1 = new MyAction(new Action());
             act1.Name = "TestName1";
             act1.WLTaskRevision = 1;
             act1.WLId = 123;
             act1.IsActive = true;
+            act1.parentEntity.Project = proj.parentEntity;
             proj.Actions.Add(act1);
 
             var act2 = new MyAction(new Action());
@@ -634,7 +639,7 @@ namespace ListOfDeal {
             act2.WLTaskRevision = 1;
             act2.WLId = 234;
             act2.IsActive = true;
-
+            act2.parentEntity.Project = proj.parentEntity;
             proj.Actions.Add(act2);
             projCollection.Add(proj);
             mockMainVM.Setup(x => x.Projects).Returns(projCollection);
@@ -655,6 +660,77 @@ namespace ListOfDeal {
             Assert.AreEqual("TestName2", act2.Name);
             Assert.AreEqual(1, act2.WLTaskRevision);
         }
+        [Test]
+        public void HandleChangedWLTask_Title_notSimple() {
+            //arrange
+            var mockMainVM = new Mock<IMainViewModel>();
+            var projCollection = new ObservableCollection<MyProject>();
+            var proj = new MyProject(new Project());
+            proj.IsSimpleProject = false;
+            proj.Name = "Project1";
+            proj.Status = ProjectStatusEnum.InWork;
+            var act1 = new MyAction(new Action());
+            act1.Name = "TestName1";
+            act1.WLTaskRevision = 1;
+            act1.WLId = 123;
+            act1.IsActive = true;
+            act1.parentEntity.Project = proj.parentEntity;
+            proj.Actions.Add(act1);
+
+            projCollection.Add(proj);
+            mockMainVM.Setup(x => x.Projects).Returns(projCollection);
+            WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
+            var mockWlConnector = new Mock<IWLConnector>();
+            var taskList = new List<WLTask>();
+            taskList.Add(new WLTask() { id = 123, title = "Project1 - NewTestName1", revision = 2 });
+
+            mockWlConnector.Setup(x => x.GetTasksForList(263984253)).Returns(taskList);
+            mockWlConnector.Setup(x => x.GetTasksForList(263984274)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetTasksForList(263984295)).Returns(new List<WLTask>());
+            wlProc.CreateWlConnector(mockWlConnector.Object);
+            //act
+            wlProc.HandleChangedWLTask();
+            //assert
+            Assert.AreEqual("NewTestName1", act1.Name);
+            Assert.AreEqual(2, act1.WLTaskRevision);
+        
+        }
+
+        [Test]
+        public void HandleChangedWLTask_Title_notSimple_notValidName() {
+            //arrange
+            var mockMainVM = new Mock<IMainViewModel>();
+            var projCollection = new ObservableCollection<MyProject>();
+            var proj = new MyProject(new Project());
+            proj.IsSimpleProject = false;
+            proj.Name = "Project1";
+            proj.Status = ProjectStatusEnum.InWork;
+            var act1 = new MyAction(new Action());
+            act1.Name = "TestName1";
+            act1.WLTaskRevision = 1;
+            act1.WLId = 123;
+            act1.IsActive = true;
+            act1.parentEntity.Project = proj.parentEntity;
+            proj.Actions.Add(act1);
+
+            projCollection.Add(proj);
+            mockMainVM.Setup(x => x.Projects).Returns(projCollection);
+            WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
+            var mockWlConnector = new Mock<IWLConnector>();
+            var taskList = new List<WLTask>();
+            taskList.Add(new WLTask() { id = 123, title = "NewTestName1", revision = 2 });
+
+            mockWlConnector.Setup(x => x.GetTasksForList(263984253)).Returns(taskList);
+            mockWlConnector.Setup(x => x.GetTasksForList(263984274)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetTasksForList(263984295)).Returns(new List<WLTask>());
+            wlProc.CreateWlConnector(mockWlConnector.Object);
+            //act
+            wlProc.HandleChangedWLTask();
+            //assert
+            Assert.AreEqual("NewTestName1", act1.Name);
+            Assert.AreEqual(2, act1.WLTaskRevision);
+            //maybe rename wltask?
+        }
 
 
         [Test]
@@ -669,6 +745,7 @@ namespace ListOfDeal {
             act1.WLTaskRevision = 1;
             act1.WLId = 123;
             act1.IsActive = true;
+            act1.parentEntity.Project = proj.parentEntity;
             proj.Actions.Add(act1);
 
            

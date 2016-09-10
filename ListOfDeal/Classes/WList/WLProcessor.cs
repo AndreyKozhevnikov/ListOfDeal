@@ -167,9 +167,18 @@ namespace ListOfDeal {
                 var tsk = allTasks.Where(x => x.id == act.WLId).First();
                 if (act.WLTaskRevision != tsk.revision) {
                     RaiseLog(string.Format("act has old revision {0}", act.Name));
-                    if (act.Name != tsk.title) {
-                        RaiseLog(string.Format("act is changing name from {0} to {1}", act.Name, tsk.title));
-                        act.Name = tsk.title;
+                    var actNameForWL = act.GetWLTitle();
+                
+                    if (actNameForWL != tsk.title) {
+                        string nameFromTitle = tsk.title;
+                        if (!act.parentEntity.Project.IsSimpleProject) {
+                            var parsedTitle = tsk.title.Split('-');
+                            if (parsedTitle.Count() == 2) {
+                                nameFromTitle = parsedTitle[1].Trim();
+                            }
+                        }
+                        RaiseLog(string.Format("act is changing name from {0} to {1}", act.Name, nameFromTitle));
+                        act.Name = nameFromTitle;
                         act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
                     }
                     act.WLTaskRevision = tsk.revision;

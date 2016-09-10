@@ -35,7 +35,9 @@ namespace ListOfDeal {
                 return (ActionsStatusEnum)parentEntity.StatusId;
             }
             set {
-                parentEntity.StatusId = (int)value;
+                var intVal = (int)value;
+                if (parentEntity.StatusId == intVal)
+                    return;
                 if (value != ActionsStatusEnum.Scheduled) {
                     this.ScheduledTime = null;
                 }
@@ -342,6 +344,22 @@ namespace ListOfDeal {
             act.ScheduledTime = new DateTime(2016, 9, 10);
             //assert
             Assert.AreEqual(ActionsStatusEnum.Scheduled, act.Status);
+        }
+        [Test]
+        public void SetScheduledTimeNOTSetStatusToScheduledIifItIsAlreadySo() {
+            //arrange
+            MyAction act = new MyAction(new Action());
+            act.Status = ActionsStatusEnum.Scheduled;
+            string st = null;
+            act.PropertyChanged += (object sender, PropertyChangedEventArgs e) => {
+                if (e.PropertyName == "Status") {
+                    st = "test";
+                }
+            };
+            //act
+            act.ScheduledTime = new DateTime(2016, 9, 10);
+            //assert
+            Assert.AreEqual(null, st);
         }
         [Test]
         public void SetStatusToNonScheduledShoulNullScheduledTime() {

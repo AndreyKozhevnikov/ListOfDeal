@@ -542,6 +542,46 @@ namespace ListOfDeal {
             Assert.AreEqual(3, myAction1.WLTaskRevision);
         }
 
+
+        [Test]
+        public void HandleChangedLODActions_UpdateScheduledTime() {
+            //arrange 
+            //var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
+            //MainViewModel.generalEntity = mockGeneralEntity.Object;
+
+
+            var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            proj.IsSimpleProject = true;
+            var myAction1 = new MyAction(new Action());
+            myAction1.Name = "act1";
+            myAction1.WLId = 1;
+            myAction1.ScheduledTime = new DateTime(2016, 9, 10);
+            myAction1.Status = ActionsStatusEnum.Scheduled;
+            myAction1.IsActive = true;
+            myAction1.parentEntity.Project = proj.parentEntity;
+            proj.Actions.Add(myAction1);
+
+            var mockMainVM = new Mock<IMainViewModel>();
+            var projCollection = new ObservableCollection<MyProject>();
+            projCollection.Add(proj);
+            mockMainVM.Setup(x => x.Projects).Returns(projCollection);
+            WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
+
+            var mockWlConnector = new Mock<IWLConnector>(MockBehavior.Strict);
+            var taskList = new List<WLTask>();
+            taskList.Add(new WLTask() { id = 1, title = "act1",due_date="2016-09-08" });
+
+            mockWlConnector.Setup(x => x.GetTasksForList(263984253)).Returns(taskList);
+            mockWlConnector.Setup(x => x.GetTasksForList(263984274)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetTasksForList(263984295)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.ChangeScheduledTime(1, "2016-09-10")).Returns(new WLTask() { revision = 3 });
+            wlProc.CreateWlConnector(mockWlConnector.Object);
+            //act
+            wlProc.HandleChangedLODActions();
+            //assert
+            mockWlConnector.Verify(x => x.ChangeScheduledTime(1, "2016-09-10"), Times.Once);
+           // Assert.AreEqual(3, myAction1.WLTaskRevision);
+        }
         [Test]
         public void HandleChangedLODActions_ScheduledTime() {
             //arrange 

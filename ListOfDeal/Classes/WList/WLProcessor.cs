@@ -56,24 +56,23 @@ namespace ListOfDeal {
             foreach (var act in emptyActions) {
                 string title = act.GetWLTitle();
                 WLTask wlTask;
-                int targetListId = -1;
-                targetListId = MyListId;
+                int targetListId = MyListId;
+                string lstName = "MyList";
                 if (act.Status == ActionsStatusEnum.Scheduled) {//scheduled action
                     wlTask = wlConnector.CreateTask(title, MySchedId, act.ScheduledTime);
+                    lstName = "MySched";
                 }
                 else {
                     if (act.ProjectType == 10) { //to buy action
                         targetListId = MyBuyId;
-                    }
-                    else {
-                        targetListId = MyListId;
+                        lstName = "MyBuy";
                     }
                     wlTask = wlConnector.CreateTask(title, targetListId);
                 }
                 act.WLId = wlTask.id;
                 act.WLTaskRevision = wlTask.revision;
                 //  act.parentEntity.WLTaskStatus = 1;
-                string message = string.Format("title={0}, list id - {1}, new task's id={2}", wlTask.title, wlTask.list_id, wlTask.id);
+                string message = string.Format("title={0}, list id - {1}, new task's id={2}", wlTask.title, lstName, wlTask.id);
                 RaiseLog(message);
             }
             MainViewModel.SaveChanges();
@@ -145,7 +144,7 @@ namespace ListOfDeal {
                 if (act.ScheduledTime != null) {
                     string currDT = WLConnector.ConvertToWLDate(act.ScheduledTime.Value);
                     if (wlTask.list_id != WLProcessor.MySchedId) {
-                        RaiseLog("Task {0} move to {1}", wlTask.title, WLProcessor.MySchedId);
+                        RaiseLog("Task {0} move to {1}", wlTask.title, "MyShed  -  "+WLProcessor.MySchedId);
                         resTask= wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MySchedId);
                     }
                     if (currDT != wlTask.due_date) {
@@ -155,7 +154,7 @@ namespace ListOfDeal {
                 }
                 else {
                     if (wlTask.list_id == WLProcessor.MySchedId) {
-                        RaiseLog("Task {0} move to {1}", wlTask.title, WLProcessor.MyListId);
+                        RaiseLog("Task {0} move to {1}", wlTask.title, "MyList  -  "+WLProcessor.MyListId);
                         resTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MyListId);
                         RaiseLog("task {0} change scheduled time to {1}", act.Name, "null");
                         resTask = wlConnector.ChangeScheduledTime(wlTask.id, "null");

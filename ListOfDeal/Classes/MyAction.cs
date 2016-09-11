@@ -351,7 +351,7 @@ namespace ListOfDeal {
             //arrange
             MyAction act = new MyAction(new Action());
             act.Status = ActionsStatusEnum.Scheduled;
-            act.ScheduledTime= new DateTime(2016, 9, 10);
+            act.ScheduledTime = new DateTime(2016, 9, 10);
             //act
             act.Status = ActionsStatusEnum.Waited;
             //assert
@@ -364,7 +364,10 @@ namespace ListOfDeal {
             MyAction act = new MyAction(new Action());
             act.Status = ActionsStatusEnum.Scheduled;
             string tmpSting = null;
-            act.PropertyChanged += (object sender, PropertyChangedEventArgs e) => { tmpSting = "IsSet"; };
+            act.PropertyChanged += (object sender, PropertyChangedEventArgs e) => {
+                if (e.PropertyName == "Status")
+                    tmpSting = "IsSet";
+            };
             //act
             act.Status = ActionsStatusEnum.Scheduled;
             //assert

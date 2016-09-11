@@ -21,7 +21,7 @@ namespace ListOfDeal {
         List<WLTask> GetTasksForList(int listId);
         WLTask GetTask(int taskId);
         WLTask CreateTask(string title, int listId, DateTime? dueDate = null);
-
+        WLTask ChangeListOfTask(int wlId, int listId);
         WLTask UpdateTask(WLTask task);
         WLTask CompleteTask(int wlId);
         WLNote CreateNote(int taskId, string content);
@@ -61,13 +61,17 @@ namespace ListOfDeal {
         public void Start() {
 
             var lst = GetAllLists();
-            //var list = GetTasksForList(262335124);
+            var list = GetTasksForList(WLProcessor.MySchedId);
+            var tsk = list[1];
+            var tsk2 = ChangeScheduledTime(tsk.id, "null");
+          //  var tks2 = ChangeListOfTask(tsk.id, WLProcessor.MySchedId);
             //var tsk = list[1];
             //var v = CreateNote(tsk.id, "#LODId=123");
             //var tsk1 = list[0];
             //var v1 = CreateNote(tsk.id, "#LODId=123");
-            var t0 = CreateTask("not scheduled", 262335124);
-            var t1 = CreateTask("scheduled", 262630772, new DateTime(2016, 8, 30));
+           // var t0 = CreateTask("not scheduled", 262335124);
+
+          //  var t1 = CreateTask("scheduled", 262630772, new DateTime(2016, 8, 30));
             //var t1 = UpdateTask(t0);
             //var t2 = GetTask(t0);
             //    DeleteTask(t2);
@@ -147,6 +151,21 @@ namespace ListOfDeal {
 
             JsonCreator.Add("revision", revision);
             JsonCreator.Add("title", newTitle);
+            //  JsonCreator.Add("completed", true);
+            string json = JsonCreator.GetString();
+            json = json.Replace("True", "true");
+            var responseText = GetHttpRequestResponse(st2, "PATCH", json);
+            var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
+            return wlTask;
+        }
+        public WLTask ChangeListOfTask(int wlId, int listId) {
+            string st = "http://a.wunderlist.com/api/v1/tasks";
+            string st2 = string.Format(@"{0}/{1}", st, wlId);
+            var revision = GetTask(wlId).revision; //TODO improve
+
+            JsonCreator.Add("revision", revision);
+            //   JsonCreator.Add("title", newTitle);
+            JsonCreator.Add("list_id", listId);
             //  JsonCreator.Add("completed", true);
             string json = JsonCreator.GetString();
             json = json.Replace("True", "true");

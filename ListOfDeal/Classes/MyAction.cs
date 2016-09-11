@@ -90,6 +90,7 @@ namespace ListOfDeal {
                     this.Status = ActionsStatusEnum.Scheduled;
                 }
                 SetWLStatusUpdatedIfNeeded();
+                RaisePropertyChanged("ScheduledTime");
             }
         }
 

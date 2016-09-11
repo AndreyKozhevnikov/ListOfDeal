@@ -181,6 +181,14 @@ namespace ListOfDeal {
                         act.Name = nameFromTitle;
                         act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
                     }
+                    if (act.Status == ActionsStatusEnum.Scheduled) {
+                        var actScheduledTime = WLConnector.ConvertToWLDate(act.ScheduledTime.Value);
+                        if (actScheduledTime != tsk.due_date) {
+                            RaiseLog(string.Format("{0} is changing time from {1} to {2}",act.Name, act.ScheduledTime.Value.ToString("yyy-MM-dd"), tsk.due_date));
+                            var newDate = DateTime.Parse(tsk.due_date);
+                            act.ScheduledTime = newDate;
+                        }
+                    }
                     act.WLTaskRevision = tsk.revision;
                 }
             }

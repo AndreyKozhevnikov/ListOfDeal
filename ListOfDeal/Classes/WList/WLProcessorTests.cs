@@ -764,7 +764,40 @@ namespace ListOfDeal {
             //assert
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask,act1.WLTaskStatus);
         }
-
+        [Test]
+        public void HandleChangedWLTask_ScheduledTime() {
+            //arrange
+            var mockMainVM = new Mock<IMainViewModel>();
+            var projCollection = new ObservableCollection<MyProject>();
+            var proj = new MyProject(new Project());
+            proj.IsSimpleProject = true;
+            proj.Status = ProjectStatusEnum.InWork;
+            var act1 = new MyAction(new Action());
+            act1.Name = "act1";
+            act1.WLTaskRevision = 1;
+            act1.WLId = 123;
+            act1.IsActive = true;
+            act1.ScheduledTime = new DateTime(2016, 9, 11);
+            act1.parentEntity.Project = proj.parentEntity;
+            proj.Actions.Add(act1);
+          
+            projCollection.Add(proj);
+            mockMainVM.Setup(x => x.Projects).Returns(projCollection);
+            WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
+            var mockWlConnector = new Mock<IWLConnector>();
+            var taskList = new List<WLTask>();
+            taskList.Add(new WLTask() { id = 123, title = "act1", revision = 2,due_date="2016-9-15" });
+          
+            mockWlConnector.Setup(x => x.GetTasksForList(263984253)).Returns(taskList);
+            mockWlConnector.Setup(x => x.GetTasksForList(263984274)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetTasksForList(263984295)).Returns(new List<WLTask>());
+            wlProc.CreateWlConnector(mockWlConnector.Object);
+            //act
+            wlProc.HandleChangedWLTask();
+            //assert
+            Assert.AreEqual(new DateTime(2016,9,15), act1.ScheduledTime);
+            Assert.AreEqual(2, act1.WLTaskRevision);
+        }
     }
 
 }

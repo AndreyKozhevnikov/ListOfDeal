@@ -35,7 +35,10 @@ namespace ListOfDeal {
                 return (ActionsStatusEnum)parentEntity.StatusId;
             }
             set {
-                parentEntity.StatusId = (int)value;
+                var intVal = (int)value;
+                if (parentEntity.StatusId == intVal)
+                    return;
+                parentEntity.StatusId = intVal;
                 if (value != ActionsStatusEnum.Scheduled) {
                     this.ScheduledTime = null;
                 }
@@ -44,7 +47,6 @@ namespace ListOfDeal {
                     this.IsActive = false;
                     SetDeleteTaskIfNeeded();
                 }
-             
                 RaisePropertyChanged("Status");
             }
         }
@@ -353,6 +355,19 @@ namespace ListOfDeal {
             act.Status = ActionsStatusEnum.Waited;
             //assert
             Assert.AreEqual(false, act.ScheduledTime.HasValue);
+        }
+
+        [Test]
+        public void SetStatusToSameShouldNotChangeStatus() {
+            //arrange
+            MyAction act = new MyAction(new Action());
+            act.Status = ActionsStatusEnum.Scheduled;
+            string tmpSting = null;
+            act.PropertyChanged += (object sender, PropertyChangedEventArgs e) => { tmpSting = "IsSet"; };
+            //act
+            act.Status = ActionsStatusEnum.Scheduled;
+            //assert
+            Assert.AreEqual(null, tmpSting);
         }
     }
 }

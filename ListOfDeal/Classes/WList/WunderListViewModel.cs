@@ -91,7 +91,7 @@ namespace ListOfDeal {
             wlProcessor = new WLProcessor(parentViewModel);
             wlProcessor.CreateWlConnector(new WLConnector());
             wlProcessor.Logged += WlProcessor_Logged;
-         
+            WlProcessor_Logged(new WLEventArgs( "===== WLProcessorCreated ====="));
             //  wlProcessor.PopulateActions(lodActions);
         }
 

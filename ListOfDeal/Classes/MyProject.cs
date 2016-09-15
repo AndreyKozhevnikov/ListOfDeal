@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ListOfDeal {
     public class MyProject : MyBindableBase {
-      public  Project parentEntity;
+        public Project parentEntity;
         public MyProject(Project _p) {
             parentEntity = _p;
             InitiateProject();
@@ -114,7 +114,7 @@ namespace ListOfDeal {
                 parentEntity.StatusId = (int)value;
 
                 if ((ProjectStatusEnum)value != ProjectStatusEnum.InWork) {
-                    foreach(var act in Actions) {
+                    foreach (var act in Actions) {
                         act.SetDeleteTaskIfNeeded();
                     }
                     if ((ProjectStatusEnum)value == ProjectStatusEnum.Done) {
@@ -146,7 +146,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.IsSimpleProject = value;
-                foreach(var act in Actions) {
+                foreach (var act in Actions) {
                     act.WLTaskStatus = WLTaskStatusEnum.UpdateNeeded;
                 }
                 RaisePropertyChanged("IsSimpleProject");
@@ -192,7 +192,7 @@ namespace ListOfDeal {
             Assert.AreEqual(WLTaskStatusEnum.DeletingNeeded, myAction.WLTaskStatus);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, myAction1.WLTaskStatus);
 
-          
+
         }
         [Test]
         public void SetProjectIsNotInWork_Done() {
@@ -210,6 +210,21 @@ namespace ListOfDeal {
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, myAction1.WLTaskStatus);
 
             Assert.AreNotEqual(null, pr.parentEntity.CompleteTime);
+        }
+
+        [Test]
+        public void AddActionToSimpleProject_ShouldNotSetWLStatusToNeedUpdate() {
+            //assert
+            var proj = new MyProject(new Project());
+            var myAction = new MyAction(new Action());
+            proj.Actions.Add(myAction);
+            proj.IsSimpleProject = true;
+            //act
+            var act2 = new MyAction(new Action());
+            proj.AddAction(act2);
+            //assert
+            Assert.AreEqual(1, proj.Actions.Count);
+            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj.Actions[0].WLTaskStatus);
         }
     }
 }

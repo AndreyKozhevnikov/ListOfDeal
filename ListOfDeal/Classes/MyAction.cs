@@ -189,7 +189,8 @@ namespace ListOfDeal {
                 return (WLTaskStatusEnum)parentEntity.WLTaskStatus;
             }
             set {
-                 parentEntity.WLTaskStatus = (int)value;
+                if (WLId != null)
+                    parentEntity.WLTaskStatus = (int)value;
             }
         }
         public void SetDeleteTaskIfNeeded() {
@@ -330,6 +331,7 @@ namespace ListOfDeal {
             MyProject proj = new MyProject(new Project());
             proj.IsSimpleProject = true;
             MyAction act = new MyAction(new Action() { Name = "Name1" });
+            act.WLId = 2;
             proj.Actions.Add(act);
             //act
             proj.IsSimpleProject = false;

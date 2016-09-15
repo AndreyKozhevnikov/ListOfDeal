@@ -189,7 +189,7 @@ namespace ListOfDeal {
                 return (WLTaskStatusEnum)parentEntity.WLTaskStatus;
             }
             set {
-                parentEntity.WLTaskStatus = (int)value;
+                 parentEntity.WLTaskStatus = (int)value;
             }
         }
         public void SetDeleteTaskIfNeeded() {

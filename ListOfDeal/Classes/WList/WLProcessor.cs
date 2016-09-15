@@ -144,8 +144,8 @@ namespace ListOfDeal {
                 if (act.ScheduledTime != null) {
                     string currDT = WLConnector.ConvertToWLDate(act.ScheduledTime.Value);
                     if (wlTask.list_id != WLProcessor.MySchedId) {
-                        RaiseLog("Task {0} move to {1}", wlTask.title, "MyShed  -  "+WLProcessor.MySchedId);
-                        resTask= wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MySchedId);
+                        RaiseLog("Task {0} move to {1}", wlTask.title, "MyShed  -  " + WLProcessor.MySchedId);
+                        resTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MySchedId);
                     }
                     if (currDT != wlTask.due_date) {
                         resTask = wlConnector.ChangeScheduledTime(wlTask.id, currDT);
@@ -154,7 +154,7 @@ namespace ListOfDeal {
                 }
                 else {
                     if (wlTask.list_id == WLProcessor.MySchedId) {
-                        RaiseLog("Task {0} move to {1}", wlTask.title, "MyList  -  "+WLProcessor.MyListId);
+                        RaiseLog("Task {0} move to {1}", wlTask.title, "MyList  -  " + WLProcessor.MyListId);
                         resTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MyListId);
                         RaiseLog("task {0} change scheduled time to {1}", act.Name, "null");
                         resTask = wlConnector.ChangeScheduledTime(wlTask.id, "null");
@@ -191,16 +191,41 @@ namespace ListOfDeal {
                         }
                         RaiseLog(string.Format("act is changing name from {0} to {1}", act.Name, nameFromTitle));
                         act.Name = nameFromTitle;
-                        act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
+                     
                     }
-                    if (act.Status == ActionsStatusEnum.Scheduled) {
-                        var actScheduledTime = WLConnector.ConvertToWLDate(act.ScheduledTime.Value);
-                        if (actScheduledTime != tsk.due_date) {
-                            RaiseLog(string.Format("{0} is changing time from {1} to {2}", act.Name, act.ScheduledTime.Value.ToString("yyy-MM-dd"), tsk.due_date));
-                            var newDate = DateTime.Parse(tsk.due_date);
-                            act.ScheduledTime = newDate;
+                    //   if (act.Status == ActionsStatusEnum.Scheduled) {
+                    //string actScheduledTime = null;
+                    //if (act.ScheduledTime.HasValue)
+                    //    actScheduledTime = WLConnector.ConvertToWLDate(act.ScheduledTime.Value);
+                    DateTime? wlDateTime = null;
+                    DateTime tmpDateTime;
+                    if (DateTime.TryParse(tsk.due_date, out tmpDateTime))
+                        wlDateTime = tmpDateTime;
+
+
+                    if (act.ScheduledTime != wlDateTime) {
+
+                        // var isDTNull = !DateTime.TryParse(tsk.due_date, out wlDateTime);
+                        if (act.Status == ActionsStatusEnum.Scheduled) {
+                            if (wlDateTime.HasValue) {
+                                RaiseLog("{0} is changing time from {1} to {2}", act.Name, act.ScheduledTime.Value.ToString("yyy-MM-dd"), tsk.due_date);
+                                var newDate = DateTime.Parse(tsk.due_date);
+                                act.ScheduledTime = newDate;
+                            }
+                            else {
+                                RaiseLog("{0} -delete time", act.Name);
+                                act.Status = ActionsStatusEnum.Waited;
+                            }
+                        }
+                        else {
+                            if (wlDateTime.HasValue) {
+                                RaiseLog("{0} -set time to {1}", act.Name,wlDateTime.Value.ToShortDateString());
+                                act.ScheduledTime = wlDateTime;
+                               
+                            }
                         }
                     }
+                    act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
                     act.WLTaskRevision = tsk.revision;
                 }
             }

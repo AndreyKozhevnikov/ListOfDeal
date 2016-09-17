@@ -39,7 +39,7 @@ namespace ListOfDeal {
                 if (parentEntity.StatusId == intVal)
                     return;
                 parentEntity.StatusId = intVal;
-                if (value != ActionsStatusEnum.Scheduled) {
+                if (value != ActionsStatusEnum.Scheduled&&this.ScheduledTime!=null) {
                     this.ScheduledTime = null;
                 }
                 if (value == ActionsStatusEnum.Completed) {
@@ -85,6 +85,8 @@ namespace ListOfDeal {
                 return parentEntity.ScheduledTime;
             }
             set {
+                if (value == parentEntity.ScheduledTime)
+                    return;
                 parentEntity.ScheduledTime = value;
                 if (value.HasValue) {
                     this.Status = ActionsStatusEnum.Scheduled;
@@ -359,7 +361,17 @@ namespace ListOfDeal {
             //assert
             Assert.AreEqual(false, act.ScheduledTime.HasValue);
         }
-
+        [Test]
+        public void SetStatusToNonScheduledShoulNotChangeScheduledTimeIfItIsAlreadyNull() {
+            //arrange
+            MyAction act = new MyAction(new Action());
+            act.Status = ActionsStatusEnum.Waited;
+            act.WLId = 12;
+            //act
+            act.Status = ActionsStatusEnum.Delegated;
+            //assert
+            Assert.AreNotEqual(WLTaskStatusEnum.UpdateNeeded, act.WLTaskStatus);
+        }
         [Test]
         public void SetStatusToSameShouldNotChangeStatus() {
             //arrange

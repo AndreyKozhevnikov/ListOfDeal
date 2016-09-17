@@ -930,8 +930,8 @@ namespace ListOfDeal {
             act1.WLTaskRevision = 1;
             act1.WLId = 123;
             act1.IsActive = true;
+            act1.ScheduledTime = new DateTime(2016, 9, 11);
             act1.Status = ActionsStatusEnum.Waited;
-        //    act1.ScheduledTime = new DateTime(2016, 9, 11);
             act1.parentEntity.Project = proj.parentEntity;
             proj.Actions.Add(act1);
 

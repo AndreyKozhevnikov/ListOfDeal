@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ListOfDeal.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="1300" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -19,6 +19,6 @@
             <Button Content="Handle changed LODActions" Command="{Binding HandleChangedActionsCommand}"/>
             <Button Content="Handle change WLTask" Command="{Binding HandleChangedWLTaskCommand}"/>
         </StackPanel>
-        <ListBox ItemsSource="{Binding Logs}" Grid.Row="1"/>
+        <ListBox ItemsSource="{Binding Logs}" Grid.Row="1" Loaded="ListBox_Loaded" x:Name="listBox1" />
     </Grid>
 </UserControl>

@@ -16,8 +16,8 @@
             <Button Content="Create tasks" Command="{Binding CreateTasksCommand}"/>
             <Button Content="Handle completed WLTasks" Command="{Binding HandleCompletedWlTasksCommand}"/>
             <Button Content="Handle completed Actions" Command="{Binding HandleCompletedActionsCommand}"/>
-            <Button Content="Handle changed LODActions names" Command="{Binding HandleChangedActionsCommand}"/>
-            <Button Content="Handle change WLTask names" Command="{Binding HandleChangedWLTaskCommand}"/>
+            <Button Content="Handle changed LODActions" Command="{Binding HandleChangedActionsCommand}"/>
+            <Button Content="Handle change WLTask" Command="{Binding HandleChangedWLTaskCommand}"/>
         </StackPanel>
         <ListBox ItemsSource="{Binding Logs}" Grid.Row="1"/>
     </Grid>

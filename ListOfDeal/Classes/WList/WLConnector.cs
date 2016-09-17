@@ -83,7 +83,11 @@ namespace ListOfDeal {
         //    string dt = dueDate.Value.ToString("yyyy-MM-dd");
         //    return CreateTaskCore(title, listId, dt);
         //}
+        string NormalizeString(string title) {
+            return title.Replace("/", "");
+        }
         public WLTask CreateTask(string title, int listId, DateTime? dueDate = null) {
+            title = NormalizeString(title);
             string st = "http://a.wunderlist.com/api/v1/tasks";
             JsonCreator.Add("list_id", listId);
             JsonCreator.Add("title", title);

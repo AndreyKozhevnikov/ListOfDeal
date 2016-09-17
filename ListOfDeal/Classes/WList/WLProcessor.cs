@@ -15,9 +15,9 @@ namespace ListOfDeal {
         List<WLTask> allTasks;
         IWLConnector wlConnector;
 #if !DEBUG
-        public int MyListId = 262335124;
-        public int MySchedId = 262630772;
-        public int MyBuyId = 263773374;
+        public static int MyListId = 262335124;
+        public static int MySchedId = 262630772;
+        public static int MyBuyId = 263773374;
 #endif
 #if DEBUG
         public static int MyListId = 263984253;

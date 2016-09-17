@@ -84,7 +84,7 @@ namespace ListOfDeal {
         //    return CreateTaskCore(title, listId, dt);
         //}
         string NormalizeString(string title) {
-            return title.Replace("/", "");
+            return title.Replace("/", "").Replace("\\","");
         }
         public WLTask CreateTask(string title, int listId, DateTime? dueDate = null) {
             title = NormalizeString(title);
@@ -149,6 +149,7 @@ namespace ListOfDeal {
             return wlTask;
         }
         public WLTask ChangeTitleOfTask(int wlId, string newTitle) {
+            newTitle = NormalizeString(newTitle);
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, wlId);
             var revision = GetTask(wlId).revision; //TODO improve

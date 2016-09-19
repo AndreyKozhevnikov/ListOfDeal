@@ -28,7 +28,7 @@
                                        ArgumentDataMember="TDate"
                                        DisplayName="Sum"
                                        DataSource="{Binding AllDayData}"
-                                               LabelsVisibility="True"
+                                               LabelsVisibility="False"
                                        >
                     <dxc:LineSeries2D.Label>
                         <dxc:SeriesLabel ResolveOverlappingMode="Default"
@@ -41,13 +41,13 @@
                                        ArgumentDataMember="TDate"
                                        DisplayName="In"
                                        DataSource="{Binding AllDayData}"
-                                                        LabelsVisibility="True"
+                                                        LabelsVisibility="False"    
                                                        >
                     <dxc:BarSideBySideSeries2D.Label>
                         <dxc:SeriesLabel ResolveOverlappingMode="Default"
                                                      TextPattern="{}{V:F2}"/>
                     </dxc:BarSideBySideSeries2D.Label>
-
+                    
                 </dxc:BarSideBySideSeries2D>
                 <dxc:BarSideBySideSeries2D Name="series2"
                                                             dxc:XYDiagram2D.SeriesAxisY="{Binding ElementName=secondaryAxisY}" 
@@ -55,7 +55,7 @@
                                        ArgumentDataMember="TDate"
                                        DisplayName="Out"
                                        DataSource="{Binding AllDayData}"
-                                                       LabelsVisibility="True"
+                                                       LabelsVisibility="False"
                                                        >
                     <dxc:BarSideBySideSeries2D.Label>
                         <dxc:SeriesLabel ResolveOverlappingMode="Default"

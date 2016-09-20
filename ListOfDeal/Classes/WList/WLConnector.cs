@@ -64,14 +64,14 @@ namespace ListOfDeal {
             var list = GetTasksForList(WLProcessor.MySchedId);
             var tsk = list[1];
             var tsk2 = ChangeScheduledTime(tsk.id, "null");
-          //  var tks2 = ChangeListOfTask(tsk.id, WLProcessor.MySchedId);
+            //  var tks2 = ChangeListOfTask(tsk.id, WLProcessor.MySchedId);
             //var tsk = list[1];
             //var v = CreateNote(tsk.id, "#LODId=123");
             //var tsk1 = list[0];
             //var v1 = CreateNote(tsk.id, "#LODId=123");
-           // var t0 = CreateTask("not scheduled", 262335124);
+            // var t0 = CreateTask("not scheduled", 262335124);
 
-          //  var t1 = CreateTask("scheduled", 262630772, new DateTime(2016, 8, 30));
+            //  var t1 = CreateTask("scheduled", 262630772, new DateTime(2016, 8, 30));
             //var t1 = UpdateTask(t0);
             //var t2 = GetTask(t0);
             //    DeleteTask(t2);
@@ -84,7 +84,7 @@ namespace ListOfDeal {
         //    return CreateTaskCore(title, listId, dt);
         //}
         string NormalizeString(string title) {
-            return title.Replace("/", "").Replace("\\","");
+            return title.Replace("/", "").Replace("\\", "");
         }
         public WLTask CreateTask(string title, int listId, DateTime? dueDate = null) {
             title = NormalizeString(title);
@@ -216,7 +216,7 @@ namespace ListOfDeal {
             var v = JsonConvert.DeserializeObject<RootObject>(st);
         }
 
-    public static string ConvertToWLDate(DateTime dt) {
+        public static string ConvertToWLDate(DateTime dt) {
             return dt.ToString("yyyy-MM-dd");
         }
 

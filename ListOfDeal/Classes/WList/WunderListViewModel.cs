@@ -12,7 +12,7 @@ using System.Windows.Input;
 namespace ListOfDeal {
     public class WunderListViewModel {
 
-      public  ObservableCollection<string> Logs { get; set; }
+        public ObservableCollection<string> Logs { get; set; }
         StreamWriter logWriter;
         IMainViewModel parentViewModel;
         public WunderListViewModel(IMainViewModel _mainVM) {
@@ -91,7 +91,7 @@ namespace ListOfDeal {
             wlProcessor = new WLProcessor(parentViewModel);
             wlProcessor.CreateWlConnector(new WLConnector());
             wlProcessor.Logged += WlProcessor_Logged;
-            WlProcessor_Logged(new WLEventArgs( "===== WLProcessorCreated ====="));
+            WlProcessor_Logged(new WLEventArgs("===== WLProcessorCreated ====="));
             //  wlProcessor.PopulateActions(lodActions);
         }
 

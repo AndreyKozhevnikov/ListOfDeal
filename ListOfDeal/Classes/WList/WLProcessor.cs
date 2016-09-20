@@ -222,7 +222,7 @@ namespace ListOfDeal {
                         }
                         else {
                             if (wlDateTime.HasValue) {
-                                RaiseLog("{0} -set time to {1}", act.Name,wlDateTime.Value.ToShortDateString());
+                                RaiseLog("{0} -set time to {1}", act.Name, wlDateTime.Value.ToShortDateString());
                                 act.ScheduledTime = wlDateTime;
 
                             }

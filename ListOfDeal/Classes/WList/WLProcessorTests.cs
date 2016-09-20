@@ -443,7 +443,7 @@ namespace ListOfDeal {
         [Test]
         public void RaiseLog_2() {
             //arrange
-          
+
             WLProcessor proc = new WLProcessor(null);
             logList = new List<string>();
             proc.Logged += Proc_Logged;
@@ -503,7 +503,7 @@ namespace ListOfDeal {
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj2.Actions[1].WLTaskStatus);
         }
 
-   
+
         [Test]
         public void HandleChangedLODActions_SchouldUpdateWLRevision() {
             //arrange 
@@ -520,7 +520,7 @@ namespace ListOfDeal {
             myAction1.IsActive = true;
             myAction1.parentEntity.Project = proj.parentEntity;
             proj.Actions.Add(myAction1);
-          
+
             var mockMainVM = new Mock<IMainViewModel>();
             var projCollection = new ObservableCollection<MyProject>();
             projCollection.Add(proj);
@@ -530,7 +530,7 @@ namespace ListOfDeal {
             var mockWlConnector = new Mock<IWLConnector>(MockBehavior.Strict);
             var taskList = new List<WLTask>();
             taskList.Add(new WLTask() { id = 1, title = "act1" });
-            
+
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
@@ -551,7 +551,7 @@ namespace ListOfDeal {
 
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
             proj.IsSimpleProject = true;
-            var act1 = new MyAction(new Action() {  Project = proj.parentEntity });
+            var act1 = new MyAction(new Action() { Project = proj.parentEntity });
             act1.Name = "act1";
             act1.WLTaskStatus = WLTaskStatusEnum.UpdateNeeded;
             act1.WLId = 1;
@@ -559,7 +559,7 @@ namespace ListOfDeal {
             act1.Status = ActionsStatusEnum.Scheduled;
             act1.ScheduledTime = new DateTime(2016, 9, 11);
 
-            var act2 = new MyAction(new Action() {  Project = proj.parentEntity, });
+            var act2 = new MyAction(new Action() { Project = proj.parentEntity, });
             act2.Name = "act2";
             act2.WLTaskStatus = WLTaskStatusEnum.UpdateNeeded;
             act2.WLId = 2;
@@ -572,7 +572,7 @@ namespace ListOfDeal {
             var proj2 = new MyProject(new Project()) { Name = "NotSimpleProject", Status = ProjectStatusEnum.InWork };
             proj2.IsSimpleProject = false;
 
-            var act3 = new MyAction(new Action() {  Project = proj2.parentEntity });
+            var act3 = new MyAction(new Action() { Project = proj2.parentEntity });
             act3.Name = "act3";
             act3.WLTaskStatus = WLTaskStatusEnum.UpdateNeeded;
             act3.WLId = 3;
@@ -580,7 +580,7 @@ namespace ListOfDeal {
             act3.Status = ActionsStatusEnum.Scheduled;
             act3.ScheduledTime = new DateTime(2016, 9, 3);
 
-            var act4 = new MyAction(new Action() {  Project = proj2.parentEntity });
+            var act4 = new MyAction(new Action() { Project = proj2.parentEntity });
             act4.Name = "act4";
             act4.WLTaskStatus = WLTaskStatusEnum.UpdateNeeded;
             act4.WLId = 4;
@@ -598,8 +598,8 @@ namespace ListOfDeal {
 
             var mockWlConnector = new Mock<IWLConnector>(MockBehavior.Strict);
             var taskList = new List<WLTask>();
-            taskList.Add(new WLTask() { id = 1, title = "act1",due_date="2016-09-01",list_id=WLProcessor.MySchedId });
-            taskList.Add(new WLTask() { id = 2, title = "act2" , due_date = "2016-09-02", list_id = WLProcessor.MySchedId });
+            taskList.Add(new WLTask() { id = 1, title = "act1", due_date = "2016-09-01", list_id = WLProcessor.MySchedId });
+            taskList.Add(new WLTask() { id = 2, title = "act2", due_date = "2016-09-02", list_id = WLProcessor.MySchedId });
             taskList.Add(new WLTask() { id = 3, title = "NotSimpleProject - act3", due_date = "2016-09-03", list_id = WLProcessor.MySchedId });
             taskList.Add(new WLTask() { id = 4, title = "NotSimpleProject - act4", due_date = "2016-09-04", list_id = WLProcessor.MySchedId });
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(new List<WLTask>());
@@ -693,7 +693,7 @@ namespace ListOfDeal {
             //assert
             Assert.AreEqual("NewTestName1", act1.Name);
             Assert.AreEqual(2, act1.WLTaskRevision);
-        
+
         }
 
         [Test]
@@ -748,7 +748,7 @@ namespace ListOfDeal {
             act1.parentEntity.Project = proj.parentEntity;
             proj.Actions.Add(act1);
 
-           
+
             projCollection.Add(proj);
             mockMainVM.Setup(x => x.Projects).Returns(projCollection);
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
@@ -762,7 +762,7 @@ namespace ListOfDeal {
             //act
             wlProc.HandleChangedWLTask();
             //assert
-            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask,act1.WLTaskStatus);
+            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, act1.WLTaskStatus);
         }
         [Test]
         public void HandleChangedWLTask_ScheduledTime() {
@@ -780,14 +780,14 @@ namespace ListOfDeal {
             act1.ScheduledTime = new DateTime(2016, 9, 11);
             act1.parentEntity.Project = proj.parentEntity;
             proj.Actions.Add(act1);
-          
+
             projCollection.Add(proj);
             mockMainVM.Setup(x => x.Projects).Returns(projCollection);
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>();
             var taskList = new List<WLTask>();
-            taskList.Add(new WLTask() { id = 123, title = "act1", revision = 2,due_date="2016-9-15" });
-          
+            taskList.Add(new WLTask() { id = 123, title = "act1", revision = 2, due_date = "2016-9-15" });
+
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
@@ -795,7 +795,7 @@ namespace ListOfDeal {
             //act
             wlProc.HandleChangedWLTask();
             //assert
-            Assert.AreEqual(new DateTime(2016,9,15), act1.ScheduledTime);
+            Assert.AreEqual(new DateTime(2016, 9, 15), act1.ScheduledTime);
             Assert.AreEqual(2, act1.WLTaskRevision);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, act1.WLTaskStatus);
         }
@@ -822,7 +822,7 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>();
             var taskList = new List<WLTask>();
-            taskList.Add(new WLTask() { id = 123, title = "act1", revision = 2,due_date="2016-09-12" });
+            taskList.Add(new WLTask() { id = 123, title = "act1", revision = 2, due_date = "2016-09-12" });
 
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(taskList);
@@ -940,7 +940,7 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>();
             var taskList = new List<WLTask>();
-            taskList.Add(new WLTask() { id = 123, title = "act1", revision = 2,due_date="2016-09-11" ,list_id=WLProcessor.MySchedId});
+            taskList.Add(new WLTask() { id = 123, title = "act1", revision = 2, due_date = "2016-09-11", list_id = WLProcessor.MySchedId });
 
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(taskList);

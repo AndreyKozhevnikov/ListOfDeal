@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ListOfDeal {
@@ -44,7 +45,7 @@ namespace ListOfDeal {
             allTasks = GetAllActiveTasks();
         }
 
-        public void CreateWlTasks() {
+        async public void CreateWlTasks() {
             RaiseLog("===========Start creating tasks==========");
             MainViewModel.SaveChanges();
             var emptyActions = allActions.Where(x => x.WLId == null);
@@ -54,6 +55,8 @@ namespace ListOfDeal {
                 return;
             //   emptyActions = emptyActions.Take(1);
             foreach (var act in emptyActions) {
+                Task t = Task.Run(() => Thread.Sleep(1));
+                await t;
                 string title = act.GetWLTitle();
                 WLTask wlTask;
                 int targetListId = MyListId;
@@ -191,7 +194,7 @@ namespace ListOfDeal {
                         }
                         RaiseLog(string.Format("act is changing name from {0} to {1}", act.Name, nameFromTitle));
                         act.Name = nameFromTitle;
-                     
+
                     }
                     //   if (act.Status == ActionsStatusEnum.Scheduled) {
                     //string actScheduledTime = null;
@@ -221,7 +224,7 @@ namespace ListOfDeal {
                             if (wlDateTime.HasValue) {
                                 RaiseLog("{0} -set time to {1}", act.Name,wlDateTime.Value.ToShortDateString());
                                 act.ScheduledTime = wlDateTime;
-                               
+
                             }
                         }
                     }

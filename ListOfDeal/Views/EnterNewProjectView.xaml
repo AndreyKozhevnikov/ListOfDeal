@@ -328,6 +328,9 @@
                                 <dx:Format Background="#FFA589C7" />
                             </dxg:FormatCondition>
                         </dxg:TableView.FormatConditions>
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:EventToCommand EventName="FocusedRowHandleChanged" Command="{Binding FocusedRowChangedCommand}" PassEventArgsToCommand="True"/>
+                        </dxmvvm:Interaction.Behaviors>
                     </dxg:TableView>
                 </dxg:GridControl.View>
                 <dxg:GridControl.TotalSummary>

@@ -61,7 +61,6 @@ namespace ListOfDeal {
 
         private void CreateNewProject() {
             CurrentProject = new MyProject();
-            CurrentProject.TypeId = 11;
             CurrentProject.Status = ProjectStatusEnum.Delayed;
             CurrentProject.IsSimpleProject = true;
         }
@@ -91,6 +90,10 @@ namespace ListOfDeal {
             SelectedProject = CurrentProject;
             SaveChanges();
             CreateNewProject();
+        }
+        private void FocusedRowChangedMethod(FocusedRowHandleChangedEventArgs e) {
+            var p = e.RowData.Row as MyProject;
+            CurrentProject.TypeId = p.TypeId;
         }
         private void AddAction() {
             if (string.IsNullOrEmpty(CurrentAction.Name))

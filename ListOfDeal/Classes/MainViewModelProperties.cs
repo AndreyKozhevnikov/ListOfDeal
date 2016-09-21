@@ -59,7 +59,7 @@ namespace ListOfDeal {
         ICommand _getActionsHistoryCommand;
         ICommand _validateColumnCommand;
         ICommand _customColumnSortCommand;
-
+        ICommand _focusedRowChangedCommand;
         public ICommand CustomColumnSortCommand {
             get {
                 if (_customColumnSortCommand == null)
@@ -178,6 +178,13 @@ namespace ListOfDeal {
                 return _getChartDataCommand;
             }
         }
+        public ICommand FocusedRowChangedCommand {
+            get {
+                if (_focusedRowChangedCommand == null)
+                    _focusedRowChangedCommand = new DelegateCommand<FocusedRowHandleChangedEventArgs>(FocusedRowChangedMethod);
+                return _focusedRowChangedCommand;
+            }
+        }
         #endregion
 
 
@@ -284,6 +291,8 @@ namespace ListOfDeal {
 
         IExportToExcelService ExportToExcelService { get { return ServiceContainer.GetService<IExportToExcelService>(); } }
         IGridControlManagerService GridControlManagerService { get { return serviceContainer.GetService<IGridControlManagerService>(); } }
+
+     
     }
 
 

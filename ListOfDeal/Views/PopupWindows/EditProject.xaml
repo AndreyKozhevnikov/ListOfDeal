@@ -11,7 +11,7 @@
     >
 
     <Grid>
-        <dxg:GridControl ItemsSource="{Binding SelectedProject.Actions}">
+        <dxg:GridControl ItemsSource="{Binding SelectedProject.Actions}" CurrentColumnChanged="GridControl_CurrentColumnChanged">
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Name"/>
                 <dxg:GridColumn FieldName="TriggerId">

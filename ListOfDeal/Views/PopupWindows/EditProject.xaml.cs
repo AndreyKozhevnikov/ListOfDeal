@@ -38,6 +38,15 @@ namespace ListOfDeal {
 
 
         }
+
+        private void GridControl_CurrentColumnChanged(object sender, CurrentColumnChangedEventArgs e) {
+            var gc = sender as GridControl;
+            var view = gc.View as TableView;
+            if (e.NewColumn.FieldType == typeof(bool))
+                view.EditorShowMode = EditorShowMode.MouseDown;
+            else
+                view.EditorShowMode = EditorShowMode.MouseDownFocused;
+        }
     }
 }
 

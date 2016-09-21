@@ -45,6 +45,8 @@ namespace ListOfDeal {
                 else {
                     var maxOrderNumber = Actions.Max(x => x.OrderNumber);
                     act.OrderNumber = maxOrderNumber + 1;
+                    if (Actions.Where(x => x.IsActive).Count() == 0)
+                        act.IsActive = true;
                 }
                 act.PropertyChanged += act_PropertyChanged;
                 Actions.Add(act);
@@ -61,8 +63,8 @@ namespace ListOfDeal {
                 bool needSetIsActive = Actions.Where(x => x.IsActive).Count() == 0;
                 if (!needSetIsActive)
                     return;
-                var targetAct = Actions.Where(x => x.Status!=ActionsStatusEnum.Completed&&!x.IsActive).OrderBy(x => x.OrderNumber).FirstOrDefault();
-                if (targetAct != null ) {
+                var targetAct = Actions.Where(x => x.Status != ActionsStatusEnum.Completed && !x.IsActive).OrderBy(x => x.OrderNumber).FirstOrDefault();
+                if (targetAct != null) {
                     targetAct.IsActive = true;
                 }
                 if (this.IsSimpleProject) {
@@ -266,6 +268,32 @@ namespace ListOfDeal {
             Assert.AreEqual(false, act2.IsActive);
             Assert.AreEqual(true, act3.IsActive);
             Assert.AreEqual(false, act4.IsActive);
+        }
+        [Test]
+        public void AddActionMakeActionActiveIfThereAreNoOtherActive() {
+            //arrange
+            var proj = new MyProject(new Project());
+            var act1 = new MyAction(new Action()) { Name = "act1", IsActive = false };
+            proj.Actions.Add(act1);
+            //act
+            var act2 = new MyAction(new Action()) { Name = "act2" };
+            proj.AddAction(act2);
+            //assert
+            Assert.AreEqual(true, act2.IsActive);
+
+        }
+        [Test]
+        public void AddActionNotMakeActionActiveIfThereAreActive() {
+            //arrange
+            var proj = new MyProject(new Project());
+            var act1 = new MyAction(new Action()) { Name = "act1", IsActive = true };
+            proj.Actions.Add(act1);
+            //act
+            var act2 = new MyAction(new Action()) { Name = "act2" };
+            proj.AddAction(act2);
+            //assert
+            Assert.AreEqual(false, act2.IsActive);
+
         }
     }
 }

@@ -55,8 +55,10 @@ namespace ListOfDeal {
                 return;
             //   emptyActions = emptyActions.Take(1);
             foreach (var act in emptyActions) {
+#if !DEBUG
                 Task t = Task.Run(() => Thread.Sleep(1));
                 await t;
+#endif
                 string title = act.GetWLTitle();
                 WLTask wlTask;
                 int targetListId = MyListId;

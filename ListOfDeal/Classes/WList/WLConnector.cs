@@ -15,15 +15,15 @@ using System.Threading.Tasks;
 
 namespace ListOfDeal {
     public interface IWLConnector {
-        WLTask ChangeTitleOfTask(int wlId, string newName);
-        WLTask ChangeScheduledTime(int wlId, string dueTime);
+        WLTask ChangeTitleOfTask(string wlId, string newName);
+        WLTask ChangeScheduledTime(string wlId, string dueTime);
         List<WLList> GetAllLists();
         List<WLTask> GetTasksForList(int listId);
-        WLTask GetTask(int taskId);
+        WLTask GetTask(string taskId);
         WLTask CreateTask(string title, int listId, DateTime? dueDate = null);
-        WLTask ChangeListOfTask(int wlId, int listId);
+        WLTask ChangeListOfTask(string wlId, int listId);
         WLTask UpdateTask(WLTask task);
-        WLTask CompleteTask(int wlId);
+        WLTask CompleteTask(string wlId);
         WLNote CreateNote(int taskId, string content);
     }
     public class WLConnector : IWLConnector {
@@ -107,7 +107,7 @@ namespace ListOfDeal {
             return model;
         }
 
-        public WLTask GetTask(int taskId) {
+        public WLTask GetTask(string taskId) {
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, taskId);
             var responseText = GetHttpRequestResponse(st2, "GET");
@@ -135,7 +135,7 @@ namespace ListOfDeal {
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
         }
-        public WLTask CompleteTask(int wlId) {
+        public WLTask CompleteTask(string wlId) {
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, wlId);
             var revision = GetTask(wlId).revision; //TODO improve
@@ -148,7 +148,7 @@ namespace ListOfDeal {
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
         }
-        public WLTask ChangeTitleOfTask(int wlId, string newTitle) {
+        public WLTask ChangeTitleOfTask(string wlId, string newTitle) {
             newTitle = NormalizeString(newTitle);
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, wlId);
@@ -163,7 +163,7 @@ namespace ListOfDeal {
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
         }
-        public WLTask ChangeListOfTask(int wlId, int listId) {
+        public WLTask ChangeListOfTask(string wlId, int listId) {
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, wlId);
             var revision = GetTask(wlId).revision; //TODO improve
@@ -178,7 +178,7 @@ namespace ListOfDeal {
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
         }
-        public WLTask ChangeScheduledTime(int wlId, string dueDate) {
+        public WLTask ChangeScheduledTime(string wlId, string dueDate) {
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, wlId);
             var revision = GetTask(wlId).revision; //TODO improve
@@ -459,7 +459,7 @@ namespace ListOfDeal {
     }
     [DebuggerDisplay("Task. Id-{id} title-{title}")]
     public class WLTask {
-        public int id { get; set; }
+        public string id { get; set; }
         public string created_at { get; set; }
         public int created_by_id { get; set; }
         public string created_by_request_id { get; set; }

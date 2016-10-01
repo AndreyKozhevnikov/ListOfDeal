@@ -88,11 +88,11 @@ namespace ListOfDeal {
             MainViewModel.SaveChanges();
             allTasks = GetAllActiveTasks();
             var actionsWithTasks = allActions.Where(x => x.WLId != null).ToList();
-            var lstwlIdinLod = actionsWithTasks.Select(x => (int)x.WLId);
+            var lstwlIdinLod = actionsWithTasks.Select(x => x.WLId);
             var lstwlIdInWL = allTasks.Select(x => x.id);
             var diff = lstwlIdinLod.Except(lstwlIdInWL);
             RaiseLog(string.Format("wlId in LOD - {0}, wlId in WL-{1}", lstwlIdinLod.Count(), lstwlIdInWL.Count()));
-            foreach (int tskId in diff) {
+            foreach (string tskId in diff) {
                 Debug.Print(tskId.ToString());
                 var act = actionsWithTasks.Where(x => x.WLId == tskId).First();
                 act.WLId = null;
@@ -123,7 +123,7 @@ namespace ListOfDeal {
             var lst = MainViewModel.generalEntity.Actions.Where(x => x.WLTaskStatus == 2).ToList(); //improve?
             RaiseLog(string.Format("amount actions - {0}", lst.Count));
             foreach (var act in lst) {
-                var wlId = (int)act.WLId;
+                var wlId = act.WLId;
                 wlConnector.CompleteTask(wlId);
                 act.WLId = null;
                 act.WLTaskStatus = 0;

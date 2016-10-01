@@ -178,7 +178,7 @@ namespace ListOfDeal {
                 parentEntity.WLTaskRevision = value;
             }
         }
-        public int? WLId {
+        public string WLId {
             get {
                 return parentEntity.WLId;
             }
@@ -238,7 +238,7 @@ namespace ListOfDeal {
         public void CompleteAction() {
             //arrange
             MyAction act = new MyAction(new Action());
-            act.WLId = 123;
+            act.WLId = "123";
             act.IsActive = true;
             //act
             act.Status = ActionsStatusEnum.Completed;
@@ -264,7 +264,7 @@ namespace ListOfDeal {
             //arrange
             MyAction act = new MyAction(new Action());
             act.IsActive = true;
-            act.parentEntity.WLId = 123;
+            act.parentEntity.WLId = "123";
             //act
             act.IsActive = false;
             //asssert
@@ -287,7 +287,7 @@ namespace ListOfDeal {
         public void SetWLStatusWhenNameIsChanged() {
             //arrange
             MyAction act = new MyAction(new Action() { Name = "Name1" });
-            act.WLId = 1;
+            act.WLId = "1";
             //act
             act.Name = "NewName1";
             //assert
@@ -307,7 +307,7 @@ namespace ListOfDeal {
         public void SetWLStatusWhenScheduledDateIsChanged() {
             //arrange
             MyAction act = new MyAction(new Action());
-            act.WLId = 1;
+            act.WLId = "1";
             act.Status = ActionsStatusEnum.Scheduled;
             act.ScheduledTime = new DateTime(2016, 1, 1);
             //act
@@ -333,7 +333,7 @@ namespace ListOfDeal {
             MyProject proj = new MyProject(new Project());
             proj.IsSimpleProject = true;
             MyAction act = new MyAction(new Action() { Name = "Name1" });
-            act.WLId = 2;
+            act.WLId = "2";
             proj.Actions.Add(act);
             //act
             proj.IsSimpleProject = false;
@@ -366,7 +366,7 @@ namespace ListOfDeal {
             //arrange
             MyAction act = new MyAction(new Action());
             act.Status = ActionsStatusEnum.Waited;
-            act.WLId = 12;
+            act.WLId = "12";
             //act
             act.Status = ActionsStatusEnum.Delegated;
             //assert

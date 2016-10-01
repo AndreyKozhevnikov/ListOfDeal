@@ -21,9 +21,9 @@
           <Property Name="CompleteTime" Type="datetime" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="OrderNumber" Type="int" Nullable="false" />
-          <Property Name="WLId" Type="int" />
           <Property Name="WLTaskStatus" Type="money" Nullable="false" />
           <Property Name="WLTaskRevision" Type="int" />
+          <Property Name="WLId" Type="varchar" MaxLength="11" />
         </EntityType>
         <EntityType Name="ActionTriggers">
           <Key>
@@ -155,9 +155,9 @@
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="OrderNumber" Type="Int32" Nullable="false" />
           <Property Name="CompleteTime" Type="DateTime" Precision="3" />
-          <Property Name="WLId" Type="Int32" />
           <Property Name="WLTaskStatus" Type="Int32" Nullable="false" />
           <Property Name="WLTaskRevision" Type="Int32" />
+          <Property Name="WLId" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ActionTrigger">
           <Key>
@@ -280,9 +280,9 @@
           <EntitySetMapping Name="Actions">
             <EntityTypeMapping TypeName="ListOfDealBaseModel.Action">
               <MappingFragment StoreEntitySet="Actions">
+                <ScalarProperty Name="WLId" ColumnName="WLId" />
                 <ScalarProperty Name="WLTaskRevision" ColumnName="WLTaskRevision" />
                 <ScalarProperty Name="WLTaskStatus" ColumnName="WLTaskStatus" />
-                <ScalarProperty Name="WLId" ColumnName="WLId" />
                 <ScalarProperty Name="CompleteTime" ColumnName="CompleteTime" />
                 <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />

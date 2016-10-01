@@ -186,7 +186,7 @@ namespace ListOfDeal {
             //arrange
             MyProject pr = new MyProject(new Project());
             var myAction = new MyAction(new Action());
-            myAction.WLId = 123;
+            myAction.WLId = "123";
             var myAction1 = new MyAction(new Action());
             pr.Actions.Add(myAction);
             pr.Actions.Add(myAction1);
@@ -203,7 +203,7 @@ namespace ListOfDeal {
             //arrange
             MyProject pr = new MyProject(new Project());
             var myAction = new MyAction(new Action());
-            myAction.WLId = 123;
+            myAction.WLId = "123";
             var myAction1 = new MyAction(new Action());
             pr.Actions.Add(myAction);
             pr.Actions.Add(myAction1);

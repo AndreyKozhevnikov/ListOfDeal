@@ -93,6 +93,7 @@ namespace ListOfDeal {
         }
         private void FocusedRowChangedMethod(FocusedRowHandleChangedEventArgs e) {
             var p = e.RowData.Row as MyProject;
+            if (p!=null)
             CurrentProject.TypeId = p.TypeId;
         }
         private void AddAction() {

@@ -34,7 +34,14 @@ namespace ListOfDeal {
                 return _createProcessorCommand;
             }
         }
-
+    
+        public ICommand TestCommand {
+            get {
+                if (_testCommand == null)
+                    _testCommand = new DelegateCommand(Test);
+                return _testCommand;
+            }
+        }
 
         public ICommand CreateTasksCommand {
             get {
@@ -84,6 +91,7 @@ namespace ListOfDeal {
         }
 
 
+        ICommand _testCommand;
         WLProcessor wlProcessor;
         //     List<MyAction> lodActions;
 
@@ -94,7 +102,18 @@ namespace ListOfDeal {
             WlProcessor_Logged(new WLEventArgs("===== WLProcessorCreated ====="));
             //  wlProcessor.PopulateActions(lodActions);
         }
-
+        void Test() {
+            var lst = MainViewModel.generalEntity.Projects.Where(x => x.TypeId == 10).ToList();
+            foreach(Project p in lst) {
+                p.TypeId = 11;
+                p.Name = "Купить - " + p.Name;
+                foreach (Action a in p.Actions) {
+                    a.ToBuy = true;
+                    a.Name = "купить - " + a.Name;
+                }
+            }
+            MainViewModel.SaveChanges();
+        }
         private void WlProcessor_Logged(WLEventArgs e) {
             string st = string.Format("{0}  --  {1}", e.DTime, e.Message);
             Logs.Add(st);

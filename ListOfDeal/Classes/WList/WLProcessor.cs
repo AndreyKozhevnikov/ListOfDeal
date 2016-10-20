@@ -68,7 +68,7 @@ namespace ListOfDeal {
                     lstName = "MySched";
                 }
                 else {
-                    if (act.ProjectType == 10) { //to buy action
+                    if (act.ToBuy) { //to buy action
                         targetListId = MyBuyId;
                         lstName = "MyBuy";
                     }

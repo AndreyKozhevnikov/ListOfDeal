@@ -131,19 +131,25 @@ namespace ListOfDeal {
 
 
         }
+    
         [Test]
-        public void CreateWlTasks_Buy() {
+        public void CreateWlTasks_Buy_v2() {
             //arrange
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
             projCollection.Add(proj);
             var a = new Action();
-            a.Project = new Project() { TypeId = 10, Name = "Pr1" };
+            a.Project = new Project() { TypeId = 1, Name = "Pr1" };
             a.IsActive = true;
             a.Name = "act1";
+            a.ToBuy = true;
             proj.Actions.Add(new MyAction(a));
-            proj.Actions.Add(new MyAction(new Action() { Name = "act2", IsActive = true, Project = new Project() { Name = "Pr1" } }));
 
+            var a2 = new Action();
+            a2.Name = "act2";
+            a2.IsActive = true;
+            a2.Project = new Project() { Name = "Pr1" };
+            proj.Actions.Add(new MyAction(a2));
 
             var mockMainVM = new Mock<IMainViewModel>();
             mockMainVM.Setup(x => x.Projects).Returns(projCollection);
@@ -169,7 +175,6 @@ namespace ListOfDeal {
 
 
         }
-
 
 
 
@@ -215,9 +220,9 @@ namespace ListOfDeal {
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
             projCollection.Add(proj);
-            var myAction1 = new MyAction(new Action() { Name = "Action1", WLId = "1", IsActive = true });
-            var myAction2 = new MyAction(new Action() { Name = "Action2", WLId = "2", IsActive = true });
-            var myAction3 = new MyAction(new Action() { Name = "Action3", WLId = "3", IsActive = true });
+            var myAction1 = new MyAction(new Action() { Name = "Action1", WLId = "1", IsActive = true,Project=new Project() });
+            var myAction2 = new MyAction(new Action() { Name = "Action2", WLId = "2", IsActive = true, Project = new Project() });
+            var myAction3 = new MyAction(new Action() { Name = "Action3", WLId = "3", IsActive = true, Project = new Project() });
 
 
             proj.Actions.Add(myAction1);
@@ -253,7 +258,7 @@ namespace ListOfDeal {
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
             projCollection.Add(proj);
-            var myAction1 = new MyAction(new Action() { Name = "Action1", WLId = "1", IsActive = true });
+            var myAction1 = new MyAction(new Action() { Name = "Action1", WLId = "1", IsActive = true,Project=new Project() });
 
             proj.Actions.Add(myAction1);
 
@@ -283,7 +288,7 @@ namespace ListOfDeal {
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
             projCollection.Add(proj);
             for (int i = 0; i < 7; i++) {
-                var a = new MyAction(new Action() { Name = "Action" + i, WLId = i.ToString(), IsActive = true }) { Status = ActionsStatusEnum.Waited };
+                var a = new MyAction(new Action() { Name = "Action" + i, WLId = i.ToString(), IsActive = true,Project=new Project() }) { Status = ActionsStatusEnum.Waited };
                 proj.Actions.Add(a);
             }
 
@@ -346,9 +351,9 @@ namespace ListOfDeal {
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
             projCollection.Add(proj);
-            var myAction1 = new MyAction(new Action() { Name = "Action1", WLId = "1", IsActive = true });
-            var myAction2 = new MyAction(new Action() { Name = "Action2", WLId = "2", IsActive = true });
-            var myAction3 = new MyAction(new Action() { Name = "Action3", WLId = "3", IsActive = true });
+            var myAction1 = new MyAction(new Action() { Name = "Action1", WLId = "1", IsActive = true, Project = new Project() });
+            var myAction2 = new MyAction(new Action() { Name = "Action2", WLId = "2", IsActive = true, Project = new Project() });
+            var myAction3 = new MyAction(new Action() { Name = "Action3", WLId = "3", IsActive = true, Project = new Project() });
             var myAction4 = new MyAction(new Action() { Name = "Action3", IsActive = true });
 
             proj.Actions.Add(myAction1);

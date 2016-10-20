@@ -127,6 +127,15 @@ namespace ListOfDeal {
                 RaisePropertyChanged("OrderNumber");
             }
         }
+        public bool ToBuy {
+            get {
+                return parentEntity.ToBuy;
+            }
+            set {
+                parentEntity.ToBuy = value;
+                RaisePropertyChanged("ToBuy");
+            }
+        }
 
         public string ProjectName {
             get {

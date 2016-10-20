@@ -278,6 +278,7 @@
                                     </dxg:GridColumn.CellTemplate>
                                 </dxg:GridColumn>
                                 <dxg:GridColumn FieldName="OrderNumber" Visible="False" />
+                                <dxg:GridColumn FieldName="ToBuy"/>
                             </dxg:GridControl.Columns>
                             <dxg:GridControl.View>
                                 <dxg:TableView ShowFilterPanelMode="Never" ShowGroupPanel="False">

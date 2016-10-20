@@ -31,6 +31,9 @@ namespace ListOfDeal.Views {
         }
         private void GridControl_Loaded(object sender, RoutedEventArgs e) {
             (sender as GridControl).RefreshData();
+#if DEBUG
+            (sender as GridControl).UngroupBy("TypeId");
+#endif
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e) {

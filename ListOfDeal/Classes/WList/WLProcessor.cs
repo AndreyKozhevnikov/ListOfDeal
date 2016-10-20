@@ -98,7 +98,7 @@ namespace ListOfDeal {
                 act.WLId = null;
                 act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
                 act.Status = ActionsStatusEnum.Completed;
-                RaiseLog(string.Format("complete action - {0} {1}", act.Name, act.parentEntity.Id));
+                RaiseLog(string.Format("complete action - {0} {1}", act.GetWLTitle(), act.parentEntity.Id));
             }
             MainViewModel.SaveChanges();
 

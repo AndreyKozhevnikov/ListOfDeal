@@ -181,7 +181,11 @@ namespace ListOfDeal {
             RaiseLog("==========Start HandleChangedWLTask==========");
             var actionsWithTasks = allActions.Where(x => x.WLId != null).ToList();
             foreach (var act in actionsWithTasks) {
-                var tsk = allTasks.Where(x => x.id == act.WLId).First();
+                var tsk = allTasks.Where(x => x.id == act.WLId).FirstOrDefault();
+                if (tsk == null) {
+                    RaiseLog("There is no task for: " + act.GetWLTitle()); 
+                    continue;
+                }
                 if (act.WLTaskRevision != tsk.revision) {
                     RaiseLog(string.Format("act has old revision {0}", act.Name));
                     var actNameForWL = act.GetWLTitle();

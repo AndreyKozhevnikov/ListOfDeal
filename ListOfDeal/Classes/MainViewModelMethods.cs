@@ -10,22 +10,22 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ListOfDeal {
-   public interface IMainViewModel {
-      ObservableCollection<MyProject> Projects { get; set; }
-       
+    public interface IMainViewModel {
+        ObservableCollection<MyProject> Projects { get; set; }
+
     }
-    public partial class MainViewModel:IMainViewModel {
+    public partial class MainViewModel : IMainViewModel {
 
         public MainViewModel() {
             InitializeData();
         }
-     
+
         void InitializeData() {
-           
+
             ConnectToDataBase();
 
             ProjectTypes = new ObservableCollection<ProjectType>(generalEntity.ProjectTypes.OrderBy(x => x.OrderNumber));
-          
+
             ActionTriggers = new ObservableCollection<ActionTrigger>(generalEntity.ActionTriggers);
             DelegatePersons = new ObservableCollection<DelegatePerson>(generalEntity.DelegatePersons);
             Projects = new ObservableCollection<MyProject>();
@@ -40,7 +40,7 @@ namespace ListOfDeal {
 
         }
 
-       
+
 
         private void ConnectToDataBase() {
             string machineName = System.Environment.MachineName;
@@ -66,7 +66,7 @@ namespace ListOfDeal {
         }
         private void CreateNewAction() {
             CurrentAction = new MyAction();
-            CurrentAction.Status =ActionsStatusEnum.Waited;
+            CurrentAction.Status = ActionsStatusEnum.Waited;
             CurrentAction.IsActive = false;
 
 
@@ -80,7 +80,7 @@ namespace ListOfDeal {
             if (CurrentProject.IsSimpleProject) {
                 MyAction act = new MyAction();
                 act.Name = CurrentProject.Name;
-                act.Status =ActionsStatusEnum.Waited;
+                act.Status = ActionsStatusEnum.Waited;
                 act.IsActive = true;
                 CurrentProject.AddAction(act);
             }
@@ -93,8 +93,8 @@ namespace ListOfDeal {
         }
         private void FocusedRowChangedMethod(FocusedRowHandleChangedEventArgs e) {
             var p = e.RowData.Row as MyProject;
-            if (p!=null)
-            CurrentProject.TypeId = p.TypeId;
+            if (p != null)
+                CurrentProject.TypeId = p.TypeId;
         }
         private void AddAction() {
             if (string.IsNullOrEmpty(CurrentAction.Name))
@@ -170,7 +170,7 @@ namespace ListOfDeal {
             ScheduledActions = new ObservableCollection<MyAction>(shedActions);
             DelegatedActions = new ObservableCollection<MyAction>(delActions);
 
-         
+
         }
 
         private void ExportGrids() {

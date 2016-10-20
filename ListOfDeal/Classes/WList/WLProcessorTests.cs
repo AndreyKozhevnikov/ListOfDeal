@@ -732,6 +732,51 @@ namespace ListOfDeal {
             //maybe rename wltask?
         }
 
+        [Test]
+        public void HandleChangedWLTask_ThereIsNotTaskForAction() {
+            //arrange
+            var mockMainVM = new Mock<IMainViewModel>();
+            var projCollection = new ObservableCollection<MyProject>();
+            var proj = new MyProject(new Project());
+            proj.IsSimpleProject = false;
+            proj.Name = "Project1";
+            proj.Status = ProjectStatusEnum.InWork;
+            var act1 = new MyAction(new Action());
+            act1.Name = "TestName1";
+            act1.WLTaskRevision = 1;
+            act1.WLId = "123";
+            act1.IsActive = true;
+            act1.parentEntity.Project = proj.parentEntity;
+            proj.Actions.Add(act1);
+
+            projCollection.Add(proj);
+            mockMainVM.Setup(x => x.Projects).Returns(projCollection);
+            WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
+            var mockWlConnector = new Mock<IWLConnector>();
+            var taskList = new List<WLTask>();
+        //    taskList.Add(new WLTask() { id = "123", title = "NewTestName1", revision = 2 });
+
+            mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
+            mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
+            wlProc.CreateWlConnector(mockWlConnector.Object);
+            logList = new List<string>();
+            wlProc.Logged += Proc_Logged;
+               
+            //act
+            try {
+                wlProc.HandleChangedWLTask();
+            }
+            catch(Exception ex) {
+                Assert.Fail("Expected no exception, but got: " + ex.Message);
+            }
+            //assert
+            var b = logList[1].Contains("There is no task for");
+            Assert.AreEqual(true, b);
+            //Assert.AreEqual(2, act1.WLTaskRevision);
+        }
+
+    
 
         [Test]
         public void HandleChangedWLTask_SchouldNotChangeActionsWLStatus() {

@@ -9,7 +9,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="4*"/>
+            <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
         <StackPanel >
             <Button Content="Create processor" Command="{Binding CreateProcessorCommand}"/>
@@ -18,7 +18,7 @@
             <Button Content="Handle completed Actions" Command="{Binding HandleCompletedActionsCommand}"/>
             <Button Content="Handle changed LODActions" Command="{Binding HandleChangedActionsCommand}"/>
             <Button Content="Handle change WLTask" Command="{Binding HandleChangedWLTaskCommand}"/>
-            <Button Content="change base" Command="{Binding TestCommand}"/>
+            <!--<Button Content="change base" Command="{Binding TestCommand}"/>-->
         </StackPanel>
         <ListBox ItemsSource="{Binding Logs}" Grid.Row="1" Loaded="ListBox_Loaded" x:Name="listBox1" />
     </Grid>

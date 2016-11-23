@@ -120,14 +120,17 @@ namespace ListOfDeal {
         public void HandleCompletedLODActions() {
             RaiseLog("==========Start handle completed  LODActions==========");
             MainViewModel.SaveChanges();
-            var lst = MainViewModel.generalEntity.Actions.Where(x => x.WLTaskStatus == 2).ToList(); //improve?
+
+            //  var lst = MainViewModel.generalEntity.Actions.Where(x => x.WLTaskStatus == 2).ToList(); //improve?
+             // var lst = allActions.Where(x => x.WLTaskStatus == WLTaskStatusEnum.DeletingNeeded).ToList();
+            var lst = parentVM.Projects.SelectMany(x => x.Actions).Where(x => x.WLTaskStatus == WLTaskStatusEnum.DeletingNeeded).ToList();
             RaiseLog(string.Format("amount actions - {0}", lst.Count));
             foreach (var act in lst) {
                 var wlId = act.WLId;
                 wlConnector.CompleteTask(wlId);
                 act.WLId = null;
-                act.WLTaskStatus = 0;
-                RaiseLog(string.Format("complete task of actions {0} {1}", act.Name, act.Id));
+                act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
+                RaiseLog(string.Format("complete task of actions {0} {1}", act.GetWLTitle(), act.parentEntity.Id));
             }
             MainViewModel.SaveChanges();
         }

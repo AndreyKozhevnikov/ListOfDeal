@@ -384,21 +384,29 @@ namespace ListOfDeal {
             //arrange
             var mockMainVM = new Mock<IMainViewModel>();
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
-            mockMainVM.Setup(x => x.Projects).Returns(new ObservableCollection<MyProject>());
+            var projLst = new ObservableCollection<MyProject>();
+            var p = new Project();
+            var proj = new MyProject(p);
+            var act1 = new MyAction(new Action() { WLId = "123", WLTaskStatus = 0, IsActive = true,Project=p });
+            var act2 = new MyAction(new Action { WLId = "234", WLTaskStatus = 2, IsActive = false,Project=p });
+            proj.Actions.Add(act1);
+            proj.Actions.Add(act2);
+            projLst.Add(proj);
+            mockMainVM.Setup(x => x.Projects).Returns(projLst);
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
             MainViewModel.generalEntity = mockGeneralEntity.Object;
-            var lstMock = new Mock<IDbSet<Action>>();
-            var lstAct = new List<Action>();
-            lstAct.Add(new Action() { WLId = "123", WLTaskStatus = 1, IsActive = true });
-            lstAct.Add(new Action() { WLId = "234", WLTaskStatus = 2, IsActive = true });
+            //var lstMock = new Mock<IDbSet<Action>>();
+            //var lstAct = new List<Action>();
+            //lstAct.Add(new Action() { WLId = "123", WLTaskStatus = 1, IsActive = true });
+            //lstAct.Add(new Action() { WLId = "234", WLTaskStatus = 2, IsActive = true });
 
-            var querAct = lstAct.AsQueryable();
-            lstMock.Setup(m => m.Provider).Returns(querAct.Provider);
-            lstMock.Setup(m => m.Expression).Returns(querAct.Expression);
-            lstMock.Setup(m => m.ElementType).Returns(querAct.ElementType);
-            lstMock.Setup(m => m.GetEnumerator()).Returns(querAct.GetEnumerator());
+            //var querAct = lstAct.AsQueryable();
+            //lstMock.Setup(m => m.Provider).Returns(querAct.Provider);
+            //lstMock.Setup(m => m.Expression).Returns(querAct.Expression);
+            //lstMock.Setup(m => m.ElementType).Returns(querAct.ElementType);
+            //lstMock.Setup(m => m.GetEnumerator()).Returns(querAct.GetEnumerator());
 
-            mockGeneralEntity.Setup(x => x.Actions).Returns(lstMock.Object);
+            //mockGeneralEntity.Setup(x => x.Actions).Returns(lstMock.Object);
             var mockWlConnector = new Mock<IWLConnector>(MockBehavior.Strict);
             mockWlConnector.Setup(x => x.CompleteTask("234")).Returns(new WLTask());
             mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(new List<WLTask>());
@@ -407,10 +415,10 @@ namespace ListOfDeal {
             //act
             wlProc.HandleCompletedLODActions();
             //assert
-            mockWlConnector.Verify(x => x.CompleteTask("234"), Times.Once);
-            Assert.AreEqual(1, lstAct[0].WLTaskStatus);
-            Assert.AreEqual(null, lstAct[1].WLId);
-            Assert.AreEqual(0, lstAct[1].WLTaskStatus);
+            mockWlConnector.Verify(x => x.CompleteTask("234"), Times.Once); 
+            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj.Actions[0].WLTaskStatus);
+            Assert.AreEqual(null, proj.Actions[1].WLId);
+          //  Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj.Actions[1].WLTaskStatus);
             mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
 
         }
@@ -422,27 +430,26 @@ namespace ListOfDeal {
             //arrange
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
             MainViewModel.generalEntity = mockGeneralEntity.Object;
-
-            var lstMock = new Mock<IDbSet<Action>>();
-            var lstAct = new List<Action>();
-            //lstAct.Add(new Action() { WLId = "123", WLTaskStatus = 1, IsActive = true });
-            //lstAct.Add(new Action() { WLId = "234", WLTaskStatus = 2, IsActive = true });
-
-            var querAct = lstAct.AsQueryable();
-            lstMock.Setup(m => m.Provider).Returns(querAct.Provider);
-            lstMock.Setup(m => m.Expression).Returns(querAct.Expression);
-            lstMock.Setup(m => m.ElementType).Returns(querAct.ElementType);
-            lstMock.Setup(m => m.GetEnumerator()).Returns(querAct.GetEnumerator());
-
-            mockGeneralEntity.Setup(x => x.Actions).Returns(lstMock.Object);
-
-            WLProcessor proc = new WLProcessor(null);
+            var mockMainVM = new Mock<IMainViewModel>();
+            var p = new Project();
+            var mp = new MyProject(p);
+            var a1=new MyAction(new Action() { WLId = "123", WLTaskStatus = 1, IsActive = true,Project=p });
+            var a2 = new MyAction(new Action() { WLId = "234", WLTaskStatus = 2, IsActive = true,Project=p });
+            mp.Actions.Add(a1);
+            mp.Actions.Add(a2);
+            var lst = new ObservableCollection<MyProject>();
+            lst.Add(mp);
+            mockMainVM.Setup(x => x.Projects).Returns(lst);
+            WLProcessor proc = new WLProcessor(mockMainVM.Object);
             logList = new List<string>();
             proc.Logged += Proc_Logged;
+            var mockWlConnector = new Mock<IWLConnector>();
+            mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(new List<WLTask>());
+            proc.CreateWlConnector(mockWlConnector.Object);
             //act
             proc.HandleCompletedLODActions();
             //assert
-            Assert.AreEqual(2, logList.Count);
+            Assert.AreEqual(3, logList.Count);
 
         }
         [Test]

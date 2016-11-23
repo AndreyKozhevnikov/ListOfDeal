@@ -85,9 +85,11 @@ namespace ListOfDeal {
         }
         private void HandleChangedLODActions() {
             wlProcessor.HandleChangedLODActions();
+            CreateWlProcessor();
         }
         void HandleChangedWLTask() {
             wlProcessor.HandleChangedWLTask();
+            CreateWlProcessor();
         }
 
 

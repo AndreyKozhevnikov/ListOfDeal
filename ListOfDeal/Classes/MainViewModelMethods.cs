@@ -63,6 +63,7 @@ namespace ListOfDeal {
             CurrentProject = new MyProject();
             CurrentProject.Status = ProjectStatusEnum.Delayed;
             CurrentProject.IsSimpleProject = true;
+            CurrentProject.TypeId = 7;
         }
         private void CreateNewAction() {
             CurrentAction = new MyAction();

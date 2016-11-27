@@ -128,8 +128,8 @@ namespace ListOfDeal {
             foreach (var act in lst) {
                 var wlId = act.WLId;
                 wlConnector.CompleteTask(wlId);
-                act.WLId = null;
                 act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
+                act.WLId = null;
                 RaiseLog(string.Format("complete task of actions {0} {1}", act.GetWLTitle(), act.parentEntity.Id));
             }
             MainViewModel.SaveChanges();

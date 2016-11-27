@@ -151,7 +151,7 @@ namespace ListOfDeal {
             set {
                 parentEntity.IsSimpleProject = value;
                 foreach (var act in Actions) {
-                    act.WLTaskStatus = WLTaskStatusEnum.UpdateNeeded;
+                    act.SetWLStatusUpdatedIfNeeded();
                 }
                 RaisePropertyChanged("IsSimpleProject");
             }

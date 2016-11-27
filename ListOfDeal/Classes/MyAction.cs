@@ -96,7 +96,7 @@ namespace ListOfDeal {
             }
         }
 
-        private void SetWLStatusUpdatedIfNeeded() {
+        public void SetWLStatusUpdatedIfNeeded() {
             if (WLId != null)
                 WLTaskStatus = WLTaskStatusEnum.UpdateNeeded;
         }

@@ -418,7 +418,7 @@ namespace ListOfDeal {
             mockWlConnector.Verify(x => x.CompleteTask("234"), Times.Once); 
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj.Actions[0].WLTaskStatus);
             Assert.AreEqual(null, proj.Actions[1].WLId);
-          //  Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj.Actions[1].WLTaskStatus);
+            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj.Actions[1].WLTaskStatus);
             mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
 
         }

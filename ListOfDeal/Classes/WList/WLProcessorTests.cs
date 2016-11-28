@@ -387,7 +387,7 @@ namespace ListOfDeal {
             var projLst = new ObservableCollection<MyProject>();
             var p = new Project();
             var proj = new MyProject(p);
-            var act1 = new MyAction(new Action() { WLId = "123", WLTaskStatus = 0, IsActive = true,Project=p });
+            var act1 = new MyAction(new Action() { WLId = "123", WLTaskStatus = 1, IsActive = true,Project=p });
             var act2 = new MyAction(new Action { WLId = "234", WLTaskStatus = 2, IsActive = false,Project=p });
             proj.Actions.Add(act1);
             proj.Actions.Add(act2);
@@ -418,7 +418,7 @@ namespace ListOfDeal {
             mockWlConnector.Verify(x => x.CompleteTask("234"), Times.Once); 
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj.Actions[0].WLTaskStatus);
             Assert.AreEqual(null, proj.Actions[1].WLId);
-            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj.Actions[1].WLTaskStatus);
+            Assert.AreEqual(WLTaskStatusEnum.UpdateNeeded, proj.Actions[1].WLTaskStatus);
             mockGeneralEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
 
         }

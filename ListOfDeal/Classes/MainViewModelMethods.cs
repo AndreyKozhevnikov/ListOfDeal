@@ -1,5 +1,6 @@
 ﻿using DevExpress.Data;
 using DevExpress.Xpf.Grid;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -18,11 +19,20 @@ namespace ListOfDeal {
     }
 
     public interface IMainViewModelDataProvider {
-        DbSet<ProjectType> GetProjectTypes();
-        DbSet<ActionTrigger> GetActionTriggers();
-        DbSet<DelegatePerson> GetDelegatePersons();
-        DbSet<Project> GetProjects();
+        IEnumerable<ProjectType> GetProjectTypes();
+        IEnumerable<ActionTrigger> GetActionTriggers();
+        IEnumerable<DelegatePerson> GetDelegatePersons();
+        IEnumerable<Project> GetProjects();
         IListOfDealBaseEntities GeneralEntity { get; set; }
+        Project CreateProject();
+        void AddProject(Project p);
+        IEnumerable<Action> GetActions();
+        ActionTrigger CreateActionTrigger();
+        void AddActionTrigger(ActionTrigger actionTrigger);
+        ProjectType CreateProjectType();
+        void AddProjectType(ProjectType projectType);
+        void SaveChanges();
+        Action CreateAction();
         //List<ProjectType> ProjectTypes { get; set; }
         //List<ActionTrigger> ActionTriggers { get; set; }
         //List<DelegatePerson> DelegatePersons { get; set; }
@@ -57,20 +67,49 @@ namespace ListOfDeal {
 
         }
 
-        public DbSet<ProjectType> GetProjectTypes() {
+        public IEnumerable<ProjectType> GetProjectTypes() {
             return GeneralEntity.ProjectTypes;
         }
 
-        public DbSet<ActionTrigger> GetActionTriggers() {
+        public IEnumerable<ActionTrigger> GetActionTriggers() {
             return GeneralEntity.ActionTriggers;
         }
 
-        public DbSet<DelegatePerson> GetDelegatePersons() {
+        public IEnumerable<DelegatePerson> GetDelegatePersons() {
             return GeneralEntity.DelegatePersons;
         }
 
-        public DbSet<Project> GetProjects() {
+        public IEnumerable<Project> GetProjects() {
             return GeneralEntity.Projects;
+        }
+
+        public Project CreateProject() {
+            return GeneralEntity.Projects.Create();
+        }
+
+        public void AddProject(Project p) {
+            GeneralEntity.Projects.Add(p);
+        }
+        public IEnumerable<Action> GetActions() {
+            return GeneralEntity.Actions;
+        }
+        public ActionTrigger CreateActionTrigger() {
+            return GeneralEntity.ActionTriggers.Create();
+        }
+        public void AddActionTrigger(ActionTrigger actionTrigger) {
+            GeneralEntity.ActionTriggers.Add(actionTrigger);
+        }
+        public ProjectType CreateProjectType() {
+         return   GeneralEntity.ProjectTypes.Create();
+        }
+        public void AddProjectType(ProjectType projectType) {
+            GeneralEntity.ProjectTypes.Add(projectType);
+        }
+        public void SaveChanges() {
+            GeneralEntity.SaveChanges();
+        }
+        public Action CreateAction() {
+        return    GeneralEntity.Actions.Create();
         }
     }
     public partial class MainViewModel : IMainViewModel {
@@ -96,7 +135,7 @@ namespace ListOfDeal {
             foreach (var p in actProjects) {
                 Projects.Add(new MyProject(p));
             }
-            CreateNewProject();
+            CreateNewProject(null);
             CreateNewAction();
 
             WLViewModel = new WunderListViewModel(this);
@@ -107,11 +146,14 @@ namespace ListOfDeal {
 
 
 
-        private void CreateNewProject() {
+        private void CreateNewProject(int? oldTypeId) {
             CurrentProject = new MyProject();
             CurrentProject.Status = ProjectStatusEnum.InWork;
             CurrentProject.IsSimpleProject = true;
-            CurrentProject.TypeId = 7;
+            if (oldTypeId == null)
+                CurrentProject.TypeId = 7;
+            else
+                CurrentProject.TypeId = oldTypeId.Value;
         }
         private void CreateNewAction() {
             CurrentAction = new MyAction();
@@ -138,7 +180,7 @@ namespace ListOfDeal {
             Projects.Add(CurrentProject);
             SelectedProject = CurrentProject;
             SaveChanges();
-            CreateNewProject();
+            CreateNewProject(typeId);
         }
         private void FocusedRowChangedMethod(FocusedRowHandleChangedEventArgs e) {
             var p = e.RowData.Row as MyProject;
@@ -187,21 +229,21 @@ namespace ListOfDeal {
             CreateNewInfoWindow wnd = new CreateNewInfoWindow();
             switch (st) {
                 case "Trigger":
-                    ActionTrigger trig = generalEntity.ActionTriggers.Create();
+                    ActionTrigger trig = DataProvider.CreateActionTrigger();
                     wnd.DataContext = trig;
                     wnd.ShowDialog();
                     if (!string.IsNullOrEmpty(trig.Name)) {
-                        generalEntity.ActionTriggers.Add(trig);
+                        DataProvider.AddActionTrigger(trig);
                         SaveChanges();
                         ActionTriggers.Add(trig);
                     }
                     break;
                 case "ProjectType":
-                    ProjectType tp = generalEntity.ProjectTypes.Create();
+                    ProjectType tp = DataProvider.CreateProjectType();
                     wnd.DataContext = tp;
                     wnd.ShowDialog();
                     if (!string.IsNullOrEmpty(tp.Name)) {
-                        generalEntity.ProjectTypes.Add(tp);
+                        DataProvider.AddProjectType(tp);
                         SaveChanges();
                         ProjectTypes.Add(tp);
                     }
@@ -229,7 +271,7 @@ namespace ListOfDeal {
 
         public static void SaveChanges() {
             try {
-                generalEntity.SaveChanges();
+                DataProvider.SaveChanges();
             }
             catch (DbEntityValidationException e) {
                 foreach (var eve in e.EntityValidationErrors) {
@@ -277,7 +319,7 @@ namespace ListOfDeal {
         }
 
         private void GetChartData() {
-            var allActions = generalEntity.Actions.ToList();
+            var allActions = DataProvider.GetActions().ToList();
             var minDate = allActions.Min(x => x.DateCreated).Date;
             var todayDate = DateTime.Today;
             var count = (todayDate - minDate).Days;
@@ -321,7 +363,7 @@ namespace ListOfDeal {
             AllDayData = new ObservableCollection<DayData>(col3);
         }
         private void GetActionsHistory() {
-            var allActEnt = generalEntity.Actions;
+            var allActEnt = DataProvider.GetActions();
             var allAct = new List<MyAction>();
             foreach (Action a in allActEnt) {
                 allAct.Add(new MyAction(a));
@@ -358,7 +400,25 @@ namespace ListOfDeal {
     public class MainViewModelTests {
         [Test]
         public void NewProjectHasTypeOfPrevious() {
+            //arrange
+            var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
+            var dataProviderEntity = new Mock<IMainViewModelDataProvider>();
+            dataProviderEntity.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
+            dataProviderEntity.Setup(x => x.GetProjects()).Returns(new List<Project>() );
+            dataProviderEntity.Setup(x => x.GetProjectTypes()).Returns(new List<ProjectType>());
+            dataProviderEntity.Setup(x => x.GetActionTriggers()).Returns(new List<ActionTrigger>());
+            dataProviderEntity.Setup(x => x.GetDelegatePersons()).Returns(new List<DelegatePerson>());
+            dataProviderEntity.Setup(x => x.CreateProject()).Returns(new Project());
+            dataProviderEntity.Setup(x => x.CreateAction()).Returns(new Action());
+            MainViewModel.DataProvider = dataProviderEntity.Object;
             MainViewModel vm = new MainViewModel();
+            vm.CurrentProject.Name = "testproject";
+            //act
+            vm.CurrentProject.TypeId = 2;
+            vm.AddNewProjectCommand.Execute(null);
+            //Assert
+            Assert.AreEqual(2, vm.CurrentProject.TypeId);
+
 
         }
     }

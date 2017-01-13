@@ -16,7 +16,8 @@ namespace ListOfDeal {
 
 
         public MyProject() {
-            parentEntity = MainViewModel.generalEntity.Projects.Create();
+            //  parentEntity = MainViewModel.generalEntity.Projects.Create();
+            parentEntity = MainViewModel.DataProvider.CreateProject();
             InitiateProject();
         }
 
@@ -80,7 +81,8 @@ namespace ListOfDeal {
 
         public void Save() {
             if (parentEntity.Id <= 0)
-                MainViewModel.generalEntity.Projects.Add(parentEntity);
+                MainViewModel.DataProvider.AddProject(parentEntity);
+               // MainViewModel.generalEntity.Projects.Add(parentEntity);
             MainViewModel.SaveChanges();
         }
 

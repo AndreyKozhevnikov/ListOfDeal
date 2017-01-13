@@ -16,7 +16,7 @@ namespace ListOfDeal {
         }
 
         public MyAction() {
-            var v = MainViewModel.generalEntity.Actions.Create();
+            var v = MainViewModel.DataProvider.CreateAction();
             parentEntity = v;
             DateCreated = DateTime.Now;
         }

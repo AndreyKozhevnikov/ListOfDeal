@@ -105,7 +105,7 @@ namespace ListOfDeal {
             //  wlProcessor.PopulateActions(lodActions);
         }
         void Test() {
-            var lst = MainViewModel.generalEntity.Projects.Where(x => x.TypeId == 10).ToList();
+            var lst = MainViewModel.DataProvider.GetProjects().Where(x => x.TypeId == 10).ToList();
             foreach(Project p in lst) {
                 p.TypeId = 11;
                 p.Name = "Купить - " + p.Name;

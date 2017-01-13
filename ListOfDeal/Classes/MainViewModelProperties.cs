@@ -14,11 +14,11 @@ using DevExpress.Data;
 namespace ListOfDeal {
     public partial class MainViewModel : MyBindableBase, ISupportServices {
 
-        public static IListOfDealBaseEntities generalEntity {
-            get {
-                return DataProvider.GeneralEntity;
-            }
-        }
+        //public static IListOfDealBaseEntities generalEntity {
+        //    get {
+        //        return DataProvider.GeneralEntity;
+        //    }
+        //}
         public static IMainViewModelDataProvider DataProvider;
 
 

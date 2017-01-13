@@ -36,7 +36,7 @@
                         <dxlc:LayoutItem Label="Type:">
                             <dxe:ComboBoxEdit
                                 DisplayMember="Name"
-                                EditValue="{Binding CurrentProject.TypeId}"
+                                EditValue="{Binding CurrentProject.TypeId,UpdateSourceTrigger=PropertyChanged}"
                                 ItemsSource="{Binding ProjectTypes}"
                                 ValueMember="Id">
                                 <dxe:ComboBoxEdit.Buttons>

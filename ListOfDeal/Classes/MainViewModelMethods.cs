@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace ListOfDeal {
     public interface IMainViewModel {
@@ -165,6 +166,7 @@ namespace ListOfDeal {
         private void AddProject() {
             if (string.IsNullOrEmpty(CurrentProject.Name))
                 return;
+            GridControlManagerService.ClearFilterAndSearchString();
             var typeId = CurrentProject.TypeId;
             CurrentProject.DateCreated = DateTime.Now;
             CurrentProject.Save();
@@ -178,11 +180,13 @@ namespace ListOfDeal {
 
 
             Projects.Add(CurrentProject);
-            SelectedProject = CurrentProject;
-            SaveChanges();
-            CreateNewProject(typeId);
-            GridControlManagerService.ScrollToSeveralRows();
-            GridControlManagerService.ExpandFocusedMasterRow();
+            Dispatcher.CurrentDispatcher.BeginInvoke((System.Action)(() => {
+                SelectedProject = CurrentProject;
+                SaveChanges();
+                CreateNewProject(typeId);
+                GridControlManagerService.ScrollToSeveralRows();
+                GridControlManagerService.ExpandFocusedMasterRow();
+            }), DispatcherPriority.Input);
         }
         private void FocusedRowChangedMethod(FocusedRowHandleChangedEventArgs e) {
             var p = e.RowData.Row as MyProject;

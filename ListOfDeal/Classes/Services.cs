@@ -14,7 +14,7 @@ namespace ListOfDeal {
         void Export();
     }
 
-    public class ExportToExcelService :ServiceBase, IExportToExcelService {
+    public class ExportToExcelService : ServiceBase, IExportToExcelService {
 
 
         public GridControl ScheduledGrid {
@@ -49,15 +49,15 @@ namespace ListOfDeal {
         public static readonly DependencyProperty WaitedGridProperty =
             DependencyProperty.Register("WaitedGrid", typeof(GridControl), typeof(ExportToExcelService), new PropertyMetadata(null));
 
-        
 
 
-        
+
+
         public void Export() {
             (WaitedGrid.View as TableView).ExportToXlsx(@"f:\dropbox\common\Deals.xlsx");
             (ScheduledGrid.View as TableView).ExportToXlsx(@"f:\dropbox\common\DealsSched.xlsx");
             (DelegatedGrid.View as TableView).ExportToXlsx(@"f:\dropbox\common\DealsDeleg.xlsx");
-            
+
         }
     }
 
@@ -66,10 +66,16 @@ namespace ListOfDeal {
         void ExpandFocusedMasterRow();
         void ExpandMasterRow(object obj);
         void ScrollToSeveralRows();
+        void ClearFilterAndSearchString();
     }
 
     public class GridControlManagerService : ServiceBase, IGridControlManagerService {
         GridControl Control;
+
+        public void ClearFilterAndSearchString() {
+            // Control.FilterString = null;
+            Control.View.SearchString = null;
+        }
 
         public void ExpandFocusedMasterRow() {
             Control.ExpandMasterRow(Control.View.FocusedRowHandle);
@@ -78,6 +84,7 @@ namespace ListOfDeal {
         public void ExpandMasterRow(object obj) {
             var rh = Control.DataController.FindRowByRowValue(obj);
             Control.ExpandMasterRow(rh);
+
         }
 
         public void ScrollToSeveralRows() {
@@ -87,7 +94,7 @@ namespace ListOfDeal {
 
         protected override void OnAttached() {
             var pc = this.AssociatedObject as GridControl;
-            this.Control= pc;
+            this.Control = pc;
             base.OnAttached();
         }
     }

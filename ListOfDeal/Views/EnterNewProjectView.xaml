@@ -281,7 +281,7 @@
                                 <dxg:GridColumn FieldName="ToBuy"/>
                             </dxg:GridControl.Columns>
                             <dxg:GridControl.View>
-                                <dxg:TableView ShowFilterPanelMode="Never" ShowGroupPanel="False">
+                                <dxg:TableView ShowFilterPanelMode="Never" ShowGroupPanel="False" EnableImmediatePosting="True">
                                     <dxg:TableView.FormatConditions>
                                         <dxg:FormatCondition
                                             ApplyToRow="True"

@@ -181,6 +181,8 @@ namespace ListOfDeal {
             SelectedProject = CurrentProject;
             SaveChanges();
             CreateNewProject(typeId);
+            GridControlManagerService.ScrollToSeveralRows();
+            GridControlManagerService.ExpandFocusedMasterRow();
         }
         private void FocusedRowChangedMethod(FocusedRowHandleChangedEventArgs e) {
             var p = e.RowData.Row as MyProject;

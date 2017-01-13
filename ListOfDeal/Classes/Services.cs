@@ -63,14 +63,26 @@ namespace ListOfDeal {
 
 
     public interface IGridControlManagerService {
+        void ExpandFocusedMasterRow();
         void ExpandMasterRow(object obj);
+        void ScrollToSeveralRows();
     }
 
     public class GridControlManagerService : ServiceBase, IGridControlManagerService {
         GridControl Control;
+
+        public void ExpandFocusedMasterRow() {
+            Control.ExpandMasterRow(Control.View.FocusedRowHandle);
+        }
+
         public void ExpandMasterRow(object obj) {
             var rh = Control.DataController.FindRowByRowValue(obj);
             Control.ExpandMasterRow(rh);
+        }
+
+        public void ScrollToSeveralRows() {
+            var rh = Control.View.FocusedRowHandle;
+            Control.View.ScrollIntoView(rh + 10);
         }
 
         protected override void OnAttached() {

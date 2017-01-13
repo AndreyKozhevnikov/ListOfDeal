@@ -92,6 +92,7 @@ namespace ListOfDeal {
                     this.Status = ActionsStatusEnum.Scheduled;
                 }
                 SetWLStatusUpdatedIfNeeded();
+                this.IsActive = true;
                 RaisePropertyChanged("ScheduledTime");
             }
         }
@@ -396,5 +397,17 @@ namespace ListOfDeal {
             //assert
             Assert.AreEqual(null, tmpSting);
         }
+
+        [Test]
+        public void SetTimeShouldSetIsActive() {
+            //arrange
+            MyAction act = new MyAction(new Action());
+            //act
+            act.ScheduledTime = DateTime.Now;
+            //assert
+            Assert.AreEqual(true, act.IsActive);
+
+        }
     }
+    
 }

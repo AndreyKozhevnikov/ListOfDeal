@@ -14,7 +14,12 @@ using DevExpress.Data;
 namespace ListOfDeal {
     public partial class MainViewModel : MyBindableBase, ISupportServices {
 
-        public static IListOfDealBaseEntities generalEntity;
+        public static IListOfDealBaseEntities generalEntity {
+            get {
+                return DataProvider.GeneralEntity;
+            }
+        }
+        public static IMainViewModelDataProvider DataProvider;
 
 
 
@@ -22,7 +27,6 @@ namespace ListOfDeal {
 
 
 
-    
 
         MyProject _currentProject;
         MyAction _currentAction;

@@ -23,7 +23,7 @@ namespace ListOfDeal {
     /// </summary>
     public partial class MainWindow : DXWindow {
         public MainWindow() {
-          
+            MainViewModel.DataProvider = new MainViewModelDataProvider();
             this.DataContext = new MainViewModel();
             InitializeComponent();
 #if DEBUG

@@ -1,8 +1,10 @@
 ﻿using DevExpress.Data;
 using DevExpress.Xpf.Grid;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
@@ -14,22 +16,83 @@ namespace ListOfDeal {
         ObservableCollection<MyProject> Projects { get; set; }
 
     }
+
+    public interface IMainViewModelDataProvider {
+        DbSet<ProjectType> GetProjectTypes();
+        DbSet<ActionTrigger> GetActionTriggers();
+        DbSet<DelegatePerson> GetDelegatePersons();
+        DbSet<Project> GetProjects();
+        IListOfDealBaseEntities GeneralEntity { get; set; }
+        //List<ProjectType> ProjectTypes { get; set; }
+        //List<ActionTrigger> ActionTriggers { get; set; }
+        //List<DelegatePerson> DelegatePersons { get; set; }
+        //List<Project> Projects { get; set; }
+    }
+    public class MainViewModelDataProvider : IMainViewModelDataProvider {
+        //public List<ProjectType> ProjectTypes { get; set; }
+        //public List<ActionTrigger> ActionTriggers { get; set; }
+        //public List<DelegatePerson> DelegatePersons { get; set; }
+        //public List<Project> Projects { get; set; }
+        public MainViewModelDataProvider() {
+            ConnectToDataBase();
+
+        }
+        public IListOfDealBaseEntities GeneralEntity { get; set; }
+
+        private void ConnectToDataBase() {
+            string machineName = System.Environment.MachineName;
+            if (machineName == "KOZHEVNIKOV-W10") {
+                GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWork");
+            }
+            else {
+                GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesHome");
+            }
+#if DEBUG
+            if (machineName == "KOZHEVNIKOV-W10")
+                GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWork");
+            else
+                GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesHomeTest");
+#endif
+
+
+        }
+
+        public DbSet<ProjectType> GetProjectTypes() {
+            return GeneralEntity.ProjectTypes;
+        }
+
+        public DbSet<ActionTrigger> GetActionTriggers() {
+            return GeneralEntity.ActionTriggers;
+        }
+
+        public DbSet<DelegatePerson> GetDelegatePersons() {
+            return GeneralEntity.DelegatePersons;
+        }
+
+        public DbSet<Project> GetProjects() {
+            return GeneralEntity.Projects;
+        }
+    }
     public partial class MainViewModel : IMainViewModel {
 
         public MainViewModel() {
             InitializeData();
         }
 
+        public void CreateMainViewModelDataProvider() {
+            DataProvider = new MainViewModelDataProvider();
+        }
+
         void InitializeData() {
 
-            ConnectToDataBase();
 
-            ProjectTypes = new ObservableCollection<ProjectType>(generalEntity.ProjectTypes.OrderBy(x => x.OrderNumber));
 
-            ActionTriggers = new ObservableCollection<ActionTrigger>(generalEntity.ActionTriggers);
-            DelegatePersons = new ObservableCollection<DelegatePerson>(generalEntity.DelegatePersons);
+            ProjectTypes = new ObservableCollection<ProjectType>(DataProvider.GetProjectTypes().OrderBy(x => x.OrderNumber));
+
+            ActionTriggers = new ObservableCollection<ActionTrigger>(DataProvider.GetActionTriggers());
+            DelegatePersons = new ObservableCollection<DelegatePerson>(DataProvider.GetDelegatePersons());
             Projects = new ObservableCollection<MyProject>();
-            var actProjects = generalEntity.Projects.Where(x => x.StatusId != 3).OrderBy(x => x.StatusId).ThenBy(x => x.DateCreated);
+            var actProjects = DataProvider.GetProjects().Where(x => x.StatusId != 3).OrderBy(x => x.StatusId).ThenBy(x => x.DateCreated);
             foreach (var p in actProjects) {
                 Projects.Add(new MyProject(p));
             }
@@ -42,22 +105,7 @@ namespace ListOfDeal {
 
 
 
-        private void ConnectToDataBase() {
-            string machineName = System.Environment.MachineName;
-            if (machineName == "KOZHEVNIKOV-W10") {
-                generalEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWork");
-            }
-            else {
-                generalEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesHome");
-            }
-#if DEBUG
-            if (machineName == "KOZHEVNIKOV-W10")
-                generalEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWork");
-            else
-                generalEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesHomeTest");
-#endif
 
-        }
 
         private void CreateNewProject() {
             CurrentProject = new MyProject();
@@ -75,7 +123,7 @@ namespace ListOfDeal {
         private void AddProject() {
             if (string.IsNullOrEmpty(CurrentProject.Name))
                 return;
-
+            var typeId = CurrentProject.TypeId;
             CurrentProject.DateCreated = DateTime.Now;
             CurrentProject.Save();
             if (CurrentProject.IsSimpleProject) {
@@ -304,5 +352,14 @@ namespace ListOfDeal {
             e.Handled = true;
         }
 
+    }
+
+    [TestFixture]
+    public class MainViewModelTests {
+        [Test]
+        public void NewProjectHasTypeOfPrevious() {
+            MainViewModel vm = new MainViewModel();
+
+        }
     }
 }

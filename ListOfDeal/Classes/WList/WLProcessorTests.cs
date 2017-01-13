@@ -33,7 +33,10 @@ namespace ListOfDeal {
             // wlProc.PopulateActions(actList);
 
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
-            MainViewModel.generalEntity = mockGeneralEntity.Object;
+            var dp = new Mock<IMainViewModelDataProvider>();
+            dp.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
+            MainViewModel.DataProvider = dp.Object;
+
             //act
             wlProc.CreateWlTasks();
             //assert
@@ -61,7 +64,9 @@ namespace ListOfDeal {
 
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>(MockBehavior.Strict);
             mockGeneralEntity.Setup(x => x.SaveChanges()).Returns(0);
-            MainViewModel.generalEntity = mockGeneralEntity.Object;
+            var dp = new Mock<IMainViewModelDataProvider>();
+            dp.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
+            MainViewModel.DataProvider = dp.Object;
             //act
             wlProc.CreateWlTasks();
             //assert
@@ -90,7 +95,9 @@ namespace ListOfDeal {
             // wlProc.PopulateActions(actList);
 
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
-            MainViewModel.generalEntity = mockGeneralEntity.Object;
+            var dp = new Mock<IMainViewModelDataProvider>();
+            dp.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
+            MainViewModel.DataProvider = dp.Object;
             //act
             wlProc.CreateWlTasks();
             //assert
@@ -122,7 +129,9 @@ namespace ListOfDeal {
             // wlProc.PopulateActions(actList);
 
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
-            MainViewModel.generalEntity = mockGeneralEntity.Object;
+            var dp = new Mock<IMainViewModelDataProvider>();
+            dp.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
+            MainViewModel.DataProvider = dp.Object;
             //act
             wlProc.CreateWlTasks();
             //assert
@@ -163,7 +172,9 @@ namespace ListOfDeal {
             // wlProc.PopulateActions(actList);
 
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
-            MainViewModel.generalEntity = mockGeneralEntity.Object;
+            var dp = new Mock<IMainViewModelDataProvider>();
+            dp.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
+            MainViewModel.DataProvider = dp.Object;
             //act
             wlProc.CreateWlTasks();
             //assert
@@ -199,7 +210,9 @@ namespace ListOfDeal {
             // wlProc.PopulateActions(actList);
 
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
-            MainViewModel.generalEntity = mockGeneralEntity.Object;
+            var dp = new Mock<IMainViewModelDataProvider>();
+            dp.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
+            MainViewModel.DataProvider = dp.Object;
             //act
             wlProc.CreateWlTasks();
             //assert
@@ -215,7 +228,9 @@ namespace ListOfDeal {
             //arrange
 
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
-            MainViewModel.generalEntity = mockGeneralEntity.Object;
+            var dp = new Mock<IMainViewModelDataProvider>();
+            dp.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
+            MainViewModel.DataProvider = dp.Object;
 
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
@@ -253,7 +268,9 @@ namespace ListOfDeal {
             //arrange
 
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
-            MainViewModel.generalEntity = mockGeneralEntity.Object;
+            var dp = new Mock<IMainViewModelDataProvider>();
+            dp.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
+            MainViewModel.DataProvider = dp.Object;
 
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
@@ -282,7 +299,9 @@ namespace ListOfDeal {
             //arrange
 
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
-            MainViewModel.generalEntity = mockGeneralEntity.Object;
+            var dp = new Mock<IMainViewModelDataProvider>();
+            dp.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
+            MainViewModel.DataProvider = dp.Object;
 
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
@@ -346,7 +365,9 @@ namespace ListOfDeal {
             //arrange
 
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
-            MainViewModel.generalEntity = mockGeneralEntity.Object;
+            var dp = new Mock<IMainViewModelDataProvider>();
+            dp.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
+            MainViewModel.DataProvider = dp.Object;
 
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
@@ -394,7 +415,9 @@ namespace ListOfDeal {
             projLst.Add(proj);
             mockMainVM.Setup(x => x.Projects).Returns(projLst);
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
-            MainViewModel.generalEntity = mockGeneralEntity.Object;
+            var dp = new Mock<IMainViewModelDataProvider>();
+            dp.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
+            MainViewModel.DataProvider = dp.Object;
             //var lstMock = new Mock<IDbSet<Action>>();
             //var lstAct = new List<Action>();
             //lstAct.Add(new Action() { WLId = "123", WLTaskStatus = 1, IsActive = true });
@@ -429,7 +452,9 @@ namespace ListOfDeal {
         public void RaiseLog() {
             //arrange
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
-            MainViewModel.generalEntity = mockGeneralEntity.Object;
+            var dp = new Mock<IMainViewModelDataProvider>();
+            dp.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
+            MainViewModel.DataProvider = dp.Object;
             var mockMainVM = new Mock<IMainViewModel>();
             var p = new Project();
             var mp = new MyProject(p);
@@ -792,7 +817,9 @@ namespace ListOfDeal {
             //arrange
         
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
-            MainViewModel.generalEntity = mockGeneralEntity.Object;
+            var dp = new Mock<IMainViewModelDataProvider>();
+            dp.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
+            MainViewModel.DataProvider = dp.Object;
             var mockMainVM = new Mock<IMainViewModel>();
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project() );

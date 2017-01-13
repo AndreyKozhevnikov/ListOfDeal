@@ -242,7 +242,7 @@ namespace ListOfDeal {
         UpdateNeeded = 1,
         DeletingNeeded = 2
     }
-    [TestFixture] //todo -case action become active and then become inactive
+    [TestFixture] 
     public class MyActionTest {
         [Test]
         public void CompleteAction() {

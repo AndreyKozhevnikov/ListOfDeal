@@ -188,10 +188,14 @@ namespace ListOfDeal {
                 GridControlManagerService.ExpandFocusedMasterRow();
             }), DispatcherPriority.Input);
         }
-        private void FocusedRowChangedMethod(FocusedRowHandleChangedEventArgs e) {
-            var p = e.RowData.Row as MyProject;
-            if (p != null)
-                CurrentProject.TypeId = p.TypeId;
+        private void OnSelectedActionChanged() {
+            if (SelectedAction != null) {
+                CurrentProject.TypeId= SelectedAction.ProjectType;
+            }
+        }
+        private void OnSelectedProjectChanged() {
+            if (SelectedProject != null)
+                CurrentProject.TypeId = SelectedProject.TypeId;
         }
         private void AddAction() {
             if (string.IsNullOrEmpty(CurrentAction.Name))

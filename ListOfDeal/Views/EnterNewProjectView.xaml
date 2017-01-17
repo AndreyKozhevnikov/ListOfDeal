@@ -223,7 +223,7 @@
                                 <dxg:GridColumn FieldName="ScheduledTime">
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
-                                            <dxe:DateEdit Name="PART_Editor">
+                                            <dxe:DateEdit Name="PART_Editor" ShowToday="True">
                                                 <!--<dxe:DateEdit.Style>
                                                     <Style TargetType="{x:Type dxe:DateEdit}">
                                                         <Setter Property="IsEnabled" Value="False" />

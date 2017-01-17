@@ -24,6 +24,7 @@ namespace ListOfDeal.Views {
         public EnterNewProjectView() {
             InitializeComponent();
             CriteriaOperator.RegisterCustomFunction(new GetActiveActionsFunction());
+            CriteriaOperator.RegisterCustomFunction(new GetOutdatedActionsFunction());
         }
         private void Button_Click(object sender, RoutedEventArgs e) {
             MainViewModel vm = this.DataContext as MainViewModel;
@@ -54,6 +55,22 @@ namespace ListOfDeal.Views {
         public object Evaluate(params object[] operands) {
             var actions = operands[0] as ObservableCollection<MyAction>;
             return actions.Where(x => x.IsActive == true).Count();
+        }
+    }
+    public class GetOutdatedActionsFunction : ICustomFunctionOperator {
+
+        public string Name {
+            get { return "GetOutdatedActions"; }
+        }
+
+        public Type ResultType(params Type[] operands) {
+            return typeof(bool);
+        }
+
+        public object Evaluate(params object[] operands) {
+            var actions = operands[0] as ObservableCollection<MyAction>;
+            var outdated = actions.Where(x => x.ScheduledTime < DateTime.Today);
+            return outdated.Count() > 0;
         }
     }
 }

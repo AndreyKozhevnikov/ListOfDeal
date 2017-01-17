@@ -223,18 +223,7 @@
                                 <dxg:GridColumn FieldName="ScheduledTime">
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
-                                            <dxe:DateEdit Name="PART_Editor" ShowToday="True">
-                                                <!--<dxe:DateEdit.Style>
-                                                    <Style TargetType="{x:Type dxe:DateEdit}">
-                                                        <Setter Property="IsEnabled" Value="False" />
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding RowData.Row.Status}" Value="{x:Static local:ActionsStatusEnum.Scheduled}">
-                                                                <Setter Property="IsEnabled" Value="True" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </dxe:DateEdit.Style>-->
-                                            </dxe:DateEdit>
+                                            <dxe:DateEdit Name="PART_Editor" ShowToday="True"/>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                 </dxg:GridColumn>
@@ -296,6 +285,9 @@
                                             ValueRule="Expression">
                                             <dx:Format Foreground="#FFD8D6CB" TextDecorations="{x:Null}" />
                                         </dxg:FormatCondition>
+                                        <dxg:FormatCondition Expression="[ScheduledTime] &lt; LocalDateTimeToday()" FieldName="ScheduledTime">
+                                            <dx:Format Background="OrangeRed"/>
+                                        </dxg:FormatCondition>
                                     </dxg:TableView.FormatConditions>
                                 </dxg:TableView>
                             </dxg:GridControl.View>
@@ -327,6 +319,12 @@
                                 Expression="GetActiveActions([Actions]) = 0 and [Status]!='Done'"
                                 FieldName="Actions">
                                 <dx:Format Background="#FFA589C7" />
+                            </dxg:FormatCondition>
+                            <dxg:FormatCondition
+                                ApplyToRow="True"
+                                Expression="GetOutdatedActions([Actions]) = True"
+                                FieldName="Actions">
+                                <dx:Format Foreground="Red" />
                             </dxg:FormatCondition>
                         </dxg:TableView.FormatConditions>
                     </dxg:TableView>

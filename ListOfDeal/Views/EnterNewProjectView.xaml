@@ -322,7 +322,7 @@
                             </dxg:FormatCondition>
                             <dxg:FormatCondition
                                 ApplyToRow="True"
-                                Expression="GetOutdatedActions([Actions]) = True"
+                                Expression="[Status]='InWork' and GetOutdatedActions([Actions]) = True"
                                 FieldName="Actions">
                                 <dx:Format Foreground="Red" />
                             </dxg:FormatCondition>

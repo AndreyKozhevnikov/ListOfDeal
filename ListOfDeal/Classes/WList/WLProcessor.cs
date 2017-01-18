@@ -122,12 +122,14 @@ namespace ListOfDeal {
             MainViewModel.SaveChanges();
 
             //  var lst = MainViewModel.generalEntity.Actions.Where(x => x.WLTaskStatus == 2).ToList(); //improve?
-             // var lst = allActions.Where(x => x.WLTaskStatus == WLTaskStatusEnum.DeletingNeeded).ToList();
+            // var lst = allActions.Where(x => x.WLTaskStatus == WLTaskStatusEnum.DeletingNeeded).ToList();
             var lst = parentVM.Projects.SelectMany(x => x.Actions).Where(x => x.WLTaskStatus == WLTaskStatusEnum.DeletingNeeded).ToList();
             RaiseLog(string.Format("amount actions - {0}", lst.Count));
             foreach (var act in lst) {
                 var wlId = act.WLId;
+#if !DEBUG
                 wlConnector.CompleteTask(wlId);
+#endif
                 act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
                 act.WLId = null;
                 RaiseLog(string.Format("complete task of actions {0} {1}", act.GetWLTitle(), act.parentEntity.Id));
@@ -186,7 +188,7 @@ namespace ListOfDeal {
             foreach (var act in actionsWithTasks) {
                 var tsk = allTasks.Where(x => x.id == act.WLId).FirstOrDefault();
                 if (tsk == null) {
-                    RaiseLog("There is no task for: " + act.GetWLTitle()); 
+                    RaiseLog("There is no task for: " + act.GetWLTitle());
                     continue;
                 }
                 if (act.WLTaskRevision != tsk.revision) {

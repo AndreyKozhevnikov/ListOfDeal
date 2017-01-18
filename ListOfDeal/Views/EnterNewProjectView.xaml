@@ -285,7 +285,7 @@
                                             ValueRule="Expression">
                                             <dx:Format Foreground="#FFD8D6CB" TextDecorations="{x:Null}" />
                                         </dxg:FormatCondition>
-                                        <dxg:FormatCondition Expression="[ScheduledTime] &lt; LocalDateTimeToday()" FieldName="ScheduledTime">
+                                        <dxg:FormatCondition Expression="[IsActive] = True and [Status] = 'Scheduled' and [ScheduledTime] &lt; LocalDateTimeToday()" FieldName="ScheduledTime">
                                             <dx:Format Background="OrangeRed"/>
                                         </dxg:FormatCondition>
                                     </dxg:TableView.FormatConditions>

@@ -423,6 +423,7 @@ namespace ListOfDeal {
             MainViewModel.DataProvider = dataProviderEntity.Object;
             MainViewModel vm = new MainViewModel();
             vm.CurrentProject.Name = "testproject";
+            vm.GridControlManagerService = new Mock<IGridControlManagerService>().Object;
             //act
             vm.CurrentProject.TypeId = 2;
             vm.AddNewProjectCommand.Execute(null);

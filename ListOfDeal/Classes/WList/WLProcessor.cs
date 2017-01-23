@@ -127,9 +127,7 @@ namespace ListOfDeal {
             RaiseLog(string.Format("amount actions - {0}", lst.Count));
             foreach (var act in lst) {
                 var wlId = act.WLId;
-#if !DEBUG
                 wlConnector.CompleteTask(wlId);
-#endif
                 act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
                 act.WLId = null;
                 RaiseLog(string.Format("complete task of actions {0} {1}", act.GetWLTitle(), act.parentEntity.Id));

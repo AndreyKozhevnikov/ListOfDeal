@@ -214,7 +214,7 @@ namespace ListOfDeal {
             }
         }
 
-    
+
 
         public MyAction SelectedAction {
             get { return _selectedAction; }
@@ -225,7 +225,7 @@ namespace ListOfDeal {
             }
         }
 
-       
+
 
         public WunderListViewModel WLViewModel { get; set; }
 
@@ -296,9 +296,15 @@ namespace ListOfDeal {
         IServiceContainer ISupportServices.ServiceContainer { get { return ServiceContainer; } }
 
         IExportToExcelService ExportToExcelService { get { return ServiceContainer.GetService<IExportToExcelService>(); } }
-        IGridControlManagerService GridControlManagerService { get { return serviceContainer.GetService<IGridControlManagerService>(); } }
-
-
+        IGridControlManagerService _gridControlManagerService;
+        public IGridControlManagerService GridControlManagerService {
+            get {
+                if (_gridControlManagerService == null)
+                    _gridControlManagerService = serviceContainer.GetService<IGridControlManagerService>();
+                return _gridControlManagerService;
+            }
+            set { _gridControlManagerService = value; }
+        }
     }
 
 

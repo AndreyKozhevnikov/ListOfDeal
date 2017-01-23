@@ -136,6 +136,9 @@ namespace ListOfDeal {
             return wlTask;
         }
         public WLTask CompleteTask(string wlId) {
+#if DEBUG
+            return null;
+#endif
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, wlId);
             var revision = GetTask(wlId).revision; //TODO improve

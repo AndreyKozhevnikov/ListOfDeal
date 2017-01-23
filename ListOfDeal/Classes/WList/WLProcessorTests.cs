@@ -896,7 +896,8 @@ namespace ListOfDeal {
             var mockMainVM = new Mock<IMainViewModel>();
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project());
-            proj.IsSimpleProject = true;
+            proj.IsSimpleProject = false;
+            proj.Name = "Project1";
             proj.Status = ProjectStatusEnum.InWork;
             var act1 = new MyAction(new Action());
             act1.Name = "act1";
@@ -912,18 +913,23 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>();
             var taskList = new List<WLTask>();
-            taskList.Add(new WLTask() { id = "123", title = "act1", revision = 2, due_date = "2016-9-15" });
+            taskList.Add(new WLTask() { id = "123", title = "Project1 - act1", revision = 2, due_date = "2016-09-15" });
 
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
+            logList = new List<string>();
+            wlProc.Logged += Proc_Logged;
             //act
             wlProc.HandleChangedWLTask();
             //assert
             Assert.AreEqual(new DateTime(2016, 9, 15), act1.ScheduledTime);
             Assert.AreEqual(2, act1.WLTaskRevision);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, act1.WLTaskStatus);
+            Assert.AreEqual(4, logList.Count);
+            Assert.AreEqual("act has old revision Project1 - act1", logList[1]);
+            Assert.AreEqual("Project1 - act1 is changing time from 2016-09-11 to 2016-09-15", logList[2]);
         }
 
         [Test]
@@ -932,7 +938,8 @@ namespace ListOfDeal {
             var mockMainVM = new Mock<IMainViewModel>();
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project());
-            proj.IsSimpleProject = true;
+            proj.IsSimpleProject = false;
+            proj.Name = "Project1";
             proj.Status = ProjectStatusEnum.InWork;
             var act1 = new MyAction(new Action());
             act1.Name = "act1";
@@ -948,12 +955,14 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>();
             var taskList = new List<WLTask>();
-            taskList.Add(new WLTask() { id = "123", title = "act1", revision = 2, due_date = "2016-09-12" });
+            taskList.Add(new WLTask() { id = "123", title = "Project1 - act1", revision = 2, due_date = "2016-09-12" });
 
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
+            logList = new List<string>();
+            wlProc.Logged += Proc_Logged;
             //act
             wlProc.HandleChangedWLTask();
             //assert
@@ -961,6 +970,8 @@ namespace ListOfDeal {
             Assert.AreEqual(new DateTime(2016, 9, 12), act1.ScheduledTime);
             Assert.AreEqual(2, act1.WLTaskRevision);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, act1.WLTaskStatus);
+            Assert.AreEqual(4, logList.Count);
+            Assert.AreEqual("Project1 - act1 -set time to 2016-09-12", logList[2]);
         }
 
         [Test]
@@ -969,7 +980,8 @@ namespace ListOfDeal {
             var mockMainVM = new Mock<IMainViewModel>();
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project());
-            proj.IsSimpleProject = true;
+            proj.IsSimpleProject = false;
+            proj.Name = "Project1";
             proj.Status = ProjectStatusEnum.InWork;
             var act1 = new MyAction(new Action());
             act1.Name = "act1";
@@ -986,12 +998,14 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>();
             var taskList = new List<WLTask>();
-            taskList.Add(new WLTask() { id = "123", title = "act1", revision = 2, due_date = null });
+            taskList.Add(new WLTask() { id = "123", title = "Project1 - act1", revision = 2, due_date = null });
 
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
+            logList = new List<string>();
+            wlProc.Logged += Proc_Logged;
             //act
             wlProc.HandleChangedWLTask();
             //assert
@@ -999,6 +1013,8 @@ namespace ListOfDeal {
             Assert.AreEqual(null, act1.ScheduledTime);
             Assert.AreEqual(2, act1.WLTaskRevision);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, act1.WLTaskStatus);
+            Assert.AreEqual(4, logList.Count);
+            Assert.AreEqual("Project1 - act1 -delete time", logList[2]);
         }
 
 
@@ -1008,7 +1024,8 @@ namespace ListOfDeal {
             var mockMainVM = new Mock<IMainViewModel>();
             var projCollection = new ObservableCollection<MyProject>();
             var proj = new MyProject(new Project());
-            proj.IsSimpleProject = true;
+            proj.IsSimpleProject = false;
+            proj.Name = "Project1";
             proj.Status = ProjectStatusEnum.InWork;
             var act1 = new MyAction(new Action());
             act1.Name = "act1";
@@ -1024,7 +1041,7 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>();
             var taskList = new List<WLTask>();
-            taskList.Add(new WLTask() { id = "123", title = "act1", revision = 2 });
+            taskList.Add(new WLTask() { id = "123", title = "Project1 - act1", revision = 2 });
 
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());

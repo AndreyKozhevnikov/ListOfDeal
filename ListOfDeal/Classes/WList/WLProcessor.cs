@@ -190,9 +190,8 @@ namespace ListOfDeal {
                     continue;
                 }
                 if (act.WLTaskRevision != tsk.revision) {
-                    RaiseLog(string.Format("act has old revision {0}", act.Name));
                     var actNameForWL = act.GetWLTitle();
-
+                    RaiseLog(string.Format("act has old revision {0}", actNameForWL));
                     if (actNameForWL != tsk.title) {
                         string nameFromTitle = tsk.title;
                         if (!act.parentEntity.Project.IsSimpleProject) {
@@ -220,18 +219,18 @@ namespace ListOfDeal {
                         // var isDTNull = !DateTime.TryParse(tsk.due_date, out wlDateTime);
                         if (act.Status == ActionsStatusEnum.Scheduled) {
                             if (wlDateTime.HasValue) {
-                                RaiseLog("{0} is changing time from {1} to {2}", act.Name, act.ScheduledTime.Value.ToString("yyy-MM-dd"), tsk.due_date);
+                                RaiseLog("{0} is changing time from {1} to {2}", actNameForWL, act.ScheduledTime.Value.ToString("yyy-MM-dd"), tsk.due_date);
                                 var newDate = DateTime.Parse(tsk.due_date);
                                 act.ScheduledTime = newDate;
                             }
                             else {
-                                RaiseLog("{0} -delete time", act.Name);
+                                RaiseLog("{0} -delete time", actNameForWL);
                                 act.Status = ActionsStatusEnum.Waited;
                             }
                         }
                         else {
                             if (wlDateTime.HasValue) {
-                                RaiseLog("{0} -set time to {1}", act.Name, wlDateTime.Value.ToShortDateString());
+                                RaiseLog("{0} -set time to {1}", actNameForWL, wlDateTime.Value.ToString("yyy-MM-dd"));
                                 act.ScheduledTime = wlDateTime;
 
                             }

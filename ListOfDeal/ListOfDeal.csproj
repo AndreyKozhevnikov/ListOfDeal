@@ -160,6 +160,9 @@
     <Compile Include="Views\WunderListView.xaml.cs">
       <DependentUpon>WunderListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WeekRecord.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Page Include="Views\ChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

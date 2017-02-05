@@ -14,6 +14,11 @@ namespace ListOfDeal
     
     public partial class Action
     {
+        public Action()
+        {
+            this.WeekRecords = new HashSet<WeekRecord>();
+        }
+    
         public int Id { get; set; }
         public string Name { get; set; }
         public int ProjectId { get; set; }
@@ -34,5 +39,6 @@ namespace ListOfDeal
         public virtual DelegatePerson DelegatePerson { get; set; }
         public virtual Project Project { get; set; }
         public virtual ActionTrigger ActionTrigger { get; set; }
+        public virtual ICollection<WeekRecord> WeekRecords { get; set; }
     }
 }

@@ -62,6 +62,17 @@
           <Property Name="Name" Type="varchar" MaxLength="50" />
           <Property Name="OrderNumber" Type="int" />
         </EntityType>
+        <EntityType Name="WeekRecords">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ActionId" Type="int" Nullable="false" />
+          <Property Name="DateAdd" Type="datetime" Nullable="false" />
+          <Property Name="Comment" Type="varchar(max)" />
+          <Property Name="WeekId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsCompletedInWeek" Type="bit" Nullable="false" />
+        </EntityType>
         <Association Name="FK_Actions_ActionTriggers">
           <End Role="ActionTriggers" Type="Self.ActionTriggers" Multiplicity="0..1" />
           <End Role="Actions" Type="Self.Actions" Multiplicity="*" />
@@ -110,12 +121,25 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WeekRecords_Actions">
+          <End Role="Actions" Type="Self.Actions" Multiplicity="1" />
+          <End Role="WeekRecords" Type="Self.WeekRecords" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Actions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeekRecords">
+              <PropertyRef Name="ActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ListOfDealBaseModelStoreContainer">
           <EntitySet Name="Actions" EntityType="Self.Actions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActionTriggers" EntityType="Self.ActionTriggers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DelegatePersons" EntityType="Self.DelegatePersons" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectTypes" EntityType="Self.ProjectTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WeekRecords" EntityType="Self.WeekRecords" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Actions_ActionTriggers" Association="Self.FK_Actions_ActionTriggers">
             <End Role="ActionTriggers" EntitySet="ActionTriggers" />
             <End Role="Actions" EntitySet="Actions" />
@@ -131,6 +155,10 @@
           <AssociationSet Name="FK_Projects_ProejctTypes" Association="Self.FK_Projects_ProejctTypes">
             <End Role="ProjectTypes" EntitySet="ProjectTypes" />
             <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeekRecords_Actions" Association="Self.FK_WeekRecords_Actions">
+            <End Role="Actions" EntitySet="Actions" />
+            <End Role="WeekRecords" EntitySet="WeekRecords" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -160,6 +188,7 @@
           <Property Name="WLTaskRevision" Type="Int32" />
           <Property Name="WLId" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
           <Property Name="ToBuy" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="WeekRecords" Relationship="ListOfDealBaseModel.FK_WeekRecords_Actions" FromRole="Action" ToRole="WeekRecord" />
         </EntityType>
         <EntityType Name="ActionTrigger">
           <Key>
@@ -239,6 +268,11 @@
             <End Role="ActionTrigger" EntitySet="ActionTriggers" />
             <End Role="Action" EntitySet="Actions" />
           </AssociationSet>
+          <EntitySet Name="WeekRecords" EntityType="ListOfDealBaseModel.WeekRecord" />
+          <AssociationSet Name="FK_WeekRecords_Actions" Association="ListOfDealBaseModel.FK_WeekRecords_Actions">
+            <End Role="Action" EntitySet="Actions" />
+            <End Role="WeekRecord" EntitySet="WeekRecords" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ProjectType">
           <Key>
@@ -270,6 +304,30 @@
             </Principal>
             <Dependent Role="Action">
               <PropertyRef Name="TriggerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="WeekRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ActionId" Type="Int32" Nullable="false" />
+          <Property Name="DateAdd" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="WeekId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsCompletedInWeek" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Action" Relationship="ListOfDealBaseModel.FK_WeekRecords_Actions" FromRole="WeekRecord" ToRole="Action" />
+        </EntityType>
+        <Association Name="FK_WeekRecords_Actions">
+          <End Type="ListOfDealBaseModel.Action" Role="Action" Multiplicity="1" />
+          <End Type="ListOfDealBaseModel.WeekRecord" Role="WeekRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Action">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeekRecord">
+              <PropertyRef Name="ActionId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -337,6 +395,18 @@
               <MappingFragment StoreEntitySet="ProjectTypes">
                 <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WeekRecords">
+            <EntityTypeMapping TypeName="ListOfDealBaseModel.WeekRecord">
+              <MappingFragment StoreEntitySet="WeekRecords">
+                <ScalarProperty Name="IsCompletedInWeek" ColumnName="IsCompletedInWeek" />
+                <ScalarProperty Name="WeekId" ColumnName="WeekId" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="DateAdd" ColumnName="DateAdd" />
+                <ScalarProperty Name="ActionId" ColumnName="ActionId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

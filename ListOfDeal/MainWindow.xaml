@@ -57,6 +57,9 @@
             <dx:DXTabItem Header="WunderList">
                 <views:WunderListView DataContext="{Binding WLViewModel}"/>
             </dx:DXTabItem>
+            <dx:DXTabItem Header="WeekStat">
+                <views:WeeksStatisitc/>
+            </dx:DXTabItem>
         </dx:DXTabControl>
     </Grid>
 </dx:DXWindow>

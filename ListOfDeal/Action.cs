@@ -35,6 +35,7 @@ namespace ListOfDeal
         public Nullable<int> WLTaskRevision { get; set; }
         public string WLId { get; set; }
         public bool ToBuy { get; set; }
+        public bool IsMajor { get; set; }
     
         public virtual DelegatePerson DelegatePerson { get; set; }
         public virtual Project Project { get; set; }

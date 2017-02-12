@@ -25,7 +25,7 @@ namespace ListOfDeal
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Action> Actions { get; set; }
+        public virtual IDbSet<Action> Actions { get; set; }
         public virtual DbSet<ActionTrigger> ActionTriggers { get; set; }
         public virtual DbSet<DelegatePerson> DelegatePersons { get; set; }
         public virtual DbSet<Project> Projects { get; set; }

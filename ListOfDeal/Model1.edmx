@@ -25,6 +25,7 @@
           <Property Name="WLTaskStatus" Type="int" Nullable="false" />
           <Property Name="WLTaskRevision" Type="int" />
           <Property Name="ToBuy" Type="bit" Nullable="false" />
+          <Property Name="IsMajor" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ActionTriggers">
           <Key>
@@ -189,6 +190,7 @@
           <Property Name="WLId" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
           <Property Name="ToBuy" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="WeekRecords" Relationship="ListOfDealBaseModel.FK_WeekRecords_Actions" FromRole="Action" ToRole="WeekRecord" />
+          <Property Name="IsMajor" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ActionTrigger">
           <Key>
@@ -340,6 +342,7 @@
           <EntitySetMapping Name="Actions">
             <EntityTypeMapping TypeName="ListOfDealBaseModel.Action">
               <MappingFragment StoreEntitySet="Actions">
+                <ScalarProperty Name="IsMajor" ColumnName="IsMajor" />
                 <ScalarProperty Name="ToBuy" ColumnName="ToBuy" />
                 <ScalarProperty Name="WLId" ColumnName="WLId" />
                 <ScalarProperty Name="WLTaskRevision" ColumnName="WLTaskRevision" />

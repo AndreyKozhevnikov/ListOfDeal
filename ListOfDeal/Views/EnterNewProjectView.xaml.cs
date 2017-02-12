@@ -69,7 +69,7 @@ namespace ListOfDeal.Views {
 
         public object Evaluate(params object[] operands) {
             var actions = operands[0] as ObservableCollection<MyAction>;
-            var outdated = actions.Where(x => x.ScheduledTime < DateTime.Today);
+            var outdated = actions.Where(x => x.ScheduledTime < DateTime.Today&&x.IsActive);
             return outdated.Count() > 0;
         }
     }

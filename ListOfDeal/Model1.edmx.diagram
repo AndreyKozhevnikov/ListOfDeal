@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d15191ca1561459dad69331948269f28" Name="Diagram1" ZoomLevel="59">
+      <Diagram DiagramId="d15191ca1561459dad69331948269f28" Name="Diagram1" ZoomLevel="57">
         <EntityTypeShape EntityType="ListOfDealBaseModel.Action" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="ListOfDealBaseModel.ActionTrigger" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
         <EntityTypeShape EntityType="ListOfDealBaseModel.DelegatePerson" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />

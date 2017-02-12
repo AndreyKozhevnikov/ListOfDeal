@@ -27,6 +27,7 @@ namespace ListOfDeal {
         IListOfDealBaseEntities GeneralEntity { get; set; }
         Project CreateProject();
         void AddProject(Project p);
+        void AddWeekRecord(WeekRecord wr);
         IEnumerable<Action> GetActions();
         ActionTrigger CreateActionTrigger();
         void AddActionTrigger(ActionTrigger actionTrigger);
@@ -34,6 +35,7 @@ namespace ListOfDeal {
         void AddProjectType(ProjectType projectType);
         void SaveChanges();
         Action CreateAction();
+        WeekRecord CreateWeekRecord();
         //List<ProjectType> ProjectTypes { get; set; }
         //List<ActionTrigger> ActionTriggers { get; set; }
         //List<DelegatePerson> DelegatePersons { get; set; }
@@ -91,6 +93,9 @@ namespace ListOfDeal {
         public void AddProject(Project p) {
             GeneralEntity.Projects.Add(p);
         }
+        public void AddWeekRecord(WeekRecord wr) {
+            GeneralEntity.WeekRecords.Add(wr);
+        }
         public IEnumerable<Action> GetActions() {
             return GeneralEntity.Actions;
         }
@@ -101,7 +106,7 @@ namespace ListOfDeal {
             GeneralEntity.ActionTriggers.Add(actionTrigger);
         }
         public ProjectType CreateProjectType() {
-         return   GeneralEntity.ProjectTypes.Create();
+            return GeneralEntity.ProjectTypes.Create();
         }
         public void AddProjectType(ProjectType projectType) {
             GeneralEntity.ProjectTypes.Add(projectType);
@@ -110,7 +115,10 @@ namespace ListOfDeal {
             GeneralEntity.SaveChanges();
         }
         public Action CreateAction() {
-        return    GeneralEntity.Actions.Create();
+            return GeneralEntity.Actions.Create();
+        }
+        public WeekRecord CreateWeekRecord() {
+            return GeneralEntity.WeekRecords.Create();
         }
     }
     public partial class MainViewModel : IMainViewModel {
@@ -190,7 +198,7 @@ namespace ListOfDeal {
         }
         private void OnSelectedActionChanged() {
             if (SelectedAction != null) {
-                CurrentProject.TypeId= SelectedAction.ProjectType;
+                CurrentProject.TypeId = SelectedAction.ProjectType;
             }
         }
         private void OnSelectedProjectChanged() {
@@ -414,7 +422,7 @@ namespace ListOfDeal {
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
             var dataProviderEntity = new Mock<IMainViewModelDataProvider>();
             dataProviderEntity.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
-            dataProviderEntity.Setup(x => x.GetProjects()).Returns(new List<Project>() );
+            dataProviderEntity.Setup(x => x.GetProjects()).Returns(new List<Project>());
             dataProviderEntity.Setup(x => x.GetProjectTypes()).Returns(new List<ProjectType>());
             dataProviderEntity.Setup(x => x.GetActionTriggers()).Returns(new List<ActionTrigger>());
             dataProviderEntity.Setup(x => x.GetDelegatePersons()).Returns(new List<DelegatePerson>());

@@ -132,7 +132,6 @@
     </ApplicationDefinition>
     <Compile Include="Classes\DayData.cs" />
     <Compile Include="Classes\HistoryActionItem.cs" />
-    <Compile Include="Classes\MyWeekRecord.cs" />
     <Compile Include="Classes\Services.cs" />
     <Compile Include="Classes\WeekStatisticViewModel.cs" />
     <Compile Include="Classes\WList\WLConnector.cs" />

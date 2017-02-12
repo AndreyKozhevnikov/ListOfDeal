@@ -3,6 +3,7 @@
 namespace ListOfDeal {
     public interface IListOfDealBaseEntities {
         IDbSet<Action> Actions { get; set; }
+        DbSet<WeekRecord> WeekRecords { get; set; }
         DbSet<ActionTrigger> ActionTriggers { get; set; }
         DbSet<DelegatePerson> DelegatePersons { get; set; }
         DbSet<Project> Projects { get; set; }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,9 +27,12 @@ namespace ListOfDeal {
             MainViewModel.DataProvider = new MainViewModelDataProvider();
             this.DataContext = new MainViewModel();
             InitializeComponent();
+            var v = Assembly.GetExecutingAssembly().GetName().Version;
+            var st = this.Title + " - " + v;
 #if DEBUG
-            this.Title = this.Title + " Debug mode";
+           st  = st + " Debug mode";
 #endif
+            this.Title = st;
         }
 
        

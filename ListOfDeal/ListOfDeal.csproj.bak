@@ -81,7 +81,9 @@
       <Private>False</Private>
       <HintPath>bin\Debug\DevExpress.Xpf.LayoutControl.v15.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Xpf.Themes.Office2016Colorful.v15.2, Version=15.2.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Themes.Office2016Colorful.v15.2, Version=15.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>bin\Debug\DevExpress.Xpf.Themes.Office2016Colorful.v15.2.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
@@ -131,6 +133,7 @@
     <Compile Include="Classes\DayData.cs" />
     <Compile Include="Classes\HistoryActionItem.cs" />
     <Compile Include="Classes\Services.cs" />
+    <Compile Include="Classes\WeekStatisticViewModel.cs" />
     <Compile Include="Classes\WList\WLConnector.cs" />
     <Compile Include="Classes\WList\WLLogger.cs" />
     <Compile Include="Classes\WList\WLProcessor.cs" />
@@ -155,8 +158,14 @@
     <Compile Include="Views\Actions\WaitedActionsView.xaml.cs">
       <DependentUpon>WaitedActionsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\WeeksStatistic.xaml.cs">
+      <DependentUpon>WeeksStatistic.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WunderListView.xaml.cs">
       <DependentUpon>WunderListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WeekRecord.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Page Include="Views\ChartView.xaml">
       <SubType>Designer</SubType>
@@ -221,6 +230,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Actions\WaitedActionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WeeksStatistic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -22,6 +22,19 @@ namespace ListOfDeal {
     public partial class EditProject :DXWindow {
         public EditProject() {
             InitializeComponent();
+            this.Loaded += EditProject_Loaded;
+        }
+
+        private void EditProject_Loaded(object sender, RoutedEventArgs e) {
+            var vm = this.DataContext as MainViewModel;
+            if (vm.SelectedProject != null) {
+                grd1.ItemsSource = vm.SelectedProject.Actions;
+                return;
+            }
+            if (vm.SelectedAction != null) {
+                var proj = vm.GetProjectById(vm.SelectedAction.ProjectId);
+                grd1.ItemsSource = proj.Actions;
+            }
         }
 
         private void GridDragDropManager_Drop(object sender, DevExpress.Xpf.Grid.DragDrop.GridDropEventArgs e) {

@@ -63,6 +63,7 @@ namespace ListOfDeal {
         ICommand _getActionsHistoryCommand;
         ICommand _validateColumnCommand;
         ICommand _customColumnSortCommand;
+        ICommand _onFocusedRowHandleChangedCommand;
         public ICommand CustomColumnSortCommand {
             get {
                 if (_customColumnSortCommand == null)
@@ -183,6 +184,13 @@ namespace ListOfDeal {
             }
         }
 
+        public ICommand OnFocusedRowHandleChangedCommand {
+            get {
+                if (_onFocusedRowHandleChangedCommand == null)
+                    _onFocusedRowHandleChangedCommand = new DelegateCommand<int>(OnFocusedRowHandleChanged);
+                return _onFocusedRowHandleChangedCommand;
+            }
+        }
         #endregion
 
 
@@ -305,6 +313,8 @@ namespace ListOfDeal {
             }
             set { _gridControlManagerService = value; }
         }
+
+
     }
 
 

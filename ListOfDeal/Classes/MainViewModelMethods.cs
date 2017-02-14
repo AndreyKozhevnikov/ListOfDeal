@@ -208,6 +208,11 @@ namespace ListOfDeal {
             if (SelectedProject != null)
                 CurrentProject.TypeId = SelectedProject.TypeId;
         }
+
+        void OnFocusedRowHandleChanged(int typeId) {
+            if (typeId != -1)
+                CurrentProject.TypeId = typeId;
+        }
         private void AddAction() {
             if (string.IsNullOrEmpty(CurrentAction.Name))
                 return;

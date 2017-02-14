@@ -300,7 +300,15 @@
                         ShowFilterPanelMode="Never"
                         ShowFixedTotalSummary="True"
                         ShowGroupPanel="False"
-                        ShowGroupedColumns="True">
+                        ShowGroupedColumns="True"
+                        >
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:EventToCommand EventName="FocusedRowHandleChanged" Command="{Binding OnFocusedRowHandleChangedCommand}" PassEventArgsToCommand="True" >
+                                <dxmvvm:EventToCommand.EventArgsConverter>
+                                    <local:FocusedRowEventArgsConverter/>
+                                </dxmvvm:EventToCommand.EventArgsConverter>
+                                </dxmvvm:EventToCommand>
+                        </dxmvvm:Interaction.Behaviors>
                         <dxg:TableView.FormatConditions>
                             <dxg:FormatCondition
                                 ApplyToRow="True"

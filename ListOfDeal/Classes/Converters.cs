@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DevExpress.Mvvm.UI;
+using DevExpress.Xpf.Grid;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,9 +27,22 @@ namespace ListOfDeal {
             throw new NotImplementedException();
         }
     }
+    public class FocusedRowEventArgsConverter : EventArgsConverterBase<FocusedRowHandleChangedEventArgs> {
+        protected override object Convert(object sender, FocusedRowHandleChangedEventArgs args) {
+            var rh = args.RowData.RowHandle.Value;
+            var tv = sender as TableView;
+            var gc = tv.DataControl as GridControl;
+            var isGroup = gc.IsGroupRowHandle(rh);
+            if (isGroup) {
+                var chRH = gc.GetChildRowHandle(rh, 0);
+                var ch = gc.GetRow(chRH) as MyProject;
+                return ch.TypeId;
+            }
+            return -1;
+        }
+    }
 
-
-    public class custConverter :MarkupExtension, IValueConverter, IMultiValueConverter {
+    public class custConverter : MarkupExtension, IValueConverter {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
             return "test";
             //return value;

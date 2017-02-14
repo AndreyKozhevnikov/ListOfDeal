@@ -35,8 +35,8 @@ namespace ListOfDeal {
             this.Title = st;
         }
 
-       
+
     }
 
-  
+
 }

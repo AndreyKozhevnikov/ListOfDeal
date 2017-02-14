@@ -5,14 +5,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ListOfDeal.Views"
              xmlns:vm="clr-namespace:ListOfDeal.Classes"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.DataContext>
         <vm:WeekStatisticViewModel/>
     </UserControl.DataContext>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <StackPanel>
             <Button Content="Create items" Command="{Binding CreateItemsCommand}"/>
+            <Button Content="Get items" Command="{Binding GetItemsCommand}"/>
         </StackPanel>
+        <dxg:GridControl Grid.Row="1" ItemsSource="{Binding WeekRecords}" AutoGenerateColumns="AddNew" >
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="Action.Name"/>
+            </dxg:GridControl.Columns>
+        </dxg:GridControl>
     </Grid>
 </UserControl>

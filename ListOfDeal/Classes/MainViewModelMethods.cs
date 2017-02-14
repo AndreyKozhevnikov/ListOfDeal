@@ -29,6 +29,7 @@ namespace ListOfDeal {
         void AddProject(Project p);
         void AddWeekRecord(WeekRecord wr);
         IEnumerable<Action> GetActions();
+        IEnumerable<WeekRecord> GetWeekRecords();
         ActionTrigger CreateActionTrigger();
         void AddActionTrigger(ActionTrigger actionTrigger);
         ProjectType CreateProjectType();
@@ -85,7 +86,9 @@ namespace ListOfDeal {
         public IEnumerable<Project> GetProjects() {
             return GeneralEntity.Projects;
         }
-
+        public IEnumerable<WeekRecord> GetWeekRecords() {
+            return GeneralEntity.WeekRecords;
+        }
         public Project CreateProject() {
             return GeneralEntity.Projects.Create();
         }
@@ -331,7 +334,7 @@ namespace ListOfDeal {
             GridControlManagerService.ExpandMasterRow(p);
         }
 
-        MyProject GetProjectById(int id) {
+        public MyProject GetProjectById(int id) {
             var p = Projects.Where(x => x.Id == id).First();
             return p;
         }

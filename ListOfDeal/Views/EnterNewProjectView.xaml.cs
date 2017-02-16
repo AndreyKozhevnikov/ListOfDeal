@@ -45,6 +45,10 @@ namespace ListOfDeal.Views {
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e) {
+            for (int i = 0; i < grid1.VisibleRowCount; i++) {
+                int rowHandle = grid1.GetRowHandleByVisibleIndex(i);
+                grid1.CollapseMasterRow(rowHandle);
+            }
             grid1.CollapseAllGroups();
         }
     }

@@ -307,7 +307,7 @@
                                 <dxmvvm:EventToCommand.EventArgsConverter>
                                     <local:FocusedRowEventArgsConverter/>
                                 </dxmvvm:EventToCommand.EventArgsConverter>
-                                </dxmvvm:EventToCommand>
+                            </dxmvvm:EventToCommand>
                         </dxmvvm:Interaction.Behaviors>
                         <dxg:TableView.FormatConditions>
                             <dxg:FormatCondition

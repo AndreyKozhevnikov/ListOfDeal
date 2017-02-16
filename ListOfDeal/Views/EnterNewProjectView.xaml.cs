@@ -1,26 +1,19 @@
 ﻿using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Grid;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
+
 
 namespace ListOfDeal.Views {
     /// <summary>
     /// Interaction logic for EnterNewProjectView.xaml
     /// </summary>
-    public partial class EnterNewProjectView :UserControl {
+    public partial class EnterNewProjectView : UserControl {
         public EnterNewProjectView() {
             InitializeComponent();
             CriteriaOperator.RegisterCustomFunction(new GetActiveActionsFunction());
@@ -30,11 +23,25 @@ namespace ListOfDeal.Views {
             MainViewModel vm = this.DataContext as MainViewModel;
             vm.Test();
         }
+
         private void GridControl_Loaded(object sender, RoutedEventArgs e) {
-            (sender as GridControl).RefreshData();
+            var gc = sender as GridControl;
+            gc.RefreshData();
 #if DEBUG
-            (sender as GridControl).UngroupBy("TypeId");
+            gc.UngroupBy("TypeId");
 #endif
+            var descr = DependencyPropertyDescriptor.FromProperty(TableView.SearchStringProperty, typeof(TableView));
+            EventHandler myE = new EventHandler(SearchChanged);
+            descr.AddValueChanged(gc.View, myE);
+
+        }
+
+        private void SearchChanged(object sender, EventArgs e) {
+            var tv = sender as TableView;
+            var gc = tv.DataControl as GridControl;
+            if (!string.IsNullOrEmpty(tv.SearchString)) {
+                gc.ExpandAllGroups();
+            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e) {
@@ -69,7 +76,7 @@ namespace ListOfDeal.Views {
 
         public object Evaluate(params object[] operands) {
             var actions = operands[0] as ObservableCollection<MyAction>;
-            var outdated = actions.Where(x => x.ScheduledTime < DateTime.Today&&x.IsActive);
+            var outdated = actions.Where(x => x.ScheduledTime < DateTime.Today && x.IsActive);
             return outdated.Count() > 0;
         }
     }

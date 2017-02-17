@@ -1,15 +1,18 @@
 ﻿using DevExpress.Mvvm.UI;
+using DevExpress.Xpf.Editors.Popups.Calendar;
 using DevExpress.Xpf.Grid;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
+using System.Globalization;
 
 namespace ListOfDeal {
-    class CustomDisplayTextConverter :MarkupExtension,IValueConverter{
+    class CustomDisplayTextConverter : MarkupExtension, IValueConverter {
         public override object ProvideValue(IServiceProvider serviceProvider) {
             return this;
         }
@@ -64,4 +67,30 @@ namespace ListOfDeal {
             throw new NotImplementedException();
         }
     }
+
+    public class SpecialDateBorderStyleConverter : MarkupExtension, IValueConverter {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+            CalendarCellButton currentCellButton = (CalendarCellButton)value;
+            DateTime dt = (DateTime)DateEditCalendar.GetDateTime((DependencyObject)currentCellButton);
+            dt = dt.Date;
+            var today = DateTime.Today;
+            var diff = today.DayOfWeek - DayOfWeek.Monday;
+            if (diff < 0)
+                diff += 7;
+            var stDt = today.AddDays(-1 * diff).AddDays(7).Date;
+            var fnDt = stDt.AddDays(6);
+            if (dt >= stDt && dt <= fnDt)
+                return true;
+            return false;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+            throw new NotImplementedException();
+        }
+
+        public override object ProvideValue(IServiceProvider serviceProvider) {
+            return this;
+        }
+    }
+
 }

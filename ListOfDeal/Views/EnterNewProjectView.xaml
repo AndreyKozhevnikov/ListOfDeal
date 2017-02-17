@@ -12,12 +12,18 @@
     xmlns:local="clr-namespace:ListOfDeal"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ListOfDeal.Views"
+    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
     d:DesignHeight="300"
     d:DesignWidth="1300"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <dxmvvm:ObjectToBooleanConverter x:Key="objToBoolConverter" />
-        <!--<SolidColorBrush x:Key="{dxgt:GridRowThemeKey ResourceKey=BorderFocusedBrush, IsThemeIndependent=True}" Color="#FF00C4FA" />-->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="customdateedit.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <dxmvvm:ObjectToBooleanConverter x:Key="objToBoolConverter" />
+        </ResourceDictionary>
     </UserControl.Resources>
     <dxlc:LayoutControl>
         <dxlc:LayoutGroup Orientation="Vertical">

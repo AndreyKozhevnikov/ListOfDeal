@@ -19,11 +19,21 @@
         <StackPanel>
             <Button Content="Create items" Command="{Binding CreateItemsCommand}"/>
             <Button Content="Get items" Command="{Binding GetItemsCommand}"/>
+            <Button Content="Mark items complete" Command="{Binding MarkItemsCompleteCommand}"/>
         </StackPanel>
-        <dxg:GridControl Grid.Row="1" ItemsSource="{Binding WeekRecords}" AutoGenerateColumns="AddNew" >
+        <dxg:GridControl Grid.Row="1" ItemsSource="{Binding WeekRecords}" AutoGenerateColumns="None" >
             <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="Action.Name"/>
+                <dxg:GridColumn FieldName="Action.Name" Width="200"/>
+                <dxg:GridColumn FieldName="WeekId" GroupIndex="0"/>
+                <dxg:GridColumn FieldName="IsCompletedInWeek"/>
             </dxg:GridControl.Columns>
+            <dxg:GridControl.GroupSummary>
+                <dxg:GridSummaryItem FieldName="IsCompletedInWeek" SummaryType="Sum" ShowInColumn="IsCompletedInWeek" />
+                <dxg:GridSummaryItem FieldName="IsCompletedInWeek" SummaryType="Count"/>
+            </dxg:GridControl.GroupSummary>
+            <dxg:GridControl.View>
+                <dxg:TableView GroupSummaryDisplayMode="AlignByColumns"/>
+            </dxg:GridControl.View>
         </dxg:GridControl>
     </Grid>
 </UserControl>

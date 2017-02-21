@@ -47,6 +47,9 @@ namespace ListOfDeal {
                     this.IsActive = false;
                     SetDeleteTaskIfNeeded();
                 }
+                else {
+                    this.CompleteTime = null;
+                }
                 RaisePropertyChanged("Status");
             }
         }
@@ -245,7 +248,7 @@ namespace ListOfDeal {
         UpdateNeeded = 1,
         DeletingNeeded = 2
     }
-    [TestFixture] 
+    [TestFixture]
     public class MyActionTest {
         [Test]
         public void CompleteAction() {
@@ -409,6 +412,16 @@ namespace ListOfDeal {
             act.ScheduledTime = DateTime.Now;
             //assert
             Assert.AreEqual(true, act.IsActive);
+        }
+        [Test]
+        public void SetStatusToActiveAgainShouldClearCompletedTime() {
+            //arrange
+            MyAction act = new MyAction(new Action());
+            //act
+            act.Status = ActionsStatusEnum.Completed;
+            act.Status = ActionsStatusEnum.Waited;
+            //assert
+            Assert.AreEqual(null, act.CompleteTime);
 
         }
     }

@@ -94,10 +94,14 @@ namespace ListOfDeal {
             RaiseLog(string.Format("wlId in LOD - {0}, wlId in WL-{1}", lstwlIdinLod.Count(), lstwlIdInWL.Count()));
             foreach (string tskId in diff) {
                 Debug.Print(tskId.ToString());
+                var tsk = wlConnector.GetTask(tskId);
+                string dtSt = tsk.completed_at.Split('T')[0];
+                DateTime dt = DateTime.Parse(dtSt);
                 var act = actionsWithTasks.Where(x => x.WLId == tskId).First();
                 act.WLId = null;
                 act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
                 act.Status = ActionsStatusEnum.Completed;
+                act.CompleteTime = dt;
                 RaiseLog(string.Format("complete action - {0} {1}", act.GetWLTitle(), act.parentEntity.Id));
             }
             MainViewModel.SaveChanges();

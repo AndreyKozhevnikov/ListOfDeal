@@ -43,7 +43,7 @@ namespace ListOfDeal {
                     this.ScheduledTime = null;
                 }
                 if (value == ActionsStatusEnum.Completed) {
-                    this.parentEntity.CompleteTime = DateTime.Now;
+                    this.CompleteTime = DateTime.Now;
                     this.IsActive = false;
                     SetDeleteTaskIfNeeded();
                 }
@@ -178,6 +178,9 @@ namespace ListOfDeal {
         public DateTime? CompleteTime {
             get {
                 return parentEntity.CompleteTime;
+            }
+            set {
+                parentEntity.CompleteTime = value;
             }
         }
         public int? WLTaskRevision {

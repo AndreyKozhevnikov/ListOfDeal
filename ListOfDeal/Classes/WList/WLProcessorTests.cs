@@ -252,12 +252,14 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>(MockBehavior.Strict);
             mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(taskList);
+            mockWlConnector.Setup(x => x.GetTask("2")).Returns(new WLTask() { id = "2", completed_at = "2000-02-03T17:53:04.953Z" });
             wlProc.CreateWlConnector(mockWlConnector.Object);
             // wlProc.PopulateActions(actList);
             //act
             wlProc.HandleCompletedWLTasks();
             //assert
             Assert.AreEqual(ActionsStatusEnum.Completed, myAction2.Status);
+            Assert.AreEqual(new DateTime(2000, 2, 3), myAction2.CompleteTime);
             dataProviderEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
 
         }
@@ -285,6 +287,7 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>(MockBehavior.Strict);
             mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(taskList);
+            mockWlConnector.Setup(x => x.GetTask(It.IsAny<string>())).Returns(new WLTask() { completed_at = "2000-02-03T17:53:04.953Z" });
             wlProc.CreateWlConnector(mockWlConnector.Object);
             //act
             wlProc.HandleCompletedWLTasks();
@@ -344,6 +347,7 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(taskListSched);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(taskListBuy);
+            mockWlConnector.Setup(x => x.GetTask(It.IsAny<string>())).Returns(new WLTask() { completed_at = "2000-02-03T17:53:04.953Z" });
             wlProc.CreateWlConnector(mockWlConnector.Object);
             // wlProc.PopulateActions(actList);
             //act
@@ -389,6 +393,7 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>(MockBehavior.Strict);
             mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(taskList);
+            mockWlConnector.Setup(x => x.GetTask(It.IsAny<string>())).Returns(new WLTask() { completed_at = "2000-02-03T17:53:04.953Z" });
             wlProc.CreateWlConnector(mockWlConnector.Object);
             // wlProc.PopulateActions(actList);
             //act
@@ -844,6 +849,7 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetTask(It.IsAny<string>())).Returns(new WLTask() {  completed_at = "2000-02-03T17:53:04.953Z" });
             wlProc.CreateWlConnector(mockWlConnector.Object);
             logList = new List<string>();
             wlProc.Logged += Proc_Logged;

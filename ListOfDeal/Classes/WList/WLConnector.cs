@@ -20,7 +20,7 @@ namespace ListOfDeal {
         List<WLList> GetAllLists();
         List<WLTask> GetTasksForList(int listId);
         WLTask GetTask(string taskId);
-        WLTask CreateTask(string title, int listId, DateTime? dueDate = null);
+        WLTask CreateTask(string title, int listId, DateTime? dueDate, bool isMajor);
         WLTask ChangeListOfTask(string wlId, int listId);
         WLTask UpdateTask(WLTask task);
         WLTask CompleteTask(string wlId);
@@ -86,13 +86,16 @@ namespace ListOfDeal {
         string NormalizeString(string title) {
             return title.Replace("/", "").Replace("\\", "");
         }
-        public WLTask CreateTask(string title, int listId, DateTime? dueDate = null) {
+        public WLTask CreateTask(string title, int listId, DateTime? dueDate, bool isMajor) {
             title = NormalizeString(title);
             string st = "http://a.wunderlist.com/api/v1/tasks";
             JsonCreator.Add("list_id", listId);
             JsonCreator.Add("title", title);
             if (dueDate != null) {
                 JsonCreator.Add("due_date", ConvertToWLDate(dueDate.Value));
+            }
+            if (isMajor == true) {
+                JsonCreator.Add("starred", true);
             }
             string json = JsonCreator.GetString();
             var responseText = GetHttpRequestResponse(st, "POST", json);
@@ -417,8 +420,9 @@ namespace ListOfDeal {
         static string GetTupleString(Tuple<string, object> t) {
             if (t.Item2 is string)
                 return string.Format("\"{0}\":\"{1}\"", t.Item1, t.Item2);
-            else
-                return string.Format("\"{0}\":{1}", t.Item1, t.Item2);
+            if (t.Item2 is bool)
+                return string.Format("\"{0}\":{1}", t.Item1, t.Item2.ToString().ToLower());
+            return string.Format("\"{0}\":{1}", t.Item1, t.Item2);
         }
 
     }
@@ -435,7 +439,7 @@ namespace ListOfDeal {
             //assert
             string json = "{\"revision\":" + 123 + "," +
                "\"title\":\"NewTestTitle3\"," +
-               "\"completed\":True" +
+               "\"completed\":true" +
                "}";
             Assert.AreEqual(json, st);
 

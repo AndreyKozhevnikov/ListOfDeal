@@ -26,8 +26,8 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>();
 
-            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act1", It.IsAny<int>(), null)).Returns(new WLTask() { id = "234" });
-            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act3", It.IsAny<int>(), null)).Returns(new WLTask() { id = "345" });
+            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act1", It.IsAny<int>(), null,false)).Returns(new WLTask() { id = "234" });
+            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act3", It.IsAny<int>(), null,false)).Returns(new WLTask() { id = "345" });
             mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(new List<WLTask>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
             // wlProc.PopulateActions(actList);
@@ -40,8 +40,8 @@ namespace ListOfDeal {
             //act
             wlProc.CreateWlTasks();
             //assert
-            mockWlConnector.Verify(x => x.CreateTask("Pr1 - act1", It.IsAny<int>(), null), Times.Once);
-            mockWlConnector.Verify(x => x.CreateTask("Pr1 - act3", It.IsAny<int>(), null), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("Pr1 - act1", It.IsAny<int>(), null,false), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("Pr1 - act3", It.IsAny<int>(), null,false), Times.Once);
             Assert.AreEqual("234", proj.Actions[0].WLId);
             Assert.AreEqual("345", proj.Actions[2].WLId);
             dataProviderEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
@@ -88,8 +88,8 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>();
 
-            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act1", It.IsAny<int>(), It.IsAny<DateTime>())).Returns(new WLTask() { id = "234", due_date = "2016-08-28" });
-            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act2", It.IsAny<int>(), null)).Returns(new WLTask() { id = "345" });
+            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act1", It.IsAny<int>(), It.IsAny<DateTime>(),false)).Returns(new WLTask() { id = "234", due_date = "2016-08-28" });
+            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act2", It.IsAny<int>(), null,false)).Returns(new WLTask() { id = "345" });
             mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(new List<WLTask>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
             // wlProc.PopulateActions(actList);
@@ -101,8 +101,8 @@ namespace ListOfDeal {
             //act
             wlProc.CreateWlTasks();
             //assert
-            mockWlConnector.Verify(x => x.CreateTask("Pr1 - act1", WLProcessor.MySchedId, new DateTime(2016, 8, 28)), Times.Once);
-            mockWlConnector.Verify(x => x.CreateTask("Pr1 - act2", WLProcessor.MyListId, null), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("Pr1 - act1", WLProcessor.MySchedId, new DateTime(2016, 8, 28),false), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("Pr1 - act2", WLProcessor.MyListId, null,false), Times.Once);
             Assert.AreEqual("234", proj.Actions[0].WLId);
             Assert.AreEqual("345", proj.Actions[1].WLId);
             dataProviderEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
@@ -123,7 +123,7 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>();
 
-            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act1", It.IsAny<int>(), It.IsAny<DateTime>())).Returns(new WLTask() { id = "234", due_date = "2016-08-28", revision = 9 });
+            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act1", It.IsAny<int>(), It.IsAny<DateTime>(),false)).Returns(new WLTask() { id = "234", due_date = "2016-08-28", revision = 9 });
             mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(new List<WLTask>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
             // wlProc.PopulateActions(actList);
@@ -166,18 +166,19 @@ namespace ListOfDeal {
             a3.Name = "act3";
             a3.IsActive = true;
             a3.Project = parentProject;
-            a3.ToBuy = true;
-            a3.ScheduledTime = new DateTime(2017, 2, 2);
-            proj.Actions.Add(new MyAction(a3));
+            var ma3 = new MyAction(a3);
+            ma3.ToBuy = true;
+            ma3.ScheduledTime = new DateTime(2017, 2, 2);
+            proj.Actions.Add(ma3);
 
             var mockMainVM = new Mock<IMainViewModel>();
             mockMainVM.Setup(x => x.Projects).Returns(projCollection);
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>();
 
-            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act1", It.IsAny<int>(), null)).Returns(new WLTask() { id = "234" });
-            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act2", It.IsAny<int>(), null)).Returns(new WLTask() { id = "345" });
-            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act3", It.IsAny<int>(), new DateTime(2017,2,2))).Returns(new WLTask() { id = "456" });
+            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act1", It.IsAny<int>(), null,false)).Returns(new WLTask() { id = "234" });
+            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act2", It.IsAny<int>(), null,false)).Returns(new WLTask() { id = "345" });
+            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act3", It.IsAny<int>(), new DateTime(2017,2,2),false)).Returns(new WLTask() { id = "456" });
             mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(new List<WLTask>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
             // wlProc.PopulateActions(actList);
@@ -189,9 +190,9 @@ namespace ListOfDeal {
             //act
             wlProc.CreateWlTasks();
             //assert
-            mockWlConnector.Verify(x => x.CreateTask("Pr1 - act1", WLProcessor.MyBuyId, null), Times.Once);
-            mockWlConnector.Verify(x => x.CreateTask("Pr1 - act2", WLProcessor.MyListId, null), Times.Once);
-            mockWlConnector.Verify(x => x.CreateTask("Pr1 - act3", WLProcessor.MyBuyId, new DateTime(2017,2,2)), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("Pr1 - act1", WLProcessor.MyBuyId, null,false), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("Pr1 - act2", WLProcessor.MyListId, null,false), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("Pr1 - act3", WLProcessor.MyBuyId, new DateTime(2017,2,2),false), Times.Once);
             Assert.AreEqual("234", proj.Actions[0].WLId);
             Assert.AreEqual("345", proj.Actions[1].WLId);
             Assert.AreEqual("456", proj.Actions[2].WLId);
@@ -217,7 +218,7 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>();
 
-            mockWlConnector.Setup(x => x.CreateTask(It.IsAny<string>(), It.IsAny<int>(), null)).Returns(new WLTask() { id = "345" });
+            mockWlConnector.Setup(x => x.CreateTask(It.IsAny<string>(), It.IsAny<int>(), null,false)).Returns(new WLTask() { id = "345" });
             mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(new List<WLTask>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
             // wlProc.PopulateActions(actList);
@@ -229,8 +230,8 @@ namespace ListOfDeal {
             //act
             wlProc.CreateWlTasks();
             //assert
-            mockWlConnector.Verify(x => x.CreateTask("act1", WLProcessor.MyListId, null), Times.Once);
-            mockWlConnector.Verify(x => x.CreateTask("MyNonSimpleProject - act2", WLProcessor.MyListId, null), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("act1", WLProcessor.MyListId, null,false), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("MyNonSimpleProject - act2", WLProcessor.MyListId, null,false), Times.Once);
 
 
 

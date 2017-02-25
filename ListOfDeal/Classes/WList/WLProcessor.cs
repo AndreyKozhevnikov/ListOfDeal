@@ -67,13 +67,11 @@ namespace ListOfDeal {
                     targetListId = MySchedId;
                     lstName = "MySched";
                 }
-                else {
-                    if (act.ToBuy) { //to buy action
-                        targetListId = MyBuyId;
-                        lstName = "MyBuy";
-                    }
+                if (act.ToBuy) { //to buy action
+                    targetListId = MyBuyId;
+                    lstName = "MyBuy";
                 }
-                wlTask = wlConnector.CreateTask(title, targetListId, act.ScheduledTime);
+                wlTask = wlConnector.CreateTask(title, targetListId, act.ScheduledTime, act.IsMajor);
                 act.WLId = wlTask.id;
                 act.WLTaskRevision = wlTask.revision;
                 //  act.parentEntity.WLTaskStatus = 1;

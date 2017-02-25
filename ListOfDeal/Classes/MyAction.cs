@@ -211,6 +211,15 @@ namespace ListOfDeal {
                     parentEntity.WLTaskStatus = (int)value;
             }
         }
+        public bool IsMajor {
+            get {
+                return parentEntity.IsMajor;
+            }
+            set {
+                parentEntity.IsMajor = value;
+            }
+        }
+
         public void SetDeleteTaskIfNeeded() {
             if (WLId != null)
                 this.WLTaskStatus = WLTaskStatusEnum.DeletingNeeded;

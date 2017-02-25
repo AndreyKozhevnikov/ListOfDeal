@@ -274,6 +274,7 @@
                                 </dxg:GridColumn>
                                 <dxg:GridColumn FieldName="OrderNumber" Visible="False" />
                                 <dxg:GridColumn FieldName="ToBuy"/>
+                                <dxg:GridColumn FieldName="IsMajor"/>
                             </dxg:GridControl.Columns>
                             <dxg:GridControl.View>
                                 <dxg:TableView ShowFilterPanelMode="Never" ShowGroupPanel="False" EnableImmediatePosting="True">

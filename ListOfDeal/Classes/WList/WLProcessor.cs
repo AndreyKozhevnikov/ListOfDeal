@@ -56,7 +56,7 @@ namespace ListOfDeal {
             //   emptyActions = emptyActions.Take(1);
             foreach (var act in emptyActions) {
 #if !DEBUG
-                Task t = Task.Run(() => Thread.Sleep(1));
+                Task t = Task.Run(() => Thread.Sleep(10));
                 await t;
 #endif
                 string title = act.GetWLTitle();
@@ -64,7 +64,7 @@ namespace ListOfDeal {
                 int targetListId = MyListId;
                 string lstName = "MyList";
                 if (act.Status == ActionsStatusEnum.Scheduled) {//scheduled action
-                    wlTask = wlConnector.CreateTask(title, MySchedId, act.ScheduledTime);
+                    targetListId = MySchedId;
                     lstName = "MySched";
                 }
                 else {
@@ -72,8 +72,8 @@ namespace ListOfDeal {
                         targetListId = MyBuyId;
                         lstName = "MyBuy";
                     }
-                    wlTask = wlConnector.CreateTask(title, targetListId);
                 }
+                wlTask = wlConnector.CreateTask(title, targetListId, act.ScheduledTime);
                 act.WLId = wlTask.id;
                 act.WLTaskRevision = wlTask.revision;
                 //  act.parentEntity.WLTaskStatus = 1;

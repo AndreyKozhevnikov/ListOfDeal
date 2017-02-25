@@ -145,10 +145,12 @@ namespace ListOfDeal {
         public void CreateWlTasks_Buy_v2() {
             //arrange
             var projCollection = new ObservableCollection<MyProject>();
-            var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            var parentProject = new Project() { Name = "Pr1" };
+            var proj = new MyProject(parentProject) { Status = ProjectStatusEnum.InWork };
             projCollection.Add(proj);
+
             var a = new Action();
-            a.Project = new Project() { TypeId = 1, Name = "Pr1" };
+            a.Project = parentProject;
             a.IsActive = true;
             a.Name = "act1";
             a.ToBuy = true;
@@ -157,8 +159,16 @@ namespace ListOfDeal {
             var a2 = new Action();
             a2.Name = "act2";
             a2.IsActive = true;
-            a2.Project = new Project() { Name = "Pr1" };
+            a2.Project = parentProject;
             proj.Actions.Add(new MyAction(a2));
+
+            var a3 = new Action();
+            a3.Name = "act3";
+            a3.IsActive = true;
+            a3.Project = parentProject;
+            a3.ToBuy = true;
+            a3.ScheduledTime = new DateTime(2017, 2, 2);
+            proj.Actions.Add(new MyAction(a3));
 
             var mockMainVM = new Mock<IMainViewModel>();
             mockMainVM.Setup(x => x.Projects).Returns(projCollection);
@@ -167,6 +177,7 @@ namespace ListOfDeal {
 
             mockWlConnector.Setup(x => x.CreateTask("Pr1 - act1", It.IsAny<int>(), null)).Returns(new WLTask() { id = "234" });
             mockWlConnector.Setup(x => x.CreateTask("Pr1 - act2", It.IsAny<int>(), null)).Returns(new WLTask() { id = "345" });
+            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act3", It.IsAny<int>(), new DateTime(2017,2,2))).Returns(new WLTask() { id = "456" });
             mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(new List<WLTask>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
             // wlProc.PopulateActions(actList);
@@ -180,8 +191,10 @@ namespace ListOfDeal {
             //assert
             mockWlConnector.Verify(x => x.CreateTask("Pr1 - act1", WLProcessor.MyBuyId, null), Times.Once);
             mockWlConnector.Verify(x => x.CreateTask("Pr1 - act2", WLProcessor.MyListId, null), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("Pr1 - act3", WLProcessor.MyBuyId, new DateTime(2017,2,2)), Times.Once);
             Assert.AreEqual("234", proj.Actions[0].WLId);
             Assert.AreEqual("345", proj.Actions[1].WLId);
+            Assert.AreEqual("456", proj.Actions[2].WLId);
             dataProviderEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
 
 

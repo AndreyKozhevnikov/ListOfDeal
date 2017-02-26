@@ -20,7 +20,7 @@ namespace ListOfDeal {
         List<WLList> GetAllLists();
         List<WLTask> GetTasksForList(int listId);
         WLTask GetTask(string taskId);
-
+        List<WLNote> GetNodesForTask(string taskId);
         WLTask CreateTask(string title, int listId, DateTime? dueDate, bool isMajor);
         WLTask ChangeListOfTask(string wlId, int listId);
         WLTask UpdateTask(WLTask task);
@@ -225,6 +225,14 @@ namespace ListOfDeal {
 
         public static string ConvertToWLDate(DateTime dt) {
             return dt.ToString("yyyy-MM-dd");
+        }
+
+        public List<WLNote> GetNodesForTask(string taskId) {
+            string st = "http://a.wunderlist.com/api/v1/notes";
+            string st2 = string.Format("{0}?task_id={1}", st, taskId);
+            var responseText = GetHttpRequestResponse(st2, "GET");
+            var list = JsonConvert.DeserializeObject<List<WLNote>>(responseText);
+            return list;
         }
 
 

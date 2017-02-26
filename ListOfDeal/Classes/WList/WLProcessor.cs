@@ -97,12 +97,16 @@ namespace ListOfDeal {
                 Debug.Print(tskId.ToString());
                 var tsk = wlConnector.GetTask(tskId);
                 string dtSt = tsk.completed_at.Split('T')[0];
-                DateTime dt = DateTime.Parse(dtSt);
+                DateTime completedTime = DateTime.Parse(dtSt);
                 var act = actionsWithTasks.Where(x => x.WLId == tskId).First();
+                var notes = wlConnector.GetNodesForTask(tskId);
+                if (notes.Count>0) {
+                    act.Comment = notes[0].content;
+                }
                 act.WLId = null;
                 act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
                 act.Status = ActionsStatusEnum.Completed;
-                act.CompleteTime = dt;
+                act.CompleteTime = completedTime;
                 RaiseLog(string.Format("complete action - {0} {1}", act.GetWLTitle(), act.parentEntity.Id));
             }
             MainViewModel.SaveChanges();

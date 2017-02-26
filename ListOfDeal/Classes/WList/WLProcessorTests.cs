@@ -20,6 +20,7 @@ namespace ListOfDeal {
             proj.Actions.Add(new MyAction(new Action() { Name = "act1", IsActive = true, Project = new Project() { Name = "Pr1" } }));
             proj.Actions.Add(new MyAction(new Action() { Name = "act2", WLId = "123", IsActive = true, Project = new Project() { Name = "Pr1" } }));
             proj.Actions.Add(new MyAction(new Action() { Name = "act3", IsActive = true, Project = new Project() { Name = "Pr1" } }));
+            proj.Actions.Add(new MyAction(new Action() { Name = "act4comment", IsActive = true, Comment="test comment", Project = new Project() { Name = "Pr1" } }));
 
             var mockMainVM = new Mock<IMainViewModel>();
             mockMainVM.Setup(x => x.Projects).Returns(projCollection);
@@ -28,6 +29,7 @@ namespace ListOfDeal {
 
             mockWlConnector.Setup(x => x.CreateTask("Pr1 - act1", It.IsAny<int>(), null,false)).Returns(new WLTask() { id = "234" });
             mockWlConnector.Setup(x => x.CreateTask("Pr1 - act3", It.IsAny<int>(), null,false)).Returns(new WLTask() { id = "345" });
+            mockWlConnector.Setup(x => x.CreateTask("Pr1 - act4comment", It.IsAny<int>(), null, false)).Returns(new WLTask() { id = "456" });
             mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(new List<WLTask>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
             // wlProc.PopulateActions(actList);
@@ -42,10 +44,11 @@ namespace ListOfDeal {
             //assert
             mockWlConnector.Verify(x => x.CreateTask("Pr1 - act1", It.IsAny<int>(), null,false), Times.Once);
             mockWlConnector.Verify(x => x.CreateTask("Pr1 - act3", It.IsAny<int>(), null,false), Times.Once);
+            
             Assert.AreEqual("234", proj.Actions[0].WLId);
             Assert.AreEqual("345", proj.Actions[2].WLId);
             dataProviderEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
-
+            mockWlConnector.Verify(x => x.CreateNote("456", "test comment"),Times.Once);
 
         }
         [Test]
@@ -266,7 +269,7 @@ namespace ListOfDeal {
             WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
             var mockWlConnector = new Mock<IWLConnector>(MockBehavior.Strict);
             mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(taskList);
-            mockWlConnector.Setup(x => x.GetTask("2")).Returns(new WLTask() { id = "2", completed_at = "2000-02-03T17:53:04.953Z" });
+            mockWlConnector.Setup(x => x.GetTask("2")).Returns(new WLTask() { id = "2", completed_at = "2000-02-03T17:53:04.953Z"});
             wlProc.CreateWlConnector(mockWlConnector.Object);
             // wlProc.PopulateActions(actList);
             //act

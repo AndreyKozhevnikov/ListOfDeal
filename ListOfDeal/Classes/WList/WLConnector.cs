@@ -20,11 +20,12 @@ namespace ListOfDeal {
         List<WLList> GetAllLists();
         List<WLTask> GetTasksForList(int listId);
         WLTask GetTask(string taskId);
+
         WLTask CreateTask(string title, int listId, DateTime? dueDate, bool isMajor);
         WLTask ChangeListOfTask(string wlId, int listId);
         WLTask UpdateTask(WLTask task);
         WLTask CompleteTask(string wlId);
-        WLNote CreateNote(int taskId, string content);
+        WLNote CreateNote(string taskId, string content);
     }
     public class WLConnector : IWLConnector {
         public WLConnector() {
@@ -205,7 +206,7 @@ namespace ListOfDeal {
 
         }
 
-        public WLNote CreateNote(int taskId, string content) {
+        public WLNote CreateNote(string taskId, string content) {
             string st = "http://a.wunderlist.com/api/v1/notes";
             JsonCreator.Add("task_id", taskId);
             JsonCreator.Add("content", content);
@@ -418,6 +419,8 @@ namespace ListOfDeal {
             return st;
         }
         static string GetTupleString(Tuple<string, object> t) {
+            if (t.Item1.Contains("id"))
+                return string.Format("\"{0}\":{1}", t.Item1, t.Item2);
             if (t.Item2 is string)
                 return string.Format("\"{0}\":\"{1}\"", t.Item1, t.Item2);
             if (t.Item2 is bool)
@@ -434,12 +437,14 @@ namespace ListOfDeal {
             JsonCreator.Add("revision", 123);
             JsonCreator.Add("title", "NewTestTitle3");
             JsonCreator.Add("completed", true);
+            JsonCreator.Add("note_id", "678");
             //act
             string st = JsonCreator.GetString();
             //assert
             string json = "{\"revision\":" + 123 + "," +
                "\"title\":\"NewTestTitle3\"," +
-               "\"completed\":true" +
+               "\"completed\":true," +
+               "\"note_id\":678"+
                "}";
             Assert.AreEqual(json, st);
 
@@ -508,11 +513,11 @@ namespace ListOfDeal {
     }
 
     public class WLNote {
-        public int id { get; set; }
+        public string id { get; set; }
         public int revision { get; set; }
         public string content { get; set; }
         public string type { get; set; }
-        public int task_id { get; set; }
+        public string task_id { get; set; }
         public string created_by_request_id { get; set; }
     }
 

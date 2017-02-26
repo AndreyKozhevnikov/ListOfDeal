@@ -74,6 +74,9 @@ namespace ListOfDeal {
                 wlTask = wlConnector.CreateTask(title, targetListId, act.ScheduledTime, act.IsMajor);
                 act.WLId = wlTask.id;
                 act.WLTaskRevision = wlTask.revision;
+                if (!string.IsNullOrEmpty(act.Comment)) {
+                    wlConnector.CreateNote(act.WLId, act.Comment);
+                }
                 //  act.parentEntity.WLTaskStatus = 1;
                 string message = string.Format("title={0}, list id - {1}, new task's id={2}", wlTask.title, lstName, wlTask.id);
                 RaiseLog(message);

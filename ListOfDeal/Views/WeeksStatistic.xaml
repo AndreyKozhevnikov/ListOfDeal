@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:ListOfDeal.Views"
              xmlns:vm="clr-namespace:ListOfDeal.Classes"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.DataContext>
@@ -14,6 +15,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <StackPanel>
@@ -35,5 +37,41 @@
                 <dxg:TableView GroupSummaryDisplayMode="AlignByColumns"/>
             </dxg:GridControl.View>
         </dxg:GridControl>
+        <dxc:ChartControl Grid.Row="2" >
+            <dxc:XYDiagram2D>
+                <dxc:XYDiagram2D.SecondaryAxesY>
+                    <dxc:SecondaryAxisY2D Name="secondaryAxisY"  />
+                </dxc:XYDiagram2D.SecondaryAxesY>
+                <dxc:BarSideBySideSeries2D Name="series1"
+                                                            dxc:XYDiagram2D.SeriesAxisY="{Binding ElementName=secondaryAxisY}" 
+                                                          ValueDataMember="PercentComplete"
+                                       ArgumentDataMember="Id"
+                                       DisplayName="PercentComplete"
+                                       DataSource="{Binding WeekDataList}"
+                                                        LabelsVisibility="False" 
+                                           CrosshairLabelPattern="{}{V:p0}"
+                                                       >
+                    <!--<dxc:BarSideBySideSeries2D.Label>
+                        <dxc:SeriesLabel ResolveOverlappingMode="Default" 
+                                                     TextPattern = "{}{V:p2}" />
+                    </dxc:BarSideBySideSeries2D.Label>-->
+                </dxc:BarSideBySideSeries2D>
+                <dxc:LineSeries2D  ValueDataMember="AllInActions"
+                                       ArgumentDataMember="Id"
+                                       DisplayName="AllInActions"
+                                       DataSource="{Binding WeekDataList}"
+                                               LabelsVisibility="False"
+                                       >
+                    <!--<dxc:LineSeries2D.Label>
+                        <dxc:SeriesLabel ResolveOverlappingMode="Default"
+                                                     TextPattern="{}{V:F2}"/>
+                    </dxc:LineSeries2D.Label>-->
+                </dxc:LineSeries2D>
+             
+            </dxc:XYDiagram2D>
+            <dxc:ChartControl.Legend>
+                <dxc:Legend/>
+            </dxc:ChartControl.Legend>
+        </dxc:ChartControl>
     </Grid>
 </UserControl>

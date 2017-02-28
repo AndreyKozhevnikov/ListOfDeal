@@ -12,6 +12,9 @@ using System.Windows.Input;
 
 namespace ListOfDeal.Classes {
     public class WeekStatisticViewModel : MyBindableBase {
+        public WeekStatisticViewModel() {
+            WeekDataList = new ObservableCollection<WeekData>();
+        }
         ICommand _createItemsCommand;
         public ICommand CreateItemsCommand {
             get {
@@ -28,9 +31,15 @@ namespace ListOfDeal.Classes {
                 return _getItemsCommand;
             }
         }
-
+        public ObservableCollection<WeekData> WeekDataList { get; set; }
+       
         void GetItems() {
             WeekRecords = new ObservableCollection<WeekRecord>(MainViewModel.DataProvider.GetWeekRecords());
+          
+            var lst = WeekRecords.GroupBy(x => x.WeekId).Select(d => new { dt = d.Key, all = d.Count(), completed = d.Sum(y => y.IsCompletedInWeek ? 1 : 0) });
+            var lst2 =lst.Select(x => new WeekData(x.dt, x.all, x.completed)).ToList();
+            foreach (var w in lst2)
+                WeekDataList.Add(w);
         }
         ICommand _markItemsCompleteCommand;
         public ICommand MarkItemsCompleteCommand {
@@ -91,7 +100,16 @@ namespace ListOfDeal.Classes {
         }
 
     }
-
+    public class WeekData {
+        public WeekData(string dt, int all, int completed) {
+            Id = dt;
+            AllInActions = all;
+            PercentComplete = all > 0?(double)completed/all:0;
+        }
+        public string Id { get; set; }
+        public double PercentComplete { get; set; }
+        public int AllInActions { get; set; }
+    }
     [TestFixture]
     public class WeekStatisticViewModelTest {
 

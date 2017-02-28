@@ -107,7 +107,10 @@ namespace ListOfDeal.Classes {
             var pr = new Project() { StatusId = 1 };
             lst.Add(new Action() { Project = pr, IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled });
             lst.Add(new Action() { Project = pr, IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled ,ScheduledTime=DateTime.Today.AddDays(8)});
+            lst.Add(new Action() { Project = pr, IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled, Id=1 });
             dataProviderEntity.Setup(x => x.GetActions()).Returns(lst);
+            string wkId = DateTime.Today.AddDays(1).ToString("MMddyyyy");
+            dataProviderEntity.Setup(x => x.GetWeekRecords()).Returns(new List<WeekRecord>() { new WeekRecord() { ActionId = 1, WeekId = wkId } });
             dataProviderEntity.Setup(x => x.CreateWeekRecord()).Returns(new WeekRecord());
             List<object> result = new List<object>();
             dataProviderEntity.Setup(x => x.AddWeekRecord(It.IsAny<WeekRecord>())).Callback(() => { result.Add("test"); });

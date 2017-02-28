@@ -26,8 +26,6 @@ namespace ListOfDeal
         }
     
         public virtual IDbSet<Action> Actions { get; set; }
-        public virtual DbSet<ActionTrigger> ActionTriggers { get; set; }
-        public virtual DbSet<DelegatePerson> DelegatePersons { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<ProjectType> ProjectTypes { get; set; }
         public virtual DbSet<WeekRecord> WeekRecords { get; set; }

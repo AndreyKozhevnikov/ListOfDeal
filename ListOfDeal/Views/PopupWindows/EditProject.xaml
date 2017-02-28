@@ -14,11 +14,7 @@
         <dxg:GridControl x:Name="grd1" CurrentColumnChanged="GridControl_CurrentColumnChanged">
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Name"/>
-                <dxg:GridColumn FieldName="TriggerId">
-                    <dxg:GridColumn.EditSettings>
-                        <dxe:ComboBoxEditSettings ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name"/>
-                    </dxg:GridColumn.EditSettings>
-                </dxg:GridColumn>
+              
                 <dxg:GridColumn FieldName="Status">
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
@@ -36,27 +32,7 @@
                         <dxe:DateEditSettings/>
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
-                <dxg:GridColumn FieldName="DelegatedTo" >
-                    <dxg:GridColumn.CellTemplate>
-                        <DataTemplate>
-                            <dxe:ComboBoxEdit x:Name="PART_Editor"
-                                   ItemsSource="{Binding View.DataContext.DelegatePersons}" 
-                                   ValueMember="Id" DisplayMember="Name" 
-                                   >
-                                <dxe:ComboBoxEdit.Style>
-                                    <Style TargetType="dxe:ComboBoxEdit">
-                                        <Setter Property="IsEnabled" Value="False"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RowData.Row.Status}" Value="3">
-                                                <Setter Property="IsEnabled" Value="True"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </dxe:ComboBoxEdit.Style>
-                            </dxe:ComboBoxEdit>
-                        </DataTemplate>
-                    </dxg:GridColumn.CellTemplate>
-                </dxg:GridColumn>
+              
                 <dxg:GridColumn FieldName="IsActive"/>
                 <dxg:GridColumn FieldName="Comment"/>
                 <dxg:GridColumn FieldName="OrderNumber"/>

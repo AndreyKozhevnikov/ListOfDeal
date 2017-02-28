@@ -12,24 +12,7 @@ using System.Windows.Markup;
 using System.Globalization;
 
 namespace ListOfDeal {
-    class CustomDisplayTextConverter : MarkupExtension, IValueConverter {
-        public override object ProvideValue(IServiceProvider serviceProvider) {
-            return this;
-        }
-
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
-            if (value == null)
-                return value;
-            string st = value.ToString();
-            if (st == "Trigger Id: ")
-                return "Trigger Id: Empty trigger";
-            return value;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
-            throw new NotImplementedException();
-        }
-    }
+ 
     public class FocusedRowEventArgsConverter : EventArgsConverterBase<FocusedRowHandleChangedEventArgs> {
         protected override object Convert(object sender, FocusedRowHandleChangedEventArgs args) {
             var rh = args.RowData.RowHandle.Value;

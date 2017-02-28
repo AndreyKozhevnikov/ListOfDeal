@@ -24,29 +24,11 @@
                                      >
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Name" Width="550"/>
-                <dxg:GridColumn FieldName="TriggerId" GroupIndex="0" >
-                    <dxg:GridColumn.EditSettings>
-                        <dxe:ComboBoxEditSettings ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name" >
-                            <dxe:ComboBoxEditSettings.Buttons>
-                                <dxe:ButtonInfo Content="+" Command="{Binding OpenNewInfoCommand}" CommandParameter="Trigger"/>
-                            </dxe:ComboBoxEditSettings.Buttons>
-                        </dxe:ComboBoxEditSettings>
-                    </dxg:GridColumn.EditSettings>
-                    <dxg:GridColumn.GroupValueTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding DisplayText,Converter={local:CustomDisplayTextConverter}}" />
-                        </DataTemplate>
-                    </dxg:GridColumn.GroupValueTemplate>
-                </dxg:GridColumn>
+            
                 <dxg:GridColumn FieldName="DateCreated" ReadOnly="True"/>
                 <dxg:GridColumn FieldName="Comment">
                     <dxg:GridColumn.EditSettings>
                         <dxe:MemoEditSettings />
-                    </dxg:GridColumn.EditSettings>
-                </dxg:GridColumn>
-                <dxg:GridColumn FieldName="TriggerId">
-                    <dxg:GridColumn.EditSettings>
-                        <dxe:ComboBoxEditSettings ItemsSource="{Binding ActionTriggers}" ValueMember="Id" DisplayMember="Name"/>
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
                 <dxg:GridColumn FieldName="ProjectName" />

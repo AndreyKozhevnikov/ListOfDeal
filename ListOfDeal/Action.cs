@@ -24,10 +24,8 @@ namespace ListOfDeal
         public int ProjectId { get; set; }
         public System.DateTime DateCreated { get; set; }
         public Nullable<System.DateTime> ScheduledTime { get; set; }
-        public Nullable<int> DelegatedTo { get; set; }
         public string Comment { get; set; }
         public int StatusId { get; set; }
-        public Nullable<int> TriggerId { get; set; }
         public bool IsActive { get; set; }
         public int OrderNumber { get; set; }
         public Nullable<System.DateTime> CompleteTime { get; set; }
@@ -37,9 +35,7 @@ namespace ListOfDeal
         public bool ToBuy { get; set; }
         public bool IsMajor { get; set; }
     
-        public virtual DelegatePerson DelegatePerson { get; set; }
         public virtual Project Project { get; set; }
-        public virtual ActionTrigger ActionTrigger { get; set; }
         public virtual ICollection<WeekRecord> WeekRecords { get; set; }
     }
 }

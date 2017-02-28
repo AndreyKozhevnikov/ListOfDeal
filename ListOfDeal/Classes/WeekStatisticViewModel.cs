@@ -132,7 +132,7 @@ namespace ListOfDeal.Classes {
 
             var lst = new List<WeekRecord>();
             var w1 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Completed, CompleteTime = new DateTime(2017, 2, 28) },WeekId="02272017" };
-            var w2 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Delegated }, WeekId = "02272017" };
+            var w2 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Scheduled }, WeekId = "02272017" };
             var w3 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Completed, CompleteTime = new DateTime(2017, 3, 28) }, WeekId = "02272017" };
             lst.Add(w1);
             lst.Add(w2);

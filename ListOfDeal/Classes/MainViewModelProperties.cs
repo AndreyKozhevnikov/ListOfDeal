@@ -115,10 +115,10 @@ namespace ListOfDeal {
                 return _openEditProjectCommand;
             }
         }
-        public ICommand OpenNewInfoCommand {
+        public ICommand OpenNewTypeCommand {
             get {
                 if (_openNewInfoCommand == null)
-                    _openNewInfoCommand = new DelegateCommand<string>(OpenNewInfo);
+                    _openNewInfoCommand = new DelegateCommand(OpenNewType);
                 return _openNewInfoCommand;
             }
         }
@@ -239,12 +239,9 @@ namespace ListOfDeal {
 
         public ObservableCollection<MyProject> Projects { get; set; }
         public ObservableCollection<ProjectType> ProjectTypes { get; set; }
-        public ObservableCollection<ActionTrigger> ActionTriggers { get; set; }
-        public ObservableCollection<DelegatePerson> DelegatePersons { get; set; }
         ObservableCollection<DayData> _allDayData;
         ObservableCollection<MyAction> _waitedActions;
         ObservableCollection<MyAction> _scheduledActions;
-        ObservableCollection<MyAction> _delegatedActions;
         ObservableCollection<HistoryActionItem> _actionsHistoryCollection;
 
         public ObservableCollection<HistoryActionItem> ActionsHistoryCollection {
@@ -276,13 +273,7 @@ namespace ListOfDeal {
                 RaisePropertyChanged("ScheduledActions");
             }
         }
-        public ObservableCollection<MyAction> DelegatedActions {
-            get { return _delegatedActions; }
-            set {
-                _delegatedActions = value;
-                RaisePropertyChanged("DelegatedActions");
-            }
-        }
+
 
         public int SelectedTabIndex {
             get { return _selectedTabIndex; }

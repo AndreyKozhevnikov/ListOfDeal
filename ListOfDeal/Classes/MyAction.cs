@@ -75,14 +75,7 @@ namespace ListOfDeal {
                 RaisePropertyChanged("DateCreated");
             }
         }
-        public int? TriggerId {
-            get {
-                return parentEntity.TriggerId;
-            }
-            set {
-                parentEntity.TriggerId = value;
-            }
-        }
+  
         public DateTime? ScheduledTime {
             get {
                 return parentEntity.ScheduledTime;
@@ -105,14 +98,7 @@ namespace ListOfDeal {
                 WLTaskStatus = WLTaskStatusEnum.UpdateNeeded;
         }
 
-        public int? DelegatedTo {
-            get {
-                return parentEntity.DelegatedTo;
-            }
-            set {
-                parentEntity.DelegatedTo = value;
-            }
-        }
+
         public string Comment {
             get {
                 return parentEntity.Comment;
@@ -161,8 +147,7 @@ namespace ListOfDeal {
             get {
                 if (Status == ActionsStatusEnum.Scheduled && ScheduledTime == null)
                     return "scheduled required";
-                if (Status == ActionsStatusEnum.Delegated && DelegatedTo == null)
-                    return "delegated required";
+    
                 return null;
             }
         }
@@ -172,8 +157,7 @@ namespace ListOfDeal {
                 if (columnName == "Status") {
                     if (Status == ActionsStatusEnum.Scheduled && ScheduledTime == null)
                         return "scheduled required";
-                    if (Status == ActionsStatusEnum.Delegated && DelegatedTo == null)
-                        return "delegated required";
+               
                 }
                 return null;
             }
@@ -227,8 +211,6 @@ namespace ListOfDeal {
         internal void CopyProperties(MyAction act) {
             this.Name = act.Name;
             this.Status = act.Status;
-            this.TriggerId = act.TriggerId;
-            this.DelegatedTo = act.DelegatedTo;
             this.ScheduledTime = act.ScheduledTime;
             this.IsActive = act.IsActive;
             this.Comment = act.Comment;
@@ -249,7 +231,7 @@ namespace ListOfDeal {
     public enum ActionsStatusEnum {
         Waited = 1,
         Scheduled = 2,
-        Delegated = 3,
+        
         Completed = 4
     }
     public enum WLTaskStatusEnum {
@@ -393,7 +375,7 @@ namespace ListOfDeal {
             act.Status = ActionsStatusEnum.Waited;
             act.WLId = "12";
             //act
-            act.Status = ActionsStatusEnum.Delegated;
+            act.Status = ActionsStatusEnum.Waited;
             //assert
             Assert.AreNotEqual(WLTaskStatusEnum.UpdateNeeded, act.WLTaskStatus);
         }

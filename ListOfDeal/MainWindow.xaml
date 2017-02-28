@@ -30,7 +30,6 @@
         <dxmvvm:EventToCommand EventName="Closing" Command="{Binding SaveChangesCommand}"/>
         <local:ExportToExcelService ScheduledGrid="{Binding Path=Grid, ElementName=ScheduledActionsView}"
                                     WaitedGrid="{Binding Path=Grid, ElementName=WaitedActionsView}" 
-                                    DelegatedGrid="{Binding Path=Grid, ElementName=DelegatedActionsView}"
                                                        />
     </dxmvvm:Interaction.Behaviors>
     <Grid>
@@ -44,9 +43,6 @@
             </dx:DXTabItem>
             <dx:DXTabItem Header="Scheduled">
                 <views:ScheduledActionsView x:Name="ScheduledActionsView"/>
-            </dx:DXTabItem>
-            <dx:DXTabItem Header="Delegated">
-                <views:DelegatedActionsView x:Name="DelegatedActionsView"/>
             </dx:DXTabItem>
             <dx:DXTabItem Header="Chart">
                 <views:ChartView/>

@@ -27,19 +27,6 @@ namespace ListOfDeal {
             DependencyProperty.Register("ScheduledGrid", typeof(GridControl), typeof(ExportToExcelService), new PropertyMetadata(null));
 
 
-
-        public GridControl DelegatedGrid {
-            get { return (GridControl)GetValue(DelegatedGridProperty); }
-            set { SetValue(DelegatedGridProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for DelegatedGrid.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty DelegatedGridProperty =
-            DependencyProperty.Register("DelegatedGrid", typeof(GridControl), typeof(ExportToExcelService), new PropertyMetadata(null));
-
-
-
-
         public GridControl WaitedGrid {
             get { return (GridControl)GetValue(WaitedGridProperty); }
             set { SetValue(WaitedGridProperty, value); }
@@ -56,8 +43,6 @@ namespace ListOfDeal {
         public void Export() {
             (WaitedGrid.View as TableView).ExportToXlsx(@"f:\dropbox\common\Deals.xlsx");
             (ScheduledGrid.View as TableView).ExportToXlsx(@"f:\dropbox\common\DealsSched.xlsx");
-            (DelegatedGrid.View as TableView).ExportToXlsx(@"f:\dropbox\common\DealsDeleg.xlsx");
-
         }
     }
 

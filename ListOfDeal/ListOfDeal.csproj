@@ -143,9 +143,6 @@
     <Compile Include="Views\ChartView.xaml.cs">
       <DependentUpon>ChartView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Actions\DelegatedActionsView.xaml.cs">
-      <DependentUpon>DelegatedActionsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\EnterNewProjectView.xaml.cs">
       <DependentUpon>EnterNewProjectView.xaml</DependentUpon>
     </Compile>
@@ -183,10 +180,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Actions\DelegatedActionsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\PopupWindows\EditProject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -196,9 +189,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Action.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ActionTrigger.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
@@ -212,9 +202,6 @@
     <Compile Include="Classes\MainViewModelProperties.cs" />
     <Compile Include="Classes\MyBindableBase.cs" />
     <Compile Include="Classes\MyProject.cs" />
-    <Compile Include="DelegatePerson.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="Views\PopupWindows\CreateNewInfo.xaml.cs">
       <DependentUpon>CreateNewInfo.xaml</DependentUpon>
     </Compile>

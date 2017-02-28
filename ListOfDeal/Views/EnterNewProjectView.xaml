@@ -47,8 +47,7 @@
                                 ValueMember="Id">
                                 <dxe:ComboBoxEdit.Buttons>
                                     <dxe:ButtonInfo
-                                        Command="{Binding OpenNewInfoCommand}"
-                                        CommandParameter="ProjectType"
+                                        Command="{Binding OpenNewTypeCommand}"
                                         Content="+" />
                                 </dxe:ComboBoxEdit.Buttons>
                             </dxe:ComboBoxEdit>
@@ -206,14 +205,6 @@
                         <dxg:GridControl CurrentItem="{Binding SelectedAction, Mode=TwoWay}">
                             <dxg:GridControl.Columns>
                                 <dxg:GridColumn Width="325" FieldName="Name" />
-                                <dxg:GridColumn FieldName="TriggerId">
-                                    <dxg:GridColumn.EditSettings>
-                                        <dxe:ComboBoxEditSettings
-                                            DisplayMember="Name"
-                                            ItemsSource="{Binding ActionTriggers}"
-                                            ValueMember="Id" />
-                                    </dxg:GridColumn.EditSettings>
-                                </dxg:GridColumn>
                                 <dxg:GridColumn FieldName="Status">
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
@@ -233,28 +224,7 @@
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                 </dxg:GridColumn>
-                                <dxg:GridColumn FieldName="DelegatedTo">
-                                    <dxg:GridColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dxe:ComboBoxEdit
-                                                x:Name="PART_Editor"
-                                                DisplayMember="Name"
-                                                ItemsSource="{Binding DataContext.DelegatePersons, RelativeSource={RelativeSource AncestorType={x:Type dxg:DataPresenter}, Mode=FindAncestor}}"
-                                                ValueMember="Id">
-                                                <dxe:ComboBoxEdit.Style>
-                                                    <Style TargetType="{x:Type dxe:ComboBoxEdit}">
-                                                        <Setter Property="IsEnabled" Value="False" />
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding RowData.Row.Status}" Value="{x:Static local:ActionsStatusEnum.Delegated}">
-                                                                <Setter Property="IsEnabled" Value="True" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </dxe:ComboBoxEdit.Style>
-                                            </dxe:ComboBoxEdit>
-                                        </DataTemplate>
-                                    </dxg:GridColumn.CellTemplate>
-                                </dxg:GridColumn>
+                              
                                 <dxg:GridColumn Width="70" FieldName="IsActive" />
                                 <dxg:GridColumn FieldName="Comment">
                                     <dxg:GridColumn.CellTemplate>

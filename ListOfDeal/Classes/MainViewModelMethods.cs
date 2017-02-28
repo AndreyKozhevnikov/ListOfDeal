@@ -21,8 +21,6 @@ namespace ListOfDeal {
 
     public interface IMainViewModelDataProvider {
         IEnumerable<ProjectType> GetProjectTypes();
-        IEnumerable<ActionTrigger> GetActionTriggers();
-        IEnumerable<DelegatePerson> GetDelegatePersons();
         IEnumerable<Project> GetProjects();
         IListOfDealBaseEntities GeneralEntity { get; set; }
         Project CreateProject();
@@ -30,23 +28,14 @@ namespace ListOfDeal {
         void AddWeekRecord(WeekRecord wr);
         IEnumerable<Action> GetActions();
         IEnumerable<WeekRecord> GetWeekRecords();
-        ActionTrigger CreateActionTrigger();
-        void AddActionTrigger(ActionTrigger actionTrigger);
         ProjectType CreateProjectType();
         void AddProjectType(ProjectType projectType);
         void SaveChanges();
         Action CreateAction();
         WeekRecord CreateWeekRecord();
-        //List<ProjectType> ProjectTypes { get; set; }
-        //List<ActionTrigger> ActionTriggers { get; set; }
-        //List<DelegatePerson> DelegatePersons { get; set; }
-        //List<Project> Projects { get; set; }
+
     }
     public class MainViewModelDataProvider : IMainViewModelDataProvider {
-        //public List<ProjectType> ProjectTypes { get; set; }
-        //public List<ActionTrigger> ActionTriggers { get; set; }
-        //public List<DelegatePerson> DelegatePersons { get; set; }
-        //public List<Project> Projects { get; set; }
         public MainViewModelDataProvider() {
             ConnectToDataBase();
 
@@ -75,14 +64,6 @@ namespace ListOfDeal {
             return GeneralEntity.ProjectTypes;
         }
 
-        public IEnumerable<ActionTrigger> GetActionTriggers() {
-            return GeneralEntity.ActionTriggers;
-        }
-
-        public IEnumerable<DelegatePerson> GetDelegatePersons() {
-            return GeneralEntity.DelegatePersons;
-        }
-
         public IEnumerable<Project> GetProjects() {
             return GeneralEntity.Projects;
         }
@@ -101,12 +82,6 @@ namespace ListOfDeal {
         }
         public IEnumerable<Action> GetActions() {
             return GeneralEntity.Actions;
-        }
-        public ActionTrigger CreateActionTrigger() {
-            return GeneralEntity.ActionTriggers.Create();
-        }
-        public void AddActionTrigger(ActionTrigger actionTrigger) {
-            GeneralEntity.ActionTriggers.Add(actionTrigger);
         }
         public ProjectType CreateProjectType() {
             return GeneralEntity.ProjectTypes.Create();
@@ -140,8 +115,6 @@ namespace ListOfDeal {
 
             ProjectTypes = new ObservableCollection<ProjectType>(DataProvider.GetProjectTypes().OrderBy(x => x.OrderNumber));
 
-            ActionTriggers = new ObservableCollection<ActionTrigger>(DataProvider.GetActionTriggers());
-            DelegatePersons = new ObservableCollection<DelegatePerson>(DataProvider.GetDelegatePersons());
             Projects = new ObservableCollection<MyProject>();
             var actProjects = DataProvider.GetProjects().Where(x => x.StatusId != 3).OrderBy(x => x.StatusId).ThenBy(x => x.DateCreated);
             foreach (var p in actProjects) {
@@ -251,41 +224,25 @@ namespace ListOfDeal {
             ed.DataContext = this;
             ed.ShowDialog();
         }
-        private void OpenNewInfo(string st) {
+        private void OpenNewType() {
             CreateNewInfoWindow wnd = new CreateNewInfoWindow();
-            switch (st) {
-                case "Trigger":
-                    ActionTrigger trig = DataProvider.CreateActionTrigger();
-                    wnd.DataContext = trig;
-                    wnd.ShowDialog();
-                    if (!string.IsNullOrEmpty(trig.Name)) {
-                        DataProvider.AddActionTrigger(trig);
-                        SaveChanges();
-                        ActionTriggers.Add(trig);
-                    }
-                    break;
-                case "ProjectType":
-                    ProjectType tp = DataProvider.CreateProjectType();
-                    wnd.DataContext = tp;
-                    wnd.ShowDialog();
-                    if (!string.IsNullOrEmpty(tp.Name)) {
-                        DataProvider.AddProjectType(tp);
-                        SaveChanges();
-                        ProjectTypes.Add(tp);
-                    }
-                    break;
-
+            ProjectType tp = DataProvider.CreateProjectType();
+            wnd.DataContext = tp;
+            wnd.ShowDialog();
+            if (!string.IsNullOrEmpty(tp.Name)) {
+                DataProvider.AddProjectType(tp);
+                SaveChanges();
+                ProjectTypes.Add(tp);
             }
+
         }
         private void ProvideActions() {
             var allActions = Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.IsActive);
             var actActions = allActions.Where(x => x.Status == ActionsStatusEnum.Waited);
             var shedActions = allActions.Where(x => x.Status == ActionsStatusEnum.Scheduled);
-            var delActions = allActions.Where(x => x.Status == ActionsStatusEnum.Delegated);
 
             WaitedActions = new ObservableCollection<MyAction>(actActions);
             ScheduledActions = new ObservableCollection<MyAction>(shedActions);
-            DelegatedActions = new ObservableCollection<MyAction>(delActions);
 
 
         }
@@ -432,8 +389,6 @@ namespace ListOfDeal {
             dataProviderEntity.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
             dataProviderEntity.Setup(x => x.GetProjects()).Returns(new List<Project>());
             dataProviderEntity.Setup(x => x.GetProjectTypes()).Returns(new List<ProjectType>());
-            dataProviderEntity.Setup(x => x.GetActionTriggers()).Returns(new List<ActionTrigger>());
-            dataProviderEntity.Setup(x => x.GetDelegatePersons()).Returns(new List<DelegatePerson>());
             dataProviderEntity.Setup(x => x.CreateProject()).Returns(new Project());
             dataProviderEntity.Setup(x => x.CreateAction()).Returns(new Action());
             MainViewModel.DataProvider = dataProviderEntity.Object;

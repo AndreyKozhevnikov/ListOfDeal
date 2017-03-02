@@ -26,6 +26,8 @@ namespace ListOfDeal {
         WLTask UpdateTask(WLTask task);
         WLTask CompleteTask(string wlId);
         WLNote CreateNote(string taskId, string content);
+        WLNote UpdateNoteContent(string noteId, int revision, string content);
+        void DeleteNote(string noteId, int revision);
     }
     public class WLConnector : IWLConnector {
         public WLConnector() {
@@ -163,7 +165,6 @@ namespace ListOfDeal {
 
             JsonCreator.Add("revision", revision);
             JsonCreator.Add("title", newTitle);
-            //  JsonCreator.Add("completed", true);
             string json = JsonCreator.GetString();
             json = json.Replace("True", "true");
             var responseText = GetHttpRequestResponse(st2, "PATCH", json);
@@ -202,7 +203,7 @@ namespace ListOfDeal {
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}?revision={2}", st, task.id, task.revision);
             var responseText = GetHttpRequestResponse(st2, "DELETE");
-
+          
 
         }
 
@@ -233,6 +234,22 @@ namespace ListOfDeal {
             var responseText = GetHttpRequestResponse(st2, "GET");
             var list = JsonConvert.DeserializeObject<List<WLNote>>(responseText);
             return list;
+        }
+
+        public WLNote UpdateNoteContent(string noteId, int revision, string content) {
+            string st = "http://a.wunderlist.com/api/v1/notes";
+            string st2 = string.Format(@"{0}/{1}", st, noteId);
+            JsonCreator.Add("revision", revision);
+            JsonCreator.Add("content", content);
+            string json = JsonCreator.GetString();
+            var responseText = GetHttpRequestResponse(st2, "PATCH", json);
+            var WLNote = JsonConvert.DeserializeObject<WLNote>(responseText);
+            return WLNote;
+        }
+        public void DeleteNote(string noteId, int revision) {
+            string st = "http://a.wunderlist.com/api/v1/notes";
+            string st2 = string.Format(@"{0}/{1}?revision={2}", st, noteId,revision);
+            var responseText = GetHttpRequestResponse(st2, "DELETE");
         }
 
 

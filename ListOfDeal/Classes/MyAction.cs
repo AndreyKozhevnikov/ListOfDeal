@@ -105,6 +105,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.Comment = value;
+                SetWLStatusUpdatedIfNeeded();
                 RaisePropertyChanged("Comment");
             }
         }
@@ -347,7 +348,19 @@ namespace ListOfDeal {
             //assert
             Assert.AreEqual(WLTaskStatusEnum.UpdateNeeded, act.WLTaskStatus);
         }
-
+        [Test]
+        public void SetWLStatusWhenCommentPropertyIsChanged() {
+            //arrange
+            MyProject proj = new MyProject(new Project());
+            proj.IsSimpleProject = true;
+            MyAction act = new MyAction(new Action() { Name = "Name1" });
+            act.WLId = "2";
+            proj.Actions.Add(act);
+            //act
+            act.Comment = "new comment";
+            //assert
+            Assert.AreEqual(WLTaskStatusEnum.UpdateNeeded, act.WLTaskStatus);
+        }
         [Test]
         public void SetScheduledTimeSetStatusToScheduled() {
             //arrange

@@ -40,7 +40,7 @@ namespace ListOfDeal {
             //  (wlConnector as WLConnector).Start();
         }
 
-        private void UpdateData() {
+        public void UpdateData() {
             allActions = GetActiveActions();
             allTasks = GetAllActiveTasks();
         }
@@ -100,7 +100,7 @@ namespace ListOfDeal {
                 DateTime completedTime = DateTime.Parse(dtSt);
                 var act = actionsWithTasks.Where(x => x.WLId == tskId).First();
                 var notes = wlConnector.GetNodesForTask(tskId);
-                if (notes.Count>0) {
+                if (notes.Count > 0) {
                     act.Comment = notes[0].content;
                 }
                 act.WLId = null;
@@ -178,7 +178,22 @@ namespace ListOfDeal {
                     }
 
                 }
-
+                var wlNotes = wlConnector.GetNodesForTask(wlTask.id);
+                var wlNote = wlNotes.Count == 0 ? null : wlNotes[0];
+                var wlNoteValue = wlNote == null ? null : wlNote.content;
+                if (act.Comment != wlNoteValue) {
+                    if (act.Comment != null) {
+                        if (wlNoteValue == null) {
+                            wlConnector.CreateNote(wlTask.id, act.Comment);
+                        }
+                        else {
+                            wlConnector.UpdateNoteContent(wlNote.id, wlNote.revision,act.Comment);
+                        }
+                    }
+                    else {
+                        wlConnector.DeleteNote(wlNote.id,wlNote.revision);
+                    }
+                }
                 if (resTask != null) {
                     act.WLTaskRevision = resTask.revision;
                 }

@@ -202,6 +202,8 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.IsMajor = value;
+                SetWLStatusUpdatedIfNeeded();
+                RaisePropertyChanged("IsMajor");
             }
         }
 
@@ -358,6 +360,19 @@ namespace ListOfDeal {
             proj.Actions.Add(act);
             //act
             act.Comment = "new comment";
+            //assert
+            Assert.AreEqual(WLTaskStatusEnum.UpdateNeeded, act.WLTaskStatus);
+        }
+        [Test]
+        public void SetWLStatusWhenIsMajorPropertyIsChanged() {
+            //arrange
+            MyProject proj = new MyProject(new Project());
+            proj.IsSimpleProject = true;
+            MyAction act = new MyAction(new Action() { Name = "Name1" });
+            act.WLId = "2";
+            proj.Actions.Add(act);
+            //act
+            act.IsMajor = true;
             //assert
             Assert.AreEqual(WLTaskStatusEnum.UpdateNeeded, act.WLTaskStatus);
         }

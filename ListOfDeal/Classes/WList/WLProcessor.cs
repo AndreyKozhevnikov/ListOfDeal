@@ -193,8 +193,13 @@ namespace ListOfDeal {
                     else {
                         wlConnector.DeleteNote(wlNote.id, wlNote.revision);
                     }
-                    RaiseLog("wl {0} - new comment: {1}", wlNote.content, act.Comment == null ? "null" : act.Comment);
+                    RaiseLog("wl {0} - new comment: {1}", wlTask.title, act.Comment == null ? "null" : act.Comment);
                 }
+                if (act.IsMajor != wlTask.starred) {
+                    wlConnector.ChangeStarredOfTask(wlTask.id, act.IsMajor);
+                    RaiseLog("wl {0} - new IsMajor: {1}", wlTask.title, act.IsMajor);
+                }
+
                 if (resTask != null) {
                     act.WLTaskRevision = resTask.revision;
                 }
@@ -263,6 +268,10 @@ namespace ListOfDeal {
                     if (wlNoteValue != act.Comment) {
                         act.Comment = wlNoteValue;
                         RaiseLog("act {0} - new comment{1}", act.Name, act.Comment == null ? "null" : act.Comment);
+                    }
+                    if (tsk.starred != act.IsMajor) {
+                        act.IsMajor = tsk.starred;
+                        RaiseLog("act {0} - new major{1}", act.Name, act.IsMajor);
                     }
                     act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
                     act.WLTaskRevision = tsk.revision;

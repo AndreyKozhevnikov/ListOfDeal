@@ -17,6 +17,7 @@ namespace ListOfDeal {
     public interface IWLConnector {
         WLTask ChangeTitleOfTask(string wlId, string newName);
         WLTask ChangeScheduledTime(string wlId, string dueTime);
+        WLTask ChangeStarredOfTask(string wlId, bool isMajor);
         List<WLList> GetAllLists();
         List<WLTask> GetTasksForList(int listId);
         WLTask GetTask(string taskId);
@@ -136,7 +137,6 @@ namespace ListOfDeal {
             JsonCreator.Add("title", "NewTestTitle3" + DateTime.Now.Millisecond);
             //  JsonCreator.Add("completed", true);
             string json = JsonCreator.GetString();
-            json = json.Replace("True", "true");
             var responseText = GetHttpRequestResponse(st2, "PATCH", json);
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
@@ -152,7 +152,6 @@ namespace ListOfDeal {
             JsonCreator.Add("revision", revision);
             JsonCreator.Add("completed", true);
             string json = JsonCreator.GetString();
-            json = json.Replace("True", "true");
             var responseText = GetHttpRequestResponse(st2, "PATCH", json);
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
@@ -166,7 +165,19 @@ namespace ListOfDeal {
             JsonCreator.Add("revision", revision);
             JsonCreator.Add("title", newTitle);
             string json = JsonCreator.GetString();
-            json = json.Replace("True", "true");
+            var responseText = GetHttpRequestResponse(st2, "PATCH", json);
+            var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
+            return wlTask;
+        }
+        public WLTask ChangeStarredOfTask(string wlId, bool isMajor) {
+          
+            string st = "http://a.wunderlist.com/api/v1/tasks";
+            string st2 = string.Format(@"{0}/{1}", st, wlId);
+            var revision = GetTask(wlId).revision; //TODO improve
+
+            JsonCreator.Add("revision", revision);
+            JsonCreator.Add("starred", isMajor);
+            string json = JsonCreator.GetString();
             var responseText = GetHttpRequestResponse(st2, "PATCH", json);
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
@@ -177,11 +188,8 @@ namespace ListOfDeal {
             var revision = GetTask(wlId).revision; //TODO improve
 
             JsonCreator.Add("revision", revision);
-            //   JsonCreator.Add("title", newTitle);
             JsonCreator.Add("list_id", listId);
-            //  JsonCreator.Add("completed", true);
             string json = JsonCreator.GetString();
-            json = json.Replace("True", "true");
             var responseText = GetHttpRequestResponse(st2, "PATCH", json);
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
@@ -194,7 +202,6 @@ namespace ListOfDeal {
             JsonCreator.Add("due_date", dueDate);
             //  JsonCreator.Add("completed", true);
             string json = JsonCreator.GetString();
-            json = json.Replace("True", "true");
             var responseText = GetHttpRequestResponse(st2, "PATCH", json);
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;

@@ -666,9 +666,82 @@ namespace ListOfDeal {
             Assert.AreEqual("new content",myAction1.Comment);
             Assert.AreEqual("new content2", myAction2.Comment);
             Assert.AreEqual(null, myAction3.Comment);
-            
+        }
+        [Test]
+        public void HandleChangedLODActions_IsMajor() {
+            //arrange
+            var mockMainVM = new Mock<IMainViewModel>();
+            var projCollection = new ObservableCollection<MyProject>();
+
+
+            mockMainVM.Setup(x => x.Projects).Returns(projCollection);
+            WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
+
+            var mockWlConnector = new Mock<IWLConnector>();
+            var taskList = new List<WLTask>();
+
+
+            mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
+            mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
+            var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
+            projCollection.Add(proj);
+            proj.IsSimpleProject = true;
+             //false-true
+            MyAction myAction1 = new MyAction(new Action() { Name = "Newact1", WLId = "1", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity,IsMajor=true });
+            proj.Actions.Add(myAction1);
+            taskList.Add(new WLTask() { id = "1", title = "act1" });
+            //true-false 
+            MyAction myAction2 = new MyAction(new Action() { Name = "Newact2", WLId = "2", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, IsMajor = false });
+            proj.Actions.Add(myAction2);
+            taskList.Add(new WLTask() { id = "2", title = "act2",starred=true });
+            //act
+            wlProc.CreateWlConnector(mockWlConnector.Object);
+            wlProc.HandleChangedLODActions();
+            //Assert
+            mockWlConnector.Verify(x => x.ChangeStarredOfTask("1", true),Times.Once);
+            mockWlConnector.Verify(x => x.ChangeStarredOfTask("2", false), Times.Once);
 
         }
+        [Test]
+        public void HandleChangedWLTask_IsMajor() {
+            //arrange
+            var mockMainVM = new Mock<IMainViewModel>();
+            var projCollection = new ObservableCollection<MyProject>();
+
+
+            mockMainVM.Setup(x => x.Projects).Returns(projCollection);
+            WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
+
+            var mockWlConnector = new Mock<IWLConnector>();
+            var taskList = new List<WLTask>();
+
+
+            mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
+            mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
+            var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
+            projCollection.Add(proj);
+            proj.IsSimpleProject = true;
+            //false-true
+            MyAction myAction1 = new MyAction(new Action() { Name = "Newact1", WLId = "1", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, IsMajor = true });
+            proj.Actions.Add(myAction1);
+            taskList.Add(new WLTask() { id = "1", title = "act1",starred=false });
+            //true-false 
+            MyAction myAction2 = new MyAction(new Action() { Name = "Newact2", WLId = "2", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, IsMajor = false });
+            proj.Actions.Add(myAction2);
+            taskList.Add(new WLTask() { id = "2", title = "act2", starred = true });
+            //act
+            wlProc.CreateWlConnector(mockWlConnector.Object);
+            wlProc.HandleChangedWLTask();
+            //Assert
+            Assert.AreEqual(false, myAction1.IsMajor);
+            Assert.AreEqual(true, myAction2.IsMajor);
+
+        }
+
 
         [Test]
         public void HandleChangedLODActions_SchouldUpdateWLRevision() {
@@ -818,6 +891,7 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
             //act
             wlProc.HandleChangedWLTask();
@@ -854,6 +928,7 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
             //act
             wlProc.HandleChangedWLTask();
@@ -890,6 +965,7 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
             //act
             wlProc.HandleChangedWLTask();
@@ -1016,6 +1092,7 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
             //act
             wlProc.HandleChangedWLTask();
@@ -1050,6 +1127,7 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
             logList = new List<string>();
             wlProc.Logged += Proc_Logged;
@@ -1092,6 +1170,7 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
             logList = new List<string>();
             wlProc.Logged += Proc_Logged;
@@ -1135,6 +1214,7 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.CreateWlConnector(mockWlConnector.Object);
             logList = new List<string>();
             wlProc.Logged += Proc_Logged;

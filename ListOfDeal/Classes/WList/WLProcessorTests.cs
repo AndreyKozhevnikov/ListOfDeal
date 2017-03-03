@@ -569,7 +569,7 @@ namespace ListOfDeal {
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj2.Actions[1].WLTaskStatus);
         }
         [Test]
-        public void HandleChangedLODActions_Note_Create() {
+        public void HandleChangedLODActions_Note() {
           
          
      
@@ -587,7 +587,7 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
-            wlProc.CreateWlConnector(mockWlConnector.Object);
+        
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
             projCollection.Add(proj);
             proj.IsSimpleProject = true;
@@ -609,7 +609,8 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.GetNodesForTask("3")).Returns(noteLst3);
             taskList.Add(new WLTask() { id = "3", title = "act3" });
             //act
-            wlProc.UpdateData();
+            //   wlProc.UpdateData();
+            wlProc.CreateWlConnector(mockWlConnector.Object);
             wlProc.HandleChangedLODActions();
             //assert
             mockWlConnector.Verify(x => x.CreateNote("1", "test comment"), Times.Once);
@@ -617,7 +618,58 @@ namespace ListOfDeal {
             mockWlConnector.Verify(x => x.DeleteNote("99",5), Times.Once);
 
         }
-    
+
+        [Test]
+        public void HandleChangedWLTask_Note() {
+            
+
+
+            var mockMainVM = new Mock<IMainViewModel>();
+            var projCollection = new ObservableCollection<MyProject>();
+
+
+            mockMainVM.Setup(x => x.Projects).Returns(projCollection);
+            WLProcessor wlProc = new WLProcessor(mockMainVM.Object);
+
+            var mockWlConnector = new Mock<IWLConnector>();
+            var taskList = new List<WLTask>();
+
+
+            mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
+            mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(new List<WLTask>());
+            mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
+            var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            projCollection.Add(proj);
+            proj.IsSimpleProject = true;
+            //create
+            MyAction myAction1 = new MyAction(new Action() { Name = "Newact1", WLId = "1", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity });
+            proj.Actions.Add(myAction1);
+            taskList.Add(new WLTask() { id = "1", title = "act1" });
+            mockWlConnector.Setup(x => x.GetNodesForTask("1")).Returns(new List<WLNote>() { new WLNote() { content = "new content" } });
+            //change
+            MyAction myAction2 = new MyAction(new Action() { Name = "Newact2", WLId = "2", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, Comment = "test comment2" });
+            proj.Actions.Add(myAction2);
+            taskList.Add(new WLTask() { id = "2", title = "act2" });
+
+            var noteLst2 = new List<WLNote>();
+            noteLst2.Add(new WLNote() { id = "22", task_id = "2", content = "new content2", revision = 5 });
+            mockWlConnector.Setup(x => x.GetNodesForTask("2")).Returns(noteLst2);
+            //clear
+            MyAction myAction3 = new MyAction(new Action() { Name = "Newact3", WLId = "3", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, Comment = "test comment" });
+            proj.Actions.Add(myAction3);
+            mockWlConnector.Setup(x => x.GetNodesForTask("3")).Returns(new List<WLNote>());
+            taskList.Add(new WLTask() { id = "3", title = "act3" });
+            //act
+            wlProc.CreateWlConnector(mockWlConnector.Object);
+            wlProc.HandleChangedWLTask();
+            //assert
+            Assert.AreEqual("new content",myAction1.Comment);
+            Assert.AreEqual("new content2", myAction2.Comment);
+            Assert.AreEqual(null, myAction3.Comment);
+            
+
+        }
+
         [Test]
         public void HandleChangedLODActions_SchouldUpdateWLRevision() {
             //arrange 

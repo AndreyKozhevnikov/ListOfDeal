@@ -40,7 +40,7 @@ namespace ListOfDeal {
             //  (wlConnector as WLConnector).Start();
         }
 
-        public void UpdateData() {
+        void UpdateData() {
             allActions = GetActiveActions();
             allTasks = GetAllActiveTasks();
         }
@@ -187,12 +187,13 @@ namespace ListOfDeal {
                             wlConnector.CreateNote(wlTask.id, act.Comment);
                         }
                         else {
-                            wlConnector.UpdateNoteContent(wlNote.id, wlNote.revision,act.Comment);
+                            wlConnector.UpdateNoteContent(wlNote.id, wlNote.revision, act.Comment);
                         }
                     }
                     else {
-                        wlConnector.DeleteNote(wlNote.id,wlNote.revision);
+                        wlConnector.DeleteNote(wlNote.id, wlNote.revision);
                     }
+                    RaiseLog("wl {0} - new comment: {1}", wlNote.content, act.Comment == null ? "null" : act.Comment);
                 }
                 if (resTask != null) {
                     act.WLTaskRevision = resTask.revision;
@@ -228,10 +229,6 @@ namespace ListOfDeal {
                         act.Name = nameFromTitle;
 
                     }
-                    //   if (act.Status == ActionsStatusEnum.Scheduled) {
-                    //string actScheduledTime = null;
-                    //if (act.ScheduledTime.HasValue)
-                    //    actScheduledTime = WLConnector.ConvertToWLDate(act.ScheduledTime.Value);
                     DateTime? wlDateTime = null;
                     DateTime tmpDateTime;
                     if (DateTime.TryParse(tsk.due_date, out tmpDateTime))
@@ -259,6 +256,13 @@ namespace ListOfDeal {
 
                             }
                         }
+                    }
+                    var wlNotes = wlConnector.GetNodesForTask(tsk.id);
+                    var wlNote = wlNotes.Count == 0 ? null : wlNotes[0];
+                    var wlNoteValue = wlNote == null ? null : wlNote.content;
+                    if (wlNoteValue != act.Comment) {
+                        act.Comment = wlNoteValue;
+                        RaiseLog("act {0} - new comment{1}", act.Name, act.Comment == null ? "null" : act.Comment);
                     }
                     act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
                     act.WLTaskRevision = tsk.revision;

@@ -73,6 +73,9 @@ namespace ListOfDeal {
                 }
                 RaisePropertyChanged("Actions");
             }
+            if (e.PropertyName== "ScheduledTime"||e.PropertyName=="IsActive") {
+                RaisePropertyChanged("Actions");
+            }
         }
         public void DeleteAction(MyAction act) {
             Actions.Remove(act);

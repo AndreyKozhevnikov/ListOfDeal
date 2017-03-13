@@ -315,7 +315,9 @@
 echo "Release changed")</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>If $(ConfigurationName) == Release ( xcopy "$(TargetDir)*.exe" "$(SolutionDir)\..\..\Deploy\ListOfDealDeploy" /y  /f
+    <PostBuildEvent>set backupFilename=%25DATE:~10,4%25%25DATE:~4,2%25%25DATE:~7,2%25
+If $(ConfigurationName) == Release ( xcopy "$(TargetDir)*.exe" "$(SolutionDir)\..\..\Deploy\ListOfDealDeploy" /y  /f
+xcopy "$(TargetDir)*.exe" "$(SolutionDir)\..\..\Deploy\ListOfDealDeploy\"%25backupFilename%25"\" /y  /f
 echo "Release completed") else (echo "Debug completed")</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

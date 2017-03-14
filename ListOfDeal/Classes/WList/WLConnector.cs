@@ -15,15 +15,15 @@ using System.Threading.Tasks;
 
 namespace ListOfDeal {
     public interface IWLConnector {
-        WLTask ChangeTitleOfTask(string wlId, string newName);
-        WLTask ChangeScheduledTime(string wlId, string dueTime);
-        WLTask ChangeStarredOfTask(string wlId, bool isMajor);
+        WLTask ChangeTitleOfTask(string wlId, string newName,int revision);
+        WLTask ChangeScheduledTime(string wlId, string dueTime, int revision);
+        WLTask ChangeStarredOfTask(string wlId, bool isMajor, int revision);
         List<WLList> GetAllLists();
         List<WLTask> GetTasksForList(int listId);
         WLTask GetTask(string taskId);
         List<WLNote> GetNodesForTask(string taskId);
         WLTask CreateTask(string title, int listId, DateTime? dueDate, bool isMajor);
-        WLTask ChangeListOfTask(string wlId, int listId);
+        WLTask ChangeListOfTask(string wlId, int listId, int revision);
         WLTask UpdateTask(WLTask task);
         WLTask CompleteTask(string wlId);
         WLNote CreateNote(string taskId, string content);
@@ -62,31 +62,7 @@ namespace ListOfDeal {
             streamReader.Close();
             return responseText;
         }
-        public void Start() {
-
-            var lst = GetAllLists();
-            var list = GetTasksForList(WLProcessor.MySchedId);
-            var tsk = list[1];
-            var tsk2 = ChangeScheduledTime(tsk.id, "null");
-            //  var tks2 = ChangeListOfTask(tsk.id, WLProcessor.MySchedId);
-            //var tsk = list[1];
-            //var v = CreateNote(tsk.id, "#LODId=123");
-            //var tsk1 = list[0];
-            //var v1 = CreateNote(tsk.id, "#LODId=123");
-            // var t0 = CreateTask("not scheduled", 262335124);
-
-            //  var t1 = CreateTask("scheduled", 262630772, new DateTime(2016, 8, 30));
-            //var t1 = UpdateTask(t0);
-            //var t2 = GetTask(t0);
-            //    DeleteTask(t2);
-        }
-        //public WLTask CreateTask(string title, int listId) {
-        //    return CreateTaskCore(title, listId);
-        //}
-        //public WLTask CreateTask(string title, int listId, DateTime? dueDate) {
-        //    string dt = dueDate.Value.ToString("yyyy-MM-dd");
-        //    return CreateTaskCore(title, listId, dt);
-        //}
+   
         string NormalizeString(string title) {
             return title.Replace("/", "").Replace("\\", "");
         }
@@ -147,20 +123,22 @@ namespace ListOfDeal {
 #endif
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, wlId);
-            var revision = GetTask(wlId).revision; //TODO improve
 
-            JsonCreator.Add("revision", revision);
+            var revision = GetTask(wlId).revision;
+            
+
+           JsonCreator.Add("revision", revision);
             JsonCreator.Add("completed", true);
             string json = JsonCreator.GetString();
             var responseText = GetHttpRequestResponse(st2, "PATCH", json);
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
         }
-        public WLTask ChangeTitleOfTask(string wlId, string newTitle) {
+        public WLTask ChangeTitleOfTask(string wlId, string newTitle, int revision) {
             newTitle = NormalizeString(newTitle);
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, wlId);
-            var revision = GetTask(wlId).revision; //TODO improve
+            
 
             JsonCreator.Add("revision", revision);
             JsonCreator.Add("title", newTitle);
@@ -169,11 +147,11 @@ namespace ListOfDeal {
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
         }
-        public WLTask ChangeStarredOfTask(string wlId, bool isMajor) {
+        public WLTask ChangeStarredOfTask(string wlId, bool isMajor,int revision) {
           
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, wlId);
-            var revision = GetTask(wlId).revision; //TODO improve
+            
 
             JsonCreator.Add("revision", revision);
             JsonCreator.Add("starred", isMajor);
@@ -182,10 +160,10 @@ namespace ListOfDeal {
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
         }
-        public WLTask ChangeListOfTask(string wlId, int listId) {
+        public WLTask ChangeListOfTask(string wlId, int listId,int revision) {
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, wlId);
-            var revision = GetTask(wlId).revision; //TODO improve
+            
 
             JsonCreator.Add("revision", revision);
             JsonCreator.Add("list_id", listId);
@@ -194,10 +172,10 @@ namespace ListOfDeal {
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
         }
-        public WLTask ChangeScheduledTime(string wlId, string dueDate) {
+        public WLTask ChangeScheduledTime(string wlId, string dueDate,int revision) {
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, wlId);
-            var revision = GetTask(wlId).revision; //TODO improve
+            
             JsonCreator.Add("revision", revision);
             JsonCreator.Add("due_date", dueDate);
             //  JsonCreator.Add("completed", true);

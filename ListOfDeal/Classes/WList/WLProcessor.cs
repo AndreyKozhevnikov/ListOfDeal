@@ -155,26 +155,26 @@ namespace ListOfDeal {
                 WLTask resTask = null;
 
                 if (wlTitle != wlTask.title) {
-                    resTask = wlConnector.ChangeTitleOfTask(wlTask.id, wlTitle);
+                    resTask = wlConnector.ChangeTitleOfTask(wlTask.id, wlTitle, wlTask.revision);
                     RaiseLog(string.Format("change name to  {0}", wlTitle));
                 }
                 if (act.ScheduledTime != null) {
                     string currDT = WLConnector.ConvertToWLDate(act.ScheduledTime.Value);
                     if (wlTask.list_id != WLProcessor.MySchedId) {
                         RaiseLog("Task {0} move to {1}", wlTask.title, "MyShed  -  " + WLProcessor.MySchedId);
-                        resTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MySchedId);
+                        resTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MySchedId, wlTask.revision);
                     }
                     if (currDT != wlTask.due_date) {
-                        resTask = wlConnector.ChangeScheduledTime(wlTask.id, currDT);
+                        resTask = wlConnector.ChangeScheduledTime(wlTask.id, currDT, resTask != null ? resTask.revision : wlTask.revision);
                         RaiseLog("task {0} change scheduled time to {1}", act.Name, currDT);
                     }
                 }
                 else {
                     if (wlTask.list_id == WLProcessor.MySchedId) {
                         RaiseLog("Task {0} move to {1}", wlTask.title, "MyList  -  " + WLProcessor.MyListId);
-                        resTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MyListId);
+                        resTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MyListId, wlTask.revision);
                         RaiseLog("task {0} change scheduled time to {1}", act.Name, "null");
-                        resTask = wlConnector.ChangeScheduledTime(wlTask.id, "null");
+                        resTask = wlConnector.ChangeScheduledTime(wlTask.id, "null", resTask.revision);
                     }
 
                 }
@@ -193,10 +193,11 @@ namespace ListOfDeal {
                     else {
                         wlConnector.DeleteNote(wlNote.id, wlNote.revision);
                     }
+                    resTask = wlConnector.GetTask(wlTask.id);
                     RaiseLog("wl {0} - new comment: {1}", wlTask.title, act.Comment == null ? "null" : act.Comment);
                 }
                 if (act.IsMajor != wlTask.starred) {
-                    wlConnector.ChangeStarredOfTask(wlTask.id, act.IsMajor);
+                    resTask = wlConnector.ChangeStarredOfTask(wlTask.id, act.IsMajor, wlTask.revision);
                     RaiseLog("wl {0} - new IsMajor: {1}", wlTask.title, act.IsMajor);
                 }
 

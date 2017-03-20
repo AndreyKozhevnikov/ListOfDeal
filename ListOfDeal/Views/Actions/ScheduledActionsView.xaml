@@ -15,7 +15,7 @@
                                   AutoExpandAllGroups="True"
                                      >
         <dxg:GridControl.Columns>
-            <dxg:GridColumn FieldName="Name"/>
+            <dxg:GridColumn FieldName="Name" Width="600"/>
 
             <dxg:GridColumn FieldName="DateCreated" ReadOnly="True"/>
             <dxg:GridColumn FieldName="ScheduledTime" GroupIndex="0">
@@ -40,6 +40,7 @@
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
             </dxg:GridColumn>
+            <dxg:GridColumn FieldName="IsMajor"/>
         </dxg:GridControl.Columns>
         <dxg:GridControl.View>
             <dxg:TableView ShowGroupedColumns="True">

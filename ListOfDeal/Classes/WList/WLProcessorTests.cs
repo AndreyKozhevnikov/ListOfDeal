@@ -31,6 +31,7 @@ namespace ListOfDeal {
             mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
             dataProviderEntity = new Mock<IMainViewModelDataProvider>();
             dataProviderEntity.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
+            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             MainViewModel.DataProvider = dataProviderEntity.Object;
             taskList = new List<WLTask>();
 
@@ -232,13 +233,8 @@ namespace ListOfDeal {
             var firstProject = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
             projCollection.Add(firstProject);
             var myAction1 = new MyAction(new Action() { Name = "Action1", WLId = "1", IsActive = true, Project = new Project() });
-
             firstProject.Actions.Add(myAction1);
-
-            var taskList = new List<WLTask>();
-            mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTask(It.IsAny<string>())).Returns(new WLTask() { completed_at = "2000-02-03T17:53:04.953Z" });
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.UpdateData();
             //act
             wlProc.HandleCompletedWLTasks();
@@ -273,7 +269,6 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(taskListSched);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(taskListBuy);
             mockWlConnector.Setup(x => x.GetTask(It.IsAny<string>())).Returns(new WLTask() { completed_at = "2000-02-03T17:53:04.953Z" });
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.UpdateData();
             //act
             wlProc.HandleCompletedWLTasks();
@@ -309,7 +304,6 @@ namespace ListOfDeal {
             taskList.Add(new WLTask() { id = "3" });
             mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTask(It.IsAny<string>())).Returns(new WLTask() { completed_at = "2000-02-03T17:53:04.953Z" });
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.UpdateData();
             //act
             wlProc.HandleCompletedWLTasks();
@@ -413,7 +407,6 @@ namespace ListOfDeal {
 
             mockWlConnector.Setup(x => x.ChangeTitleOfTask("1", "Newact1", 10)).Returns(new WLTask());
             mockWlConnector.Setup(x => x.ChangeTitleOfTask("4", "NotSimpleProject - Newact4", 40)).Returns(new WLTask());
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.UpdateData();
             //act
             wlProc.HandleChangedLODActions();
@@ -496,7 +489,6 @@ namespace ListOfDeal {
             //arrange
             Initialize(MockBehavior.Default, true);
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>()); //tofix!!!
             projCollection.Add(proj);
             proj.IsSimpleProject = true;
             //false-true
@@ -524,7 +516,6 @@ namespace ListOfDeal {
             //arrange
             Initialize(configureTaskList: true);
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             projCollection.Add(proj);
             proj.IsSimpleProject = true;
             //false-true
@@ -562,11 +553,9 @@ namespace ListOfDeal {
             projCollection.Add(proj);
             mockMainVM.Setup(x => x.Projects).Returns(projCollection);
 
-
             taskList.Add(new WLTask() { id = "1", title = "act1", revision = 11 });
 
             mockWlConnector.Setup(x => x.ChangeTitleOfTask("1", "Newact1", 11)).Returns(new WLTask() { revision = 3 });
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.UpdateData();
             //act
             wlProc.HandleChangedLODActions();
@@ -631,7 +620,6 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.ChangeScheduledTime("1", "2016-09-11", 11)).Returns(new WLTask());
             mockWlConnector.Setup(x => x.ChangeScheduledTime("4", "2016-09-14", 44)).Returns(new WLTask());
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.UpdateData();
             //act
             wlProc.HandleChangedLODActions();
@@ -669,7 +657,6 @@ namespace ListOfDeal {
             taskList.Add(new WLTask() { id = "123", title = "NewTestName1", revision = 2 });
             taskList.Add(new WLTask() { id = "234", title = "TestName2", revision = 1 });
 
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.UpdateData();
             //act
             wlProc.HandleChangedWLTask();
@@ -698,7 +685,6 @@ namespace ListOfDeal {
             projCollection.Add(proj);
             taskList.Add(new WLTask() { id = "123", title = "Project1 - NewTestName1", revision = 2 });
 
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.UpdateData();
             //act
             wlProc.HandleChangedWLTask();
@@ -727,7 +713,6 @@ namespace ListOfDeal {
             projCollection.Add(proj);
             taskList.Add(new WLTask() { id = "123", title = "NewTestName1", revision = 2 });
 
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.UpdateData();
             //act
             wlProc.HandleChangedWLTask();
@@ -789,7 +774,6 @@ namespace ListOfDeal {
 
             projCollection.Add(proj);
             mockWlConnector.Setup(x => x.GetTask(It.IsAny<string>())).Returns(new WLTask() { completed_at = "2000-02-03T17:53:04.953Z" });
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.UpdateData();
             logList = new List<string>();
             wlProc.Logged += Proc_Logged;
@@ -823,7 +807,6 @@ namespace ListOfDeal {
             projCollection.Add(proj);
             taskList.Add(new WLTask() { id = "123", title = "NewTestName1", revision = 2 });
 
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.UpdateData();
             //act
             wlProc.HandleChangedWLTask();
@@ -850,7 +833,6 @@ namespace ListOfDeal {
             projCollection.Add(proj);
             taskList.Add(new WLTask() { id = "123", title = "Project1 - act1", revision = 2, due_date = "2016-09-15" });
 
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.UpdateData();
             logList = new List<string>();
             wlProc.Logged += Proc_Logged;
@@ -889,7 +871,6 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.UpdateData();
             logList = new List<string>();
             wlProc.Logged += Proc_Logged;
@@ -925,7 +906,6 @@ namespace ListOfDeal {
             projCollection.Add(proj);
             taskList.Add(new WLTask() { id = "123", title = "Project1 - act1", revision = 2, due_date = null });
 
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.UpdateData();
             logList = new List<string>();
             wlProc.Logged += Proc_Logged;
@@ -961,7 +941,6 @@ namespace ListOfDeal {
             projCollection.Add(proj);
             taskList.Add(new WLTask() { id = "123", title = "Project1 - act1", revision = 2 });
 
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.UpdateData();
 
             mockWlConnector.Setup(x => x.ChangeListOfTask("123", WLProcessor.MySchedId, 2)).Returns(new WLTask() { revision = 6 });
@@ -998,7 +977,6 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
-            mockWlConnector.Setup(x => x.GetNodesForTask(It.IsAny<string>())).Returns(new List<WLNote>());
             wlProc.UpdateData();
 
             mockWlConnector.Setup(x => x.ChangeListOfTask("123", WLProcessor.MyListId, 2)).Returns(new WLTask() { revision = 9 });

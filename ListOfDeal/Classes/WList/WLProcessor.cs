@@ -40,7 +40,7 @@ namespace ListOfDeal {
             //  (wlConnector as WLConnector).Start();
         }
 
-        void UpdateData() {
+    public void UpdateData() {
             allActions = GetActiveActions();
             allTasks = GetAllActiveTasks();
         }

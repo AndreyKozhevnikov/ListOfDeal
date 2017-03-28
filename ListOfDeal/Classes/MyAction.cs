@@ -229,6 +229,10 @@ namespace ListOfDeal {
                 title = string.Format("{0} - {1}", this.ProjectName, this.Name);
             return title;
         }
+
+        public override string ToString() {
+            return string.Format("Action {0} {1}", GetWLTitle(), parentEntity.Id);
+        }
     }
 
     public enum ActionsStatusEnum {

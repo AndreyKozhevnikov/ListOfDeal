@@ -496,6 +496,9 @@ namespace ListOfDeal {
         public string due_date { get; set; }
         public string recurrence_type { get; set; }
         public int? recurrence_count { get; set; }
+        public override string ToString() {
+            return string.Format("Task {0}", title);
+        }
     }
 
     public class Reminder {

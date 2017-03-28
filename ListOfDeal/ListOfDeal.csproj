@@ -135,7 +135,6 @@
     <Compile Include="Classes\Services.cs" />
     <Compile Include="Classes\WeekStatisticViewModel.cs" />
     <Compile Include="Classes\WList\WLConnector.cs" />
-    <Compile Include="Classes\WList\WLLogger.cs" />
     <Compile Include="Classes\WList\WLProcessor.cs" />
     <Compile Include="Classes\WList\WLProcessorTests.cs" />
     <Compile Include="Classes\WList\WunderListViewModel.cs" />

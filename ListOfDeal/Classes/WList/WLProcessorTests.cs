@@ -360,28 +360,14 @@ namespace ListOfDeal {
             //act
             wlProc.HandleCompletedLODActions();
             //assert
-            Assert.AreEqual(3, logList.Count);
+            Assert.AreEqual(4, logList.Count);
 
         }
-        [Test]
-        public void RaiseLog_2() {
-            //arrange
+    
 
-            WLProcessor proc = new WLProcessor(null);
-            logList = new List<string>();
-            proc.Logged += Proc_Logged;
-            //act
-            proc.RaiseLog("test");
-            proc.RaiseLog("test1 {0}", "test2");
-            //assert
-            Assert.AreEqual(2, logList.Count);
-            Assert.AreEqual("test", logList[0]);
-            Assert.AreEqual("test1 test2", logList[1]);
-
-        }
         List<string> logList;
-        private void Proc_Logged(WLEventArgs e) {
-            logList.Add(e.Message);
+        private void Proc_Logged(string st) {
+            logList.Add(st);
         }
 
         [Test]
@@ -752,7 +738,7 @@ namespace ListOfDeal {
                 Assert.Fail("Expected no exception, but got: " + ex.Message);
             }
             //assert
-            var b = logList[1].Contains("There is no task for");
+            var b = logList[1].Contains("There are no tasks");
             Assert.AreEqual(true, b);
             //Assert.AreEqual(2, act1.WLTaskRevision);
         }
@@ -784,8 +770,7 @@ namespace ListOfDeal {
             //assert
             var st = string.Format("complete action - {0} {1}", "Project1 - TestName1", 44);
 
-            Assert.AreEqual(logList[2], st);
-            //Assert.AreEqual(2, act1.WLTaskRevision);
+            Assert.AreEqual(true,logList[2].Contains("completed"));
         }
 
 
@@ -844,8 +829,8 @@ namespace ListOfDeal {
             Assert.AreEqual(2, act1.WLTaskRevision);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, act1.WLTaskStatus);
             Assert.AreEqual(4, logList.Count);
-            Assert.AreEqual("act has old revision Project1 - act1", logList[1]);
-            Assert.AreEqual("Project1 - act1 is changing time from 2016-09-11 to 2016-09-15", logList[2]);
+            Assert.AreEqual(true, logList[1].Contains("has old revision"));
+            Assert.AreEqual(true, logList[2].Contains("changed time"));
         }
 
         [Test]
@@ -882,7 +867,7 @@ namespace ListOfDeal {
             Assert.AreEqual(2, act1.WLTaskRevision);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, act1.WLTaskStatus);
             Assert.AreEqual(4, logList.Count);
-            Assert.AreEqual("Project1 - act1 -set time to 2016-09-12", logList[2]);
+            Assert.AreEqual(true, logList[2].Contains("2016-09-12"));
         }
 
         [Test]
@@ -917,7 +902,7 @@ namespace ListOfDeal {
             Assert.AreEqual(2, act1.WLTaskRevision);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, act1.WLTaskStatus);
             Assert.AreEqual(4, logList.Count);
-            Assert.AreEqual("Project1 - act1 -delete time", logList[2]);
+            Assert.AreEqual(true, logList[2].Contains("delete time"));
         }
 
 

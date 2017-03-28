@@ -34,7 +34,7 @@ namespace ListOfDeal {
                 return _createProcessorCommand;
             }
         }
-    
+
         public ICommand TestCommand {
             get {
                 if (_testCommand == null)
@@ -95,34 +95,32 @@ namespace ListOfDeal {
 
         ICommand _testCommand;
         WLProcessor wlProcessor;
-        //     List<MyAction> lodActions;
 
         void CreateWlProcessor() {
             wlProcessor = new WLProcessor(parentViewModel);
-            wlProcessor.CreateWlConnector(new WLConnector());
             wlProcessor.Logged += WlProcessor_Logged;
-            WlProcessor_Logged(new WLEventArgs("===== WLProcessorCreated ====="));
-            //  wlProcessor.PopulateActions(lodActions);
+            wlProcessor.CreateWlConnector(new WLConnector());
         }
         void Test() {
-            var lst = MainViewModel.DataProvider.GetProjects().Where(x => x.TypeId == 10).ToList();
-            foreach(Project p in lst) {
-                p.TypeId = 11;
-                p.Name = "Купить - " + p.Name;
-                foreach (Action a in p.Actions) {
-                    a.ToBuy = true;
-                    a.Name = "купить - " + a.Name;
-                }
-            }
-            MainViewModel.SaveChanges();
+            //var lst = MainViewModel.DataProvider.GetProjects().Where(x => x.TypeId == 10).ToList();
+            //foreach(Project p in lst) {
+            //    p.TypeId = 11;
+            //    p.Name = "Купить - " + p.Name;
+            //    foreach (Action a in p.Actions) {
+            //        a.ToBuy = true;
+            //        a.Name = "купить - " + a.Name;
+            //    }
+            //}
+            //MainViewModel.SaveChanges();
+            //for (int i = 0; i < 1000; i+=10) {
+            //    string st = i.ToString() + new string('0', i);
+            //    Logs.Add(st);
+            //}
         }
-        private void WlProcessor_Logged(WLEventArgs e) {
-            string st = string.Format("{0}  --  {1}", e.DTime, e.Message);
+        private void WlProcessor_Logged(string st) {
             Logs.Add(st);
-            if (logWriter != null) {
-                logWriter.WriteLine(st);
-                logWriter.Flush();
-            }
+            logWriter.WriteLine(st);
+            logWriter.Flush();
         }
 
         void CreateTasks() {

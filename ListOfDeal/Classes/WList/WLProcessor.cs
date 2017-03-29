@@ -142,21 +142,20 @@ namespace ListOfDeal {
             allTasks = GetAllActiveTasks();
             foreach (var act in changedActions) {
                 var wlTask = allTasks.Where(x => x.id == act.WLId).First();
-                WLTask resTask = null;
                 var changedPropertiesCount = act.changedProperties.Count - 1;
                 for (int i = changedPropertiesCount; i >= 0; i--) {
                     string propertyName = act.changedProperties[i];
                     switch (propertyName) {
                         case "IsMajor":
                             if (act.IsMajor != wlTask.starred) {
-                                resTask = wlConnector.ChangeStarredOfTask(wlTask.id, act.IsMajor, wlTask.revision);
+                                wlTask = wlConnector.ChangeStarredOfTask(wlTask.id, act.IsMajor, wlTask.revision);
                                 RaiseLog(wlTask, "new IsMajor", act.IsMajor);
                             }
                             break;
                         case "Name":
                             string wlTitle = act.GetWLTitle();
                             if (wlTitle != wlTask.title) {
-                                resTask = wlConnector.ChangeTitleOfTask(wlTask.id, wlTitle, wlTask.revision);
+                                wlTask = wlConnector.ChangeTitleOfTask(wlTask.id, wlTitle, wlTask.revision);
                                 RaiseLog(wlTask, "change name", wlTitle);
                             }
                             break;
@@ -176,7 +175,7 @@ namespace ListOfDeal {
                                 else {
                                     wlConnector.DeleteNote(wlNote.id, wlNote.revision);
                                 }
-                                resTask = wlConnector.GetTask(wlTask.id);
+                                wlTask = wlConnector.GetTask(wlTask.id);
                                 RaiseLog(wlTask, "new comment", act.Comment == null ? "null" : act.Comment);
                             }
                             break;
@@ -185,26 +184,39 @@ namespace ListOfDeal {
                                 string currDT = WLConnector.ConvertToWLDate(act.ScheduledTime.Value);
                                 if (wlTask.list_id != WLProcessor.MySchedId) {
                                     RaiseLog(wlTask, "moved", "MyShed -" + WLProcessor.MySchedId);
-                                    resTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MySchedId, wlTask.revision);
+                                    wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MySchedId, wlTask.revision);
                                 }
                                 if (currDT != wlTask.due_date) {
-                                    resTask = wlConnector.ChangeScheduledTime(wlTask.id, currDT, resTask != null ? resTask.revision : wlTask.revision);
+                                    wlTask = wlConnector.ChangeScheduledTime(wlTask.id, currDT, wlTask.revision);
                                     RaiseLog(wlTask, "changed scheduled time", currDT);
                                 }
                             }
                             else {
                                 if (wlTask.list_id == WLProcessor.MySchedId) {
                                     RaiseLog(wlTask, "moved", "MyList  -  " + WLProcessor.MyListId);
-                                    resTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MyListId, wlTask.revision);
+                                    wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MyListId, wlTask.revision);
                                     RaiseLog(wlTask, "changed scheduled time", "null");
-                                    resTask = wlConnector.ChangeScheduledTime(wlTask.id, "null", resTask.revision);
+                                    wlTask = wlConnector.ChangeScheduledTime(wlTask.id, "null", wlTask.revision);
+                                }
+                            }
+                            break;
+                        case "ToBuy":
+                            if (act.ToBuy && wlTask.list_id != WLProcessor.MyBuyId) {
+                                wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MyBuyId, wlTask.revision);
+                            }
+                            if (!act.ToBuy) {
+                                if (act.Status == ActionsStatusEnum.Scheduled) {
+                                    wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MySchedId, wlTask.revision);
+                                }
+                                else {
+                                    wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MyListId, wlTask.revision);
                                 }
                             }
                             break;
                     }
                     act.changedProperties.Remove(propertyName);
                 }
-                act.WLTaskRevision = resTask.revision;
+                act.WLTaskRevision = wlTask.revision;
                 act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
 
             }

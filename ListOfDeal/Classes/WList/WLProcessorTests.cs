@@ -509,6 +509,70 @@ namespace ListOfDeal {
             mockWlConnector.Verify(x => x.ChangeStarredOfTask("2", false, 22), Times.Once);
             Assert.AreEqual(12, myAction1.WLTaskRevision);
             Assert.AreEqual(23, myAction2.WLTaskRevision);
+        }
+        [Test]
+        public void HandleChangedLODActions_ToBuy() {
+            //arrange
+            Initialize(MockBehavior.Default, true);
+            var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            projCollection.Add(proj);
+            proj.IsSimpleProject = true;
+            //false-true
+            MyAction myAction1 = new MyAction(new Action() { Name = "Newact1", WLId = "1", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, StatusId=(int)ActionsStatusEnum.Waited });
+            myAction1.ToBuy = true;
+            proj.Actions.Add(myAction1);
+            taskList.Add(new WLTask() { id = "1", title = "act1", revision = 11 ,list_id = WLProcessor.MyListId });
+            //true-false (shed)
+            MyAction myAction2 = new MyAction(new Action() { Name = "Newact2", WLId = "2", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, StatusId = (int)ActionsStatusEnum.Scheduled ,ToBuy=true});
+            myAction2.ToBuy = false;
+            proj.Actions.Add(myAction2);
+            taskList.Add(new WLTask() { id = "2", title = "act2",  revision = 22,list_id=WLProcessor.MyBuyId });
+            //true-false (nonshed)
+            MyAction myAction3 = new MyAction(new Action() { Name = "Newact3", WLId = "3", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, StatusId = (int)ActionsStatusEnum.Waited, ToBuy = true });
+            myAction3.ToBuy = false;
+            proj.Actions.Add(myAction3);
+            taskList.Add(new WLTask() { id = "3", title = "act3", revision = 33, list_id = WLProcessor.MyBuyId });
+
+
+            mockWlConnector.Setup(x => x.ChangeListOfTask("1", WLProcessor.MyBuyId, 11)).Returns(new WLTask() { revision = 44 });
+            mockWlConnector.Setup(x => x.ChangeListOfTask("2", WLProcessor.MySchedId, 22)).Returns(new WLTask() { revision = 55 });
+            mockWlConnector.Setup(x => x.ChangeListOfTask("3", WLProcessor.MyListId, 33)).Returns(new WLTask() { revision = 66 });
+            wlProc.UpdateData();
+            //act
+            wlProc.HandleChangedLODActions();
+            //Assert
+            mockWlConnector.Verify(x => x.ChangeListOfTask("1", WLProcessor.MyBuyId, 11), Times.Once);
+            mockWlConnector.Verify(x => x.ChangeListOfTask("2", WLProcessor.MySchedId, 22), Times.Once);
+            mockWlConnector.Verify(x => x.ChangeListOfTask("3", WLProcessor.MyListId, 33), Times.Once);
+            Assert.AreEqual(44, myAction1.WLTaskRevision);
+            Assert.AreEqual(55, myAction2.WLTaskRevision);
+            Assert.AreEqual(66, myAction3.WLTaskRevision);
+        }
+        [Test]
+        public void HandleChangedLODActions_Sequence_Name_ToBuy() {
+            //arrange
+            Initialize(MockBehavior.Default, true);
+            var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            projCollection.Add(proj);
+            proj.IsSimpleProject = true;
+            //false-true
+            MyAction myAction1 = new MyAction(new Action() { Name = "Newact1", WLId = "1", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, StatusId = (int)ActionsStatusEnum.Waited });
+            myAction1.ToBuy = true;
+            myAction1.Name = "newname11";
+            proj.Actions.Add(myAction1);
+            taskList.Add(new WLTask() { id = "1", title = "act1", revision = 11, list_id = WLProcessor.MyListId });
+
+
+            
+            mockWlConnector.Setup(x => x.ChangeTitleOfTask("1", "newname11", 11)).Returns(new WLTask() { revision = 44,id="1"});
+            mockWlConnector.Setup(x => x.ChangeListOfTask("1", WLProcessor.MyBuyId, 44)).Returns(new WLTask() { revision = 89,id="1" });
+            
+            wlProc.UpdateData();
+            //act
+            wlProc.HandleChangedLODActions();
+            //Assert
+        
+            Assert.AreEqual(89, myAction1.WLTaskRevision);
 
         }
         [Test]
@@ -906,12 +970,8 @@ namespace ListOfDeal {
             proj.IsSimpleProject = false;
             proj.Name = "Project1";
             proj.Status = ProjectStatusEnum.InWork;
-            var act1 = new MyAction(new Action());
-            act1.Name = "act1";
-            act1.WLTaskRevision = 1;
-            act1.WLId = "123";
-            act1.IsActive = true;
-            act1.ScheduledTime = new DateTime(2016, 9, 11);
+            var act1 = new MyAction(new Action() { Name = "act1", WLTaskRevision = 1, WLId = "123", IsActive = true  });
+           
             act1.parentEntity.Project = proj.parentEntity;
             proj.Actions.Add(act1);
 
@@ -920,9 +980,10 @@ namespace ListOfDeal {
 
             wlProc.UpdateData();
 
-            mockWlConnector.Setup(x => x.ChangeListOfTask("123", WLProcessor.MySchedId, 2)).Returns(new WLTask() { revision = 6 });
-            mockWlConnector.Setup(x => x.ChangeScheduledTime("123", "2016-09-11", 6)).Returns(new WLTask() { revision = 7 });
+            mockWlConnector.Setup(x => x.ChangeListOfTask("123", WLProcessor.MySchedId, 2)).Returns(new WLTask() { revision = 6,id="123" });
+            mockWlConnector.Setup(x => x.ChangeScheduledTime("123", "2016-09-11", 6)).Returns(new WLTask() { revision = 7 ,id = "123" });
             //act
+            act1.ScheduledTime = new DateTime(2016, 9, 11);
             wlProc.HandleChangedLODActions();
             //assert
             mockWlConnector.Verify(x => x.ChangeListOfTask("123", WLProcessor.MySchedId, 2), Times.Once);
@@ -952,8 +1013,8 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
             wlProc.UpdateData();
 
-            mockWlConnector.Setup(x => x.ChangeListOfTask("123", WLProcessor.MyListId, 2)).Returns(new WLTask() { revision = 9 });
-            mockWlConnector.Setup(x => x.ChangeScheduledTime("123", "null", 9)).Returns(new WLTask() { revision = 10 });
+            mockWlConnector.Setup(x => x.ChangeListOfTask("123", WLProcessor.MyListId, 2)).Returns(new WLTask() { revision = 9, id = "123" });
+            mockWlConnector.Setup(x => x.ChangeScheduledTime("123", "null", 9)).Returns(new WLTask() { revision = 10, id = "123" });
 
             //act
             act1.Status = ActionsStatusEnum.Waited;

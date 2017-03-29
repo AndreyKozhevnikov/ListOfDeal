@@ -128,7 +128,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.ToBuy = value;
-                RaisePropertyChanged("ToBuy");
+                HandlePropertyChanges("ToBuy");
             }
         }
 

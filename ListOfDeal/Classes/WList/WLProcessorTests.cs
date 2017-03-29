@@ -377,13 +377,18 @@ namespace ListOfDeal {
 
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
             proj.IsSimpleProject = true;
-            proj.Actions.Add(new MyAction(new Action() { Name = "Newact1", WLId = "1", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity }));
-            proj.Actions.Add(new MyAction(new Action() { Name = "act2", WLId = "2", IsActive = true, Project = proj.parentEntity }));
+            MyAction myAction1 = new MyAction(new Action() { Name = "old name", WLId = "1", IsActive = true, Project = proj.parentEntity });
+            myAction1.Name = "Newact1";
+            proj.Actions.Add(myAction1);
+            MyAction myAction2 = new MyAction(new Action() { Name = "act2", WLId = "2", IsActive = true, Project = proj.parentEntity });
+            proj.Actions.Add(myAction2);
 
             var proj2 = new MyProject(new Project()) { Name = "NotSimpleProject", Status = ProjectStatusEnum.InWork };
             proj2.IsSimpleProject = false;
             proj2.Actions.Add(new MyAction(new Action() { Name = "act3", WLId = "3", IsActive = true, Project = proj2.parentEntity }));
-            proj2.Actions.Add(new MyAction(new Action() { Name = "Newact4", WLId = "4", WLTaskStatus = 1, IsActive = true, Project = proj2.parentEntity }));
+            MyAction myAction4 = new MyAction(new Action() { Name = "old name", WLId = "4",  IsActive = true, Project = proj2.parentEntity });
+            myAction4.Name = "Newact4";
+            proj2.Actions.Add(myAction4);
             projCollection.Add(proj);
             projCollection.Add(proj2);
             taskList.Add(new WLTask() { id = "1", title = "act1", revision = 10 });
@@ -412,23 +417,30 @@ namespace ListOfDeal {
             projCollection.Add(proj);
             proj.IsSimpleProject = true;
             //create
-            proj.Actions.Add(new MyAction(new Action() { Name = "Newact1", WLId = "1", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, Comment = "test comment" }));
+            MyAction myAction1 = new MyAction(new Action() { Name = "Newact1", WLId = "1", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, Comment = "old comment" });
+            myAction1.Comment = "test comment";
+            proj.Actions.Add(myAction1);
             taskList.Add(new WLTask() { id = "1", title = "act1" });
             mockWlConnector.Setup(x => x.GetNodesForTask("1")).Returns(new List<WLNote>());
             //change
-            proj.Actions.Add(new MyAction(new Action() { Name = "Newact2", WLId = "2", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, Comment = "test comment2" }));
+            MyAction myAction2 = new MyAction(new Action() { Name = "Newact2", WLId = "2", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, Comment = "old comment2" });
+            myAction2.Comment = "test comment2";
+            proj.Actions.Add(myAction2);
             taskList.Add(new WLTask() { id = "2", title = "act2" });
 
             var noteLst2 = new List<WLNote>();
             noteLst2.Add(new WLNote() { id = "22", task_id = "2", content = "old content", revision = 5 });
             mockWlConnector.Setup(x => x.GetNodesForTask("2")).Returns(noteLst2);
             //clear
-            proj.Actions.Add(new MyAction(new Action() { Name = "Newact3", WLId = "3", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity }));
+            MyAction myAction3 = new MyAction(new Action() { Name = "Newact3", WLId = "3", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity,Comment="old comment" });
+            myAction3.Comment = null;
+            proj.Actions.Add(myAction3);
             var noteLst3 = new List<WLNote>();
             noteLst3.Add(new WLNote() { id = "99", task_id = "3", content = "old content", revision = 5 });
             mockWlConnector.Setup(x => x.GetNodesForTask("3")).Returns(noteLst3);
             taskList.Add(new WLTask() { id = "3", title = "act3" });
             wlProc.UpdateData();
+            mockWlConnector.Setup(x => x.GetTask(It.IsAny<string>())).Returns(new WLTask() { revision = 1 });
             //act
             wlProc.HandleChangedLODActions();
             //assert
@@ -478,11 +490,13 @@ namespace ListOfDeal {
             projCollection.Add(proj);
             proj.IsSimpleProject = true;
             //false-true
-            MyAction myAction1 = new MyAction(new Action() { Name = "Newact1", WLId = "1", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, IsMajor = true });
+            MyAction myAction1 = new MyAction(new Action() { Name = "Newact1", WLId = "1", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, IsMajor = false });
+            myAction1.IsMajor = true;
             proj.Actions.Add(myAction1);
             taskList.Add(new WLTask() { id = "1", title = "act1", revision = 11 });
             //true-false 
-            MyAction myAction2 = new MyAction(new Action() { Name = "Newact2", WLId = "2", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, IsMajor = false });
+            MyAction myAction2 = new MyAction(new Action() { Name = "Newact2", WLId = "2", WLTaskStatus = 1, IsActive = true, Project = proj.parentEntity, IsMajor = true });
+            myAction2.IsMajor = false;
             proj.Actions.Add(myAction2);
             taskList.Add(new WLTask() { id = "2", title = "act2", starred = true, revision = 22 });
             mockWlConnector.Setup(x => x.ChangeStarredOfTask("1", true, 11)).Returns(new WLTask() { revision = 12 });
@@ -556,41 +570,19 @@ namespace ListOfDeal {
 
             var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
             proj.IsSimpleProject = true;
-            var act1 = new MyAction(new Action() { Project = proj.parentEntity });
-            act1.Name = "act1";
-            act1.WLTaskStatus = WLTaskStatusEnum.UpdateNeeded;
-            act1.WLId = "1";
-            act1.IsActive = true;
-            act1.Status = ActionsStatusEnum.Scheduled;
+            var act1 = new MyAction(new Action() { Project = proj.parentEntity,Name="act1",WLId="1",IsActive=true,StatusId=(int)ActionsStatusEnum.Scheduled });
             act1.ScheduledTime = new DateTime(2016, 9, 11);
 
-            var act2 = new MyAction(new Action() { Project = proj.parentEntity, });
-            act2.Name = "act2";
-            act2.WLTaskStatus = WLTaskStatusEnum.UpdateNeeded;
-            act2.WLId = "2";
-            act2.IsActive = true;
-            act2.Status = ActionsStatusEnum.Scheduled;
-            act2.ScheduledTime = new DateTime(2016, 9, 2);
+            var act2 = new MyAction(new Action() { Project = proj.parentEntity,Name="act2",WLId="2",IsActive=true,StatusId=(int)ActionsStatusEnum.Scheduled, ScheduledTime = new DateTime(2016, 9, 2) });
 
             proj.Actions.Add(act1);
             proj.Actions.Add(act2);
             var proj2 = new MyProject(new Project()) { Name = "NotSimpleProject", Status = ProjectStatusEnum.InWork };
             proj2.IsSimpleProject = false;
 
-            var act3 = new MyAction(new Action() { Project = proj2.parentEntity });
-            act3.Name = "act3";
-            act3.WLTaskStatus = WLTaskStatusEnum.UpdateNeeded;
-            act3.WLId = "3";
-            act3.IsActive = true;
-            act3.Status = ActionsStatusEnum.Scheduled;
-            act3.ScheduledTime = new DateTime(2016, 9, 3);
+            var act3 = new MyAction(new Action() { Project = proj2.parentEntity,Name="act3",WLId="3",IsActive=true,StatusId=(int)ActionsStatusEnum.Scheduled, ScheduledTime = new DateTime(2016, 9, 3) });
 
-            var act4 = new MyAction(new Action() { Project = proj2.parentEntity });
-            act4.Name = "act4";
-            act4.WLTaskStatus = WLTaskStatusEnum.UpdateNeeded;
-            act4.WLId = "4";
-            act4.IsActive = true;
-            act4.Status = ActionsStatusEnum.Scheduled;
+            var act4 = new MyAction(new Action() { Project = proj2.parentEntity,Name="act4",WLId="4",IsActive=true,StatusId=(int)ActionsStatusEnum.Scheduled });
             act4.ScheduledTime = new DateTime(2016, 9, 14);
             proj2.Actions.Add(act3);
             proj2.Actions.Add(act4);
@@ -946,13 +938,9 @@ namespace ListOfDeal {
             var proj = new MyProject(new Project());
             proj.IsSimpleProject = true;
             proj.Status = ProjectStatusEnum.InWork;
-            var act1 = new MyAction(new Action());
-            act1.Name = "act1";
-            act1.WLTaskRevision = 1;
-            act1.WLId = "123";
-            act1.IsActive = true;
-            act1.ScheduledTime = new DateTime(2016, 9, 11);
-            act1.Status = ActionsStatusEnum.Waited;
+            var act1 = new MyAction(new Action() { Name = "act1", WLTaskRevision = 1, WLId = "123", IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled, ScheduledTime = new DateTime(2016, 9, 11) });
+
+            
             act1.parentEntity.Project = proj.parentEntity;
             proj.Actions.Add(act1);
 
@@ -968,6 +956,7 @@ namespace ListOfDeal {
             mockWlConnector.Setup(x => x.ChangeScheduledTime("123", "null", 9)).Returns(new WLTask() { revision = 10 });
 
             //act
+            act1.Status = ActionsStatusEnum.Waited;
             wlProc.HandleChangedLODActions();
             //assert
             mockWlConnector.Verify(x => x.ChangeListOfTask("123", WLProcessor.MyListId, 2), Times.Once);

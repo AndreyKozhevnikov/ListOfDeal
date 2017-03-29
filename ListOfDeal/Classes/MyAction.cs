@@ -13,12 +13,19 @@ namespace ListOfDeal {
         public Action parentEntity;
         public MyAction(Action _parentEntity) {
             parentEntity = _parentEntity;
+            changedProperties = new List<string>();
         }
-
+        public List<string> changedProperties;
+        void HandlePropertyChanges(string st) {
+            changedProperties.Add(st);
+            SetWLStatusUpdatedIfNeeded();
+            RaisePropertyChanged(st);
+        }
         public MyAction() {
             var v = MainViewModel.DataProvider.CreateAction();
             parentEntity = v;
             DateCreated = DateTime.Now;
+            changedProperties = new List<string>();
         }
         public string Name {
             get {
@@ -26,8 +33,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.Name = value;
-                SetWLStatusUpdatedIfNeeded();
-                RaisePropertyChanged("Name");
+                HandlePropertyChanges("Name");
             }
         }
         public ActionsStatusEnum Status {
@@ -87,9 +93,8 @@ namespace ListOfDeal {
                 if (value.HasValue) {
                     this.Status = ActionsStatusEnum.Scheduled;
                 }
-                SetWLStatusUpdatedIfNeeded();
+                HandlePropertyChanges("ScheduledTime");
                 this.IsActive = true;
-                RaisePropertyChanged("ScheduledTime");
             }
         }
 
@@ -105,8 +110,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.Comment = value;
-                SetWLStatusUpdatedIfNeeded();
-                RaisePropertyChanged("Comment");
+                HandlePropertyChanges("Comment");
             }
         }
         public int OrderNumber {
@@ -202,8 +206,7 @@ namespace ListOfDeal {
             }
             set {
                 parentEntity.IsMajor = value;
-                SetWLStatusUpdatedIfNeeded();
-                RaisePropertyChanged("IsMajor");
+                HandlePropertyChanges("IsMajor");
             }
         }
 

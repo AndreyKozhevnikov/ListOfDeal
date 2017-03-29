@@ -141,63 +141,70 @@ namespace ListOfDeal {
             RaiseLog("Actions to change", changedActions.Count.ToString());
             allTasks = GetAllActiveTasks();
             foreach (var act in changedActions) {
-                string wlTitle = act.GetWLTitle();
                 var wlTask = allTasks.Where(x => x.id == act.WLId).First();
                 WLTask resTask = null;
-
-                if (wlTitle != wlTask.title) {
-                    resTask = wlConnector.ChangeTitleOfTask(wlTask.id, wlTitle, wlTask.revision);
-                    RaiseLog(wlTask, "change name", wlTitle);
-                }
-                if (act.ScheduledTime != null) {
-                    string currDT = WLConnector.ConvertToWLDate(act.ScheduledTime.Value);
-                    if (wlTask.list_id != WLProcessor.MySchedId) {
-                        RaiseLog(wlTask, "moved", "MyShed -" + WLProcessor.MySchedId);
-                        resTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MySchedId, wlTask.revision);
+                var changedPropertiesCount = act.changedProperties.Count - 1;
+                for (int i = changedPropertiesCount; i >= 0; i--) {
+                    string propertyName = act.changedProperties[i];
+                    switch (propertyName) {
+                        case "IsMajor":
+                            if (act.IsMajor != wlTask.starred) {
+                                resTask = wlConnector.ChangeStarredOfTask(wlTask.id, act.IsMajor, wlTask.revision);
+                                RaiseLog(wlTask, "new IsMajor", act.IsMajor);
+                            }
+                            break;
+                        case "Name":
+                            string wlTitle = act.GetWLTitle();
+                            if (wlTitle != wlTask.title) {
+                                resTask = wlConnector.ChangeTitleOfTask(wlTask.id, wlTitle, wlTask.revision);
+                                RaiseLog(wlTask, "change name", wlTitle);
+                            }
+                            break;
+                        case "Comment":
+                            var wlNotes = wlConnector.GetNodesForTask(wlTask.id);
+                            var wlNote = wlNotes.Count == 0 ? null : wlNotes[0];
+                            var wlNoteValue = wlNote == null ? null : wlNote.content;
+                            if (act.Comment != wlNoteValue) {
+                                if (act.Comment != null) {
+                                    if (wlNoteValue == null) {
+                                        wlConnector.CreateNote(wlTask.id, act.Comment);
+                                    }
+                                    else {
+                                        wlConnector.UpdateNoteContent(wlNote.id, wlNote.revision, act.Comment);
+                                    }
+                                }
+                                else {
+                                    wlConnector.DeleteNote(wlNote.id, wlNote.revision);
+                                }
+                                resTask = wlConnector.GetTask(wlTask.id);
+                                RaiseLog(wlTask, "new comment", act.Comment == null ? "null" : act.Comment);
+                            }
+                            break;
+                        case "ScheduledTime":
+                            if (act.ScheduledTime != null) {
+                                string currDT = WLConnector.ConvertToWLDate(act.ScheduledTime.Value);
+                                if (wlTask.list_id != WLProcessor.MySchedId) {
+                                    RaiseLog(wlTask, "moved", "MyShed -" + WLProcessor.MySchedId);
+                                    resTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MySchedId, wlTask.revision);
+                                }
+                                if (currDT != wlTask.due_date) {
+                                    resTask = wlConnector.ChangeScheduledTime(wlTask.id, currDT, resTask != null ? resTask.revision : wlTask.revision);
+                                    RaiseLog(wlTask, "changed scheduled time", currDT);
+                                }
+                            }
+                            else {
+                                if (wlTask.list_id == WLProcessor.MySchedId) {
+                                    RaiseLog(wlTask, "moved", "MyList  -  " + WLProcessor.MyListId);
+                                    resTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MyListId, wlTask.revision);
+                                    RaiseLog(wlTask, "changed scheduled time", "null");
+                                    resTask = wlConnector.ChangeScheduledTime(wlTask.id, "null", resTask.revision);
+                                }
+                            }
+                            break;
                     }
-                    if (currDT != wlTask.due_date) {
-                        resTask = wlConnector.ChangeScheduledTime(wlTask.id, currDT, resTask != null ? resTask.revision : wlTask.revision);
-                        RaiseLog(wlTask, "changed scheduled time", currDT);
-                    }
+                    act.changedProperties.Remove(propertyName);
                 }
-                else {
-                    if (wlTask.list_id == WLProcessor.MySchedId) {
-                        RaiseLog(wlTask, "moved", "MyList  -  " + WLProcessor.MyListId);
-                        resTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MyListId, wlTask.revision);
-                        RaiseLog(wlTask, "changed scheduled time", "null");
-                        resTask = wlConnector.ChangeScheduledTime(wlTask.id, "null", resTask.revision);
-                    }
-
-                }
-                var wlNotes = wlConnector.GetNodesForTask(wlTask.id);
-                var wlNote = wlNotes.Count == 0 ? null : wlNotes[0];
-                var wlNoteValue = wlNote == null ? null : wlNote.content;
-                if (act.Comment != wlNoteValue) {
-                    if (act.Comment != null) {
-                        if (wlNoteValue == null) {
-                            wlConnector.CreateNote(wlTask.id, act.Comment);
-                        }
-                        else {
-                            wlConnector.UpdateNoteContent(wlNote.id, wlNote.revision, act.Comment);
-                        }
-                    }
-                    else {
-                        wlConnector.DeleteNote(wlNote.id, wlNote.revision);
-                    }
-                    resTask = wlConnector.GetTask(wlTask.id);
-                    RaiseLog(wlTask, "new comment", act.Comment == null ? "null" : act.Comment);
-                }
-                if (act.IsMajor != wlTask.starred) {
-                    resTask = wlConnector.ChangeStarredOfTask(wlTask.id, act.IsMajor, wlTask.revision);
-                    RaiseLog(wlTask, "new IsMajor", act.IsMajor);
-                }
-
-                if (resTask != null) {
-                    act.WLTaskRevision = resTask.revision;
-                }
-                else {
-                    RaiseLog(act, "There are no changes");
-                }
+                act.WLTaskRevision = resTask.revision;
                 act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
 
             }

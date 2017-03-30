@@ -45,7 +45,7 @@ namespace ListOfDeal {
                 if (parentEntity.StatusId == intVal)
                     return;
                 parentEntity.StatusId = intVal;
-                if (value != ActionsStatusEnum.Scheduled&&this.ScheduledTime!=null) {
+                if (value != ActionsStatusEnum.Scheduled && this.ScheduledTime != null) {
                     this.ScheduledTime = null;
                 }
                 if (value == ActionsStatusEnum.Completed) {
@@ -81,7 +81,7 @@ namespace ListOfDeal {
                 RaisePropertyChanged("DateCreated");
             }
         }
-  
+
         public DateTime? ScheduledTime {
             get {
                 return parentEntity.ScheduledTime;
@@ -152,7 +152,7 @@ namespace ListOfDeal {
             get {
                 if (Status == ActionsStatusEnum.Scheduled && ScheduledTime == null)
                     return "scheduled required";
-    
+
                 return null;
             }
         }
@@ -162,7 +162,7 @@ namespace ListOfDeal {
                 if (columnName == "Status") {
                     if (Status == ActionsStatusEnum.Scheduled && ScheduledTime == null)
                         return "scheduled required";
-               
+
                 }
                 return null;
             }
@@ -241,7 +241,7 @@ namespace ListOfDeal {
     public enum ActionsStatusEnum {
         Waited = 1,
         Scheduled = 2,
-        
+
         Completed = 4
     }
     public enum WLTaskStatusEnum {
@@ -451,5 +451,5 @@ namespace ListOfDeal {
 
         }
     }
-    
+
 }

@@ -408,6 +408,51 @@ namespace ListOfDeal {
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj2.Actions[1].WLTaskStatus);
         }
         [Test]
+        public void HandleChangedLODActions_Name_severaltimes() {
+            //arrange 
+            Initialize(MockBehavior.Default, true);
+
+            var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            proj.IsSimpleProject = true;
+            MyAction myAction1 = new MyAction(new Action() { Name = "old name", WLId = "1", IsActive = true, Project = proj.parentEntity });
+            myAction1.Name = "Newact1";
+            myAction1.Name = "Newact1(second time)";
+            proj.Actions.Add(myAction1);
+            projCollection.Add(proj);
+            taskList.Add(new WLTask() { id = "1", title = "act1", revision = 10 });
+
+            mockWlConnector.Setup(x => x.ChangeTitleOfTask("1", "Newact1(second time)", It.IsAny<int>())).Returns(new WLTask() { revision = 11,title= "Newact1(second time)",id="1" });
+            wlProc.UpdateData();
+            //act
+            wlProc.HandleChangedLODActions();
+            //assert
+            mockWlConnector.Verify(x => x.ChangeTitleOfTask("1", "Newact1(second time)", It.IsAny<int>()), Times.Once);
+            mockWlConnector.Verify(x => x.ChangeTitleOfTask("1", It.IsAny<string>(), It.IsAny<int>()), Times.Once);
+            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj.Actions[0].WLTaskStatus);
+            Assert.AreEqual(11, myAction1.WLTaskRevision);
+        }
+        [Test]
+        public void HandleChangedLODActions_Name_severaltimes_andbacktooriginal () {
+            //arrange 
+            Initialize(MockBehavior.Default, true);
+
+            var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            proj.IsSimpleProject = true;
+            MyAction myAction1 = new MyAction(new Action() { Name = "act1", WLId = "1", IsActive = true, Project = proj.parentEntity });
+            myAction1.Name = "Newact1";
+            myAction1.Name = "act1";
+            proj.Actions.Add(myAction1);
+            projCollection.Add(proj);
+            taskList.Add(new WLTask() { id = "1", title = "act1", revision = 10 });
+            wlProc.UpdateData();
+            //act
+            wlProc.HandleChangedLODActions();
+            //assert
+            mockWlConnector.Verify(x => x.ChangeTitleOfTask("1", It.IsAny<string>(), It.IsAny<int>()), Times.Never);
+            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj.Actions[0].WLTaskStatus);
+            Assert.AreEqual(10, myAction1.WLTaskRevision);
+        }
+        [Test]
         public void HandleChangedLODActions_Note() {
             //arrange
             Initialize(MockBehavior.Default, true);

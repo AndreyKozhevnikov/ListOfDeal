@@ -123,7 +123,7 @@ namespace ListOfDeal {
             RaiseLog("Handling completed LOD Actions", "Started");
             MainViewModel.SaveChanges();
             var lst = parentVM.Projects.SelectMany(x => x.Actions).Where(x => x.WLTaskStatus == WLTaskStatusEnum.DeletingNeeded).ToList();
-            RaiseLog("Amount of acitons", lst.Count.ToString());
+            RaiseLog("Amount of actions", lst.Count.ToString());
             foreach (var act in lst) {
                 var wlId = act.WLId;
                 wlConnector.CompleteTask(wlId);

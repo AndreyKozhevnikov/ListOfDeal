@@ -19,7 +19,7 @@ namespace ListOfDeal {
     /// <summary>
     /// Interaction logic for EditProject.xaml
     /// </summary>
-    public partial class EditProject :DXWindow {
+    public partial class EditProject : DXWindow {
         public EditProject() {
             InitializeComponent();
             this.Loaded += EditProject_Loaded;

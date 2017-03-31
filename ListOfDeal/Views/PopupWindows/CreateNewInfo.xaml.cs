@@ -17,7 +17,7 @@ namespace ListOfDeal {
     /// <summary>
     /// Interaction logic for DXWindow1.xaml
     /// </summary>
-    public partial class CreateNewInfoWindow :DXWindow {
+    public partial class CreateNewInfoWindow : DXWindow {
         public CreateNewInfoWindow() {
             InitializeComponent();
         }

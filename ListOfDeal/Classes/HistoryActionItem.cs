@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ListOfDeal {
-   public class HistoryActionItem {
-       public MyAction Action { get; set; }
-       public DateTime? FinalDate { get; set; }
-       public bool IsCompleted{get;set;}
+    public class HistoryActionItem {
+        public MyAction Action { get; set; }
+        public DateTime? FinalDate { get; set; }
+        public bool IsCompleted { get; set; }
 
     }
 }

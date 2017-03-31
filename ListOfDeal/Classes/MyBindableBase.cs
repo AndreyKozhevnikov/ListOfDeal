@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ListOfDeal {
-    public class MyBindableBase :INotifyPropertyChanged {
+    public class MyBindableBase : INotifyPropertyChanged {
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void RaisePropertyChanged([CallerMemberName]String propertyName = "") {

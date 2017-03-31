@@ -12,7 +12,7 @@ using System.Windows.Markup;
 using System.Globalization;
 
 namespace ListOfDeal {
- 
+
     public class FocusedRowEventArgsConverter : EventArgsConverterBase<FocusedRowHandleChangedEventArgs> {
         protected override object Convert(object sender, FocusedRowHandleChangedEventArgs args) {
             var rh = args.RowData.RowHandle.Value;

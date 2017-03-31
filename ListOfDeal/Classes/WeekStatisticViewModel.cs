@@ -32,12 +32,12 @@ namespace ListOfDeal.Classes {
             }
         }
         public ObservableCollection<WeekData> WeekDataList { get; set; }
-       
+
         void GetItems() {
             WeekRecords = new ObservableCollection<WeekRecord>(MainViewModel.DataProvider.GetWeekRecords());
-          
+
             var lst = WeekRecords.GroupBy(x => x.WeekId).Select(d => new { dt = d.Key, all = d.Count(), completed = d.Sum(y => y.IsCompletedInWeek ? 1 : 0) });
-            var lst2 =lst.Select(x => new WeekData(x.dt, x.all, x.completed)).ToList();
+            var lst2 = lst.Select(x => new WeekData(x.dt, x.all, x.completed)).ToList();
             foreach (var w in lst2)
                 WeekDataList.Add(w);
         }
@@ -79,7 +79,7 @@ namespace ListOfDeal.Classes {
 
 
 
-         void CreateItems() {
+        void CreateItems() {
             DateTime wkStartDate = DateTime.Today.AddDays(1);
             DateTime wkEndDate = wkStartDate.AddDays(6);
             var activeActions = MainViewModel.DataProvider.GetActions().Where(x => x.Project.StatusId == 1 && x.IsActive && x.StatusId != (int)ActionsStatusEnum.Completed && (x.ScheduledTime == null || x.ScheduledTime <= wkEndDate)).ToList();
@@ -104,7 +104,7 @@ namespace ListOfDeal.Classes {
         public WeekData(string dt, int all, int completed) {
             Id = dt;
             AllInActions = all;
-            PercentComplete = all > 0?(double)completed/all:0;
+            PercentComplete = all > 0 ? (double)completed / all : 0;
         }
         public string Id { get; set; }
         public double PercentComplete { get; set; }
@@ -126,8 +126,8 @@ namespace ListOfDeal.Classes {
             var lst = new List<Action>();
             var pr = new Project() { StatusId = 1 };
             lst.Add(new Action() { Project = pr, IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled });
-            lst.Add(new Action() { Project = pr, IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled ,ScheduledTime=DateTime.Today.AddDays(8)});
-            lst.Add(new Action() { Project = pr, IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled, Id=1 });
+            lst.Add(new Action() { Project = pr, IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled, ScheduledTime = DateTime.Today.AddDays(8) });
+            lst.Add(new Action() { Project = pr, IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled, Id = 1 });
             dataProviderEntity.Setup(x => x.GetActions()).Returns(lst);
             string wkId = DateTime.Today.AddDays(1).ToString("MMddyyyy");
             dataProviderEntity.Setup(x => x.GetWeekRecords()).Returns(new List<WeekRecord>() { new WeekRecord() { ActionId = 1, WeekId = wkId } });
@@ -149,7 +149,7 @@ namespace ListOfDeal.Classes {
             MainViewModel.DataProvider = dataProviderEntity.Object;
 
             var lst = new List<WeekRecord>();
-            var w1 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Completed, CompleteTime = new DateTime(2017, 2, 28) },WeekId="02272017" };
+            var w1 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Completed, CompleteTime = new DateTime(2017, 2, 28) }, WeekId = "02272017" };
             var w2 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Scheduled }, WeekId = "02272017" };
             var w3 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Completed, CompleteTime = new DateTime(2017, 3, 28) }, WeekId = "02272017" };
             lst.Add(w1);

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace ListOfDeal {
     public interface IWLConnector {
-        WLTask ChangeTitleOfTask(string wlId, string newName,int revision);
+        WLTask ChangeTitleOfTask(string wlId, string newName, int revision);
         WLTask ChangeScheduledTime(string wlId, string dueTime, int revision);
         WLTask ChangeStarredOfTask(string wlId, bool isMajor, int revision);
         List<WLList> GetAllLists();
@@ -62,7 +62,7 @@ namespace ListOfDeal {
             streamReader.Close();
             return responseText;
         }
-   
+
         string NormalizeString(string title) {
             return title.Replace("/", "").Replace("\\", "");
         }
@@ -125,9 +125,9 @@ namespace ListOfDeal {
             string st2 = string.Format(@"{0}/{1}", st, wlId);
 
             var revision = GetTask(wlId).revision;
-            
 
-           JsonCreator.Add("revision", revision);
+
+            JsonCreator.Add("revision", revision);
             JsonCreator.Add("completed", true);
             string json = JsonCreator.GetString();
             var responseText = GetHttpRequestResponse(st2, "PATCH", json);
@@ -138,7 +138,7 @@ namespace ListOfDeal {
             newTitle = NormalizeString(newTitle);
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, wlId);
-            
+
 
             JsonCreator.Add("revision", revision);
             JsonCreator.Add("title", newTitle);
@@ -147,11 +147,11 @@ namespace ListOfDeal {
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
         }
-        public WLTask ChangeStarredOfTask(string wlId, bool isMajor,int revision) {
-          
+        public WLTask ChangeStarredOfTask(string wlId, bool isMajor, int revision) {
+
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, wlId);
-            
+
 
             JsonCreator.Add("revision", revision);
             JsonCreator.Add("starred", isMajor);
@@ -160,10 +160,10 @@ namespace ListOfDeal {
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
         }
-        public WLTask ChangeListOfTask(string wlId, int listId,int revision) {
+        public WLTask ChangeListOfTask(string wlId, int listId, int revision) {
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, wlId);
-            
+
 
             JsonCreator.Add("revision", revision);
             JsonCreator.Add("list_id", listId);
@@ -172,10 +172,10 @@ namespace ListOfDeal {
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
         }
-        public WLTask ChangeScheduledTime(string wlId, string dueDate,int revision) {
+        public WLTask ChangeScheduledTime(string wlId, string dueDate, int revision) {
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}", st, wlId);
-            
+
             JsonCreator.Add("revision", revision);
             JsonCreator.Add("due_date", dueDate);
             //  JsonCreator.Add("completed", true);
@@ -188,7 +188,7 @@ namespace ListOfDeal {
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format(@"{0}/{1}?revision={2}", st, task.id, task.revision);
             var responseText = GetHttpRequestResponse(st2, "DELETE");
-          
+
 
         }
 
@@ -233,7 +233,7 @@ namespace ListOfDeal {
         }
         public void DeleteNote(string noteId, int revision) {
             string st = "http://a.wunderlist.com/api/v1/notes";
-            string st2 = string.Format(@"{0}/{1}?revision={2}", st, noteId,revision);
+            string st2 = string.Format(@"{0}/{1}?revision={2}", st, noteId, revision);
             var responseText = GetHttpRequestResponse(st2, "DELETE");
         }
 
@@ -454,7 +454,7 @@ namespace ListOfDeal {
             string json = "{\"revision\":" + 123 + "," +
                "\"title\":\"NewTestTitle3\"," +
                "\"completed\":true," +
-               "\"note_id\":678"+
+               "\"note_id\":678" +
                "}";
             Assert.AreEqual(json, st);
 

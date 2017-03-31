@@ -238,17 +238,7 @@ namespace ListOfDeal {
         }
     }
 
-    public enum ActionsStatusEnum {
-        Waited = 1,
-        Scheduled = 2,
 
-        Completed = 4
-    }
-    public enum WLTaskStatusEnum {
-        UpToDateWLTask = 0,
-        UpdateNeeded = 1,
-        DeletingNeeded = 2
-    }
     [TestFixture]
     public class MyActionTest {
         [Test]

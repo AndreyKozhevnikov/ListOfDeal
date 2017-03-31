@@ -35,7 +35,7 @@ namespace ListOfDeal.Views {
 
             Dispatcher.BeginInvoke((System.Action)(() => {
                 listBox1.ScrollIntoView(e.NewItems[0]);
-            }),DispatcherPriority.Background);
+            }), DispatcherPriority.Background);
 
         }
     }

@@ -30,7 +30,7 @@ namespace ListOfDeal {
             var v = Assembly.GetExecutingAssembly().GetName().Version;
             var st = this.Title + " - " + v;
 #if DEBUG
-           st  = st + " Debug mode";
+            st = st + " Debug mode";
 #endif
             this.Title = st;
         }

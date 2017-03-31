@@ -172,9 +172,7 @@ namespace ListOfDeal {
     }
 
 
-    public enum ProjectStatusEnum {
-        InWork = 1, Delayed = 2, Done = 3
-    }
+
 
     [TestFixture]
     public class MyProjectTests {

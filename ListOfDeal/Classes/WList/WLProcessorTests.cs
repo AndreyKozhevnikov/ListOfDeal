@@ -1076,7 +1076,7 @@ namespace ListOfDeal {
             var wlProc = new WLProcessor(null);
             string longTxt = "longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglolonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglo";
             //act
-            var res = wlProc.CreateLogString( longTxt, "test");
+            var res = wlProc.CreateLogString(longTxt, "test");
             var m = res.Split('|');
 
 

@@ -42,7 +42,7 @@ namespace ListOfDeal {
         }
 
         async public void CreateWlTasks() {
-            RaiseLog("Process creating tasks", "started");
+            RaiseLog("Process creating tasks", "Started");
             MainViewModel.SaveChanges();
             var emptyActions = allActions.Where(x => x.WLId == null);
             var v = emptyActions.Count();
@@ -78,7 +78,7 @@ namespace ListOfDeal {
         }
 
         public void HandleCompletedWLTasks() {
-            RaiseLog("Handling completing WLtasks", "started");
+            RaiseLog("Handling completing WLtasks", "Started");
             MainViewModel.SaveChanges();
             allTasks = GetAllActiveTasks();
             var actionsWithTasks = allActions.Where(x => x.WLId != null).ToList();
@@ -224,7 +224,7 @@ namespace ListOfDeal {
         }
 
         public void HandleChangedWLTask() {
-            RaiseLog("Handling changed WLTasks", "started");
+            RaiseLog("Handling changed WLTasks", "Started");
             var actionsWithTasks = allActions.Where(x => x.WLId != null).ToList();
             foreach (var act in actionsWithTasks) {
                 var tsk = allTasks.Where(x => x.id == act.WLId).FirstOrDefault();

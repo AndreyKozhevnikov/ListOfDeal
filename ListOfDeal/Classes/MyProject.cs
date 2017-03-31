@@ -59,21 +59,21 @@ namespace ListOfDeal {
         void act_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
             if (e.PropertyName == "Status") {
                 MyAction act = sender as MyAction;
-                if (act.Status != ActionsStatusEnum.Completed)
-                    return;
-                bool needSetIsActive = Actions.Where(x => x.IsActive).Count() == 0;
-                if (!needSetIsActive)
-                    return;
-                var targetAct = Actions.Where(x => x.Status != ActionsStatusEnum.Completed && !x.IsActive).OrderBy(x => x.OrderNumber).FirstOrDefault();
-                if (targetAct != null) {
-                    targetAct.IsActive = true;
+                if (act.Status == ActionsStatusEnum.Completed) {
+                    bool isThereIsNoActiveActions = Actions.Where(x => x.IsActive).Count() == 0;
+                    if (isThereIsNoActiveActions) {
+                        var targetAct = Actions.Where(x => x.Status != ActionsStatusEnum.Completed && !x.IsActive).OrderBy(x => x.OrderNumber).FirstOrDefault();
+                        if (targetAct != null) {
+                            targetAct.IsActive = true;
+                        }
+                        if (this.IsSimpleProject) {
+                            this.Status = ProjectStatusEnum.Done;
+                        }
+                        RaisePropertyChanged("Actions");
+                    }
                 }
-                if (this.IsSimpleProject) {
-                    this.Status = ProjectStatusEnum.Done;
-                }
-                RaisePropertyChanged("Actions");
             }
-            if (e.PropertyName== "ScheduledTime"||e.PropertyName=="IsActive") {
+            if (e.PropertyName == "ScheduledTime" || e.PropertyName == "IsActive") {
                 RaisePropertyChanged("Actions");
             }
         }
@@ -85,7 +85,7 @@ namespace ListOfDeal {
         public void Save() {
             if (parentEntity.Id <= 0)
                 MainViewModel.DataProvider.AddProject(parentEntity);
-               // MainViewModel.generalEntity.Projects.Add(parentEntity);
+            // MainViewModel.generalEntity.Projects.Add(parentEntity);
             MainViewModel.SaveChanges();
         }
 
@@ -154,6 +154,8 @@ namespace ListOfDeal {
                 return parentEntity.IsSimpleProject;
             }
             set {
+                if (value && Actions.Count > 1)
+                    return;
                 parentEntity.IsSimpleProject = value;
                 foreach (var act in Actions) {
                     act.SetWLStatusUpdatedIfNeeded();
@@ -257,10 +259,10 @@ namespace ListOfDeal {
         public void ShouldNotMakeCompletedActionActive() {
             //arrange
             var proj = new MyProject(new Project());
-            var act1 = new MyAction(new Action()) { Name = "act1" };
-            var act2 = new MyAction(new Action()) { Name = "act2" };
-            var act3 = new MyAction(new Action()) { Name = "act3" };
-            var act4 = new MyAction(new Action()) { Name = "act4" };
+            var act1 = new MyAction(new Action()) { Name = "act1", Status = ActionsStatusEnum.Waited };
+            var act2 = new MyAction(new Action()) { Name = "act2", Status = ActionsStatusEnum.Waited };
+            var act3 = new MyAction(new Action()) { Name = "act3", Status = ActionsStatusEnum.Waited };
+            var act4 = new MyAction(new Action()) { Name = "act4", Status = ActionsStatusEnum.Waited };
             proj.AddAction(act1);
             proj.AddAction(act2);
             proj.AddAction(act3);

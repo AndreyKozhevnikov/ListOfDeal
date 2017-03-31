@@ -358,6 +358,20 @@ namespace ListOfDeal {
             Assert.AreEqual(WLTaskStatusEnum.UpdateNeeded, act.WLTaskStatus);
         }
         [Test]
+        public void PreventSettingIsSimpleTrueWhenThereAreManyAcitons() {
+            //arrange
+            MyProject proj = new MyProject(new Project());
+            proj.IsSimpleProject = false;
+            MyAction act1 = new MyAction(new Action());
+            proj.Actions.Add(act1);
+            MyAction act2 = new MyAction(new Action());
+            proj.Actions.Add(act2);
+            //act
+            proj.IsSimpleProject = true;
+            //assert
+            Assert.AreEqual(false, proj.IsSimpleProject);
+        }
+        [Test]
         public void SetWLStatusWhenCommentPropertyIsChanged() {
             //arrange
             MyProject proj = new MyProject(new Project());

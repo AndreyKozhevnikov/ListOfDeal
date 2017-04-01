@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 
 namespace ListOfDeal {
+    /*
     [TestFixture]
     public class WLProcessorTest {
         Mock<IMainViewModel> mockMainVM;
@@ -1101,5 +1102,5 @@ namespace ListOfDeal {
             Assert.AreEqual("diar1", sp[0]);
         }
     }
-
+    */
 }

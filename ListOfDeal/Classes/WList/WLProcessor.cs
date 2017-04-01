@@ -62,7 +62,7 @@ namespace ListOfDeal {
                 WLTask wlTask;
                 int targetListId = MyListId;
                 string lstName = "MyList";
-                if (act.Status == ActionsStatusEnum.Scheduled) {//scheduled action
+                if (act.ScheduledTime.HasValue) {//scheduled action
                     targetListId = MySchedId;
                     lstName = "MySched";
                 }
@@ -102,7 +102,7 @@ namespace ListOfDeal {
                 }
                 act.WLId = null;
                 act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
-                act.Status = ActionsStatusEnum.Completed;
+                act.Status2 = ActionsStatusEnum2.Done;
                 act.CompleteTime = completedTime;
                 RaiseLog(act, "completed");
             }
@@ -118,7 +118,7 @@ namespace ListOfDeal {
             return v5;
         }
         List<MyAction> GetActiveActions() {
-            var lst = parentVM.Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.IsActive).ToList();
+            var lst = parentVM.Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.IsActive2).ToList();
             return lst;
         }
 
@@ -184,7 +184,7 @@ namespace ListOfDeal {
                             }
                             break;
                         case "ScheduledTime":
-                            if (act.ScheduledTime != null) {
+                            if (act.ScheduledTime.HasValue) {
                                 string currDT = WLConnector.ConvertToWLDate(act.ScheduledTime.Value);
                                 if (wlTask.list_id != WLProcessor.MySchedId) {
                                     RaiseLog(wlTask, "moved", "MyShed -" + WLProcessor.MySchedId);
@@ -209,7 +209,7 @@ namespace ListOfDeal {
                                 wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MyBuyId, wlTask.revision);
                             }
                             if (!act.ToBuy) {
-                                if (act.Status == ActionsStatusEnum.Scheduled) {
+                                if (act.ScheduledTime.HasValue) {
                                     wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MySchedId, wlTask.revision);
                                 }
                                 else {
@@ -255,7 +255,7 @@ namespace ListOfDeal {
                     if (DateTime.TryParse(tsk.due_date, out tmpDateTime))
                         wlDateTime = tmpDateTime;
                     if (act.ScheduledTime != wlDateTime) {
-                        if (act.Status == ActionsStatusEnum.Scheduled) {
+                        if (act.ScheduledTime.HasValue) {
                             if (wlDateTime.HasValue) {
                                 RaiseLog(act, "changed time", string.Format("from {0} to {1}", act.ScheduledTime.Value.ToString("yyy-MM-dd"), tsk.due_date));
                                 var newDate = DateTime.Parse(tsk.due_date);
@@ -263,7 +263,6 @@ namespace ListOfDeal {
                             }
                             else {
                                 RaiseLog(act, "delete time");
-                                act.Status = ActionsStatusEnum.Waited;
                             }
                         }
                         else {

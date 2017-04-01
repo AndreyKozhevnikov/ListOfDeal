@@ -35,19 +35,17 @@ namespace ListOfDeal {
             if (IsSimpleProject && Actions.Count == 1) {
                 var targetAction = Actions[0];
                 targetAction.CopyProperties(act);
-                targetAction.IsActive = true;
                 IsSimpleProject = false;
             }
             else {
-                if (Actions.Count == 0) {
+                if (Actions.Count == 0) { //set inwork? !!!
                     act.OrderNumber = 0;
-                    act.IsActive = true;
                 }
                 else {
                     var maxOrderNumber = Actions.Max(x => x.OrderNumber);
                     act.OrderNumber = maxOrderNumber + 1;
-                    if (Actions.Where(x => x.IsActive).Count() == 0)
-                        act.IsActive = true;
+                    //if (Actions.Where(x => x.IsActive).Count() == 0)
+                    //    act.IsActive = true;
                 }
                 act.PropertyChanged += act_PropertyChanged;
                 Actions.Add(act);
@@ -59,12 +57,12 @@ namespace ListOfDeal {
         void act_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
             if (e.PropertyName == "Status") {
                 MyAction act = sender as MyAction;
-                if (act.Status == ActionsStatusEnum.Completed) {
-                    bool isThereIsNoActiveActions = Actions.Where(x => x.IsActive).Count() == 0;
+                if (!act.IsActive2) {
+                    bool isThereIsNoActiveActions = Actions.Where(x => x.IsActive2).Count() == 0;
                     if (isThereIsNoActiveActions) {
-                        var targetAct = Actions.Where(x => x.Status != ActionsStatusEnum.Completed && !x.IsActive).OrderBy(x => x.OrderNumber).FirstOrDefault();
+                        var targetAct = Actions.Where(x => x.Status2==ActionsStatusEnum2.Delay).OrderBy(x => x.OrderNumber).FirstOrDefault();
                         if (targetAct != null) {
-                            targetAct.IsActive = true;
+                            targetAct.Status2 = ActionsStatusEnum2.InWork;
                         }
                         if (this.IsSimpleProject) {
                             this.Status = ProjectStatusEnum.Done;
@@ -235,7 +233,7 @@ namespace ListOfDeal {
             Assert.AreEqual(1, proj.Actions.Count);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj.Actions[0].WLTaskStatus);
         }
-        [Test]
+        /*[Test]
         public void MakeActionsActive() {
             //arrange
             var proj = new MyProject(new Project());
@@ -251,7 +249,7 @@ namespace ListOfDeal {
             Assert.AreEqual(false, act2.IsActive);
             Assert.AreEqual(false, act2.IsActive);
         }
-
+       
 
         [Test]
         public void ShouldNotMakeCompletedActionActive() {
@@ -299,6 +297,6 @@ namespace ListOfDeal {
             //assert
             Assert.AreEqual(false, act2.IsActive);
 
-        }
+        } */
     }
 }

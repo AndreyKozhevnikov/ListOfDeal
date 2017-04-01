@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ListOfDeal {
     public class WLProcessor {
@@ -25,6 +26,8 @@ namespace ListOfDeal {
         public static int MySchedId = 263984274;
         public static int MyBuyId = 263984295;
 #endif
+        public static int MyDiarId = 289882019;
+
         public event System.Action<string> Logged;
         IMainViewModel parentVM;
         public WLProcessor(IMainViewModel _parentVM) {
@@ -40,6 +43,7 @@ namespace ListOfDeal {
             allActions = GetActiveActions();
             allTasks = GetAllActiveTasks();
         }
+        public Action<string> SetClipboardText;
 
         async public void CreateWlTasks() {
             RaiseLog("Process creating tasks", "Started");
@@ -301,8 +305,27 @@ namespace ListOfDeal {
             string result = string.Format("| {0} | {1} | {2} | {3} |", dateString, subjectString, descriptionString, newValueString);
             return result;
         }
+        public object Test() {
+            //var lst = this.wlConnector.GetAllLists();
+            //foreach(var l in lst) {
+            //    var res = this.wlConnector.GetTasksForList(l.id);
+            //}
+            //return lst;
+            return null;
+        }
+        public void PasteDiaryEntries() {
+            var lst = wlConnector.GetTasksForList(MyDiarId);
+             var titles = lst.Select(x => x.title).ToList();
+            string result = string.Join(System.Environment.NewLine, titles);
+            SetClipboardText(result);
+            RaiseLog("diary entries", "copied");
+        }
     }
 
-
+    public static class ClipboardHelper {
+        public static void ClipboardSetText(string st) {
+            Clipboard.SetText(st);
+        }
+    }
 
 }

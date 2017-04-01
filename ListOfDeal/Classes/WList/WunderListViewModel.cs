@@ -27,6 +27,7 @@ namespace ListOfDeal {
         ICommand _handleCompletedActionsCommand;
         ICommand _handleChangedLODActionsCommand;
         ICommand _handleChangedWLTaskCommand;
+        ICommand _getDiaryEntriesCommand;
         public ICommand CreateProcessorCommand {
             get {
                 if (_createProcessorCommand == null)
@@ -83,6 +84,20 @@ namespace ListOfDeal {
                 return _handleChangedWLTaskCommand;
             }
         }
+        public ICommand GetDiaryEntriesCommand {
+            get {
+                if (_getDiaryEntriesCommand == null)
+                    _getDiaryEntriesCommand = new DelegateCommand(GetDiaryEntries);
+                return _getDiaryEntriesCommand;
+            }
+        }
+
+        private void GetDiaryEntries() {
+            wlProcessor.PasteDiaryEntries();
+      
+
+        }
+
         private void HandleChangedLODActions() {
             wlProcessor.HandleChangedLODActions();
             CreateWlProcessor();
@@ -100,8 +115,11 @@ namespace ListOfDeal {
             wlProcessor = new WLProcessor(parentViewModel);
             wlProcessor.Logged += WlProcessor_Logged;
             wlProcessor.CreateWlConnector(new WLConnector());
+            wlProcessor.SetClipboardText = ClipboardHelper.ClipboardSetText;
         }
         void Test() {
+
+            //var lst = wlProcessor.Test();
             //var lst = MainViewModel.DataProvider.GetProjects().Where(x => x.TypeId == 10).ToList();
             //foreach(Project p in lst) {
             //    p.TypeId = 11;

@@ -1083,6 +1083,23 @@ namespace ListOfDeal {
             //assert
             Assert.AreEqual(162, m[2].Length);
         }
+        [Test]
+        public void CopyDiaryToClipboard() {
+            //arrange
+            Initialize();
+            List<WLTask> taskList = new List<WLTask>();
+            taskList.Add(new WLTask() { title = "diar1" });
+            taskList.Add(new WLTask() { title = "diar2" });
+            mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyDiarId)).Returns(taskList);
+            string res = null;
+            wlProc.SetClipboardText = new Action<string>(x => res=x);
+            //act
+            wlProc.PasteDiaryEntries();
+            //assert
+            var sp = res.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            Assert.AreEqual(2, sp.Length);
+            Assert.AreEqual("diar1", sp[0]);
+        }
     }
 
 }

@@ -26,7 +26,7 @@ namespace ListOfDeal
         public Nullable<System.DateTime> ScheduledTime { get; set; }
         public string Comment { get; set; }
         public int StatusId { get; set; }
-        public bool IsActive { get; set; }
+      //  public bool IsActive { get; set; }
         public int OrderNumber { get; set; }
         public Nullable<System.DateTime> CompleteTime { get; set; }
         public int WLTaskStatus { get; set; }

@@ -89,7 +89,7 @@ namespace ListOfDeal.Classes {
                 string weekId = wkStartDate.ToString("MMddyyyy");
                 var cnt = wRecords.Where(x => x.WeekId == weekId && x.ActionId == act.Id).Count();
                 if (cnt > 0)
-                    return;
+                    continue;
                 var wr = MainViewModel.DataProvider.CreateWeekRecord();
                 wr.ActionId = act.Id;
                 wr.WeekId = weekId;
@@ -125,9 +125,9 @@ namespace ListOfDeal.Classes {
 
             var lst = new List<Action>();
             var pr = new Project() { StatusId = 1 };
-            lst.Add(new Action() { Project = pr, IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled });
-            lst.Add(new Action() { Project = pr, IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled, ScheduledTime = DateTime.Today.AddDays(8) });
             lst.Add(new Action() { Project = pr, IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled, Id = 1 });
+            lst.Add(new Action() { Project = pr, IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled });
+            lst.Add(new Action() { Project = pr, IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled, ScheduledTime = DateTime.Today.AddDays(8) }); //out of date action
             dataProviderEntity.Setup(x => x.GetActions()).Returns(lst);
             string wkId = DateTime.Today.AddDays(1).ToString("MMddyyyy");
             dataProviderEntity.Setup(x => x.GetWeekRecords()).Returns(new List<WeekRecord>() { new WeekRecord() { ActionId = 1, WeekId = wkId } });

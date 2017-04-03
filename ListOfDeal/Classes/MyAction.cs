@@ -283,6 +283,7 @@ namespace ListOfDeal {
             //arrange
             MyAction act = new MyAction(new Action());
             act.IsActive = true;
+            act.WLId = "1";
             //act
             act.IsActive = false;
             act.IsActive = true;

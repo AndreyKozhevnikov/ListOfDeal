@@ -54,6 +54,7 @@ namespace ListOfDeal {
                 if (value != ActionsStatusEnum2.InWork && this.ScheduledTime != null) {
                     this.ScheduledTime = null;
                 }
+                RaisePropertyChanged("Status2");
             }
         }
         //public ActionsStatusEnum Status {
@@ -210,11 +211,7 @@ namespace ListOfDeal {
                 HandlePropertyChanges("IsMajor");
             }
         }
-        public bool IsActive2 {
-            get {
-                return Status2 != ActionsStatusEnum2.Done && Status2 != ActionsStatusEnum2.Rejected;
-            }
-        }
+ 
 
         public void SetDeleteTaskIfNeeded() {
             if (WLId != null)

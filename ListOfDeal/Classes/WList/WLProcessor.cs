@@ -118,7 +118,7 @@ namespace ListOfDeal {
             return v5;
         }
         List<MyAction> GetActiveActions() {
-            var lst = parentVM.Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.IsActive2).ToList();
+            var lst = parentVM.Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.Status2 == ActionsStatusEnum2.InWork).ToList();
             return lst;
         }
 

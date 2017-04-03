@@ -281,7 +281,7 @@ namespace ListOfDeal {
         }
         private void CustomSummary(CustomSummaryEventArgs obj) {
             if (obj.SummaryProcess == CustomSummaryProcess.Finalize && Projects != null) {
-                var v = Projects.SelectMany(x => x.Actions).Where(y => y.IsActive2).ToList();
+                var v = Projects.SelectMany(x => x.Actions).Where(y => y.Status2==ActionsStatusEnum2.InWork).ToList();
                 obj.TotalValue = string.Format("Actions count={0}", v.Count);
             }
         }
@@ -355,7 +355,7 @@ namespace ListOfDeal {
         private void ValidateColumn(GridRowValidationEventArgs e) {
             MyProject p = e.Row as MyProject;
           
-            if ((ProjectStatusEnum)e.Value == ProjectStatusEnum.Done && p.Actions.Where(x => x.IsActive2).Count() > 0) { //!!!check
+            if ((ProjectStatusEnum)e.Value == ProjectStatusEnum.Done && p.Actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork).Count() > 0) { //!!!check
                 e.ErrorContent = "there are active actions";
                 e.IsValid = false;
                 e.Handled = true;

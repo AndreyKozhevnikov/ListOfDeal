@@ -65,7 +65,7 @@ namespace ListOfDeal.Views {
 
         public object Evaluate(params object[] operands) {
             var actions = operands[0] as ObservableCollection<MyAction>;
-            return actions.Where(x => x.IsActive2).Count();
+            return actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork).Count();
         }
     }
     public class GetOutdatedActionsFunction : ICustomFunctionOperator {
@@ -80,7 +80,7 @@ namespace ListOfDeal.Views {
 
         public object Evaluate(params object[] operands) {
             var actions = operands[0] as ObservableCollection<MyAction>;
-            var outdated = actions.Where(x => x.ScheduledTime < DateTime.Today && x.IsActive2);
+            var outdated = actions.Where(x => x.ScheduledTime < DateTime.Today && x.Status2 == ActionsStatusEnum2.InWork);
             return outdated.Count() > 0;
         }
     }

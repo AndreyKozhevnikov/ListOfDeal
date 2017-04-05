@@ -262,6 +262,7 @@ namespace ListOfDeal {
                                 act.ScheduledTime = newDate;
                             }
                             else {
+                                act.ScheduledTime = null;
                                 RaiseLog(act, "delete time");
                             }
                         }
@@ -314,7 +315,7 @@ namespace ListOfDeal {
         }
         public void PasteDiaryEntries() {
             var lst = wlConnector.GetTasksForList(MyDiarId);
-             var titles = lst.Select(x => x.title).ToList();
+            var titles = lst.Select(x => x.title).ToList();
             string result = string.Join(System.Environment.NewLine, titles);
             SetClipboardText(result);
             RaiseLog("diary entries", "copied");

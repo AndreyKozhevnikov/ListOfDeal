@@ -61,12 +61,15 @@ namespace ListOfDeal {
                 if (!(act.Status2 == ActionsStatusEnum2.InWork)) {
                     bool isThereIsNoActiveActions = Actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork).Count() == 0;
                     if (isThereIsNoActiveActions) {
-                        var targetAct = Actions.Where(x => x.Status2 == ActionsStatusEnum2.Delay).OrderBy(x => x.OrderNumber).FirstOrDefault();
+                        var targetAct = Actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork||x.Status2==ActionsStatusEnum2.Delay).OrderBy(x => x.OrderNumber).FirstOrDefault();
                         if (targetAct != null) {
                             targetAct.Status2 = ActionsStatusEnum2.InWork;
                         }
                         if (this.IsSimpleProject) {
-                            this.Status = ProjectStatusEnum.Done;
+                            if (act.Status2 == ActionsStatusEnum2.Done)
+                                this.Status = ProjectStatusEnum.Done;
+                            if (act.Status2 == ActionsStatusEnum2.Rejected)
+                                this.Status = ProjectStatusEnum.Rejected;
                         }
                         RaisePropertyChanged("Actions");
                     }
@@ -258,7 +261,7 @@ namespace ListOfDeal {
             var proj = new MyProject(new Project());
             var act1 = new MyAction(new Action()) { Name = "act1", Status2 = ActionsStatusEnum2.Delay };
             var act2 = new MyAction(new Action()) { Name = "act2", Status2 = ActionsStatusEnum2.Delay };
-            var act3 = new MyAction(new Action()) { Name = "act3", Status2 = ActionsStatusEnum2.Delay };
+            var act3 = new MyAction(new Action()) { Name = "act3", Status2 = ActionsStatusEnum2.Done };
             var act4 = new MyAction(new Action()) { Name = "act4", Status2 = ActionsStatusEnum2.Delay };
             proj.AddAction(act1);
             proj.AddAction(act2);
@@ -270,8 +273,8 @@ namespace ListOfDeal {
             //assert2
             Assert.AreEqual(ActionsStatusEnum2.Rejected, act1.Status2);
             Assert.AreEqual(ActionsStatusEnum2.Done, act2.Status2);
-            Assert.AreEqual(ActionsStatusEnum2.InWork, act3.Status2);
-            Assert.AreEqual(ActionsStatusEnum2.Delay, act4.Status2);
+            Assert.AreEqual(ActionsStatusEnum2.Done, act3.Status2);
+            Assert.AreEqual(ActionsStatusEnum2.InWork, act4.Status2);
         }
         [Test]
         public void AddActionMakeActionActiveIfThereAreNoOtherActive() {
@@ -297,7 +300,39 @@ namespace ListOfDeal {
             proj.AddAction(act2);
             //assert
             Assert.AreEqual(ActionsStatusEnum2.Delay, act2.Status2);
-
+        }
+        [Test]
+        public void CompleteActionInSimpleProject_completeProject_done() {
+            //arrange
+            var proj1 = new MyProject(new Project() { IsSimpleProject = true });
+            var act1 = new MyAction(new Action()) { Name = "act1", Status2 = ActionsStatusEnum2.InWork };
+            proj1.AddAction(act1);
+            //act
+            act1.Status2 = ActionsStatusEnum2.Done;
+            //assert
+            Assert.AreEqual(ProjectStatusEnum.Done, proj1.Status);
+        }
+        [Test]
+        public void CompleteActionInSimpleProject_completeProject_rejected() {
+            //arrange
+            var proj2 = new MyProject(new Project() { IsSimpleProject = true });
+            var act2 = new MyAction(new Action()) { Name = "act1", Status2 = ActionsStatusEnum2.InWork };
+            proj2.AddAction(act2);
+            //act
+            act2.Status2 = ActionsStatusEnum2.Rejected;
+            //assert
+            Assert.AreEqual(ProjectStatusEnum.Rejected, proj2.Status);
+        }
+        [Test]
+        public void DelayActionInSimpleProject_doNOTcompleteProject() {
+            //arrange
+            var proj2 = new MyProject(new Project() { IsSimpleProject = true ,StatusId=(int)ProjectStatusEnum.InWork});
+            var act2 = new MyAction(new Action()) { Name = "act1", Status2 = ActionsStatusEnum2.InWork };
+            proj2.AddAction(act2);
+            //act
+            act2.Status2 = ActionsStatusEnum2.Delay;
+            //assert
+            Assert.AreEqual(ProjectStatusEnum.InWork, proj2.Status);
         }
     }
 }

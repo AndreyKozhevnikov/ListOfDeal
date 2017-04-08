@@ -18,8 +18,10 @@ namespace ListOfDeal {
         public WunderListViewModel(IMainViewModel _mainVM) {
             parentViewModel = _mainVM;
             Logs = new ObservableCollection<string>();
+#if !DEBUG
             string fileName = string.Format("logs{0}.log", DateTime.Today.ToString("ddMMMyyyy"));
             logWriter = new StreamWriter(fileName, true);
+#endif
         }
         ICommand _createProcessorCommand;
         ICommand _createTasksCommand;
@@ -94,7 +96,7 @@ namespace ListOfDeal {
 
         private void GetDiaryEntries() {
             wlProcessor.PasteDiaryEntries();
-      
+
 
         }
 

@@ -104,7 +104,7 @@
                         <dxlc:LayoutItem Label="Status:">
                             <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.Status, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
                                 <dxmvvm:Interaction.Behaviors>
-                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum}" />
+                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum2}" />
                                 </dxmvvm:Interaction.Behaviors>
                             </dxe:ComboBoxEdit>
                         </dxlc:LayoutItem>
@@ -224,8 +224,6 @@
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                 </dxg:GridColumn>
-                              
-                                <dxg:GridColumn Width="70" FieldName="IsActive" />
                                 <dxg:GridColumn FieldName="Comment">
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>

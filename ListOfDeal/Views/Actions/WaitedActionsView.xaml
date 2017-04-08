@@ -50,7 +50,7 @@
                         <DataTemplate>
                             <dxe:ComboBoxEdit Name="PART_Editor">
                                 <dxmvvm:Interaction.Behaviors>
-                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum}" />
+                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum2}" />
                                 </dxmvvm:Interaction.Behaviors>
                             </dxe:ComboBoxEdit>
                         </DataTemplate>

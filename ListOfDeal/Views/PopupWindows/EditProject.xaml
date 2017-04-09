@@ -15,7 +15,7 @@
         <dxg:GridControl x:Name="grd1" CurrentColumnChanged="GridControl_CurrentColumnChanged">
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Name" />
-                <dxg:GridColumn FieldName="Status">
+                <dxg:GridColumn FieldName="Status2">
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
                             <dxe:ComboBoxEdit Name="PART_Editor">
@@ -32,7 +32,6 @@
                         <dxe:DateEditSettings />
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
-                <dxg:GridColumn FieldName="IsActive" />
                 <dxg:GridColumn FieldName="Comment" />
                 <dxg:GridColumn FieldName="OrderNumber" />
             </dxg:GridControl.Columns>

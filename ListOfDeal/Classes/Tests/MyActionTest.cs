@@ -183,7 +183,7 @@ namespace ListOfDeal.Classes.Tests {
             act.Status2 = ActionsStatusEnum2.InWork;
             string tmpSting = null;
             act.PropertyChanged += (object sender, PropertyChangedEventArgs e) => {
-                if (e.PropertyName == "Status")
+                if (e.PropertyName == "Status2")
                     tmpSting = "IsSet";
             };
             //act

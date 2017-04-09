@@ -45,7 +45,7 @@
                                                   ValueMember="Id" />
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
-                <dxg:GridColumn FieldName="Status">
+                <dxg:GridColumn FieldName="Status2">
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
                             <dxe:ComboBoxEdit Name="PART_Editor">

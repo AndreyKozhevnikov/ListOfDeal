@@ -102,7 +102,7 @@
                             <dxe:TextEdit EditValue="{Binding CurrentAction.Name, UpdateSourceTrigger=PropertyChanged}" />
                         </dxlc:LayoutItem>
                         <dxlc:LayoutItem Label="Status:">
-                            <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.Status, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                            <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.Status2, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
                                 <dxmvvm:Interaction.Behaviors>
                                     <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum2}" />
                                 </dxmvvm:Interaction.Behaviors>

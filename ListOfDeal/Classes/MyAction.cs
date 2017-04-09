@@ -57,42 +57,6 @@ namespace ListOfDeal {
                 RaisePropertyChanged("Status2");
             }
         }
-        //public ActionsStatusEnum Status {
-        //    get {
-        //        return (ActionsStatusEnum)parentEntity.StatusId;
-        //    }
-        //    set {
-        //        var intVal = (int)value;
-        //        if (parentEntity.StatusId == intVal)
-        //            return;
-        //        parentEntity.StatusId = intVal;
-        //        if (value != ActionsStatusEnum.Scheduled && this.ScheduledTime != null) {
-        //            this.ScheduledTime = null;
-        //        }
-        //        if (value == ActionsStatusEnum.Completed) {
-        //            this.CompleteTime = DateTime.Now;
-        //            this.IsActive = false;
-        //            SetDeleteTaskIfNeeded();
-        //        }
-        //        else {
-        //            this.CompleteTime = null;
-        //        }
-        //        RaisePropertyChanged("Status");
-        //    }
-        //}
-        //public bool IsActive {
-        //    get {
-        //        return parentEntity.IsActive;
-        //    }
-        //    set {
-        //        parentEntity.IsActive = value;
-        //        if (!value) {
-        //            SetDeleteTaskIfNeeded();
-        //        }
-        //        RaisePropertyChanged("IsActive");
-        //    }
-        //}
-
         public DateTime DateCreated {
             get {
                 return parentEntity.DateCreated;

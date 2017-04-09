@@ -136,7 +136,7 @@ namespace ListOfDeal {
         }
         private void CreateNewAction() {
             CurrentAction = new MyAction();
-            CurrentAction.Status2 = ActionsStatusEnum2.InWork;
+            CurrentAction.Status2 = ActionsStatusEnum2.Delay;
         }
         private void AddProject() {
             if (string.IsNullOrEmpty(CurrentProject.Name))

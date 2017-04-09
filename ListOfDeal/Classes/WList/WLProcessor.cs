@@ -16,12 +16,12 @@ namespace ListOfDeal {
         List<MyAction> allActions;
         List<WLTask> allTasks;
         IWLConnector wlConnector;
-#if !DEBUG
+#if Release
         public static int MyListId = 262335124;
         public static int MySchedId = 262630772;
         public static int MyBuyId = 263773374;
 #endif
-#if DEBUG
+#if !Release
         public static int MyListId = 263984253;
         public static int MySchedId = 263984274;
         public static int MyBuyId = 263984295;
@@ -54,7 +54,7 @@ namespace ListOfDeal {
             if (v == 0)
                 return;
             foreach (var act in emptyActions) {
-#if !DEBUG
+#if Release
                 Task t = Task.Run(() => Thread.Sleep(10));
                 await t;
 #endif

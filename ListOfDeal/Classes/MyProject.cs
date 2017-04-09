@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,12 +72,12 @@ namespace ListOfDeal {
                             if (act.Status2 == ActionsStatusEnum2.Rejected)
                                 this.Status = ProjectStatusEnum.Rejected;
                         }
-                        RaisePropertyChanged("Actions");
                     }
                 }
-            }
-            if (e.PropertyName == "ScheduledTime" || e.PropertyName == "IsActive") {
                 RaisePropertyChanged("Actions");
+            }
+            if (e.PropertyName == "ScheduledTime" ) {
+                RaisePropertyChanged("Actions"); 
             }
         }
         public void DeleteAction(MyAction act) {
@@ -333,6 +334,22 @@ namespace ListOfDeal {
             act2.Status2 = ActionsStatusEnum2.Delay;
             //assert
             Assert.AreEqual(ProjectStatusEnum.InWork, proj2.Status);
+        }
+        [Test]
+        public void ActionRaiseScheduled_raiseProjectActions() {
+            //arrange
+            var lst = new List<string>();
+            var proj = new MyProject(new Project());
+            var act = new MyAction(new Action());
+            proj.AddAction(act);
+            proj.PropertyChanged += (object sender, PropertyChangedEventArgs e) => { lst.Add(e.PropertyName); };
+            //act
+            act.Status2 = ActionsStatusEnum2.Delay;
+            act.ScheduledTime = DateTime.Now;
+            //assert
+            Assert.GreaterOrEqual(lst.Where(x=>x=="Actions").Count(),2);
+          
+
         }
     }
 }

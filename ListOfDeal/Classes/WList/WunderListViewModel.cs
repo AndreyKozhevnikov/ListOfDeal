@@ -18,7 +18,7 @@ namespace ListOfDeal {
         public WunderListViewModel(IMainViewModel _mainVM) {
             parentViewModel = _mainVM;
             Logs = new ObservableCollection<string>();
-#if !DEBUG
+#if !DebugTest
             string fileName = string.Format("logs{0}.log", DateTime.Today.ToString("ddMMMyyyy"));
             logWriter = new StreamWriter(fileName, true);
 #endif
@@ -139,8 +139,10 @@ namespace ListOfDeal {
         }
         private void WlProcessor_Logged(string st) {
             Logs.Add(st);
+#if !DebugTest
             logWriter.WriteLine(st);
             logWriter.Flush();
+#endif
         }
 
         void CreateTasks() {
@@ -148,8 +150,6 @@ namespace ListOfDeal {
             wlProcessor.CreateWlTasks();
         }
         private void CreateProcessor() {
-            //var lst = parentViewModel.Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.IsActive);
-            //lodActions = lst.ToList();
             CreateWlProcessor();
         }
         void HandleCompletedWLTasks() {

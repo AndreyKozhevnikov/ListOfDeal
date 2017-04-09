@@ -18,6 +18,9 @@ namespace ListOfDeal {
             DevExpress.Xpf.Core.ApplicationThemeHelper.UpdateApplicationThemeName();
         }
         public App() {
+#if DebugTest
+            Application.Current.Shutdown();
+#endif
             CultureInfo newCI = (CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
             newCI.DateTimeFormat.FirstDayOfWeek = DayOfWeek.Monday;
             Thread.CurrentThread.CurrentCulture = newCI;

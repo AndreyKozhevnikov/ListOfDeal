@@ -129,7 +129,7 @@ namespace ListOfDeal {
                     foreach (var act in Actions) {
                         act.SetDeleteTaskIfNeeded();
                     }
-                    if ((ProjectStatusEnum)value == ProjectStatusEnum.Done) {
+                    if ((ProjectStatusEnum)value == ProjectStatusEnum.Done||(ProjectStatusEnum)value==ProjectStatusEnum.Rejected) {
                         this.parentEntity.CompleteTime = DateTime.Now;
                     }
                 }

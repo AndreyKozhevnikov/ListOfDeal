@@ -19,6 +19,15 @@ namespace ListOfDeal.Classes.Tests {
             //assert
             Assert.AreNotEqual(null, pr.parentEntity.CompleteTime);
         }
+        [Test]
+        public void SetStatusRejected() {
+            //arrange
+            MyProject pr = new MyProject(new Project());
+            //act
+            pr.Status = ProjectStatusEnum.Rejected;
+            //assert
+            Assert.AreNotEqual(null, pr.parentEntity.CompleteTime);
+        }
 
         [Test]
         public void SetProjectIsNotInWork() {
@@ -54,7 +63,23 @@ namespace ListOfDeal.Classes.Tests {
 
             Assert.AreNotEqual(null, pr.parentEntity.CompleteTime);
         }
+        [Test]
+        public void SetProjectIsNotInWork_Rejected() {
+            //arrange
+            MyProject pr = new MyProject(new Project());
+            var myAction = new MyAction(new Action());
+            myAction.WLId = "123";
+            var myAction1 = new MyAction(new Action());
+            pr.Actions.Add(myAction);
+            pr.Actions.Add(myAction1);
+            //act
+            pr.Status = ProjectStatusEnum.Rejected;
+            //assert
+            Assert.AreEqual(WLTaskStatusEnum.DeletingNeeded, myAction.WLTaskStatus);
+            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, myAction1.WLTaskStatus);
 
+            Assert.AreNotEqual(null, pr.parentEntity.CompleteTime);
+        }
         [Test]
         public void AddActionToSimpleProject_ShouldNotSetWLStatusToNeedUpdate() {
             //arrange

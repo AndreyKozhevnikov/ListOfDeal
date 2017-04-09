@@ -9,8 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
-namespace ListOfDeal {
-
+namespace ListOfDeal.Classes.Tests {
+    #if DebugTest
     [TestFixture]
     public class WLProcessorTest {
         Mock<IMainViewModel> mockMainVM;
@@ -1101,5 +1101,5 @@ namespace ListOfDeal {
             Assert.AreEqual("diar1", sp[0]);
         }
     }
-
+#endif
 }

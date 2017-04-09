@@ -144,10 +144,15 @@
     <Compile Include="Classes\Enums.cs" />
     <Compile Include="Classes\HistoryActionItem.cs" />
     <Compile Include="Classes\Services.cs" />
+    <Compile Include="Classes\Tests\MainViewModelTests.cs" />
+    <Compile Include="Classes\Tests\MyActionTest.cs" />
+    <Compile Include="Classes\Tests\MyProjectTests.cs" />
+    <Compile Include="Classes\Tests\WeekStatisticViewModelTest.cs" />
+    <Compile Include="Classes\Tests\WLConnectorTests.cs" />
     <Compile Include="Classes\WeekStatisticViewModel.cs" />
     <Compile Include="Classes\WList\WLConnector.cs" />
     <Compile Include="Classes\WList\WLProcessor.cs" />
-    <Compile Include="Classes\WList\WLProcessorTests.cs" />
+    <Compile Include="Classes\Tests\WLProcessorTests.cs" />
     <Compile Include="Classes\WList\WunderListViewModel.cs" />
     <Compile Include="IListOfDealBaseEntities.cs" />
     <Compile Include="Views\ChartView.xaml.cs">
@@ -319,9 +324,7 @@
   <ItemGroup>
     <Resource Include="Resources\done_eM5_1.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Classes\Tests\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>If $(ConfigurationName) == Release (  call $(SolutionDir)\..\..\Deploy\AssemblyInfoDeploy\AssemblyInfo.exe $(SolutionDir)ListOfDeal\Properties\AssemblyInfo.cs -set:

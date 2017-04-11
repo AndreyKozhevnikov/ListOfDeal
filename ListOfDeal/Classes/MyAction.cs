@@ -75,7 +75,7 @@ namespace ListOfDeal {
                 if (value == parentEntity.ScheduledTime)
                     return;
                 parentEntity.ScheduledTime = value;
-                if (value.HasValue) { //!!! && statuse!=inwork?
+                if (value.HasValue) {
                     this.Status2 = ActionsStatusEnum2.InWork;
                 }
                 HandlePropertyChanges("ScheduledTime");

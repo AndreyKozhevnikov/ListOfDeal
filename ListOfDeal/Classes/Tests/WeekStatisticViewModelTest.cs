@@ -20,10 +20,17 @@ namespace ListOfDeal.Classes.Tests {
             MainViewModel.DataProvider = dataProviderEntity.Object;
 
             var lst = new List<Action>();
-            var pr = new Project() { StatusId = 1 };
-            lst.Add(new Action() { Project = pr, StatusId2 = (int)ActionsStatusEnum2.InWork, Id = 1 });
-            lst.Add(new Action() { Project = pr, StatusId2 = (int)ActionsStatusEnum2.InWork });
+            var pr = new Project() { StatusId = (int)ProjectStatusEnum.InWork };
+            lst.Add(new Action() { Project = pr, StatusId2 = (int)ActionsStatusEnum2.InWork }); //should be added
+            lst.Add(new Action() { Project = pr, StatusId2 = (int)ActionsStatusEnum2.InWork, ScheduledTime = DateTime.Today.AddDays(3) }); //should be added
+
+            lst.Add(new Action() { Project = pr, StatusId2 = (int)ActionsStatusEnum2.InWork, Id = 1 }); //already exist
             lst.Add(new Action() { Project = pr, StatusId2 = (int)ActionsStatusEnum2.InWork, ScheduledTime = DateTime.Today.AddDays(8) }); //out of date action
+            lst.Add(new Action() { Project = pr, StatusId2 = (int)ActionsStatusEnum2.Done }); //wrong status
+            lst.Add(new Action() { Project = pr, StatusId2 = (int)ActionsStatusEnum2.Rejected }); //wrong status
+            lst.Add(new Action() { Project = pr, StatusId2 = (int)ActionsStatusEnum2.Delay }); //wrong status
+            var pr2 = new Project() { StatusId = (int)ProjectStatusEnum.Done };
+            lst.Add(new Action() { Project = pr2, StatusId2 = (int)ActionsStatusEnum2.InWork }); //project inactive
             dataProviderEntity.Setup(x => x.GetActions()).Returns(lst);
             string wkId = DateTime.Today.AddDays(1).ToString("MMddyyyy");
             dataProviderEntity.Setup(x => x.GetWeekRecords()).Returns(new List<WeekRecord>() { new WeekRecord() { ActionId = 1, WeekId = wkId } });
@@ -33,7 +40,7 @@ namespace ListOfDeal.Classes.Tests {
             //act
             vm.CreateItemsCommand.Execute(null);
             //assert
-            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(2, result.Count);
         }
         [Test]
         public void MarkItemsComplete() {

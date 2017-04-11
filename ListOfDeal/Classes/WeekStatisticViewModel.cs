@@ -82,7 +82,7 @@ namespace ListOfDeal.Classes {
         void CreateItems() {
             DateTime wkStartDate = DateTime.Today.AddDays(1);
             DateTime wkEndDate = wkStartDate.AddDays(6);
-            var activeActions = MainViewModel.DataProvider.GetActions().Where(x => x.Project.StatusId == (int)ProjectStatusEnum.InWork && (x.StatusId2 != (int)ActionsStatusEnum2.Delay || x.StatusId2 == (int)ActionsStatusEnum2.InWork) && (x.StatusId2 != (int)ActionsStatusEnum2.Done && x.StatusId2 != (int)ActionsStatusEnum2.Rejected) && (x.ScheduledTime == null || x.ScheduledTime <= wkEndDate)).ToList();//!!! test it
+            var activeActions = MainViewModel.DataProvider.GetActions().Where(x => x.Project.StatusId == (int)ProjectStatusEnum.InWork && x.StatusId2 == (int)ActionsStatusEnum2.InWork && (x.ScheduledTime == null || x.ScheduledTime <= wkEndDate)).ToList();
             var wRecords = MainViewModel.DataProvider.GetWeekRecords();
             foreach (var act in activeActions) {
                 string weekId = wkStartDate.ToString("MMddyyyy");

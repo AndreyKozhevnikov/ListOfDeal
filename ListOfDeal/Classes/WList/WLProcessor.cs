@@ -21,7 +21,7 @@ namespace ListOfDeal {
         public static int MySchedId = 262630772;
         public static int MyBuyId = 263773374;
 #endif
-#if !Release
+#if (DEBUG || DebugTest)
         public static int MyListId = 263984253;
         public static int MySchedId = 263984274;
         public static int MyBuyId = 263984295;

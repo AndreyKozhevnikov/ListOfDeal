@@ -44,12 +44,14 @@ namespace ListOfDeal {
 
         private void ConnectToDataBase() {
             string machineName = System.Environment.MachineName;
+#if Release
             if (machineName == "KOZHEVNIKOV-W10") {
                 GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWork");
             }
             else {
                 GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesHome");
             }
+#endif
 #if DEBUG
             if (machineName == "KOZHEVNIKOV-W10")
                 GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWork");
@@ -118,12 +120,12 @@ namespace ListOfDeal {
             CreateNewAction();
 
             WLViewModel = new WunderListViewModel(this);
-          //  PathchStatus2();
+            //  PathchStatus2();
         }
 
         void PathchStatus2() {
             var acts = DataProvider.GetActions();
-            foreach( var act in acts) {
+            foreach (var act in acts) {
                 if (act.IsActive) {
                     act.StatusId2 = (int)ActionsStatusEnum2.InWork;
                 }
@@ -364,7 +366,7 @@ namespace ListOfDeal {
         private void ValidateColumn(GridRowValidationEventArgs e) {
             MyProject p = e.Row as MyProject;
             var isValidChange = IsNewStatusIsValid((MyProject)e.Row, (ProjectStatusEnum)e.Value);
-            if (!isValidChange) { 
+            if (!isValidChange) {
                 e.ErrorContent = "there are active actions";
                 e.IsValid = false;
                 e.Handled = true;
@@ -374,7 +376,7 @@ namespace ListOfDeal {
         public bool IsNewStatusIsValid(MyProject p, ProjectStatusEnum newStatus) {
             if (newStatus == ProjectStatusEnum.InWork || newStatus == ProjectStatusEnum.Delayed)
                 return true;
-            if (p.Actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork||x.Status2==ActionsStatusEnum2.Delay).Count() == 0)
+            if (p.Actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork || x.Status2 == ActionsStatusEnum2.Delay).Count() == 0)
                 return true;
             return false;
         }
@@ -391,5 +393,5 @@ namespace ListOfDeal {
 
     }
 
- 
+
 }

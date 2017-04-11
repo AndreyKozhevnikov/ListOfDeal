@@ -118,7 +118,7 @@ namespace ListOfDeal {
             return wlTask;
         }
         public WLTask CompleteTask(string wlId) {
-#if DEBUG
+#if !Release
             return null;
 #endif
             string st = "http://a.wunderlist.com/api/v1/tasks";

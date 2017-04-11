@@ -39,14 +39,14 @@ namespace ListOfDeal {
                 IsSimpleProject = false;
             }
             else {
-                if (Actions.Count == 0) { 
+                if (Actions.Count == 0) {
                     act.OrderNumber = 0;
                     act.Status2 = ActionsStatusEnum2.InWork;
                 }
                 else {
                     var maxOrderNumber = Actions.Max(x => x.OrderNumber);
                     act.OrderNumber = maxOrderNumber + 1;
-                    if (Actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork).Count() == 0)//!!! двойной код ? act_changed проверить
+                    if (GetIsThereIsNoActiveActions())
                         act.Status2 = ActionsStatusEnum2.InWork;
                 }
                 act.PropertyChanged += act_PropertyChanged;
@@ -55,14 +55,16 @@ namespace ListOfDeal {
                 RaisePropertyChanged("Actions");
             }
         }
-
+        bool GetIsThereIsNoActiveActions() {
+            return Actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork).Count() == 0;
+        }
         void act_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
             if (e.PropertyName == "Status2") {
                 MyAction act = sender as MyAction;
                 if (!(act.Status2 == ActionsStatusEnum2.InWork)) {
-                    bool isThereIsNoActiveActions = Actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork).Count() == 0;
+                    bool isThereIsNoActiveActions = GetIsThereIsNoActiveActions();
                     if (isThereIsNoActiveActions) {
-                        var targetAct = Actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork||x.Status2==ActionsStatusEnum2.Delay).OrderBy(x => x.OrderNumber).FirstOrDefault();
+                        var targetAct = Actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork || x.Status2 == ActionsStatusEnum2.Delay).OrderBy(x => x.OrderNumber).FirstOrDefault();
                         if (targetAct != null) {
                             targetAct.Status2 = ActionsStatusEnum2.InWork;
                         }
@@ -76,8 +78,8 @@ namespace ListOfDeal {
                 }
                 RaisePropertyChanged("Actions");
             }
-            if (e.PropertyName == "ScheduledTime" ) {
-                RaisePropertyChanged("Actions"); 
+            if (e.PropertyName == "ScheduledTime") {
+                RaisePropertyChanged("Actions");
             }
         }
         public void DeleteAction(MyAction act) {
@@ -88,7 +90,6 @@ namespace ListOfDeal {
         public void Save() {
             if (parentEntity.Id <= 0)
                 MainViewModel.DataProvider.AddProject(parentEntity);
-            // MainViewModel.generalEntity.Projects.Add(parentEntity);
             MainViewModel.SaveChanges();
         }
 
@@ -129,7 +130,7 @@ namespace ListOfDeal {
                     foreach (var act in Actions) {
                         act.SetDeleteTaskIfNeeded();
                     }
-                    if ((ProjectStatusEnum)value == ProjectStatusEnum.Done||(ProjectStatusEnum)value==ProjectStatusEnum.Rejected) {
+                    if ((ProjectStatusEnum)value == ProjectStatusEnum.Done || (ProjectStatusEnum)value == ProjectStatusEnum.Rejected) {
                         this.parentEntity.CompleteTime = DateTime.Now;
                     }
                 }
@@ -177,5 +178,5 @@ namespace ListOfDeal {
 
 
 
- 
+
 }

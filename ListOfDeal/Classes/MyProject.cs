@@ -39,14 +39,14 @@ namespace ListOfDeal {
                 IsSimpleProject = false;
             }
             else {
-                if (Actions.Count == 0) { //set inwork? !!!
+                if (Actions.Count == 0) { 
                     act.OrderNumber = 0;
                     act.Status2 = ActionsStatusEnum2.InWork;
                 }
                 else {
                     var maxOrderNumber = Actions.Max(x => x.OrderNumber);
                     act.OrderNumber = maxOrderNumber + 1;
-                    if (Actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork).Count() == 0)
+                    if (Actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork).Count() == 0)//!!! двойной код ? act_changed проверить
                         act.Status2 = ActionsStatusEnum2.InWork;
                 }
                 act.PropertyChanged += act_PropertyChanged;

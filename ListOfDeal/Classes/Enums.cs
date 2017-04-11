@@ -23,4 +23,9 @@ namespace ListOfDeal {
         Done = 3,
         Rejected=4
     }
+    public enum ActionsStatusEnum {
+        Waited = 1,
+        Scheduled = 2,
+        Completed = 4
+    }
 }

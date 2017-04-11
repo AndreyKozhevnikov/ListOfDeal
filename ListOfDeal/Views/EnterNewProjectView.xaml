@@ -253,8 +253,7 @@
                                             PredefinedFormatName="GreenFillWithDarkGreenText" />
                                         <dxg:FormatCondition
                                             ApplyToRow="True"
-                                            Expression="[Status2] = 'Done
-                                            '"
+                                            Expression="[Status2] = 'Done'"
                                             Value1="{x:Null}"
                                             ValueRule="Expression">
                                             <dx:Format Foreground="#FFBAB8AB" TextDecorations="{x:Null}" />

@@ -44,12 +44,14 @@ namespace ListOfDeal {
 
         private void ConnectToDataBase() {
             string machineName = System.Environment.MachineName;
+#if Release
             if (machineName == "KOZHEVNIKOV-W10") {
                 GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWork");
             }
             else {
                 GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesHome");
             }
+#endif
 #if DEBUG
             if (machineName == "KOZHEVNIKOV-W10")
                 GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWork");
@@ -105,18 +107,12 @@ namespace ListOfDeal {
             InitializeData();
         }
 
-        public void CreateMainViewModelDataProvider() {
-            DataProvider = new MainViewModelDataProvider();
-        }
 
         void InitializeData() {
-
-
-
             ProjectTypes = new ObservableCollection<ProjectType>(DataProvider.GetProjectTypes().OrderBy(x => x.OrderNumber));
 
             Projects = new ObservableCollection<MyProject>();
-            var actProjects = DataProvider.GetProjects().Where(x => x.StatusId != 3).OrderBy(x => x.StatusId).ThenBy(x => x.DateCreated);
+            var actProjects = DataProvider.GetProjects().Where(x => x.StatusId == (int)ProjectStatusEnum.InWork || x.StatusId == (int)ProjectStatusEnum.Delayed).OrderBy(x => x.StatusId).ThenBy(x => x.DateCreated);
             foreach (var p in actProjects) {
                 Projects.Add(new MyProject(p));
             }
@@ -124,10 +120,27 @@ namespace ListOfDeal {
             CreateNewAction();
 
             WLViewModel = new WunderListViewModel(this);
-
+              PathchStatus2();
         }
 
-
+        void PathchStatus2() {
+            var acts = DataProvider.GetActions();
+            foreach (var act in acts) {
+                if (act.StatusId2 != -1)
+                    continue;
+                if (act.IsActive) {
+                    act.StatusId2 = (int)ActionsStatusEnum2.InWork;
+                }
+                else {
+                    if (act.StatusId == (int)ActionsStatusEnum.Completed) {
+                        act.StatusId2 = (int)ActionsStatusEnum2.Done;
+                    }
+                    if (act.StatusId == (int)ActionsStatusEnum.Waited) {
+                        act.StatusId2 = (int)ActionsStatusEnum2.Delay;
+                    }
+                }
+            }
+        }
 
 
 
@@ -142,10 +155,7 @@ namespace ListOfDeal {
         }
         private void CreateNewAction() {
             CurrentAction = new MyAction();
-            CurrentAction.Status = ActionsStatusEnum.Waited;
-            CurrentAction.IsActive = false;
-
-
+            CurrentAction.Status2 = ActionsStatusEnum2.Delay;
         }
         private void AddProject() {
             if (string.IsNullOrEmpty(CurrentProject.Name))
@@ -157,8 +167,7 @@ namespace ListOfDeal {
             if (CurrentProject.IsSimpleProject) {
                 MyAction act = new MyAction();
                 act.Name = CurrentProject.Name;
-                act.Status = ActionsStatusEnum.Waited;
-                act.IsActive = true;
+                act.Status2 = ActionsStatusEnum2.InWork;
                 CurrentProject.AddAction(act);
             }
 
@@ -237,9 +246,9 @@ namespace ListOfDeal {
 
         }
         private void ProvideActions() {
-            var allActions = Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.IsActive);
-            var actActions = allActions.Where(x => x.Status == ActionsStatusEnum.Waited);
-            var shedActions = allActions.Where(x => x.Status == ActionsStatusEnum.Scheduled);
+            var allActions = Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.Status2 == ActionsStatusEnum2.InWork);
+            var actActions = allActions.Where(x => x.ScheduledTime == null);
+            var shedActions = allActions.Where(x => x.ScheduledTime.HasValue);
 
             WaitedActions = new ObservableCollection<MyAction>(actActions);
             ScheduledActions = new ObservableCollection<MyAction>(shedActions);
@@ -285,7 +294,7 @@ namespace ListOfDeal {
         }
         private void CustomSummary(CustomSummaryEventArgs obj) {
             if (obj.SummaryProcess == CustomSummaryProcess.Finalize && Projects != null) {
-                var v = Projects.SelectMany(x => x.Actions).Where(y => y.Status != ActionsStatusEnum.Completed).ToList();
+                var v = Projects.SelectMany(x => x.Actions).Where(y => y.Status2 == ActionsStatusEnum2.InWork).ToList();
                 obj.TotalValue = string.Format("Actions count={0}", v.Count);
             }
         }
@@ -358,13 +367,20 @@ namespace ListOfDeal {
         }
         private void ValidateColumn(GridRowValidationEventArgs e) {
             MyProject p = e.Row as MyProject;
-            var v = (int)e.Value;
-            if (v == 3 && p.Actions.Where(x => x.Status != ActionsStatusEnum.Completed).Count() > 0) {
+            var isValidChange = IsNewStatusIsValid((MyProject)e.Row, (ProjectStatusEnum)e.Value);
+            if (!isValidChange) {
                 e.ErrorContent = "there are active actions";
                 e.IsValid = false;
                 e.Handled = true;
             }
 
+        }
+        public bool IsNewStatusIsValid(MyProject p, ProjectStatusEnum newStatus) {
+            if (newStatus == ProjectStatusEnum.InWork || newStatus == ProjectStatusEnum.Delayed)
+                return true;
+            if (p.Actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork || x.Status2 == ActionsStatusEnum2.Delay).Count() == 0)
+                return true;
+            return false;
         }
         private void CustomColumnSort(CustomColumnSortEventArgs e) {
             var v1 = (int)e.Value1;
@@ -379,29 +395,5 @@ namespace ListOfDeal {
 
     }
 
-    [TestFixture]
-    public class MainViewModelTests {
-        [Test]
-        public void NewProjectHasTypeOfPrevious() {
-            //arrange
-            var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
-            var dataProviderEntity = new Mock<IMainViewModelDataProvider>();
-            dataProviderEntity.Setup(x => x.GeneralEntity).Returns(mockGeneralEntity.Object);
-            dataProviderEntity.Setup(x => x.GetProjects()).Returns(new List<Project>());
-            dataProviderEntity.Setup(x => x.GetProjectTypes()).Returns(new List<ProjectType>());
-            dataProviderEntity.Setup(x => x.CreateProject()).Returns(new Project());
-            dataProviderEntity.Setup(x => x.CreateAction()).Returns(new Action());
-            MainViewModel.DataProvider = dataProviderEntity.Object;
-            MainViewModel vm = new MainViewModel();
-            vm.CurrentProject.Name = "testproject";
-            vm.GridControlManagerService = new Mock<IGridControlManagerService>().Object;
-            //act
-            vm.CurrentProject.TypeId = 2;
-            vm.AddNewProjectCommand.Execute(null);
-            //Assert
-            Assert.AreEqual(2, vm.CurrentProject.TypeId);
 
-
-        }
-    }
 }

@@ -60,7 +60,7 @@ namespace ListOfDeal.Classes {
                 DateTime wDt = new DateTime(y, m, d);
                 DateTime endDt = wDt.AddDays(6);
                 var act = wr.Action;
-                if (act.StatusId == 4 && act.CompleteTime != null && act.CompleteTime.Value.Date <= endDt.Date) {
+                if (act.StatusId2 == (int)ActionsStatusEnum2.Done && act.CompleteTime != null && act.CompleteTime.Value.Date <= endDt.Date) {
                     wr.IsCompletedInWeek = true;
                 }
             }
@@ -82,8 +82,7 @@ namespace ListOfDeal.Classes {
         void CreateItems() {
             DateTime wkStartDate = DateTime.Today.AddDays(1);
             DateTime wkEndDate = wkStartDate.AddDays(6);
-            var activeActions = MainViewModel.DataProvider.GetActions().Where(x => x.Project.StatusId == 1 && x.IsActive && x.StatusId != (int)ActionsStatusEnum.Completed && (x.ScheduledTime == null || x.ScheduledTime <= wkEndDate)).ToList();
-            //var activeActions = MainViewModel.DataProvider.GetActions().Where(x => x.Project.StatusId == 1 && x.IsActive && x.StatusId != (int)ActionsStatusEnum.Completed ).ToList();
+            var activeActions = MainViewModel.DataProvider.GetActions().Where(x => x.Project.StatusId == (int)ProjectStatusEnum.InWork && x.StatusId2 == (int)ActionsStatusEnum2.InWork && (x.ScheduledTime == null || x.ScheduledTime <= wkEndDate)).ToList();
             var wRecords = MainViewModel.DataProvider.GetWeekRecords();
             foreach (var act in activeActions) {
                 string weekId = wkStartDate.ToString("MMddyyyy");
@@ -110,58 +109,6 @@ namespace ListOfDeal.Classes {
         public double PercentComplete { get; set; }
         public int AllInActions { get; set; }
     }
-    [TestFixture]
-    public class WeekStatisticViewModelTest {
-
-
-        [Test]
-        public void CreateItems() {
-            //arrange
-            WeekStatisticViewModel vm = new WeekStatisticViewModel();
-
-            var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
-            var dataProviderEntity = new Mock<IMainViewModelDataProvider>();
-            MainViewModel.DataProvider = dataProviderEntity.Object;
-
-            var lst = new List<Action>();
-            var pr = new Project() { StatusId = 1 };
-            lst.Add(new Action() { Project = pr, IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled, Id = 1 });
-            lst.Add(new Action() { Project = pr, IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled });
-            lst.Add(new Action() { Project = pr, IsActive = true, StatusId = (int)ActionsStatusEnum.Scheduled, ScheduledTime = DateTime.Today.AddDays(8) }); //out of date action
-            dataProviderEntity.Setup(x => x.GetActions()).Returns(lst);
-            string wkId = DateTime.Today.AddDays(1).ToString("MMddyyyy");
-            dataProviderEntity.Setup(x => x.GetWeekRecords()).Returns(new List<WeekRecord>() { new WeekRecord() { ActionId = 1, WeekId = wkId } });
-            dataProviderEntity.Setup(x => x.CreateWeekRecord()).Returns(new WeekRecord());
-            List<object> result = new List<object>();
-            dataProviderEntity.Setup(x => x.AddWeekRecord(It.IsAny<WeekRecord>())).Callback(() => { result.Add("test"); });
-            //act
-            vm.CreateItemsCommand.Execute(null);
-            //assert
-            Assert.AreEqual(1, result.Count);
-        }
-        [Test]
-        public void MarkItemsComplete() {
-            //arrange
-            WeekStatisticViewModel vm = new WeekStatisticViewModel();
-
-            var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
-            var dataProviderEntity = new Mock<IMainViewModelDataProvider>();
-            MainViewModel.DataProvider = dataProviderEntity.Object;
-
-            var lst = new List<WeekRecord>();
-            var w1 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Completed, CompleteTime = new DateTime(2017, 2, 28) }, WeekId = "02272017" };
-            var w2 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Scheduled }, WeekId = "02272017" };
-            var w3 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Completed, CompleteTime = new DateTime(2017, 3, 28) }, WeekId = "02272017" };
-            lst.Add(w1);
-            lst.Add(w2);
-            lst.Add(w3);
-            dataProviderEntity.Setup(x => x.GetWeekRecords()).Returns(lst);
-            //act
-            vm.MarkItemsCompleteCommand.Execute(null);
-            //assert
-            var cnt = lst.Where(x => x.IsCompletedInWeek).Count();
-            Assert.AreEqual(1, cnt);
-        }
-    }
+    
 
 }

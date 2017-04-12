@@ -34,6 +34,7 @@ namespace ListOfDeal
         public string WLId { get; set; }
         public bool ToBuy { get; set; }
         public bool IsMajor { get; set; }
+        public int StatusId2 { get; set; }
     
         public virtual Project Project { get; set; }
         public virtual ICollection<WeekRecord> WeekRecords { get; set; }

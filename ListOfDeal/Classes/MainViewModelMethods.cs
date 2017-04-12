@@ -120,12 +120,14 @@ namespace ListOfDeal {
             CreateNewAction();
 
             WLViewModel = new WunderListViewModel(this);
-            //  PathchStatus2();
+              PathchStatus2();
         }
 
         void PathchStatus2() {
             var acts = DataProvider.GetActions();
             foreach (var act in acts) {
+                if (act.StatusId2 != -1)
+                    continue;
                 if (act.IsActive) {
                     act.StatusId2 = (int)ActionsStatusEnum2.InWork;
                 }

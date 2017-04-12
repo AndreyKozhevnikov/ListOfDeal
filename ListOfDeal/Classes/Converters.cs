@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Globalization;
+using DevExpress.Xpf.Editors;
 
 namespace ListOfDeal {
 
@@ -53,8 +54,7 @@ namespace ListOfDeal {
 
     public class SpecialDateBorderStyleConverter : MarkupExtension, IValueConverter {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-            CalendarCellButton currentCellButton = (CalendarCellButton)value;
-            DateTime dt = (DateTime)DateEditCalendar.GetDateTime((DependencyObject)currentCellButton);
+            DateTime dt = (DateTime)value;
             dt = dt.Date;
             var today = DateTime.Today;
             var diff = today.DayOfWeek - DayOfWeek.Monday;

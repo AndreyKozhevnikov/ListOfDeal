@@ -31,7 +31,7 @@
                          >
             <dxg:GridControl.Columns>
                 <dxg:GridColumn Width="550" FieldName="Name" />
-                <dxg:GridColumn FieldName="DateCreated" ReadOnly="True" />
+                <dxg:GridColumn FieldName="DateCreated" AllowEditing="False"/>
                 <dxg:GridColumn FieldName="Comment">
                     <dxg:GridColumn.EditSettings>
                         <dxe:MemoEditSettings />
@@ -61,7 +61,7 @@
                 <dxg:TableView>
                     <dxg:TableView.FormatConditions>
                         <dxg:FormatCondition ApplyToRow="True"
-                                             Expression="[Status] = 'Completed'"
+                                             Expression="[Status2] = 'Completed'"
                                              FieldName="Status"
                                              Value1="{x:Null}"
                                              ValueRule="Expression"

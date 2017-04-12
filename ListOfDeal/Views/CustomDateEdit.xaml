@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:ListOfDeal"
+                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                     xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys">
     <ControlTemplate x:Key="{dxet:DateEditThemeKey ResourceKey=CellButtonTemplate,IsThemeIndependent=true}" TargetType="{x:Type Button}">
         <Grid Width="Auto" Height="Auto" x:Name="grid" Margin="3,0,3,0" Cursor="Hand" Background="Transparent" SnapsToDevicePixels="True">
@@ -88,7 +89,7 @@
             <ContentControl HorizontalAlignment="Center" Margin="0" Padding="5,2,5,2" x:Name="ButtonContent" VerticalAlignment="Center" Width="Auto" Height="Auto" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" IsTabStop="False"/>
         </Grid>
         <ControlTemplate.Triggers>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self},Converter={local:SpecialDateBorderStyleConverter}}" Value="True">
+            <DataTrigger Binding="{Binding Path=(dxe:DateEditCalendarBase.DateTime), RelativeSource={RelativeSource Self},Converter={local:SpecialDateBorderStyleConverter}}" Value="True">
                 <Setter Property="Foreground" Value="White"/>
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter TargetName="specialDateBorder" Property="Visibility" Value="Visible"/>

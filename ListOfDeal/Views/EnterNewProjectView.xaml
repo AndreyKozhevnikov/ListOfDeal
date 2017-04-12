@@ -17,13 +17,7 @@
     d:DesignWidth="1300"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="customdateedit.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-
-            <dxmvvm:ObjectToBooleanConverter x:Key="objToBoolConverter" />
-        </ResourceDictionary>
+        <dxmvvm:ObjectToBooleanConverter x:Key="objToBoolConverter" />
     </UserControl.Resources>
     <dxlc:LayoutControl>
         <dxlc:LayoutGroup Orientation="Vertical">

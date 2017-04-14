@@ -1084,6 +1084,22 @@ namespace ListOfDeal.Classes.Tests {
             Assert.AreEqual(162, m[2].Length);
         }
         [Test]
+        public void CreateLogStringwithCreateNewTaskText() {
+            //arrange
+            var wlProc = new WLProcessor(null);
+           
+            //act
+            var res1 = wlProc.CreateLogString("subj1", "test","short value");
+            var res2 = wlProc.CreateLogString("subj2", "test", "list id - MyList, new task's id=2694544568");
+            
+            var split1 = res1.Split(new char[] { '|' },StringSplitOptions.RemoveEmptyEntries);
+            var split2 = res2.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+
+
+            //assert
+            Assert.AreEqual(split1[3].Length, split2[3].Length);
+        }
+        [Test]
         public void CopyDiaryToClipboard() {
             //arrange
             Initialize();

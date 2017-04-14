@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 
 namespace ListOfDeal.Classes.Tests {
-    #if DebugTest
+#if DebugTest
     [TestFixture]
     public class WLProcessorTest {
         Mock<IMainViewModel> mockMainVM;
@@ -1081,7 +1081,7 @@ namespace ListOfDeal.Classes.Tests {
 
 
             //assert
-            Assert.AreEqual(162, m[2].Length);
+            Assert.AreEqual(97, m[2].Length);
         }
         [Test]
         public void CreateLogStringwithCreateNewTaskText() {
@@ -1090,7 +1090,7 @@ namespace ListOfDeal.Classes.Tests {
            
             //act
             var res1 = wlProc.CreateLogString("subj1", "test","short value");
-            var res2 = wlProc.CreateLogString("subj2", "test", "list id - MyList, new task's id=2694544568");
+            var res2 = wlProc.CreateLogString("subj2", "test", "list id - MyList(263984253), new task's id=2695932312");
             
             var split1 = res1.Split(new char[] { '|' },StringSplitOptions.RemoveEmptyEntries);
             var split2 = res2.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);

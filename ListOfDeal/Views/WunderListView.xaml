@@ -22,7 +22,7 @@
             <Button Command="{Binding HandleChangedWLTaskCommand}" Content="Handle changed WLTasks" />
             <Button Command="{Binding HandleChangedActionsCommand}" Content="Handle changed LODActions" />
             <Button Command="{Binding GetDiaryEntriesCommand}" Content="Get Diary"/>
-            <!--<Button Content="change base" Command="{Binding TestCommand}"/>-->
+            <Button Content="Test button" Command="{Binding TestCommand}"/>
         </StackPanel>
         <ListBox x:Name="listBox1"
                  Grid.Row="1"

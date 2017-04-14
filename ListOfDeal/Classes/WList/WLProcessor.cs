@@ -76,7 +76,7 @@ namespace ListOfDeal {
                 if (!string.IsNullOrEmpty(act.Comment)) {
                     wlConnector.CreateNote(act.WLId, act.Comment);
                 }
-                RaiseLog(wlTask, "created", string.Format("list id - {0}({1}), new task's id={2}", lstName,targetListId.ToString(), wlTask.id));
+                RaiseLog(wlTask, "created", string.Format("list id - {0}({1}), new task's id={2}", lstName, targetListId.ToString(), wlTask.id));
             }
             MainViewModel.SaveChanges();
         }
@@ -300,9 +300,9 @@ namespace ListOfDeal {
 
         public string CreateLogString(string subject, string description, string newValue = null) {
             string dateString = DateTime.Now.ToString("dd-MMM-yy HH:mm");
-            string subjectString = subject.PadRight(160).Substring(0, 160);
-            string descriptionString = description.PadRight(30);
-            string newValueString = (newValue != null ? newValue : "").PadRight(50);
+            string subjectString = subject.PadRight(95).Substring(0, 95);
+            string descriptionString = description.PadRight(20);
+            string newValueString = (newValue != null ? newValue : "").PadRight(53);
             string result = string.Format("| {0} | {1} | {2} | {3} |", dateString, subjectString, descriptionString, newValueString);
             return result;
         }

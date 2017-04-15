@@ -120,7 +120,7 @@ namespace ListOfDeal {
             CreateNewAction();
 
             WLViewModel = new WunderListViewModel(this);
-              PathchStatus2();
+            // PathchStatus2();
         }
 
         void PathchStatus2() {

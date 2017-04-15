@@ -24,8 +24,8 @@ namespace ListOfDeal {
 
         private void InitiateProject() {
             Actions = new ObservableCollection<MyAction>();
-            var listAction = parentEntity.Actions.Where(x => x.StatusId2 != (int)ActionsStatusEnum2.Done).OrderBy(x => x.OrderNumber);
-            foreach (var a in listAction) {
+            var listAction = parentEntity.Actions.OrderBy(x => x.OrderNumber);
+             foreach (var a in listAction) {
                 MyAction act = new MyAction(a);
                 act.PropertyChanged += act_PropertyChanged;
                 Actions.Add(act);

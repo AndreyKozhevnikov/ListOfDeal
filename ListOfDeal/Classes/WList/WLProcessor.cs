@@ -55,7 +55,7 @@ namespace ListOfDeal {
                 return;
             foreach (var act in emptyActions) {
 #if Release
-                Task t = Task.Run(() => Thread.Sleep(10));
+                Task t = Task.Run(() => Thread.Sleep(20));
                 await t;
 #endif
                 string title = act.GetWLTitle();
@@ -120,7 +120,9 @@ namespace ListOfDeal {
         }
         List<MyAction> GetActiveActions() {
             var lst = parentVM.Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.Status2 == ActionsStatusEnum2.InWork).ToList();
-            return lst;
+            var scheduledList = parentVM.Projects.Where(x => x.Status == ProjectStatusEnum.Delayed).SelectMany(x => x.Actions).Where(x => x.ScheduledTime.HasValue).ToList();
+            var finalList = lst.Concat(scheduledList).ToList();
+            return finalList;
         }
 
 
@@ -302,7 +304,7 @@ namespace ListOfDeal {
             string dateString = DateTime.Now.ToString("dd-MMM-yy HH:mm");
             string subjectString = subject.PadRight(95).Substring(0, 95);
             string descriptionString = description.PadRight(20);
-            string newValueString = (newValue != null ? newValue : "").PadRight(53);
+            string newValueString = (newValue != null ? newValue : "").PadRight(58);
             string result = string.Format("| {0} | {1} | {2} | {3} |", dateString, subjectString, descriptionString, newValueString);
             return result;
         }

@@ -57,9 +57,15 @@ namespace ListOfDeal.Classes.Tests {
             firstProject.Actions.Add(new MyAction(new Action() { Name = "act3", StatusId2 = (int)ActionsStatusEnum2.InWork, Project = new Project() { Name = "Pr1" } }));
             firstProject.Actions.Add(new MyAction(new Action() { Name = "act4comment", StatusId2 = (int)ActionsStatusEnum2.InWork, Comment = "test comment", Project = new Project() { Name = "Pr1" } }));
 
+            var nonActiveProject = new MyProject(new Project()) { Status = ProjectStatusEnum.Delayed };
+            projCollection.Add(nonActiveProject);
+            nonActiveProject.Actions.Add(new MyAction(new Action() { Name = "actFromNonActiveProject", StatusId2 = (int)ActionsStatusEnum2.InWork, Project = new Project() { Name = "NonActiveProject2" } }));
+            nonActiveProject.Actions.Add(new MyAction(new Action() { Name = "actFromNonActiveProjectWithTime", StatusId2 = (int)ActionsStatusEnum2.InWork, ScheduledTime = DateTime.Today, Project = new Project() { Name = "NonActiveProject2" } }));
+
             mockWlConnector.Setup(x => x.CreateTask("Pr1 - act1", It.IsAny<int>(), null, false)).Returns(new WLTask() { id = "234" });
             mockWlConnector.Setup(x => x.CreateTask("Pr1 - act3", It.IsAny<int>(), null, false)).Returns(new WLTask() { id = "345" });
             mockWlConnector.Setup(x => x.CreateTask("Pr1 - act4comment", It.IsAny<int>(), null, false)).Returns(new WLTask() { id = "456" });
+            mockWlConnector.Setup(x => x.CreateTask("NonActiveProject2 - actFromNonActiveProjectWithTime", It.IsAny<int>(), DateTime.Today, false)).Returns(new WLTask() { id = "567" });
             mockWlConnector.Setup(x => x.CreateNote("456", "test comment")).Returns(new WLNote());
 
             wlProc.UpdateData();
@@ -68,7 +74,9 @@ namespace ListOfDeal.Classes.Tests {
             //assert
             mockWlConnector.Verify(x => x.CreateTask("Pr1 - act1", It.IsAny<int>(), null, false), Times.Once);
             mockWlConnector.Verify(x => x.CreateTask("Pr1 - act3", It.IsAny<int>(), null, false), Times.Once);
-
+            mockWlConnector.Verify(x => x.CreateTask("Pr1 - act4comment", It.IsAny<int>(), null, false), Times.Once);
+            mockWlConnector.Verify(x => x.CreateTask("NonActiveProject2 - actFromNonActiveProjectWithTime", It.IsAny<int>(), DateTime.Today, false), Times.Once);
+            
             Assert.AreEqual("234", firstProject.Actions[0].WLId);
             Assert.AreEqual("345", firstProject.Actions[2].WLId);
             dataProviderEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));

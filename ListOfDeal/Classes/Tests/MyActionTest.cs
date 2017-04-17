@@ -157,7 +157,7 @@ namespace ListOfDeal.Classes.Tests {
         [Test]
         public void SetStatusToNonScheduledShoulNullScheduledTime() {
             //arrange
-            MyAction act = new MyAction(new Action());
+            MyAction act = new MyAction(new Action() { Project = new Project() });
             act.Status2 = ActionsStatusEnum2.InWork;
             act.ScheduledTime = new DateTime(2016, 9, 10);
             //act

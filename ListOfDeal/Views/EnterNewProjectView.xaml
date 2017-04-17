@@ -1,48 +1,47 @@
-﻿<UserControl
-    x:Class="ListOfDeal.Views.EnterNewProjectView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
-    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-    xmlns:local="clr-namespace:ListOfDeal"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:views="clr-namespace:ListOfDeal.Views"
-    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
-    d:DesignHeight="300"
-    d:DesignWidth="1300"
-    mc:Ignorable="d">
+﻿<UserControl x:Class="ListOfDeal.Views.EnterNewProjectView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:local="clr-namespace:ListOfDeal"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:ListOfDeal.Views"
+             xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+             mc:Ignorable="d"
+             d:DesignHeight="300"
+             d:DesignWidth="1300"
+             >
+
     <UserControl.Resources>
         <dxmvvm:ObjectToBooleanConverter x:Key="objToBoolConverter" />
     </UserControl.Resources>
+
     <dxlc:LayoutControl>
         <dxlc:LayoutGroup Orientation="Vertical">
             <dxlc:LayoutGroup>
                 <dxlc:LayoutGroup x:Name="ProjectsGroup" Orientation="Vertical">
                     <dxmvvm:Interaction.Behaviors>
-                        <dxmvvm:EventToCommand
-                            Command="{Binding PreviewKeyProjectsCommand}"
-                            EventName="PreviewKeyDown"
-                            PassEventArgsToCommand="True" />
+                        <dxmvvm:EventToCommand Command="{Binding PreviewKeyProjectsCommand}"
+                                               EventName="PreviewKeyDown"
+                                               PassEventArgsToCommand="True" />
                     </dxmvvm:Interaction.Behaviors>
                     <dxlc:LayoutGroup>
                         <dxlc:LayoutItem Label="Name:">
                             <dxe:TextEdit EditValue="{Binding CurrentProject.Name, UpdateSourceTrigger=PropertyChanged}" />
                         </dxlc:LayoutItem>
                         <dxlc:LayoutItem Label="Type:">
-                            <dxe:ComboBoxEdit
-                                DisplayMember="Name"
-                                EditValue="{Binding CurrentProject.TypeId,UpdateSourceTrigger=PropertyChanged}"
-                                ItemsSource="{Binding ProjectTypes}"
-                                ValueMember="Id">
+                            <dxe:ComboBoxEdit DisplayMember="Name"
+                                              EditValue="{Binding CurrentProject.TypeId,UpdateSourceTrigger=PropertyChanged}"
+                                              ItemsSource="{Binding ProjectTypes}"
+                                              ValueMember="Id"
+                                              >
                                 <dxe:ComboBoxEdit.Buttons>
-                                    <dxe:ButtonInfo
-                                        Command="{Binding OpenNewTypeCommand}"
-                                        Content="+" />
+                                    <dxe:ButtonInfo Command="{Binding OpenNewTypeCommand}" Content="+" />
                                 </dxe:ComboBoxEdit.Buttons>
                             </dxe:ComboBoxEdit>
                         </dxlc:LayoutItem>
@@ -56,40 +55,35 @@
                                 </dxmvvm:Interaction.Behaviors>
                             </dxe:ComboBoxEdit>
                         </dxlc:LayoutItem>
-                        <Button
-                            Height="20"
-                            Command="{Binding AddNewProjectCommand}"
-                            Content="Add project" />
-                        <Button
-                            Height="20"
-                            Command="{Binding OpenEditProjectCommand}"
-                            Content="Open actions" />
-                        <Button
-                            Height="20"
-                            Click="Button_Click_1"
-                            Content="Collapse" />
+                        <Button Height="20"
+                                Command="{Binding AddNewProjectCommand}"
+                                Content="Add project" />
+                        <Button Height="20"
+                                Command="{Binding OpenEditProjectCommand}"
+                                Content="Open actions" />
+                        <Button Height="20"
+                                Click="Button_Click_1"
+                                Content="Collapse" />
                     </dxlc:LayoutGroup>
-
                 </dxlc:LayoutGroup>
                 <dxlc:LayoutGroup x:Name="ActionGroup" Orientation="Vertical">
                     <dxlc:LayoutGroup.Style>
                         <Style TargetType="dxlc:LayoutGroup">
                             <Setter Property="IsEnabled" Value="False" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedAction, Converter={StaticResource objToBoolConverter}}" Value="True">
+                                <DataTrigger Value="True" Binding="{Binding SelectedAction, Converter={StaticResource objToBoolConverter}}">
                                     <Setter Property="IsEnabled" Value="True" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding SelectedProject, Converter={StaticResource objToBoolConverter}}" Value="True">
+                                <DataTrigger Value="True" Binding="{Binding SelectedProject, Converter={StaticResource objToBoolConverter}}">
                                     <Setter Property="IsEnabled" Value="True" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </dxlc:LayoutGroup.Style>
                     <dxmvvm:Interaction.Behaviors>
-                        <dxmvvm:EventToCommand
-                            Command="{Binding PreviewKeyActionsCommand}"
-                            EventName="PreviewKeyDown"
-                            PassEventArgsToCommand="True" />
+                        <dxmvvm:EventToCommand Command="{Binding PreviewKeyActionsCommand}"
+                                               EventName="PreviewKeyDown"
+                                               PassEventArgsToCommand="True" />
                     </dxmvvm:Interaction.Behaviors>
                     <dxlc:LayoutGroup>
                         <dxlc:LayoutItem Label="Name:">
@@ -104,20 +98,18 @@
                         </dxlc:LayoutItem>
                     </dxlc:LayoutGroup>
                     <dxlc:LayoutGroup>
-                        <Button
-                            Height="20"
-                            Command="{Binding SaveChangesCommand}"
-                            Content="SaveChanges" />
-
+                        <Button Height="20"
+                                Command="{Binding SaveChangesCommand}"
+                                Content="SaveChanges" />
                         <!--<Button Content="test" Click="Button_Click" Height="35"/>-->
                         <Button Height="20" Command="{Binding AddActionCommand}">
                             <Button.Style>
                                 <Style TargetType="Button">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedProject, Converter={StaticResource objToBoolConverter}}" Value="True">
+                                        <DataTrigger Value="True" Binding="{Binding SelectedProject, Converter={StaticResource objToBoolConverter}}">
                                             <Setter Property="Content" Value="{Binding SelectedProject.Name}" />
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding SelectedAction, Converter={StaticResource objToBoolConverter}}" Value="True">
+                                        <DataTrigger Value="True" Binding="{Binding SelectedAction, Converter={StaticResource objToBoolConverter}}">
                                             <Setter Property="Content" Value="{Binding SelectedAction.ProjectName}" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -125,37 +117,33 @@
                             </Button.Style>
                         </Button>
                     </dxlc:LayoutGroup>
-
                 </dxlc:LayoutGroup>
             </dxlc:LayoutGroup>
-            <dxg:GridControl
-                x:Name="grid1"
-                CurrentItem="{Binding SelectedProject, Mode=TwoWay}"
-                ItemsSource="{Binding Projects}"
-                Loaded="GridControl_Loaded">
+            <dxg:GridControl x:Name="grid1"
+                             CurrentItem="{Binding SelectedProject, Mode=TwoWay}"
+                             ItemsSource="{Binding Projects}"
+                             Loaded="GridControl_Loaded"
+                             >
                 <dxmvvm:Interaction.Behaviors>
                     <local:GridControlManagerService />
-                    <dxmvvm:EventToCommand
-                        Command="{Binding CustomSummaryCommand}"
-                        EventName="CustomSummary"
-                        PassEventArgsToCommand="True" />
-                    <dxmvvm:EventToCommand
-                        Command="{Binding CustomColumnSortCommand}"
-                        EventName="CustomColumnSort"
-                        PassEventArgsToCommand="True" />
+                    <dxmvvm:EventToCommand Command="{Binding CustomSummaryCommand}"
+                                           EventName="CustomSummary"
+                                           PassEventArgsToCommand="True" />
+                    <dxmvvm:EventToCommand Command="{Binding CustomColumnSortCommand}"
+                                           EventName="CustomColumnSort"
+                                           PassEventArgsToCommand="True" />
                 </dxmvvm:Interaction.Behaviors>
                 <dxg:GridControl.Columns>
                     <dxg:GridColumn Width="490" FieldName="Name" />
                     <dxg:GridColumn AllowEditing="False" FieldName="DateCreated" />
-                    <dxg:GridColumn
-                        FieldName="TypeId"
-                        GroupIndex="0"
-                        SortMode="Custom" >
+                    <dxg:GridColumn FieldName="TypeId"
+                                    GroupIndex="0"
+                                    SortMode="Custom"
+                                    >
                         <dxg:GridColumn.EditSettings>
-                            <dxe:ComboBoxEditSettings
-                                DisplayMember="Name"
-                                ItemsSource="{Binding ProjectTypes}"
-                                ValueMember="Id" />
+                            <dxe:ComboBoxEditSettings DisplayMember="Name"
+                                                      ItemsSource="{Binding ProjectTypes}"
+                                                      ValueMember="Id" />
                         </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
                     <dxg:GridColumn FieldName="Comment">
@@ -164,10 +152,9 @@
                                 <dxe:MemoEdit Name="PART_Editor">
                                     <dxe:MemoEdit.DisplayTemplate>
                                         <ControlTemplate>
-                                            <TextBlock
-                                                MaxHeight="20"
-                                                Margin="3,2,0,0"
-                                                Text="{Binding Value}" />
+                                            <TextBlock MaxHeight="20"
+                                                       Margin="3,2,0,0"
+                                                       Text="{Binding Value}" />
                                         </ControlTemplate>
                                     </dxe:MemoEdit.DisplayTemplate>
                                 </dxe:MemoEdit>
@@ -177,10 +164,9 @@
                     <dxg:GridColumn FieldName="DesiredResult" />
                     <dxg:GridColumn FieldName="Status">
                         <dxmvvm:Interaction.Behaviors>
-                            <dxmvvm:EventToCommand
-                                Command="{Binding ValidateColumnCommand}"
-                                EventName="Validate"
-                                PassEventArgsToCommand="True" />
+                            <dxmvvm:EventToCommand Command="{Binding ValidateColumnCommand}"
+                                                   EventName="Validate"
+                                                   PassEventArgsToCommand="True" />
                         </dxmvvm:Interaction.Behaviors>
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
@@ -214,7 +200,7 @@
                                 <dxg:GridColumn FieldName="ScheduledTime">
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
-                                            <dxe:DateEdit Name="PART_Editor" ShowToday="True"/>
+                                            <dxe:DateEdit Name="PART_Editor" ShowToday="True" />
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                 </dxg:GridColumn>
@@ -224,10 +210,9 @@
                                             <dxe:MemoEdit Name="PART_Editor">
                                                 <dxe:MemoEdit.DisplayTemplate>
                                                     <ControlTemplate>
-                                                        <TextBlock
-                                                            MaxHeight="20"
-                                                            Margin="3,2,0,0"
-                                                            Text="{Binding Value}" />
+                                                        <TextBlock MaxHeight="20"
+                                                                   Margin="3,2,0,0"
+                                                                   Text="{Binding Value}" />
                                                     </ControlTemplate>
                                                 </dxe:MemoEdit.DisplayTemplate>
                                             </dxe:MemoEdit>
@@ -235,32 +220,34 @@
                                     </dxg:GridColumn.CellTemplate>
                                 </dxg:GridColumn>
                                 <dxg:GridColumn FieldName="OrderNumber" Visible="False" />
-                                <dxg:GridColumn FieldName="ToBuy"/>
-                                <dxg:GridColumn FieldName="IsMajor"/>
+                                <dxg:GridColumn FieldName="ToBuy" />
+                                <dxg:GridColumn FieldName="IsMajor" />
                             </dxg:GridControl.Columns>
                             <dxg:GridControl.View>
-                                <dxg:TableView ShowFilterPanelMode="Never" ShowGroupPanel="False" EnableImmediatePosting="True">
+                                <dxg:TableView EnableImmediatePosting="True"
+                                               ShowFilterPanelMode="Never"
+                                               ShowGroupPanel="False"
+                                               >
                                     <dxg:TableView.FormatConditions>
-                                        <dxg:FormatCondition
-                                            ApplyToRow="True"
-                                            Expression="[Status2] =='InWork'"
-                                            PredefinedFormatName="GreenFillWithDarkGreenText" />
-                                        <dxg:FormatCondition
-                                            ApplyToRow="True"
-                                            Expression="[Status2] = 'Done'"
-                                            Value1="{x:Null}"
-                                            ValueRule="Expression">
+                                        <dxg:FormatCondition ApplyToRow="True"
+                                                             Expression="[Status2] =='InWork'"
+                                                             PredefinedFormatName="GreenFillWithDarkGreenText" />
+                                        <dxg:FormatCondition ApplyToRow="True"
+                                                             Expression="[Status2] = 'Done'"
+                                                             Value1="{x:Null}"
+                                                             ValueRule="Expression"
+                                                             >
                                             <dx:Format Foreground="#FFBAB8AB" TextDecorations="{x:Null}" />
                                         </dxg:FormatCondition>
-                                        <dxg:FormatCondition
-                                            ApplyToRow="True"
-                                            Expression="[Status2] = 'Rejected'"
-                                            Value1="{x:Null}"
-                                            ValueRule="Expression">
+                                        <dxg:FormatCondition ApplyToRow="True"
+                                                             Expression="[Status2] = 'Rejected'"
+                                                             Value1="{x:Null}"
+                                                             ValueRule="Expression"
+                                                             >
                                             <dx:Format Foreground="#FFFA9682" TextDecorations="{x:Null}" />
                                         </dxg:FormatCondition>
                                         <dxg:FormatCondition Expression="[Status2] = 'InWork' and [ScheduledTime]!=null and [ScheduledTime] &lt; LocalDateTimeToday()" FieldName="ScheduledTime">
-                                            <dx:Format Background="OrangeRed"/>
+                                            <dx:Format Background="OrangeRed" />
                                         </dxg:FormatCondition>
                                     </dxg:TableView.FormatConditions>
                                 </dxg:TableView>
@@ -269,63 +256,69 @@
                     </dxg:DataControlDetailDescriptor>
                 </dxg:GridControl.DetailDescriptor>
                 <dxg:GridControl.View>
-                    <dxg:TableView
-                        FadeSelectionOnLostFocus="False"
-                        ShowFilterPanelMode="Never"
-                        ShowFixedTotalSummary="True"
-                        ShowGroupPanel="False"
-                        ShowGroupedColumns="True"
-                        >
+                    <dxg:TableView FadeSelectionOnLostFocus="False"
+                                   ShowFilterPanelMode="Never"
+                                   ShowFixedTotalSummary="True"
+                                   ShowGroupedColumns="True"
+                                   ShowGroupPanel="False"
+                                   >
                         <dxmvvm:Interaction.Behaviors>
-                            <dxmvvm:EventToCommand EventName="FocusedRowHandleChanged" Command="{Binding OnFocusedRowHandleChangedCommand}" PassEventArgsToCommand="True" >
+                            <dxmvvm:EventToCommand Command="{Binding OnFocusedRowHandleChangedCommand}"
+                                                   EventName="FocusedRowHandleChanged"
+                                                   PassEventArgsToCommand="True"
+                                                   >
                                 <dxmvvm:EventToCommand.EventArgsConverter>
-                                    <local:FocusedRowEventArgsConverter/>
+                                    <local:FocusedRowEventArgsConverter />
                                 </dxmvvm:EventToCommand.EventArgsConverter>
                             </dxmvvm:EventToCommand>
                         </dxmvvm:Interaction.Behaviors>
                         <dxg:TableView.FormatConditions>
-                            <dxg:FormatCondition
-                                ApplyToRow="True"
-                                Expression="[Status]='InWork'"
-                                PredefinedFormatName="GreenFillWithDarkGreenText" />
-                            <dxg:FormatCondition
-                                ApplyToRow="True"
-                                Expression="[Status] = 'Done'"
-                                FieldName="Status"
-                                Value1="{x:Null}"
-                                ValueRule="Expression">
+                            <dxg:FormatCondition ApplyToRow="True"
+                                                 Expression="[Status]='InWork'"
+                                                 PredefinedFormatName="GreenFillWithDarkGreenText" />
+                            <dxg:FormatCondition ApplyToRow="True"
+                                                 Expression="[Status] = 'Done'"
+                                                 FieldName="Status"
+                                                 Value1="{x:Null}"
+                                                 ValueRule="Expression"
+                                                 >
                                 <dx:Format Foreground="#FFD8D6CB" TextDecorations="{x:Null}" />
                             </dxg:FormatCondition>
-                            <dxg:FormatCondition
-                                ApplyToRow="True"
-                                Expression="GetActiveActions([Actions]) = 0 and ([Status]=='InWork' or [Status]=='Delayed' ) "
-                                FieldName="Actions">
+                            <dxg:FormatCondition ApplyToRow="True"
+                                                 Expression="[Status] = 'Rejected'"
+                                                 Value1="{x:Null}"
+                                                 ValueRule="Expression"
+                                                 >
+                                <dx:Format Foreground="#FFFA9682" TextDecorations="{x:Null}" />
+                            </dxg:FormatCondition>
+                            <dxg:FormatCondition ApplyToRow="True"
+                                                 Expression="GetActiveActions([Actions]) = 0 and ([Status]=='InWork' or [Status]=='Delayed' ) "
+                                                 FieldName="Actions"
+                                                 >
                                 <dx:Format Background="#FFA589C7" />
                             </dxg:FormatCondition>
-                            <dxg:FormatCondition
-                                ApplyToRow="True"
-                                Expression="[Status]='InWork' and GetOutdatedActions([Actions]) = True"
-                                FieldName="Actions">
+                            <dxg:FormatCondition ApplyToRow="True"
+                                                 Expression="[Status]='InWork' and GetOutdatedActions([Actions]) = True"
+                                                 FieldName="Actions"
+                                                 >
                                 <dx:Format Foreground="Red" />
                             </dxg:FormatCondition>
                         </dxg:TableView.FormatConditions>
                     </dxg:TableView>
                 </dxg:GridControl.View>
                 <dxg:GridControl.TotalSummary>
-                    <dxg:GridSummaryItem
-                        Alignment="Left"
-                        FieldName="Name"
-                        SummaryType="Count" />
-                    <dxg:GridSummaryItem
-                        Alignment="Right"
-                        FieldName="TypeId"
-                        SummaryType="Custom" />
+                    <dxg:GridSummaryItem Alignment="Left"
+                                         FieldName="Name"
+                                         SummaryType="Count" />
+                    <dxg:GridSummaryItem Alignment="Right"
+                                         FieldName="TypeId"
+                                         SummaryType="Custom" />
                 </dxg:GridControl.TotalSummary>
                 <dxg:GridControl.GroupSummary>
                     <dxg:GridSummaryItem SummaryType="Count" />
                 </dxg:GridControl.GroupSummary>
             </dxg:GridControl>
-
         </dxlc:LayoutGroup>
     </dxlc:LayoutControl>
+
 </UserControl>

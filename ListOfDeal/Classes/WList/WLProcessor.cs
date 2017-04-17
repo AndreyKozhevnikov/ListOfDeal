@@ -54,7 +54,7 @@ namespace ListOfDeal {
             if (v == 0)
                 return;
             foreach (var act in emptyActions) {
-#if Release
+#if !DebugTest
                 Task t = Task.Run(() => Thread.Sleep(20));
                 await t;
 #endif
@@ -81,7 +81,7 @@ namespace ListOfDeal {
             MainViewModel.SaveChanges();
         }
 
-        public void HandleCompletedWLTasks() {
+        public async void HandleCompletedWLTasks() {
             RaiseLog("Handling completing WLtasks", "Started");
             MainViewModel.SaveChanges();
             allTasks = GetAllActiveTasks();
@@ -91,6 +91,10 @@ namespace ListOfDeal {
             var diff = lstwlIdinLod.Except(lstwlIdInWL);
             RaiseLog("", string.Format("wlId in LOD - {0}, wlId in WL-{1}", lstwlIdinLod.Count(), lstwlIdInWL.Count()));
             foreach (string tskId in diff) {
+#if !DebugTest
+                Task t = Task.Run(() => Thread.Sleep(20));
+                await t;
+#endif
                 Debug.Print(tskId.ToString());
                 var tsk = wlConnector.GetTask(tskId);
                 string dtSt = tsk.completed_at.Split('T')[0];

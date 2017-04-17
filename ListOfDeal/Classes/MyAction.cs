@@ -47,6 +47,7 @@ namespace ListOfDeal {
                 parentEntity.StatusId2 = (int)value;
                 if (value == ActionsStatusEnum2.Done || value == ActionsStatusEnum2.Rejected) {
                     this.CompleteTime = DateTime.Now;
+                    this.OrderNumber = -1;
                     SetDeleteTaskIfNeeded();
                 }
                 else {

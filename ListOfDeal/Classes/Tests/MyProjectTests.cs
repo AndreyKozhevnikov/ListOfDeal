@@ -204,6 +204,22 @@ namespace ListOfDeal.Classes.Tests {
             act.ScheduledTime = DateTime.Now;
             //assert
             Assert.GreaterOrEqual(lst.Where(x => x == "Actions").Count(), 2);
+        }
+
+        [Test]
+        public void CompletedRejectedTaskAlwaysOnTheTop() {
+            //arrange
+            var mp = new MyProject(new Project());
+            var a1 = new MyAction(new Action());
+            var a2 = new MyAction(new Action());
+            mp.AddAction(a1);
+            mp.AddAction(a2);
+            //act
+            a1.Status2 = ActionsStatusEnum2.Rejected;
+            a2.Status2 = ActionsStatusEnum2.Done;
+            //assert
+            Assert.AreEqual(-1, a1.OrderNumber);
+            Assert.AreEqual(-1, a2.OrderNumber);
 
 
         }

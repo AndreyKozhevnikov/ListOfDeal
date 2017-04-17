@@ -30,6 +30,22 @@ namespace ListOfDeal.Classes.Tests {
             Assert.AreEqual("{}", st2);
 
         }
+
+        [Test]
+        public void PrepareString() {
+            //arrange
+            WLConnector wlConn = new WLConnector();
+            var title = "NewTestTitle3 \"test\"";
+            var title2 = @"NewTestTitle3 \test";
+            //act
+            string st = wlConn.NormalizeString(title);
+            string st2 = wlConn.NormalizeString(title2);
+            //assert
+            string need = "NewTestTitle3 \\\"test\\\"";
+            string need2 = "NewTestTitle3 \\\\test";
+            Assert.AreEqual(need, st);
+            Assert.AreEqual(need2, st2);
+        }
     }
 #endif
 }

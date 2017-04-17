@@ -132,10 +132,11 @@ namespace ListOfDeal {
             //    }
             //}
             //MainViewModel.SaveChanges();
-            for (int i = 0; i < 1000; i += 10) {
-                string st = i.ToString() + new string('0', i);
-                Logs.Add(st);
-            }
+            //for (int i = 0; i < 1000; i += 10) {
+            //    string st = i.ToString() + new string('0', i);
+            //    Logs.Add(st);
+            //}
+            wlProcessor.Test();
         }
         private void WlProcessor_Logged(string st) {
             Logs.Add(st);

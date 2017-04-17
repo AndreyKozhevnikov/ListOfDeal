@@ -308,13 +308,14 @@ namespace ListOfDeal {
             string result = string.Format("| {0} | {1} | {2} | {3} |", dateString, subjectString, descriptionString, newValueString);
             return result;
         }
-        public object Test() {
+        public void Test() {
+
             //var lst = this.wlConnector.GetAllLists();
             //foreach(var l in lst) {
             //    var res = this.wlConnector.GetTasksForList(l.id);
             //}
             //return lst;
-            return null;
+            (wlConnector as WLConnector).Test();
         }
         public void PasteDiaryEntries() {
             var lst = wlConnector.GetTasksForList(MyDiarId);

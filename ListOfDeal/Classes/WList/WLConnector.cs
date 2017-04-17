@@ -38,6 +38,10 @@ namespace ListOfDeal {
         string accessToken;
         string clientId;
 
+        public void Test() {
+            var lst = GetTasksForList(WLProcessor.MyListId);
+        }
+
         void GetSettings() {
             var st = ListOfDeal.Properties.Resources.settings.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             clientId = st[0];
@@ -63,8 +67,8 @@ namespace ListOfDeal {
             return responseText;
         }
 
-        string NormalizeString(string title) {
-            return title.Replace("/", "").Replace("\\", "");
+        protected internal string NormalizeString(string title) {
+            return title.Replace("\\","\\\\").Replace("\"", "\\\"");
         }
         public WLTask CreateTask(string title, int listId, DateTime? dueDate, bool isMajor) {
             title = NormalizeString(title);

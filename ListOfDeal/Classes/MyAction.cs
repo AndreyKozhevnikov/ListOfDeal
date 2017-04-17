@@ -17,7 +17,8 @@ namespace ListOfDeal {
         }
         public List<string> changedProperties;
         void HandlePropertyChanges(string st) {
-            changedProperties.Add(st);
+            if (!changedProperties.Contains(st))
+                changedProperties.Add(st);
             SetWLStatusUpdatedIfNeeded();
             RaisePropertyChanged(st);
         }
@@ -175,7 +176,7 @@ namespace ListOfDeal {
                 HandlePropertyChanges("IsMajor");
             }
         }
- 
+
 
         public void SetDeleteTaskIfNeeded() {
             if (WLId != null)
@@ -205,6 +206,6 @@ namespace ListOfDeal {
     }
 
 
- 
+
 
 }

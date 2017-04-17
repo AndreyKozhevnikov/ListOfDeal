@@ -206,7 +206,17 @@ namespace ListOfDeal.Classes.Tests {
             //assert
             Assert.AreEqual(null, act.CompleteTime);
             Assert.AreEqual(null, act2.CompleteTime);
+        }
 
+        [Test]
+        public void ChangingPropertiesSeveralTimesdoesntaddthisPropertyToCollection() {
+            //arrange
+            var act1 = new MyAction(new Action());
+            //act
+            act1.Name = "name1";
+            act1.Name = "name2";
+            //assert
+            Assert.AreEqual(1, act1.changedProperties.Count);
         }
     }
 #endif

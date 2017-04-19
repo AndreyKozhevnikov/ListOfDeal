@@ -15,13 +15,13 @@ namespace ListOfDeal.Classes.Tests {
             //arrange
             MyAction act = new MyAction(new Action());
             act.WLId = "123";
-            act.Status2 = ActionsStatusEnum2.InWork;
+            act.Status = ActionsStatusEnum.InWork;
             MyAction act2 = new MyAction(new Action());
             act2.WLId = "123";
-            act2.Status2 = ActionsStatusEnum2.InWork;
+            act2.Status = ActionsStatusEnum.InWork;
             //act
-            act.Status2 = ActionsStatusEnum2.Done;
-            act2.Status2 = ActionsStatusEnum2.Done;
+            act.Status = ActionsStatusEnum.Done;
+            act2.Status = ActionsStatusEnum.Done;
             //assert
             Assert.AreEqual(WLTaskStatusEnum.DeletingNeeded, act.WLTaskStatus);
             Assert.AreNotEqual(null, act.parentEntity.CompleteTime);
@@ -34,12 +34,12 @@ namespace ListOfDeal.Classes.Tests {
         public void CompleteAction_withoutWLId() {
             //arrange
             MyAction act = new MyAction(new Action());
-            act.Status2 = ActionsStatusEnum2.InWork;
+            act.Status = ActionsStatusEnum.InWork;
             MyAction act2 = new MyAction(new Action());
-            act2.Status2 = ActionsStatusEnum2.InWork;
+            act2.Status = ActionsStatusEnum.InWork;
             //act
-            act.Status2 = ActionsStatusEnum2.Done;
-            act.Status2 = ActionsStatusEnum2.Rejected;
+            act.Status = ActionsStatusEnum.Done;
+            act.Status = ActionsStatusEnum.Rejected;
             //assert
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, act.WLTaskStatus);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, act2.WLTaskStatus);
@@ -72,7 +72,7 @@ namespace ListOfDeal.Classes.Tests {
             //arrange
             MyAction act = new MyAction(new Action());
             act.WLId = "1";
-            act.Status2 = ActionsStatusEnum2.InWork;
+            act.Status = ActionsStatusEnum.InWork;
             act.ScheduledTime = new DateTime(2016, 1, 1);
             //act
             act.ScheduledTime = new DateTime(2016, 1, 2);
@@ -84,7 +84,7 @@ namespace ListOfDeal.Classes.Tests {
             //arrange
             MyAction act = new MyAction(new Action());
 
-            act.Status2 = ActionsStatusEnum2.InWork;
+            act.Status = ActionsStatusEnum.InWork;
             act.ScheduledTime = new DateTime(2016, 1, 1);
             //act
             act.ScheduledTime = new DateTime(2016, 1, 2);
@@ -151,17 +151,17 @@ namespace ListOfDeal.Classes.Tests {
             //act
             act.ScheduledTime = new DateTime(2016, 9, 10);
             //assert
-            Assert.AreEqual(ActionsStatusEnum2.InWork, act.Status2);
+            Assert.AreEqual(ActionsStatusEnum.InWork, act.Status);
         }
 
         [Test]
         public void SetStatusToNonScheduledShoulNullScheduledTime() {
             //arrange
             MyAction act = new MyAction(new Action() { Project = new Project() });
-            act.Status2 = ActionsStatusEnum2.InWork;
+            act.Status = ActionsStatusEnum.InWork;
             act.ScheduledTime = new DateTime(2016, 9, 10);
             //act
-            act.Status2 = ActionsStatusEnum2.Delay;
+            act.Status = ActionsStatusEnum.Delay;
             //assert
             Assert.AreEqual(false, act.ScheduledTime.HasValue);
         }
@@ -169,10 +169,10 @@ namespace ListOfDeal.Classes.Tests {
         public void SetStatusToNonScheduledShoulNotChangeScheduledTimeIfItIsAlreadyNull() {
             //arrange
             MyAction act = new MyAction(new Action());
-            act.Status2 = ActionsStatusEnum2.InWork;
+            act.Status = ActionsStatusEnum.InWork;
             act.WLId = "12";
             //act
-            act.Status2 = ActionsStatusEnum2.Delay;
+            act.Status = ActionsStatusEnum.Delay;
             //assert
             Assert.AreNotEqual(WLTaskStatusEnum.UpdateNeeded, act.WLTaskStatus);
         }
@@ -180,14 +180,14 @@ namespace ListOfDeal.Classes.Tests {
         public void SetStatusToSameShouldNotChangeStatus() {
             //arrange
             MyAction act = new MyAction(new Action());
-            act.Status2 = ActionsStatusEnum2.InWork;
+            act.Status = ActionsStatusEnum.InWork;
             string tmpSting = null;
             act.PropertyChanged += (object sender, PropertyChangedEventArgs e) => {
-                if (e.PropertyName == "Status2")
+                if (e.PropertyName == "Status")
                     tmpSting = "IsSet";
             };
             //act
-            act.Status2 = ActionsStatusEnum2.InWork;
+            act.Status = ActionsStatusEnum.InWork;
             //assert
             Assert.AreEqual(null, tmpSting);
         }
@@ -199,10 +199,10 @@ namespace ListOfDeal.Classes.Tests {
             MyAction act = new MyAction(new Action());
             MyAction act2 = new MyAction(new Action());
             //act
-            act.Status2 = ActionsStatusEnum2.Done;
-            act.Status2 = ActionsStatusEnum2.InWork;
-            act2.Status2 = ActionsStatusEnum2.Rejected;
-            act2.Status2 = ActionsStatusEnum2.InWork;
+            act.Status = ActionsStatusEnum.Done;
+            act.Status = ActionsStatusEnum.InWork;
+            act2.Status = ActionsStatusEnum.Rejected;
+            act2.Status = ActionsStatusEnum.InWork;
             //assert
             Assert.AreEqual(null, act.CompleteTime);
             Assert.AreEqual(null, act2.CompleteTime);

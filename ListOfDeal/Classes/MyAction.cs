@@ -37,15 +37,15 @@ namespace ListOfDeal {
                 HandlePropertyChanges("Name");
             }
         }
-        public ActionsStatusEnum2 Status2 {
+        public ActionsStatusEnum Status {
             get {
-                return (ActionsStatusEnum2)parentEntity.StatusId;
+                return (ActionsStatusEnum)parentEntity.StatusId;
             }
             set {
                 if (parentEntity.StatusId == (int)value)
                     return;
                 parentEntity.StatusId = (int)value;
-                if (value == ActionsStatusEnum2.Done || value == ActionsStatusEnum2.Rejected) {
+                if (value == ActionsStatusEnum.Done || value == ActionsStatusEnum.Rejected) {
                     this.CompleteTime = DateTime.Now;
                     this.OrderNumber = -1;
                     SetDeleteTaskIfNeeded();
@@ -53,10 +53,10 @@ namespace ListOfDeal {
                 else {
                     this.CompleteTime = null;
                 }
-                if (value != ActionsStatusEnum2.InWork && this.ScheduledTime != null) {
+                if (value != ActionsStatusEnum.InWork && this.ScheduledTime != null) {
                     this.ScheduledTime = null;
                 }
-                RaisePropertyChanged("Status2");
+                RaisePropertyChanged("Status");
             }
         }
         public DateTime DateCreated {
@@ -78,7 +78,7 @@ namespace ListOfDeal {
                     return;
                 parentEntity.ScheduledTime = value;
                 if (value.HasValue) {
-                    this.Status2 = ActionsStatusEnum2.InWork;
+                    this.Status = ActionsStatusEnum.InWork;
                 }
                 else {
                     if (this.parentEntity.Project.StatusId == (int)ProjectStatusEnum.Delayed) {
@@ -191,7 +191,7 @@ namespace ListOfDeal {
         }
         internal void CopyProperties(MyAction act) {
             this.Name = act.Name;
-            this.Status2 = act.Status2;
+            this.Status = act.Status;
             this.ScheduledTime = act.ScheduledTime;
             this.Comment = act.Comment;
             this.DateCreated = act.DateCreated;

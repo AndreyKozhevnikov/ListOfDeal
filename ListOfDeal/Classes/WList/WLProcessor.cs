@@ -107,11 +107,11 @@ namespace ListOfDeal {
                     act.Comment = notes[0].content;
                 }
                 if (rejectedTasks.Contains(act.WLId)) {
-                    act.Status2 = ActionsStatusEnum2.Rejected;
+                    act.Status = ActionsStatusEnum.Rejected;
                     wlConnector.CompleteTask(act.WLId);
                 }
                 else {
-                    act.Status2 = ActionsStatusEnum2.Done;
+                    act.Status = ActionsStatusEnum.Done;
                     string dtSt = tsk.completed_at.Split('T')[0];
                     DateTime completedTime = DateTime.Parse(dtSt);
                     act.CompleteTime = completedTime;
@@ -133,7 +133,7 @@ namespace ListOfDeal {
             return v5;
         }
         List<MyAction> GetActiveActions() {
-            var lst = parentVM.Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.Status2 == ActionsStatusEnum2.InWork).ToList();
+            var lst = parentVM.Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.Status == ActionsStatusEnum.InWork).ToList();
             var scheduledList = parentVM.Projects.Where(x => x.Status == ProjectStatusEnum.Delayed).SelectMany(x => x.Actions).Where(x => x.ScheduledTime.HasValue).ToList();
             var finalList = lst.Concat(scheduledList).ToList();
             return finalList;

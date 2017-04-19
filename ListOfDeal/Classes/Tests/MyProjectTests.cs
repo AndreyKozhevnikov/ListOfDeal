@@ -106,9 +106,9 @@ namespace ListOfDeal.Classes.Tests {
             proj.AddAction(act2);
             proj.AddAction(act3);
             //assert1
-            Assert.AreEqual(ActionsStatusEnum2.InWork, act1.Status2);
-            Assert.AreEqual(ActionsStatusEnum2.Delay, act2.Status2);
-            Assert.AreEqual(ActionsStatusEnum2.Delay, act2.Status2);
+            Assert.AreEqual(ActionsStatusEnum.InWork, act1.Status);
+            Assert.AreEqual(ActionsStatusEnum.Delay, act2.Status);
+            Assert.AreEqual(ActionsStatusEnum.Delay, act2.Status);
         }
 
 
@@ -116,56 +116,56 @@ namespace ListOfDeal.Classes.Tests {
         public void ShouldNotMakeCompletedActionActive() {
             //arrange
             var proj = new MyProject(new Project());
-            var act1 = new MyAction(new Action()) { Name = "act1", Status2 = ActionsStatusEnum2.Delay };
-            var act2 = new MyAction(new Action()) { Name = "act2", Status2 = ActionsStatusEnum2.Delay };
-            var act3 = new MyAction(new Action()) { Name = "act3", Status2 = ActionsStatusEnum2.Done };
-            var act4 = new MyAction(new Action()) { Name = "act4", Status2 = ActionsStatusEnum2.Delay };
+            var act1 = new MyAction(new Action()) { Name = "act1", Status = ActionsStatusEnum.Delay };
+            var act2 = new MyAction(new Action()) { Name = "act2", Status = ActionsStatusEnum.Delay };
+            var act3 = new MyAction(new Action()) { Name = "act3", Status = ActionsStatusEnum.Done };
+            var act4 = new MyAction(new Action()) { Name = "act4", Status = ActionsStatusEnum.Delay };
             proj.AddAction(act1);
             proj.AddAction(act2);
             proj.AddAction(act3);
             proj.AddAction(act4);
             //act2
-            act2.Status2 = ActionsStatusEnum2.Done;
-            act1.Status2 = ActionsStatusEnum2.Rejected;
+            act2.Status = ActionsStatusEnum.Done;
+            act1.Status = ActionsStatusEnum.Rejected;
             //assert2
-            Assert.AreEqual(ActionsStatusEnum2.Rejected, act1.Status2);
-            Assert.AreEqual(ActionsStatusEnum2.Done, act2.Status2);
-            Assert.AreEqual(ActionsStatusEnum2.Done, act3.Status2);
-            Assert.AreEqual(ActionsStatusEnum2.InWork, act4.Status2);
+            Assert.AreEqual(ActionsStatusEnum.Rejected, act1.Status);
+            Assert.AreEqual(ActionsStatusEnum.Done, act2.Status);
+            Assert.AreEqual(ActionsStatusEnum.Done, act3.Status);
+            Assert.AreEqual(ActionsStatusEnum.InWork, act4.Status);
         }
         [Test]
         public void AddActionMakeActionActiveIfThereAreNoOtherActive() {
             //arrange
             var proj = new MyProject(new Project());
-            var act1 = new MyAction(new Action()) { Name = "act1", Status2 = ActionsStatusEnum2.Delay };
+            var act1 = new MyAction(new Action()) { Name = "act1", Status = ActionsStatusEnum.Delay };
             proj.Actions.Add(act1);
             //act
             var act2 = new MyAction(new Action()) { Name = "act2" };
             proj.AddAction(act2);
             //assert
-            Assert.AreEqual(ActionsStatusEnum2.InWork, act2.Status2);
+            Assert.AreEqual(ActionsStatusEnum.InWork, act2.Status);
 
         }
         [Test]
         public void AddActionNotMakeActionActiveIfThereAreActive() {
             //arrange
             var proj = new MyProject(new Project());
-            var act1 = new MyAction(new Action()) { Name = "act1", Status2 = ActionsStatusEnum2.InWork };
+            var act1 = new MyAction(new Action()) { Name = "act1", Status = ActionsStatusEnum.InWork };
             proj.Actions.Add(act1);
             //act
             var act2 = new MyAction(new Action()) { Name = "act2" };
             proj.AddAction(act2);
             //assert
-            Assert.AreEqual(ActionsStatusEnum2.Delay, act2.Status2);
+            Assert.AreEqual(ActionsStatusEnum.Delay, act2.Status);
         }
         [Test]
         public void CompleteActionInSimpleProject_completeProject_done() {
             //arrange
             var proj1 = new MyProject(new Project() { IsSimpleProject = true });
-            var act1 = new MyAction(new Action()) { Name = "act1", Status2 = ActionsStatusEnum2.InWork };
+            var act1 = new MyAction(new Action()) { Name = "act1", Status = ActionsStatusEnum.InWork };
             proj1.AddAction(act1);
             //act
-            act1.Status2 = ActionsStatusEnum2.Done;
+            act1.Status = ActionsStatusEnum.Done;
             //assert
             Assert.AreEqual(ProjectStatusEnum.Done, proj1.Status);
         }
@@ -173,10 +173,10 @@ namespace ListOfDeal.Classes.Tests {
         public void CompleteActionInSimpleProject_completeProject_rejected() {
             //arrange
             var proj2 = new MyProject(new Project() { IsSimpleProject = true });
-            var act2 = new MyAction(new Action()) { Name = "act1", Status2 = ActionsStatusEnum2.InWork };
+            var act2 = new MyAction(new Action()) { Name = "act1", Status = ActionsStatusEnum.InWork };
             proj2.AddAction(act2);
             //act
-            act2.Status2 = ActionsStatusEnum2.Rejected;
+            act2.Status = ActionsStatusEnum.Rejected;
             //assert
             Assert.AreEqual(ProjectStatusEnum.Rejected, proj2.Status);
         }
@@ -184,10 +184,10 @@ namespace ListOfDeal.Classes.Tests {
         public void DelayActionInSimpleProject_doNOTcompleteProject() {
             //arrange
             var proj2 = new MyProject(new Project() { IsSimpleProject = true, StatusId = (int)ProjectStatusEnum.InWork });
-            var act2 = new MyAction(new Action()) { Name = "act1", Status2 = ActionsStatusEnum2.InWork };
+            var act2 = new MyAction(new Action()) { Name = "act1", Status = ActionsStatusEnum.InWork };
             proj2.AddAction(act2);
             //act
-            act2.Status2 = ActionsStatusEnum2.Delay;
+            act2.Status = ActionsStatusEnum.Delay;
             //assert
             Assert.AreEqual(ProjectStatusEnum.InWork, proj2.Status);
         }
@@ -200,7 +200,7 @@ namespace ListOfDeal.Classes.Tests {
             proj.AddAction(act);
             proj.PropertyChanged += (object sender, PropertyChangedEventArgs e) => { lst.Add(e.PropertyName); };
             //act
-            act.Status2 = ActionsStatusEnum2.Delay;
+            act.Status = ActionsStatusEnum.Delay;
             act.ScheduledTime = DateTime.Now;
             //assert
             Assert.GreaterOrEqual(lst.Where(x => x == "Actions").Count(), 2);
@@ -215,8 +215,8 @@ namespace ListOfDeal.Classes.Tests {
             mp.AddAction(a1);
             mp.AddAction(a2);
             //act
-            a1.Status2 = ActionsStatusEnum2.Rejected;
-            a2.Status2 = ActionsStatusEnum2.Done;
+            a1.Status = ActionsStatusEnum.Rejected;
+            a2.Status = ActionsStatusEnum.Done;
             //assert
             Assert.AreEqual(-1, a1.OrderNumber);
             Assert.AreEqual(-1, a2.OrderNumber);

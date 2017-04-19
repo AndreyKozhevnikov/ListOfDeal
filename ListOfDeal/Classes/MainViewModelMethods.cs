@@ -133,7 +133,7 @@ namespace ListOfDeal {
         }
         private void CreateNewAction() {
             CurrentAction = new MyAction();
-            CurrentAction.Status2 = ActionsStatusEnum2.Delay;
+            CurrentAction.Status = ActionsStatusEnum.Delay;
         }
         private void AddProject() {
             if (string.IsNullOrEmpty(CurrentProject.Name))
@@ -145,7 +145,7 @@ namespace ListOfDeal {
             if (CurrentProject.IsSimpleProject) {
                 MyAction act = new MyAction();
                 act.Name = CurrentProject.Name;
-                act.Status2 = ActionsStatusEnum2.InWork;
+                act.Status = ActionsStatusEnum.InWork;
                 CurrentProject.AddAction(act);
             }
 
@@ -224,7 +224,7 @@ namespace ListOfDeal {
 
         }
         private void ProvideActions() {
-            var allActions = Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.Status2 == ActionsStatusEnum2.InWork);
+            var allActions = Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.Status == ActionsStatusEnum.InWork);
             var actActions = allActions.Where(x => x.ScheduledTime == null);
             var shedActions = allActions.Where(x => x.ScheduledTime.HasValue);
 
@@ -272,7 +272,7 @@ namespace ListOfDeal {
         }
         private void CustomSummary(CustomSummaryEventArgs obj) {
             if (obj.SummaryProcess == CustomSummaryProcess.Finalize && Projects != null) {
-                var v = Projects.SelectMany(x => x.Actions).Where(y => y.Status2 == ActionsStatusEnum2.InWork).ToList();
+                var v = Projects.SelectMany(x => x.Actions).Where(y => y.Status == ActionsStatusEnum.InWork).ToList();
                 obj.TotalValue = string.Format("Actions count={0}", v.Count);
             }
         }
@@ -356,7 +356,7 @@ namespace ListOfDeal {
         public bool IsNewStatusIsValid(MyProject p, ProjectStatusEnum newStatus) {
             if (newStatus == ProjectStatusEnum.InWork || newStatus == ProjectStatusEnum.Delayed)
                 return true;
-            if (p.Actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork || x.Status2 == ActionsStatusEnum2.Delay).Count() == 0)
+            if (p.Actions.Where(x => x.Status == ActionsStatusEnum.InWork || x.Status == ActionsStatusEnum.Delay).Count() == 0)
                 return true;
             return false;
         }

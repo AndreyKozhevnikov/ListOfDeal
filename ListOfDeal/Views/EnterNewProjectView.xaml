@@ -90,9 +90,9 @@
                             <dxe:TextEdit EditValue="{Binding CurrentAction.Name, UpdateSourceTrigger=PropertyChanged}" />
                         </dxlc:LayoutItem>
                         <dxlc:LayoutItem Label="Status:">
-                            <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.Status2, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                            <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.Status, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
                                 <dxmvvm:Interaction.Behaviors>
-                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum2}" />
+                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum}" />
                                 </dxmvvm:Interaction.Behaviors>
                             </dxe:ComboBoxEdit>
                         </dxlc:LayoutItem>
@@ -185,12 +185,12 @@
                         <dxg:GridControl CurrentItem="{Binding SelectedAction, Mode=TwoWay}">
                             <dxg:GridControl.Columns>
                                 <dxg:GridColumn Width="325" FieldName="Name" />
-                                <dxg:GridColumn FieldName="Status2">
+                                <dxg:GridColumn FieldName="Status">
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
                                             <dxe:ComboBoxEdit Name="PART_Editor">
                                                 <dxmvvm:Interaction.Behaviors>
-                                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum2}" />
+                                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum}" />
                                                 </dxmvvm:Interaction.Behaviors>
                                             </dxe:ComboBoxEdit>
                                         </DataTemplate>
@@ -230,23 +230,23 @@
                                                >
                                     <dxg:TableView.FormatConditions>
                                         <dxg:FormatCondition ApplyToRow="True"
-                                                             Expression="[Status2] =='InWork'"
+                                                             Expression="[Status] =='InWork'"
                                                              PredefinedFormatName="GreenFillWithDarkGreenText" />
                                         <dxg:FormatCondition ApplyToRow="True"
-                                                             Expression="[Status2] = 'Done'"
+                                                             Expression="[Status] = 'Done'"
                                                              Value1="{x:Null}"
                                                              ValueRule="Expression"
                                                              >
                                             <dx:Format Foreground="#FFBAB8AB" TextDecorations="{x:Null}" />
                                         </dxg:FormatCondition>
                                         <dxg:FormatCondition ApplyToRow="True"
-                                                             Expression="[Status2] = 'Rejected'"
+                                                             Expression="[Status] = 'Rejected'"
                                                              Value1="{x:Null}"
                                                              ValueRule="Expression"
                                                              >
                                             <dx:Format Foreground="#FFFA9682" TextDecorations="{x:Null}" />
                                         </dxg:FormatCondition>
-                                        <dxg:FormatCondition Expression="[Status2] = 'InWork' and [ScheduledTime]!=null and [ScheduledTime] &lt; LocalDateTimeToday()" FieldName="ScheduledTime">
+                                        <dxg:FormatCondition Expression="[Status] = 'InWork' and [ScheduledTime]!=null and [ScheduledTime] &lt; LocalDateTimeToday()" FieldName="ScheduledTime">
                                             <dx:Format Background="OrangeRed" />
                                         </dxg:FormatCondition>
                                     </dxg:TableView.FormatConditions>

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ListOfDeal {
-    public enum ActionsStatusEnum2 {
+    public enum ActionsStatusEnum {
         Delay = 0,
         InWork = 1,
         Done = 2,
@@ -23,9 +23,5 @@ namespace ListOfDeal {
         Done = 3,
         Rejected=4
     }
-    public enum ActionsStatusEnum {
-        Waited = 1,
-        Scheduled = 2,
-        Completed = 4
-    }
+ 
 }

@@ -61,13 +61,13 @@ namespace ListOfDeal.Classes.Tests {
             Initialize();
 
             MyProject dontCan1 = new MyProject(new Project());
-            dontCan1.Actions.Add(new MyAction(new Action() { StatusId = (int)ActionsStatusEnum2.InWork }));
+            dontCan1.Actions.Add(new MyAction(new Action() { StatusId = (int)ActionsStatusEnum.InWork }));
             MyProject dontCan2 = new MyProject(new Project());
-            dontCan2.Actions.Add(new MyAction(new Action() { StatusId = (int)ActionsStatusEnum2.Delay }));
+            dontCan2.Actions.Add(new MyAction(new Action() { StatusId = (int)ActionsStatusEnum.Delay }));
             MyProject Can1 = new MyProject(new Project());
-            Can1.Actions.Add(new MyAction(new Action() { StatusId = (int)ActionsStatusEnum2.Rejected }));
+            Can1.Actions.Add(new MyAction(new Action() { StatusId = (int)ActionsStatusEnum.Rejected }));
             MyProject Can2 = new MyProject(new Project());
-            Can2.Actions.Add(new MyAction(new Action() { StatusId = (int)ActionsStatusEnum2.Done }));
+            Can2.Actions.Add(new MyAction(new Action() { StatusId = (int)ActionsStatusEnum.Done }));
             //act
             var dontCan1_Delay = vm.IsNewStatusIsValid(dontCan1, ProjectStatusEnum.Delayed);
             var dontCan1_InWork = vm.IsNewStatusIsValid(dontCan1, ProjectStatusEnum.InWork);

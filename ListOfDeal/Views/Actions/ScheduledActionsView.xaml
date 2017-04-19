@@ -32,12 +32,12 @@
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn FieldName="ProjectName" />
-            <dxg:GridColumn FieldName="Status2">
+            <dxg:GridColumn FieldName="Status">
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
                         <dxe:ComboBoxEdit Name="PART_Editor">
                             <dxmvvm:Interaction.Behaviors>
-                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum2}" />
+                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum}" />
                             </dxmvvm:Interaction.Behaviors>
                         </dxe:ComboBoxEdit>
                     </DataTemplate>
@@ -49,7 +49,7 @@
             <dxg:TableView ShowGroupedColumns="True">
                 <dxg:TableView.FormatConditions>
                     <dxg:FormatCondition ApplyToRow="True"
-                                         Expression="[Status2] = 'Completed'"
+                                         Expression="[Status] = 'Completed'"
                                          FieldName="Status"
                                          Value1="{x:Null}"
                                          ValueRule="Expression"

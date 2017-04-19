@@ -41,13 +41,13 @@ namespace ListOfDeal {
             else {
                 if (Actions.Count == 0) {
                     act.OrderNumber = 0;
-                    act.Status2 = ActionsStatusEnum2.InWork;
+                    act.Status = ActionsStatusEnum.InWork;
                 }
                 else {
                     var maxOrderNumber = Actions.Max(x => x.OrderNumber);
                     act.OrderNumber = maxOrderNumber + 1;
                     if (GetIsThereIsNoActiveActions())
-                        act.Status2 = ActionsStatusEnum2.InWork;
+                        act.Status = ActionsStatusEnum.InWork;
                 }
                 act.PropertyChanged += act_PropertyChanged;
                 Actions.Add(act);
@@ -56,22 +56,22 @@ namespace ListOfDeal {
             }
         }
         bool GetIsThereIsNoActiveActions() {
-            return Actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork).Count() == 0;
+            return Actions.Where(x => x.Status == ActionsStatusEnum.InWork).Count() == 0;
         }
         void act_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-            if (e.PropertyName == "Status2") {
+            if (e.PropertyName == "Status") {
                 MyAction act = sender as MyAction;
-                if (!(act.Status2 == ActionsStatusEnum2.InWork)) {
+                if (!(act.Status == ActionsStatusEnum.InWork)) {
                     bool isThereIsNoActiveActions = GetIsThereIsNoActiveActions();
                     if (isThereIsNoActiveActions) {
-                        var targetAct = Actions.Where(x => x.Status2 == ActionsStatusEnum2.InWork || x.Status2 == ActionsStatusEnum2.Delay).OrderBy(x => x.OrderNumber).FirstOrDefault();
+                        var targetAct = Actions.Where(x => x.Status == ActionsStatusEnum.InWork || x.Status == ActionsStatusEnum.Delay).OrderBy(x => x.OrderNumber).FirstOrDefault();
                         if (targetAct != null) {
-                            targetAct.Status2 = ActionsStatusEnum2.InWork;
+                            targetAct.Status = ActionsStatusEnum.InWork;
                         }
                         if (this.IsSimpleProject) {
-                            if (act.Status2 == ActionsStatusEnum2.Done)
+                            if (act.Status == ActionsStatusEnum.Done)
                                 this.Status = ProjectStatusEnum.Done;
-                            if (act.Status2 == ActionsStatusEnum2.Rejected)
+                            if (act.Status == ActionsStatusEnum.Rejected)
                                 this.Status = ProjectStatusEnum.Rejected;
                         }
                     }

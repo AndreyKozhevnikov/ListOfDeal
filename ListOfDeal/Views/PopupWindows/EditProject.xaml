@@ -15,12 +15,12 @@
         <dxg:GridControl x:Name="grd1" CurrentColumnChanged="GridControl_CurrentColumnChanged">
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Name" />
-                <dxg:GridColumn FieldName="Status2">
+                <dxg:GridColumn FieldName="Status">
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
                             <dxe:ComboBoxEdit Name="PART_Editor">
                                 <dxmvvm:Interaction.Behaviors>
-                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum2}" />
+                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum}" />
                                 </dxmvvm:Interaction.Behaviors>
                             </dxe:ComboBoxEdit>
                         </DataTemplate>

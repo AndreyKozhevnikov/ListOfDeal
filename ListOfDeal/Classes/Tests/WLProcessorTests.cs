@@ -76,7 +76,7 @@ namespace ListOfDeal.Classes.Tests {
             mockWlConnector.Verify(x => x.CreateTask("Pr1 - act3", It.IsAny<int>(), null, false), Times.Once);
             mockWlConnector.Verify(x => x.CreateTask("Pr1 - act4comment", It.IsAny<int>(), null, false), Times.Once);
             mockWlConnector.Verify(x => x.CreateTask("NonActiveProject2 - actFromNonActiveProjectWithTime", It.IsAny<int>(), DateTime.Today, false), Times.Once);
-            
+
             Assert.AreEqual("234", firstProject.Actions[0].WLId);
             Assert.AreEqual("345", firstProject.Actions[2].WLId);
             dataProviderEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
@@ -228,6 +228,7 @@ namespace ListOfDeal.Classes.Tests {
             wlProc.HandleCompletedWLTasks();
             //assert
             Assert.AreEqual(ActionsStatusEnum2.Done, myAction2.Status2);
+            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, myAction2.WLTaskStatus);
             Assert.AreEqual(new DateTime(2000, 2, 3), myAction2.CompleteTime);
             Assert.AreEqual("content test node", myAction2.Comment);
             dataProviderEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
@@ -321,7 +322,37 @@ namespace ListOfDeal.Classes.Tests {
             dataProviderEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
 
         }
+        [Test]
+        public void HandleCompletedWLTasks_rejected() {
+            //arrange
+            Initialize(MockBehavior.Default);
+            var firstProject = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            projCollection.Add(firstProject);
+            var myAction1 = new MyAction(new Action() { Name = "Action1", WLId = "1", StatusId = (int)ActionsStatusEnum2.InWork, Project = new Project() });
+            var myAction2 = new MyAction(new Action() { Name = "Action2", WLId = "2", StatusId = (int)ActionsStatusEnum2.InWork, Project = new Project() });
+            var myAction3 = new MyAction(new Action() { Name = "Action3", WLId = "3", StatusId = (int)ActionsStatusEnum2.InWork, Project = new Project() });
 
+            firstProject.Actions.Add(myAction1);
+            firstProject.Actions.Add(myAction2);
+            firstProject.Actions.Add(myAction3);
+
+            var taskList = new List<WLTask>();
+            taskList.Add(new WLTask() { id = "1" });
+            taskList.Add(new WLTask() { id = "3" });
+            mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(taskList);
+            var rejectedList = new List<WLTask>();
+            rejectedList.Add(new WLTask() { id = "2" });
+            mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.RejectedListId)).Returns(rejectedList);
+            mockWlConnector.Setup(x => x.GetTask("2")).Returns(new WLTask() { id = "2"  });
+            wlProc.UpdateData();
+            //act
+            wlProc.HandleCompletedWLTasks();
+            //assert
+
+            Assert.AreEqual(ActionsStatusEnum2.Rejected, myAction2.Status2);
+            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, myAction2.WLTaskStatus);
+            mockWlConnector.Verify(x => x.CompleteTask("2"), Times.Once);
+        }
 
         [Test]
         public void HandleCompletedActions() {
@@ -1095,12 +1126,12 @@ namespace ListOfDeal.Classes.Tests {
         public void CreateLogStringwithCreateNewTaskText() {
             //arrange
             var wlProc = new WLProcessor(null);
-           
+
             //act
-            var res1 = wlProc.CreateLogString("subj1", "test","short value");
+            var res1 = wlProc.CreateLogString("subj1", "test", "short value");
             var res2 = wlProc.CreateLogString("subj2", "test", "list id - MyList(263984253), new task's id=2695932312");
-            
-            var split1 = res1.Split(new char[] { '|' },StringSplitOptions.RemoveEmptyEntries);
+
+            var split1 = res1.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
             var split2 = res2.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
 
@@ -1166,7 +1197,7 @@ namespace ListOfDeal.Classes.Tests {
             var act1 = new MyAction(new Action() { Name = "act1", WLTaskRevision = 1, WLId = "123", StatusId = (int)ActionsStatusEnum2.InWork, ScheduledTime = new DateTime(2016, 9, 11) });
             act1.parentEntity.Project = proj.parentEntity;
             proj.Actions.Add(act1);
-          
+
 
             projCollection.Add(proj);
 
@@ -1213,12 +1244,14 @@ namespace ListOfDeal.Classes.Tests {
             mockWlConnector.Setup(x => x.ChangeScheduledTime(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(new WLTask());
 
             //act
-            act1.ScheduledTime = new DateTime(1999,9,9);
+            act1.ScheduledTime = new DateTime(1999, 9, 9);
             wlProc.HandleChangedLODActions();
             //assert
-            mockWlConnector.Verify(x => x.ChangeScheduledTime("123","1999-09-09",2), Times.Once);
+            mockWlConnector.Verify(x => x.ChangeScheduledTime("123", "1999-09-09", 2), Times.Once);
         }
+
 
     }
 #endif
+
 }

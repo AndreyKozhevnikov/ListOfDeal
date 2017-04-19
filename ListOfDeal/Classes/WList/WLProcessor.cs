@@ -27,7 +27,7 @@ namespace ListOfDeal {
         public static int MyBuyId = 263984295;
 #endif
         public static int MyDiarId = 289882019;
-
+        public static int RejectedListId = 299386783;
         public event System.Action<string> Logged;
         IMainViewModel parentVM;
         public WLProcessor(IMainViewModel _parentVM) {
@@ -80,10 +80,14 @@ namespace ListOfDeal {
             }
             MainViewModel.SaveChanges();
         }
-
+#if DebugTest
+        public void HandleCompletedWLTasks() {
+#else
         public async void HandleCompletedWLTasks() {
+#endif
             RaiseLog("Handling completing WLtasks", "Started");
             MainViewModel.SaveChanges();
+            var rejectedTasks = wlConnector.GetTasksForList(WLProcessor.RejectedListId).Select(x => x.id);
             allTasks = GetAllActiveTasks();
             var actionsWithTasks = allActions.Where(x => x.WLId != null).ToList();
             var lstwlIdinLod = actionsWithTasks.Select(x => x.WLId);
@@ -97,17 +101,23 @@ namespace ListOfDeal {
 #endif
                 Debug.Print(tskId.ToString());
                 var tsk = wlConnector.GetTask(tskId);
-                string dtSt = tsk.completed_at.Split('T')[0];
-                DateTime completedTime = DateTime.Parse(dtSt);
                 var act = actionsWithTasks.Where(x => x.WLId == tskId).First();
                 var notes = wlConnector.GetNodesForTask(tskId);
                 if (notes.Count > 0) {
                     act.Comment = notes[0].content;
                 }
-                act.WLId = null;
+                if (rejectedTasks.Contains(act.WLId)) {
+                    act.Status2 = ActionsStatusEnum2.Rejected;
+                    wlConnector.CompleteTask(act.WLId);
+                }
+                else {
+                    act.Status2 = ActionsStatusEnum2.Done;
+                    string dtSt = tsk.completed_at.Split('T')[0];
+                    DateTime completedTime = DateTime.Parse(dtSt);
+                    act.CompleteTime = completedTime;
+                }
                 act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
-                act.Status2 = ActionsStatusEnum2.Done;
-                act.CompleteTime = completedTime;
+                act.WLId = null;
                 RaiseLog(act, "completed");
             }
             MainViewModel.SaveChanges();
@@ -319,7 +329,10 @@ namespace ListOfDeal {
             //    var res = this.wlConnector.GetTasksForList(l.id);
             //}
             //return lst;
-            (wlConnector as WLConnector).Test();
+
+            //var lst = wlConnector.GetAllLists();
+            var t = wlConnector.GetTask("2709210017");
+            var lst = wlConnector.GetTasksForList(WLProcessor.RejectedListId);
         }
         public void PasteDiaryEntries() {
             var lst = wlConnector.GetTasksForList(MyDiarId);

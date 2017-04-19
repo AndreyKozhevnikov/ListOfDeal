@@ -136,6 +136,7 @@ namespace ListOfDeal {
             //    string st = i.ToString() + new string('0', i);
             //    Logs.Add(st);
             //}
+            CreateProcessor();
             wlProcessor.Test();
         }
         private void WlProcessor_Logged(string st) {

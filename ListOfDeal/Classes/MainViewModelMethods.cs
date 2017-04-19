@@ -120,29 +120,7 @@ namespace ListOfDeal {
             CreateNewAction();
 
             WLViewModel = new WunderListViewModel(this);
-            // PathchStatus2();
         }
-
-        void PathchStatus2() {
-            var acts = DataProvider.GetActions();
-            foreach (var act in acts) {
-                if (act.StatusId2 != -1)
-                    continue;
-                if (act.IsActive) {
-                    act.StatusId2 = (int)ActionsStatusEnum2.InWork;
-                }
-                else {
-                    if (act.StatusId == (int)ActionsStatusEnum.Completed) {
-                        act.StatusId2 = (int)ActionsStatusEnum2.Done;
-                    }
-                    if (act.StatusId == (int)ActionsStatusEnum.Waited) {
-                        act.StatusId2 = (int)ActionsStatusEnum2.Delay;
-                    }
-                }
-            }
-        }
-
-
 
         private void CreateNewProject(int? oldTypeId) {
             CurrentProject = new MyProject();

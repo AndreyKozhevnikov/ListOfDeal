@@ -39,12 +39,12 @@ namespace ListOfDeal {
         }
         public ActionsStatusEnum2 Status2 {
             get {
-                return (ActionsStatusEnum2)parentEntity.StatusId2;
+                return (ActionsStatusEnum2)parentEntity.StatusId;
             }
             set {
-                if (parentEntity.StatusId2 == (int)value)
+                if (parentEntity.StatusId == (int)value)
                     return;
-                parentEntity.StatusId2 = (int)value;
+                parentEntity.StatusId = (int)value;
                 if (value == ActionsStatusEnum2.Done || value == ActionsStatusEnum2.Rejected) {
                     this.CompleteTime = DateTime.Now;
                     this.OrderNumber = -1;

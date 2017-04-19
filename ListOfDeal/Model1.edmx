@@ -12,19 +12,17 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar(max)" Nullable="false" />
           <Property Name="ProjectId" Type="int" Nullable="false" />
-          <Property Name="StatusId" Type="int" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Nullable="false" />
           <Property Name="ScheduledTime" Type="datetime" />
           <Property Name="Comment" Type="varchar(max)" />
           <Property Name="CompleteTime" Type="datetime" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="OrderNumber" Type="int" Nullable="false" />
           <Property Name="WLId" Type="varchar" MaxLength="11" />
           <Property Name="WLTaskStatus" Type="int" Nullable="false" />
           <Property Name="WLTaskRevision" Type="int" />
           <Property Name="ToBuy" Type="bit" Nullable="false" />
           <Property Name="IsMajor" Type="bit" Nullable="false" />
-          <Property Name="StatusId2" Type="int" Nullable="false" />
+          <Property Name="StatusId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Projects">
           <Key>
@@ -129,7 +127,6 @@
           <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Project" Relationship="ListOfDealBaseModel.FK_Actions_Projects" FromRole="Actions" ToRole="Projects" />
           <Property Name="StatusId" Type="Int32" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="OrderNumber" Type="Int32" Nullable="false" />
           <Property Name="CompleteTime" Type="DateTime" Precision="3" />
           <Property Name="WLTaskStatus" Type="Int32" Nullable="false" />
@@ -138,7 +135,6 @@
           <Property Name="ToBuy" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="WeekRecords" Relationship="ListOfDealBaseModel.FK_WeekRecords_Actions" FromRole="Action" ToRole="WeekRecord" />
           <Property Name="IsMajor" Type="Boolean" Nullable="false" />
-          <Property Name="StatusId2" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Project">
           <Key>
@@ -240,7 +236,6 @@
           <EntitySetMapping Name="Actions">
             <EntityTypeMapping TypeName="ListOfDealBaseModel.Action">
               <MappingFragment StoreEntitySet="Actions">
-                <ScalarProperty Name="StatusId2" ColumnName="StatusId2" />
                 <ScalarProperty Name="IsMajor" ColumnName="IsMajor" />
                 <ScalarProperty Name="ToBuy" ColumnName="ToBuy" />
                 <ScalarProperty Name="WLId" ColumnName="WLId" />
@@ -248,7 +243,6 @@
                 <ScalarProperty Name="WLTaskStatus" ColumnName="WLTaskStatus" />
                 <ScalarProperty Name="CompleteTime" ColumnName="CompleteTime" />
                 <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />

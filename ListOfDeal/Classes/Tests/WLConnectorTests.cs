@@ -32,19 +32,23 @@ namespace ListOfDeal.Classes.Tests {
         }
 
         [Test]
-        public void PrepareString() {
+        public void NormalizeString_test() {
             //arrange
             WLConnector wlConn = new WLConnector();
             var title = "NewTestTitle3 \"test\"";
             var title2 = @"NewTestTitle3 \test";
+            var content = "test"+Environment.NewLine+"test2";
             //act
             string st = wlConn.NormalizeString(title);
             string st2 = wlConn.NormalizeString(title2);
+            string content2 = wlConn.NormalizeString(content);
             //assert
             string need = "NewTestTitle3 \\\"test\\\"";
             string need2 = "NewTestTitle3 \\\\test";
+            string needContent = "test\\r\\ntest2";
             Assert.AreEqual(need, st);
             Assert.AreEqual(need2, st2);
+            Assert.AreEqual(needContent, content2);
         }
     }
 #endif

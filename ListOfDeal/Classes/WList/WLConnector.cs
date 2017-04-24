@@ -68,7 +68,7 @@ namespace ListOfDeal {
         }
 
         protected internal string NormalizeString(string title) {
-            return title.Replace("\\","\\\\").Replace("\"", "\\\"");
+            return title.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\r\n","\\r\\n");
         }
         public WLTask CreateTask(string title, int listId, DateTime? dueDate, bool isMajor) {
             title = NormalizeString(title);
@@ -197,9 +197,10 @@ namespace ListOfDeal {
         }
 
         public WLNote CreateNote(string taskId, string content) {
+            var normalContent = NormalizeString(content);
             string st = "http://a.wunderlist.com/api/v1/notes";
             JsonCreator.Add("task_id", taskId);
-            JsonCreator.Add("content", content);
+            JsonCreator.Add("content", normalContent);
             string json = JsonCreator.GetString();
             var responseText = GetHttpRequestResponse(st, "POST", json);
             var wlNote = JsonConvert.DeserializeObject<WLNote>(responseText);
@@ -226,10 +227,11 @@ namespace ListOfDeal {
         }
 
         public WLNote UpdateNoteContent(string noteId, int revision, string content) {
+            var normalConten = NormalizeString(content);
             string st = "http://a.wunderlist.com/api/v1/notes";
             string st2 = string.Format(@"{0}/{1}", st, noteId);
             JsonCreator.Add("revision", revision);
-            JsonCreator.Add("content", content);
+            JsonCreator.Add("content", normalConten);
             string json = JsonCreator.GetString();
             var responseText = GetHttpRequestResponse(st2, "PATCH", json);
             var WLNote = JsonConvert.DeserializeObject<WLNote>(responseText);

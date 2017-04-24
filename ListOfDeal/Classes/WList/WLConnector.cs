@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows;
 
 namespace ListOfDeal {
     public interface IWLConnector {
@@ -60,11 +60,18 @@ namespace ListOfDeal {
                 writer.Flush();
                 writer.Close();
             }
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            var streamReader = new StreamReader(httpResponse.GetResponseStream());
-            var responseText = streamReader.ReadToEnd();
-            streamReader.Close();
-            return responseText;
+            try {
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                var streamReader = new StreamReader(httpResponse.GetResponseStream());
+                var responseText = streamReader.ReadToEnd();
+                streamReader.Close();
+                return responseText;
+            }
+            catch {
+                MessageBox.Show("Error " + json);
+                MainViewModel.SaveChanges();
+                return null;
+            }
         }
 
         protected internal string NormalizeString(string title) {

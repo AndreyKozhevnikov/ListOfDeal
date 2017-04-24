@@ -222,6 +222,7 @@
                                 <dxg:GridColumn FieldName="OrderNumber" Visible="False" />
                                 <dxg:GridColumn FieldName="ToBuy" />
                                 <dxg:GridColumn FieldName="IsMajor" />
+                                <dxg:GridColumn FieldName="WLId" Visible="False"/>
                             </dxg:GridControl.Columns>
                             <dxg:GridControl.View>
                                 <dxg:TableView EnableImmediatePosting="True"

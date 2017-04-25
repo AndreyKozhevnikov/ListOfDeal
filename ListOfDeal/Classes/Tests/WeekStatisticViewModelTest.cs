@@ -53,17 +53,20 @@ namespace ListOfDeal.Classes.Tests {
 
             var lst = new List<WeekRecord>();
             var w1 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Done, CompleteTime = new DateTime(2017, 2, 28) }, WeekId = "02272017" };
+            var w4 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Rejected, CompleteTime = new DateTime(2017, 2, 28) }, WeekId = "02272017" };
             var w2 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.InWork }, WeekId = "02272017" };
             var w3 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Done, CompleteTime = new DateTime(2017, 3, 28) }, WeekId = "02272017" };
+
             lst.Add(w1);
             lst.Add(w2);
             lst.Add(w3);
+            lst.Add(w4);
             dataProviderEntity.Setup(x => x.GetWeekRecords()).Returns(lst);
             //act
             vm.MarkItemsCompleteCommand.Execute(null);
             //assert
             var cnt = lst.Where(x => x.IsCompletedInWeek).Count();
-            Assert.AreEqual(1, cnt);
+            Assert.AreEqual(2, cnt);
         }
     }
 #endif

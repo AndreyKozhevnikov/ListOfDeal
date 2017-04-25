@@ -60,7 +60,7 @@ namespace ListOfDeal.Classes {
                 DateTime wDt = new DateTime(y, m, d);
                 DateTime endDt = wDt.AddDays(6);
                 var act = wr.Action;
-                if (act.StatusId == (int)ActionsStatusEnum.Done && act.CompleteTime != null && act.CompleteTime.Value.Date <= endDt.Date) {
+                if ( act.CompleteTime != null && act.CompleteTime.Value.Date <= endDt.Date) {
                     wr.IsCompletedInWeek = true;
                 }
             }

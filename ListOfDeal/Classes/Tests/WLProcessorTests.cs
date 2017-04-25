@@ -344,11 +344,14 @@ namespace ListOfDeal.Classes.Tests {
             rejectedList.Add(new WLTask() { id = "2" });
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.RejectedListId)).Returns(rejectedList);
             mockWlConnector.Setup(x => x.GetTask("2")).Returns(new WLTask() { id = "2"  });
+            List<string> logList = new List<string>();
+            wlProc.Logged += (x) => { logList.Add(x); };
             wlProc.UpdateData();
             //act
             wlProc.HandleCompletedWLTasks();
             //assert
-
+            var rejectecMessageCount = logList.Where(x => x.Contains("rejected")).Count();
+            Assert.AreEqual(1, rejectecMessageCount);
             Assert.AreEqual(ActionsStatusEnum.Rejected, myAction2.Status);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, myAction2.WLTaskStatus);
             mockWlConnector.Verify(x => x.CompleteTask("2"), Times.Once);

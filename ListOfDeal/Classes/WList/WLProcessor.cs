@@ -78,6 +78,7 @@ namespace ListOfDeal {
                 }
                 RaiseLog(wlTask, "created", string.Format("list id - {0}({1}), new task's id={2}", lstName, targetListId.ToString(), wlTask.id));
             }
+            RaiseLog("Process creating tasks", "Finished");
             MainViewModel.SaveChanges();
         }
 #if DebugTest
@@ -118,7 +119,12 @@ namespace ListOfDeal {
                 }
                 act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
                 act.WLId = null;
-                RaiseLog(act, "completed");
+                if (act.Status == ActionsStatusEnum.Done) {
+                    RaiseLog(act, "completed");
+                }
+                else {
+                    RaiseLog(act, "rejected");
+                }
             }
             MainViewModel.SaveChanges();
             RaiseLog("Handling completing WLtasks", "Finished");

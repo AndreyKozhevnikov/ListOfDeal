@@ -123,6 +123,7 @@
                              CurrentItem="{Binding SelectedProject, Mode=TwoWay}"
                              ItemsSource="{Binding Projects}"
                              Loaded="GridControl_Loaded"
+                             AllowLiveDataShaping="True"
                              >
                 <dxmvvm:Interaction.Behaviors>
                     <local:GridControlManagerService />
@@ -312,7 +313,7 @@
                                          FieldName="Name"
                                          SummaryType="Count" />
                     <dxg:GridSummaryItem Alignment="Right"
-                                         FieldName="TypeId"
+                                         FieldName="Actions"
                                          SummaryType="Custom" />
                 </dxg:GridControl.TotalSummary>
                 <dxg:GridControl.GroupSummary>

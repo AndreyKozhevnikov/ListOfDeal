@@ -272,8 +272,8 @@ namespace ListOfDeal {
         }
         private void CustomSummary(CustomSummaryEventArgs obj) {
             if (obj.SummaryProcess == CustomSummaryProcess.Finalize && Projects != null) {
-                var v = Projects.SelectMany(x => x.Actions).Where(y => y.Status == ActionsStatusEnum.InWork).ToList();
-                obj.TotalValue = string.Format("Actions count={0}", v.Count);
+                var lst = WLProcessor.ReturnActiveActionsFromProjectList(Projects);
+                obj.TotalValue= string.Format("Actions count={0}", lst.Count);
             }
         }
         private void GoToParentProject(MyAction act) {

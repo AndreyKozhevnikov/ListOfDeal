@@ -28,6 +28,14 @@ namespace ListOfDeal {
             DateCreated = DateTime.Now;
             changedProperties = new List<string>();
         }
+        public int Id {
+            get {
+                return parentEntity.Id;
+            }
+            set {
+                parentEntity.Id = value;
+            }
+        }
         public string Name {
             get {
                 return parentEntity.Name;

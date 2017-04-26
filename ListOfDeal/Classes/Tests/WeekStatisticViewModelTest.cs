@@ -56,13 +56,14 @@ namespace ListOfDeal.Classes.Tests {
             var mockGeneralEntity = new Mock<IListOfDealBaseEntities>();
             var dataProviderEntity = new Mock<IMainViewModelDataProvider>();
             MainViewModel.DataProvider = dataProviderEntity.Object;
-
+            var stDate = DateTime.Today.AddDays(-7);
             var lst = new List<WeekRecord>();
-            var w1 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Done, CompleteTime = new DateTime(2017, 2, 28) }, WeekId = "02272017" };
-            var w4 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Rejected, CompleteTime = new DateTime(2017, 2, 28) }, WeekId = "02272017" };
-            var w2 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.InWork }, WeekId = "02272017" };
-            var w3 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Done, CompleteTime = new DateTime(2017, 3, 28) }, WeekId = "02272017" };
-
+            var w1 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Done, CompleteTime = new DateTime(2017, 2, 28) }, WeekId = "02272017",DateAdd= stDate };
+            var w2 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Rejected, CompleteTime = new DateTime(2017, 2, 28) }, WeekId = "02272017",DateAdd= stDate };
+            var w3 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Rejected, CompleteTime = new DateTime(2017, 2, 23) }, WeekId = "02202017", DateAdd = stDate };
+            var w4 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.InWork }, WeekId = "02272017", DateAdd = stDate };
+            var w5 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Done, CompleteTime = new DateTime(2017, 3, 28) }, WeekId = "02272017", DateAdd = stDate };
+            var w6 = new WeekRecord() { Action = new Action() { StatusId = (int)ActionsStatusEnum.Done, CompleteTime = new DateTime(2017, 2, 28) }, WeekId = "01152017",DateAdd= stDate.AddDays(-20) };
             lst.Add(w1);
             lst.Add(w2);
             lst.Add(w3);
@@ -72,7 +73,7 @@ namespace ListOfDeal.Classes.Tests {
             vm.MarkItemsCompleteCommand.Execute(null);
             //assert
             var cnt = lst.Where(x => x.IsCompletedInWeek).Count();
-            Assert.AreEqual(2, cnt);
+            Assert.AreEqual(3, cnt);
         }
     }
 #endif

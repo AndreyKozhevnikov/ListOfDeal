@@ -50,18 +50,22 @@ namespace ListOfDeal.Classes {
             }
         }
         void MarkItemsComplete() {
-            var wRecords = MainViewModel.DataProvider.GetWeekRecords();
-            foreach (var wr in wRecords) {
-                string wId = wr.WeekId;
+            var stDate = DateTime.Today.AddDays(-21);
+            var wRecords = MainViewModel.DataProvider.GetWeekRecords().Where(x => x.DateAdd > stDate && !x.IsCompletedInWeek);
 
-                int m = int.Parse(wId.Substring(0, 2));
-                int d = int.Parse(wId.Substring(2, 2));
-                int y = int.Parse(wId.Substring(4, 4));
+            var idList = wRecords.GroupBy(x => x.WeekId).Select(x => new { wId = x.Key, records = x });
+            foreach (var week in idList) {
+                var weekId = week.wId;
+                int m = int.Parse(weekId.Substring(0, 2));
+                int d = int.Parse(weekId.Substring(2, 2));
+                int y = int.Parse(weekId.Substring(4, 4));
                 DateTime wDt = new DateTime(y, m, d);
                 DateTime endDt = wDt.AddDays(6);
-                var act = wr.Action;
-                if ( act.CompleteTime != null && act.CompleteTime.Value.Date <= endDt.Date) {
-                    wr.IsCompletedInWeek = true;
+                foreach (var wr in week.records) {
+                    var act = wr.Action;
+                    if (act.CompleteTime.HasValue && act.CompleteTime.Value.Date <= endDt.Date) {
+                        wr.IsCompletedInWeek = true;
+                    }
                 }
             }
             MainViewModel.DataProvider.SaveChanges();
@@ -85,10 +89,9 @@ namespace ListOfDeal.Classes {
             var activeActions = WLProcessor.ReturnActiveActionsFromProjectList(MainViewModel.DataProvider.GetProjects().Select(x => new MyProject(x)));
             var filteredActions = activeActions.Where(x => !x.ScheduledTime.HasValue || x.ScheduledTime <= wkEndDate);
             string weekId = wkStartDate.ToString("MMddyyyy");
-            var wRecords = MainViewModel.DataProvider.GetWeekRecords().Where(x=>x.WeekId==weekId);
+            var wRecords = MainViewModel.DataProvider.GetWeekRecords().Where(x => x.WeekId == weekId);
             foreach (var act in filteredActions) {
-            
-                var cnt = wRecords.Where(x=>x.ActionId == act.Id).Count();
+                var cnt = wRecords.Where(x => x.ActionId == act.Id).Count();
                 if (cnt > 0)
                     continue;
                 var wr = MainViewModel.DataProvider.CreateWeekRecord();
@@ -111,6 +114,6 @@ namespace ListOfDeal.Classes {
         public double PercentComplete { get; set; }
         public int AllInActions { get; set; }
     }
-    
+
 
 }

@@ -254,11 +254,18 @@ namespace ListOfDeal {
             }
             RaiseLog("Handling changed LOD actions", "Finished");
         }
-
-        public void HandleChangedWLTask() {
+#if !DebugTest
+        public async void HandleChangedWLTask() {
+#else
+           public void HandleChangedWLTask() {
+#endif
             RaiseLog("Handling changed WLTasks", "Started");
             var actionsWithTasks = allActions.Where(x => x.WLId != null).ToList();
             foreach (var act in actionsWithTasks) {
+#if !DebugTest
+                Task t = Task.Run(() => Thread.Sleep(20));
+                await t;
+#endif
                 var tsk = allTasks.Where(x => x.id == act.WLId).FirstOrDefault();
                 if (tsk == null) {
                     RaiseLog(act, "There are no tasks");

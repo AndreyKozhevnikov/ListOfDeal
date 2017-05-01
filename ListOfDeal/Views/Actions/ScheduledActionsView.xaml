@@ -21,7 +21,13 @@
         <dxg:GridControl.Columns>
             <dxg:GridColumn Width="600" FieldName="Name" />
             <dxg:GridColumn FieldName="DateCreated" AllowEditing="False"/>
-            <dxg:GridColumn FieldName="ScheduledTime" GroupIndex="0"/>
+            <dxg:GridColumn FieldName="ScheduledTime" GroupIndex="0" >
+                <dxg:GridColumn.GroupValueTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Value, Converter={local:DateToWeekDayConverter}}"/>
+                    </DataTemplate>
+                </dxg:GridColumn.GroupValueTemplate>
+                </dxg:GridColumn>
             <dxg:GridColumn FieldName="Comment">
                 <dxg:GridColumn.EditSettings>
                     <dxe:MemoEditSettings />
@@ -41,6 +47,9 @@
             </dxg:GridColumn>
             <dxg:GridColumn FieldName="IsMajor" />
         </dxg:GridControl.Columns>
+        <dxg:GridControl.GroupSummary>
+            <dxg:GridSummaryItem FieldName="ScheduledTime" SummaryType="Count"/>
+        </dxg:GridControl.GroupSummary>
         <dxg:GridControl.View>
             <dxg:TableView ShowGroupedColumns="True">
                 <dxg:TableView.FormatConditions>

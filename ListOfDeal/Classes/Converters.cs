@@ -76,4 +76,20 @@ namespace ListOfDeal {
         }
     }
 
+    public class DateToWeekDayConverter : MarkupExtension, IValueConverter {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+            var dt = DateTime.Parse(value.ToString());
+            var st = dt.ToString("yyyy-MM-dd dddd");
+            return st;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+            return value;
+        }
+
+        public override object ProvideValue(IServiceProvider serviceProvider) {
+            return this;
+        }
+    }
+
 }

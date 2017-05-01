@@ -21,11 +21,7 @@
         <dxg:GridControl.Columns>
             <dxg:GridColumn Width="600" FieldName="Name" />
             <dxg:GridColumn FieldName="DateCreated" AllowEditing="False"/>
-            <dxg:GridColumn FieldName="ScheduledTime" GroupIndex="0">
-                <dxg:GridColumn.EditSettings>
-                    <dxe:DateEditSettings />
-                </dxg:GridColumn.EditSettings>
-            </dxg:GridColumn>
+            <dxg:GridColumn FieldName="ScheduledTime" GroupIndex="0"/>
             <dxg:GridColumn FieldName="Comment">
                 <dxg:GridColumn.EditSettings>
                     <dxe:MemoEditSettings />

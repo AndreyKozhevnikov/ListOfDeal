@@ -31,6 +31,7 @@
                          >
             <dxg:GridControl.Columns>
                 <dxg:GridColumn Width="550" FieldName="Name" />
+                <dxg:GridColumn FieldName="ScheduledTime"/>
                 <dxg:GridColumn FieldName="DateCreated" AllowEditing="False"/>
                 <dxg:GridColumn FieldName="Comment">
                     <dxg:GridColumn.EditSettings>

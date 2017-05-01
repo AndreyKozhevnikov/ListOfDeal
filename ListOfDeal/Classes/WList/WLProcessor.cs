@@ -44,13 +44,17 @@ namespace ListOfDeal {
             allTasks = GetAllActiveTasks();
         }
         public Action<string> SetClipboardText;
-
+#if !DebugTest
         async public void CreateWlTasks() {
+#else
+        public void CreateWlTasks() {
+#endif
             RaiseLog("Process creating tasks", "Started");
             MainViewModel.SaveChanges();
             var emptyActions = allActions.Where(x => x.WLId == null);
             var v = emptyActions.Count();
             RaiseLog("Count of new tasks", v.ToString());
+            throw new Exception();
             if (v == 0)
                 return;
             foreach (var act in emptyActions) {

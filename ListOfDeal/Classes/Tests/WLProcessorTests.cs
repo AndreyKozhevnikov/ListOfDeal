@@ -1132,13 +1132,14 @@ namespace ListOfDeal.Classes.Tests {
 
             //act
             var res1 = wlProc.CreateLogString("subj1", "test", "short value");
-            var res2 = wlProc.CreateLogString("subj2", "test", "list id - MyList(263984253), new task's id=2695932312");
+            var res2 = wlProc.CreateLogString("subj2", "changed scheduled time", "list id - MyList(263984253), new task's id=2695932312");
 
             var split1 = res1.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
             var split2 = res2.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
 
             //assert
+            Assert.AreEqual(split1[2].Length, split2[2].Length);
             Assert.AreEqual(split1[3].Length, split2[3].Length);
         }
         [Test]

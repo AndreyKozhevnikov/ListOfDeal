@@ -325,7 +325,7 @@ namespace ListOfDeal {
         public string CreateLogString(string subject, string description, string newValue = null) {
             string dateString = DateTime.Now.ToString("dd-MMM-yy HH:mm");
             string subjectString = subject.PadRight(95).Substring(0, 95);
-            string descriptionString = description.PadRight(20);
+            string descriptionString = description.PadRight(22);
             string newValueString = (newValue != null ? newValue : "").PadRight(58);
             string result = string.Format("| {0} | {1} | {2} | {3} |", dateString, subjectString, descriptionString, newValueString);
             return result;

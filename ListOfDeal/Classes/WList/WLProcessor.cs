@@ -54,7 +54,6 @@ namespace ListOfDeal {
             var emptyActions = allActions.Where(x => x.WLId == null);
             var v = emptyActions.Count();
             RaiseLog("Count of new tasks", v.ToString());
-            throw new Exception();
             if (v == 0)
                 return;
             foreach (var act in emptyActions) {

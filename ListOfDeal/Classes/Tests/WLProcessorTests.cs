@@ -1182,6 +1182,7 @@ namespace ListOfDeal.Classes.Tests {
 
             mockWlConnector.Setup(x => x.ChangeListOfTask(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(new WLTask());
             mockWlConnector.Setup(x => x.ChangeScheduledTime(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(new WLTask());
+            mockWlConnector.Setup(x => x.CreateTask(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<bool>())).Returns(new WLTask());
 
             //act
             act2.ScheduledTime = new DateTime(2017, 5, 5);

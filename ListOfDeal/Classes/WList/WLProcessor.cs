@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -340,6 +341,17 @@ namespace ListOfDeal {
             string result = string.Format("| {0} | {1} | {2} | {3} |", dateString, subjectString, descriptionString, newValueString);
             return result;
         }
+        public void Backup() {
+         
+            var dropBoxPath = SettingsStore.GetPropertyValue("Dropbox");
+            var backupPath = dropBoxPath + string.Format(@"\BackupMSSQL\wlBackup{0}.json", DateTime.Now.ToString("yyyy.MM.dd_HHmm"));
+            var backUpString = wlConnector.GetBackup();
+            using (var sw=new StreamWriter(backupPath)) {
+                sw.Write(backUpString);
+                sw.Close();
+            }
+            RaiseLog("Backup", "created");
+        }
         public void Test() {
 
             //var lst = this.wlConnector.GetAllLists();
@@ -349,8 +361,9 @@ namespace ListOfDeal {
             //return lst;
 
             //var lst = wlConnector.GetAllLists();
-            var t = wlConnector.GetTask("2709210017");
-            var lst = wlConnector.GetTasksForList(WLProcessor.RejectedListId);
+            //var t = wlConnector.GetTask("2709210017");
+            //var lst = wlConnector.GetTasksForList(WLProcessor.RejectedListId);
+         //   var tt = wlConnector.GetBackUp();
         }
         public void PasteDiaryEntries() {
             var lst = wlConnector.GetTasksForList(MyDiarId);

@@ -29,6 +29,7 @@ namespace ListOfDeal {
         WLNote CreateNote(string taskId, string content);
         WLNote UpdateNoteContent(string noteId, int revision, string content);
         void DeleteNote(string noteId, int revision);
+        string GetBackup();
     }
     public class WLConnector : IWLConnector {
         public WLConnector() {
@@ -48,11 +49,16 @@ namespace ListOfDeal {
             accessToken = st[2];
         }
 
-        private string GetHttpRequestResponse(string url, string requestType, string json = "") {
+        private string GetHttpRequestResponse(string url, string requestType, string json = "", bool isBackUp=false) {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Headers.Add(string.Format("X-Access-Token: {0}", accessToken));
             httpWebRequest.Headers.Add(string.Format("X-Client-ID: {0}", clientId));
+            if (isBackUp) {
+                httpWebRequest.Headers.Add(string.Format("x-client-device-id: {0}", "custom id"));
+                httpWebRequest.Headers.Add(string.Format("x-client-current-time: {0}", "custom time"));
+                httpWebRequest.Headers.Add(string.Format("x-client-instance-id: {0}", "custom id"));
+            }
             httpWebRequest.Method = requestType;
             if (json != "") {
                 StreamWriter writer = new StreamWriter(httpWebRequest.GetRequestStream());
@@ -73,7 +79,7 @@ namespace ListOfDeal {
                 return null;
             }
         }
-
+    
         protected internal string NormalizeString(string title) {
             return title.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\r\n","\\r\\n");
         }
@@ -249,7 +255,12 @@ namespace ListOfDeal {
             string st2 = string.Format(@"{0}/{1}?revision={2}", st, noteId, revision);
             var responseText = GetHttpRequestResponse(st2, "DELETE");
         }
-
+        public string GetBackup() {
+            string st = "https://backup.wunderlist.com/api/v1/export";
+            var responseText = GetHttpRequestResponse(st, "GET",isBackUp:true);
+            return responseText;
+        }
+   
 
 #if needNewToken
         const string authorizationEndpoint = "https://www.wunderlist.com/oauth/authorize";

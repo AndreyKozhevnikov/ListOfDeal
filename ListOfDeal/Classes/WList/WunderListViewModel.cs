@@ -30,6 +30,14 @@ namespace ListOfDeal {
         ICommand _handleChangedLODActionsCommand;
         ICommand _handleChangedWLTaskCommand;
         ICommand _getDiaryEntriesCommand;
+        ICommand _backupCommand;
+        public ICommand BackupCommand {
+            get {
+                if (_backupCommand == null)
+                    _backupCommand = new DelegateCommand(Backup);
+                return _backupCommand;
+            }
+        }
         public ICommand CreateProcessorCommand {
             get {
                 if (_createProcessorCommand == null)
@@ -118,6 +126,9 @@ namespace ListOfDeal {
             wlProcessor.Logged += WlProcessor_Logged;
             wlProcessor.CreateWlConnector(new WLConnector());
             wlProcessor.SetClipboardText = ClipboardHelper.ClipboardSetText;
+        }
+        void Backup() {
+            wlProcessor.Backup();
         }
         void Test() {
 

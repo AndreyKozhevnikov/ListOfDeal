@@ -51,6 +51,11 @@ namespace ListOfDeal.Views {
             }
             grid1.CollapseAllGroups();
         }
+
+        private void TableView_ColumnHeaderClick(object sender, ColumnHeaderClickEventArgs e) {
+            e.AllowSorting = false;
+            e.Handled = true;
+        }
     }
 
     public class GetActiveActionsFunction : ICustomFunctionOperator {

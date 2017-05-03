@@ -229,6 +229,7 @@
                                 <dxg:TableView EnableImmediatePosting="True"
                                                ShowFilterPanelMode="Never"
                                                ShowGroupPanel="False"
+                                               ColumnHeaderClick="TableView_ColumnHeaderClick"
                                                >
                                     <dxg:TableView.FormatConditions>
                                         <dxg:FormatCondition ApplyToRow="True"
@@ -263,6 +264,7 @@
                                    ShowFixedTotalSummary="True"
                                    ShowGroupedColumns="True"
                                    ShowGroupPanel="False"
+                                   ColumnHeaderClick="TableView_ColumnHeaderClick"
                                    >
                         <dxmvvm:Interaction.Behaviors>
                             <dxmvvm:EventToCommand Command="{Binding OnFocusedRowHandleChangedCommand}"

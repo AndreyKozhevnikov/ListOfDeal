@@ -19,7 +19,7 @@
                      ItemsSource="{Binding ScheduledActions}"
                      >
         <dxg:GridControl.Columns>
-            <dxg:GridColumn Width="600" FieldName="Name" />
+            <dxg:GridColumn Width="570" FieldName="Name" />
             <dxg:GridColumn FieldName="DateCreated" AllowEditing="False"/>
             <dxg:GridColumn FieldName="ScheduledTime" GroupIndex="0" >
                 <dxg:GridColumn.GroupValueTemplate>

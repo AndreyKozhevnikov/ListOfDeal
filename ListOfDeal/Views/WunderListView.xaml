@@ -11,10 +11,10 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition />
-            <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
-        <StackPanel>
+        <StackPanel VerticalAlignment="Top">
             <Button Command="{Binding CreateProcessorCommand}" Content="Create processor" />
             <Button Command="{Binding CreateTasksCommand}" Content="Create tasks" />
             <Button Command="{Binding HandleCompletedWlTasksCommand}" Content="Handle completed WLTasks" />
@@ -25,7 +25,7 @@
             <Button Command="{Binding BackupCommand}" Content="Backup"/>
             <Button Content="Test button" Command="{Binding TestCommand}"/>
         </StackPanel>
-        <ListBox x:Name="listBox1"
+        <ListBox x:Name="listBox1" VerticalAlignment="Stretch"
                  Grid.Row="1"
                  FontFamily="Consolas"
                  ItemsSource="{Binding Logs}"

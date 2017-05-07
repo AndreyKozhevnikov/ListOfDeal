@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ListOfDeal.Classes.Tests {
-    #if DebugTest
+#if DebugTest
     [TestFixture]
     public class MyProjectTests {
         [Test]
@@ -222,6 +222,19 @@ namespace ListOfDeal.Classes.Tests {
             Assert.AreEqual(-1, a2.OrderNumber);
 
 
+        }
+
+        [Test]
+        public void SetTimeInAction_makeProjectActive() {
+            //arrange
+            var p = new MyProject(new Project());
+            var a = new MyAction(new Action());
+            p.AddAction(a);
+            p.Status = ProjectStatusEnum.Delayed;
+            //act
+            a.ScheduledTime = DateTime.Now;
+            //assert
+            Assert.AreEqual(p.Status, ProjectStatusEnum.InWork);
         }
     }
 #endif

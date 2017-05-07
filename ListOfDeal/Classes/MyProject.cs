@@ -59,8 +59,8 @@ namespace ListOfDeal {
             return Actions.Where(x => x.Status == ActionsStatusEnum.InWork).Count() == 0;
         }
         void act_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+            MyAction act = sender as MyAction;
             if (e.PropertyName == "Status") {
-                MyAction act = sender as MyAction;
                 if (!(act.Status == ActionsStatusEnum.InWork)) {
                     bool isThereIsNoActiveActions = GetIsThereIsNoActiveActions();
                     if (isThereIsNoActiveActions) {
@@ -79,6 +79,8 @@ namespace ListOfDeal {
                 RaisePropertyChanged("Actions");
             }
             if (e.PropertyName == "ScheduledTime") {
+                if (act.ScheduledTime.HasValue)
+                    this.Status = ProjectStatusEnum.InWork;
                 RaisePropertyChanged("Actions");
             }
         }

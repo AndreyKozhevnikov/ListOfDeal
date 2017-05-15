@@ -215,7 +215,7 @@ namespace ListOfDeal {
                         case "ScheduledTime":
                             if (act.ScheduledTime.HasValue) {
                                 string currDT = WLConnector.ConvertToWLDate(act.ScheduledTime.Value);
-                                if (wlTask.list_id != WLProcessor.MySchedId) {
+                                if (wlTask.list_id == WLProcessor.MyListId) {
                                     RaiseLog(wlTask, "moved", "MyShed -" + WLProcessor.MySchedId);
                                     wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MySchedId, wlTask.revision);
                                 }

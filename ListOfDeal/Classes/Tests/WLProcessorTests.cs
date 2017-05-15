@@ -736,8 +736,12 @@ namespace ListOfDeal.Classes.Tests {
 
             var act4 = new MyAction(new Action() { Project = proj2.parentEntity, Name = "act4", WLId = "4", StatusId = (int)ActionsStatusEnum.InWork });
             act4.ScheduledTime = new DateTime(2016, 9, 14);
+
+            var act5 = new MyAction(new Action() { Project = proj2.parentEntity, Name = "act5", WLId = "5", StatusId = (int)ActionsStatusEnum.InWork,ToBuy=true });
+            act5.ScheduledTime = new DateTime(2016, 9, 14);
             proj2.Actions.Add(act3);
             proj2.Actions.Add(act4);
+            proj2.Actions.Add(act5);
             projCollection.Add(proj);
             projCollection.Add(proj2);
             taskList = new List<WLTask>();
@@ -745,17 +749,20 @@ namespace ListOfDeal.Classes.Tests {
             taskList.Add(new WLTask() { id = "2", title = "act2", due_date = "2016-09-02", list_id = WLProcessor.MySchedId });
             taskList.Add(new WLTask() { id = "3", title = "NotSimpleProject - act3", due_date = "2016-09-03", list_id = WLProcessor.MySchedId });
             taskList.Add(new WLTask() { id = "4", title = "NotSimpleProject - act4", due_date = "2016-09-04", list_id = WLProcessor.MySchedId, revision = 44 });
+            taskList.Add(new WLTask() { id = "5", title = "NotSimpleProject - act4", due_date = "2016-09-04", list_id = WLProcessor.MyBuyId, revision = 44 });
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyListId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MySchedId)).Returns(taskList);
             mockWlConnector.Setup(x => x.GetTasksForList(WLProcessor.MyBuyId)).Returns(new List<WLTask>());
             mockWlConnector.Setup(x => x.ChangeScheduledTime("1", "2016-09-11", 11)).Returns(new WLTask());
             mockWlConnector.Setup(x => x.ChangeScheduledTime("4", "2016-09-14", 44)).Returns(new WLTask());
+            mockWlConnector.Setup(x => x.ChangeScheduledTime("5", "2016-09-14", 44)).Returns(new WLTask());
             wlProc.UpdateData();
             //act
             wlProc.HandleChangedLODActions();
             //assert
             mockWlConnector.Verify(x => x.ChangeScheduledTime("1", "2016-09-11", 11), Times.Once);
             mockWlConnector.Verify(x => x.ChangeScheduledTime("4", "2016-09-14", 44), Times.Once);
+            mockWlConnector.Verify(x => x.ChangeListOfTask("5", It.IsAny<int>(), 44), Times.Never);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj.Actions[0].WLTaskStatus);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj2.Actions[1].WLTaskStatus);
         }
@@ -1063,7 +1070,7 @@ namespace ListOfDeal.Classes.Tests {
             proj.Actions.Add(act1);
 
             projCollection.Add(proj);
-            taskList.Add(new WLTask() { id = "123", title = "Project1 - act1", revision = 2 });
+            taskList.Add(new WLTask() { id = "123", title = "Project1 - act1", revision = 2,list_id=WLProcessor.MyListId });
 
             wlProc.UpdateData();
 

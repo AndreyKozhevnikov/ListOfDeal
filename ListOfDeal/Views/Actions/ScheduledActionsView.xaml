@@ -46,6 +46,7 @@
                 </dxg:GridColumn.CellTemplate>
             </dxg:GridColumn>
             <dxg:GridColumn FieldName="IsMajor" />
+            <dxg:GridColumn FieldName="ToBuy" />
         </dxg:GridControl.Columns>
         <dxg:GridControl.GroupSummary>
             <dxg:GridSummaryItem FieldName="ScheduledTime" SummaryType="Count"/>

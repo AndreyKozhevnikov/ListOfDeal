@@ -35,7 +35,6 @@ namespace ListOfDeal.Classes.Tests {
             pr2.Actions.Add(new Action() { Project = pr2, StatusId = (int)ActionsStatusEnum.InWork }); //project inactive
             var pr3 = new Project() { StatusId = (int)ProjectStatusEnum.Delayed };
             lst.Add(pr3);
-            pr3.Actions.Add(new Action() { Project = pr3, StatusId = (int)ActionsStatusEnum.InWork, ScheduledTime = DateTime.Today.AddDays(3) });//should be added
             pr3.Actions.Add(new Action() { Project = pr3, StatusId = (int)ActionsStatusEnum.InWork, ScheduledTime = DateTime.Today.AddDays(8) });//out of date action
             dataProviderEntity.Setup(x => x.GetProjects()).Returns(lst);
             string wkId = DateTime.Today.AddDays(1).ToString("MMddyyyy");
@@ -46,7 +45,7 @@ namespace ListOfDeal.Classes.Tests {
             //act
             vm.CreateItemsCommand.Execute(null);
             //assert
-            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(2, result.Count);
         }
         [Test]
         public void MarkItemsComplete() {

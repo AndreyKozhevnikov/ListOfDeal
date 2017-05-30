@@ -147,9 +147,7 @@ namespace ListOfDeal {
         }
         public static List<MyAction> ReturnActiveActionsFromProjectList(IEnumerable<MyProject> list) {
             var lst = list.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.Status == ActionsStatusEnum.InWork).ToList();
-            var scheduledList = list.Where(x => x.Status == ProjectStatusEnum.Delayed).SelectMany(x => x.Actions).Where(x => x.ScheduledTime.HasValue).ToList();
-            var finalList = lst.Concat(scheduledList).ToList();
-            return finalList;
+            return lst;
         }
 
         public void HandleCompletedLODActions() {

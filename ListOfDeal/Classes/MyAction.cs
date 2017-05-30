@@ -88,13 +88,6 @@ namespace ListOfDeal {
                 if (value.HasValue) {
                     this.Status = ActionsStatusEnum.InWork;
                 }
-                else {
-                    if (this.parentEntity.Project.StatusId == (int)ProjectStatusEnum.Delayed) {
-                        WLTaskStatus = WLTaskStatusEnum.DeletingNeeded;
-                        RaisePropertyChanged("ScheduledTime");
-                        return;
-                    }
-                }
                 HandlePropertyChanges("ScheduledTime");
             }
         }

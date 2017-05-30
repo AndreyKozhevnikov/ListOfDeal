@@ -174,6 +174,12 @@ namespace ListOfDeal {
             RaiseLog("Actions to change", changedActions.Count.ToString());
             allTasks = GetAllActiveTasks();
             foreach (var act in changedActions) {
+                //act.changedProperties.Add("IsMajor");
+                //act.changedProperties.Add("Name");
+                //act.changedProperties.Add("Comment");
+                //act.changedProperties.Add("ScheduledTime");
+                //act.changedProperties.Add("ToBuy");
+
                 var wlTask = allTasks.Where(x => x.id == act.WLId).First();
                 var changedPropertiesCount = act.changedProperties.Count - 1;
                 for (int i = changedPropertiesCount; i >= 0; i--) {

@@ -73,9 +73,16 @@ namespace ListOfDeal {
                 streamReader.Close();
                 return responseText;
             }
-            catch {
-                MessageBox.Show("Error " + json);
+            catch(Exception e) {
                 MainViewModel.SaveChanges();
+                string st = e.Message + Environment.NewLine;
+                st = st + url + Environment.NewLine;
+                st = st + json + Environment.NewLine;
+                st = st + e.StackTrace + Environment.NewLine;
+                MessageBox.Show("Error " + st);
+                StreamWriter sw = new StreamWriter("exception.txt");
+                sw.Write(st);
+                sw.Close();
                 return null;
             }
         }

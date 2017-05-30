@@ -252,6 +252,12 @@
                                         <dxg:FormatCondition Expression="[Status] = 'InWork' and [ScheduledTime]!=null and [ScheduledTime] &lt; LocalDateTimeToday()" FieldName="ScheduledTime">
                                             <dx:Format Background="OrangeRed" />
                                         </dxg:FormatCondition>
+                                        <dxg:FormatCondition Expression="[IsMajor] = 'True'" FieldName="IsMajor">
+                                            <dx:Format Background="#FFFF00EE" />
+                                        </dxg:FormatCondition>
+                                        <dxg:FormatCondition Expression="[ToBuy] = 'True'" FieldName="ToBuy">
+                                            <dx:Format Background="#FF00E3B6" />
+                                        </dxg:FormatCondition>
                                     </dxg:TableView.FormatConditions>
                                 </dxg:TableView>
                             </dxg:GridControl.View>

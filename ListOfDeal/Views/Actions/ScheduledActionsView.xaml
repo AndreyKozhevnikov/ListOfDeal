@@ -19,7 +19,7 @@
                      ItemsSource="{Binding ScheduledActions}"
                      >
         <dxg:GridControl.Columns>
-            <dxg:GridColumn Width="447" FieldName="Name" />
+            <dxg:GridColumn Width="420" FieldName="Name" />
             <dxg:GridColumn FieldName="DateCreated" AllowEditing="False"/>
             <dxg:GridColumn FieldName="ScheduledTime" GroupIndex="0" >
                 <dxg:GridColumn.GroupValueTemplate>
@@ -54,13 +54,11 @@
         <dxg:GridControl.View>
             <dxg:TableView ShowGroupedColumns="True">
                 <dxg:TableView.FormatConditions>
-                    <dxg:FormatCondition ApplyToRow="True"
-                                         Expression="[Status] = 'Completed'"
-                                         FieldName="Status"
-                                         Value1="{x:Null}"
-                                         ValueRule="Expression"
-                                         >
-                        <dx:Format Foreground="#FFD8D6CB" TextDecorations="{x:Null}" />
+                    <dxg:FormatCondition Expression="[IsMajor] = 'True'" FieldName="IsMajor">
+                        <dx:Format Background="#FFFF00EE" />
+                    </dxg:FormatCondition>
+                    <dxg:FormatCondition Expression="[ToBuy] = 'True'" FieldName="ToBuy">
+                        <dx:Format Background="#FF00E3B6" />
                     </dxg:FormatCondition>
                 </dxg:TableView.FormatConditions>
                 <dxg:TableView.RowCellMenuCustomizations>

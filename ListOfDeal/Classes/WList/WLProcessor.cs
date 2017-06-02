@@ -172,13 +172,14 @@ namespace ListOfDeal {
             RaiseLog("Actions to change", changedActions.Count.ToString());
             allTasks = GetAllActiveTasks();
             foreach (var act in changedActions) {
-                //act.changedProperties.Add("IsMajor");
-                //act.changedProperties.Add("Name");
-                //act.changedProperties.Add("Comment");
-                //act.changedProperties.Add("ScheduledTime");
-                //act.changedProperties.Add("ToBuy");
-
                 var wlTask = allTasks.Where(x => x.id == act.WLId).First();
+                if (act.changedProperties.Count == 0) {
+                    act.changedProperties.Add("IsMajor");
+                    act.changedProperties.Add("Name");
+                    act.changedProperties.Add("Comment");
+                    act.changedProperties.Add("ScheduledTime");
+                    act.changedProperties.Add("ToBuy");
+                }
                 var changedPropertiesCount = act.changedProperties.Count - 1;
                 for (int i = changedPropertiesCount; i >= 0; i--) {
                     string propertyName = act.changedProperties[i];
@@ -262,7 +263,7 @@ namespace ListOfDeal {
 #if !DebugTest
         public async void HandleChangedWLTask() {
 #else
-           public void HandleChangedWLTask() {
+        public void HandleChangedWLTask() {
 #endif
             RaiseLog("Handling changed WLTasks", "Started");
             var actionsWithTasks = allActions.Where(x => x.WLId != null).ToList();
@@ -346,11 +347,11 @@ namespace ListOfDeal {
             return result;
         }
         public void Backup() {
-         
+
             var dropBoxPath = SettingsStore.GetPropertyValue("Dropbox");
             var backupPath = dropBoxPath + string.Format(@"\BackupMSSQL\wlBackup{0}.json", DateTime.Now.ToString("yyyy.MM.dd_HHmm"));
             var backUpString = wlConnector.GetBackup();
-            using (var sw=new StreamWriter(backupPath)) {
+            using (var sw = new StreamWriter(backupPath)) {
                 sw.Write(backUpString);
                 sw.Close();
             }
@@ -367,7 +368,7 @@ namespace ListOfDeal {
             //var lst = wlConnector.GetAllLists();
             //var t = wlConnector.GetTask("2709210017");
             //var lst = wlConnector.GetTasksForList(WLProcessor.RejectedListId);
-         //   var tt = wlConnector.GetBackUp();
+            //   var tt = wlConnector.GetBackUp();
         }
         public void PasteDiaryEntries() {
             var lst = wlConnector.GetTasksForList(MyDiarId);

@@ -88,7 +88,7 @@ namespace ListOfDeal {
         }
     
         protected internal string NormalizeString(string title) {
-            return title.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\r\n","\\r\\n");
+            return title.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\r\n","\\r\\n").Replace("\n\n", "\\r\\n");
         }
         public WLTask CreateTask(string title, int listId, DateTime? dueDate, bool isMajor) {
             title = NormalizeString(title);

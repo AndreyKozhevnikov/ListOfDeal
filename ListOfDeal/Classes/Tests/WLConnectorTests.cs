@@ -38,17 +38,22 @@ namespace ListOfDeal.Classes.Tests {
             var title = "NewTestTitle3 \"test\"";
             var title2 = @"NewTestTitle3 \test";
             var content = "test"+Environment.NewLine+"test2";
+            var strangeNewLine = "test" + "\n\n" + "test";
+ 
             //act
             string st = wlConn.NormalizeString(title);
             string st2 = wlConn.NormalizeString(title2);
             string content2 = wlConn.NormalizeString(content);
+            string resStrangeNewLine = wlConn.NormalizeString(strangeNewLine);
             //assert
             string need = "NewTestTitle3 \\\"test\\\"";
             string need2 = "NewTestTitle3 \\\\test";
             string needContent = "test\\r\\ntest2";
+            string needStrangeNewLine = "test\\r\\ntest";
             Assert.AreEqual(need, st);
             Assert.AreEqual(need2, st2);
             Assert.AreEqual(needContent, content2);
+            Assert.AreEqual(needStrangeNewLine, resStrangeNewLine);
         }
     }
 #endif

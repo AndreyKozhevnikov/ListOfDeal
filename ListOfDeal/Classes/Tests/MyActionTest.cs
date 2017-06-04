@@ -218,6 +218,19 @@ namespace ListOfDeal.Classes.Tests {
             //assert
             Assert.AreEqual(1, act1.changedProperties.Count);
         }
+
+        [Test]
+        public void ActionWithWlTaskShouldCompleteTaskIfSetDelay() {
+            //arrange
+            var act1 = new MyAction(new Action());
+            act1.Status = ActionsStatusEnum.InWork;
+            act1.WLId = "1";
+            //act
+            act1.Status = ActionsStatusEnum.Delay;
+            //assert
+            Assert.AreEqual(WLTaskStatusEnum.DeletingNeeded, act1.WLTaskStatus);
+
+        }
     }
 #endif
 }

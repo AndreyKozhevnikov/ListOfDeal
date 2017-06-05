@@ -54,10 +54,10 @@
         <dxg:GridControl.View>
             <dxg:TableView ShowGroupedColumns="True">
                 <dxg:TableView.FormatConditions>
-                    <dxg:FormatCondition Expression="[IsMajor] = 'True'" FieldName="IsMajor">
+                    <dxg:FormatCondition Expression="[IsMajor] = 'True' and ([Status]='Delay' or [Status]='InWork')" FieldName="IsMajor">
                         <dx:Format Background="#FFFF00EE" />
                     </dxg:FormatCondition>
-                    <dxg:FormatCondition Expression="[ToBuy] = 'True'" FieldName="ToBuy">
+                    <dxg:FormatCondition Expression="[ToBuy] = 'True' and ([Status]='Delay' or [Status]='InWork')" FieldName="ToBuy">
                         <dx:Format Background="#FF00E3B6" />
                     </dxg:FormatCondition>
                 </dxg:TableView.FormatConditions>

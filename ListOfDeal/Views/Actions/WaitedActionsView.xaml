@@ -30,7 +30,7 @@
                          x:FieldModifier="public"
                          >
             <dxg:GridControl.Columns>
-                <dxg:GridColumn Width="550" FieldName="Name" />
+                <dxg:GridColumn Width="420" FieldName="Name" />
                 <dxg:GridColumn FieldName="ScheduledTime"/>
                 <dxg:GridColumn FieldName="DateCreated" AllowEditing="False"/>
                 <dxg:GridColumn FieldName="Comment">
@@ -57,17 +57,17 @@
                         </DataTemplate>
                     </dxg:GridColumn.CellTemplate>
                 </dxg:GridColumn>
+                <dxg:GridColumn FieldName="IsMajor" />
+                <dxg:GridColumn FieldName="ToBuy" />
             </dxg:GridControl.Columns>
             <dxg:GridControl.View>
                 <dxg:TableView>
                     <dxg:TableView.FormatConditions>
-                        <dxg:FormatCondition ApplyToRow="True"
-                                             Expression="[Status] = 'Completed'"
-                                             FieldName="Status"
-                                             Value1="{x:Null}"
-                                             ValueRule="Expression"
-                                             >
-                            <dx:Format Foreground="#FFD8D6CB" TextDecorations="{x:Null}" />
+                        <dxg:FormatCondition Expression="[IsMajor] = 'True' and ([Status]='Delay' or [Status]='InWork')" FieldName="IsMajor">
+                            <dx:Format Background="#FFFF00EE" />
+                        </dxg:FormatCondition>
+                        <dxg:FormatCondition Expression="[ToBuy] = 'True' and ([Status]='Delay' or [Status]='InWork')" FieldName="ToBuy">
+                            <dx:Format Background="#FF00E3B6" />
                         </dxg:FormatCondition>
                     </dxg:TableView.FormatConditions>
                     <dxg:TableView.RowCellMenuCustomizations>

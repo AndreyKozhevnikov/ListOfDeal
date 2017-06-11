@@ -149,13 +149,21 @@ namespace ListOfDeal {
             var lst = list.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.Status == ActionsStatusEnum.InWork).ToList();
             return lst;
         }
+#if !DebugTest
+        async public void HandleCompletedLODActions() {
+#else
+       public void HandleCompletedLODActions() {
+#endif
 
-        public void HandleCompletedLODActions() {
             RaiseLog("Handling completed LOD Actions", "Started");
             MainViewModel.SaveChanges();
             var lst = parentVM.Projects.SelectMany(x => x.Actions).Where(x => x.WLTaskStatus == WLTaskStatusEnum.DeletingNeeded).ToList();
             RaiseLog("Amount of actions", lst.Count.ToString());
             foreach (var act in lst) {
+#if !DebugTest
+                Task t = Task.Run(() => Thread.Sleep(20));
+                await t;
+#endif
                 var wlId = act.WLId;
                 wlConnector.CompleteTask(wlId);
                 act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
@@ -165,13 +173,21 @@ namespace ListOfDeal {
             MainViewModel.SaveChanges();
             RaiseLog("Handling completed LOD Actions", "Completed");
         }
+#if !DebugTest
+        async public void HandleChangedLODActions() {
+#else
+           public void HandleChangedLODActions() {
+#endif
 
-        public void HandleChangedLODActions() {
             RaiseLog("Handling changed LOD actions", "Started");
             var changedActions = allActions.Where(x => x.WLTaskStatus == WLTaskStatusEnum.UpdateNeeded).ToList();
             RaiseLog("Actions to change", changedActions.Count.ToString());
             allTasks = GetAllActiveTasks();
             foreach (var act in changedActions) {
+#if !DebugTest
+                Task t = Task.Run(() => Thread.Sleep(20));
+                await t;
+#endif
                 var wlTask = allTasks.Where(x => x.id == act.WLId).First();
                 if (act.changedProperties.Count == 0) {
                     act.changedProperties.Add("IsMajor");

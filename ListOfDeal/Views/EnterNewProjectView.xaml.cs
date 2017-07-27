@@ -1,6 +1,7 @@
 ﻿using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Grid;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace ListOfDeal.Views {
         public EnterNewProjectView() {
             InitializeComponent();
             CriteriaOperator.RegisterCustomFunction(new GetActiveActionsFunction());
-            CriteriaOperator.RegisterCustomFunction(new GetOutdatedActionsFunction());
+            CriteriaOperator.RegisterCustomFunction(new GetScheduledActions());
         }
         private void Button_Click(object sender, RoutedEventArgs e) {
             MainViewModel vm = this.DataContext as MainViewModel;
@@ -73,20 +74,33 @@ namespace ListOfDeal.Views {
             return actions.Where(x => x.Status == ActionsStatusEnum.InWork).Count();
         }
     }
-    public class GetOutdatedActionsFunction : ICustomFunctionOperator {
-
+ 
+    public enum GetScheduledActionsResult {
+        HasScheduledActions,
+        HasComingScheduledActons,
+        HasOutDatedScheduledActons
+    }
+    public class GetScheduledActions : ICustomFunctionOperator {
         public string Name {
-            get { return "GetOutdatedActions"; }
-        }
-
-        public Type ResultType(params Type[] operands) {
-            return typeof(bool);
+            get { return "GetScheduledActions"; }
         }
 
         public object Evaluate(params object[] operands) {
-            var actions = operands[0] as ObservableCollection<MyAction>;
-            var outdated = actions.Where(x => x.ScheduledTime < DateTime.Today && x.Status == ActionsStatusEnum.InWork);
-            return outdated.Count() > 0;
+            var actions = operands[0] as IList<MyAction>;
+            var scheduledActions = actions.Where(x => x.Status == ActionsStatusEnum.InWork && x.ScheduledTime != null);
+            if (scheduledActions.Count() > 0) {
+                if (scheduledActions.Where(x => x.ScheduledTime < DateTime.Today).Count() > 0)
+                    return GetScheduledActionsResult.HasOutDatedScheduledActons;
+                if (scheduledActions.Where(x => x.ScheduledTime <= DateTime.Today.AddDays(8)).Count() > 0)
+                    return GetScheduledActionsResult.HasComingScheduledActons;
+                return GetScheduledActionsResult.HasScheduledActions;
+            }
+            return null;
+
+        }
+
+        public Type ResultType(params Type[] operands) {
+            return typeof(string);
         }
     }
 }

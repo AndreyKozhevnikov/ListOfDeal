@@ -136,6 +136,7 @@
     <Compile Include="Classes\HistoryActionItem.cs" />
     <Compile Include="Classes\Services.cs" />
     <Compile Include="Classes\SettingsStore.cs" />
+    <Compile Include="Classes\Tests\EnterNewProjectViewTests.cs" />
     <Compile Include="Classes\Tests\MainViewModelTests.cs" />
     <Compile Include="Classes\Tests\MyActionTest.cs" />
     <Compile Include="Classes\Tests\MyProjectTests.cs" />

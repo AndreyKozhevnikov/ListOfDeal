@@ -308,10 +308,22 @@
                                 <dx:Format Background="#FFA589C7" />
                             </dxg:FormatCondition>
                             <dxg:FormatCondition ApplyToRow="True"
-                                                 Expression="[Status]='InWork' and GetOutdatedActions([Actions]) = True"
+                                                 Expression="GetScheduledActions([Actions]) ='HasOutDatedScheduledActons' "
                                                  FieldName="Actions"
                                                  >
                                 <dx:Format Foreground="Red" />
+                            </dxg:FormatCondition>
+                            <dxg:FormatCondition ApplyToRow="True"
+                                                 Expression="GetScheduledActions([Actions]) ='HasComingScheduledActons' "
+                                                 FieldName="Actions"
+                                                 >
+                                <dx:Format Foreground="#FFB7C21F" />
+                            </dxg:FormatCondition>
+                            <dxg:FormatCondition ApplyToRow="True"
+                                                 Expression="GetScheduledActions([Actions]) ='HasScheduledActions' "
+                                                 FieldName="Actions"
+                                                 >
+                                <dx:Format Foreground="#FF9E3EC7" />
                             </dxg:FormatCondition>
                         </dxg:TableView.FormatConditions>
                     </dxg:TableView>

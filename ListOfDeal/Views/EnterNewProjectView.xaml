@@ -314,13 +314,13 @@
                                 <dx:Format Foreground="Red" />
                             </dxg:FormatCondition>
                             <dxg:FormatCondition ApplyToRow="True"
-                                                 Expression="GetScheduledActions([Actions]) ='HasComingScheduledActons' "
+                                                 Expression="[Status]='Delayed' and GetScheduledActions([Actions]) ='HasComingScheduledActons' "
                                                  FieldName="Actions"
                                                  >
                                 <dx:Format Foreground="#FFB7C21F" />
                             </dxg:FormatCondition>
                             <dxg:FormatCondition ApplyToRow="True"
-                                                 Expression="GetScheduledActions([Actions]) ='HasScheduledActions' "
+                                                 Expression="[Status]='Delayed' and GetScheduledActions([Actions]) ='HasScheduledActions' "
                                                  FieldName="Actions"
                                                  >
                                 <dx:Format Foreground="#FF9E3EC7" />

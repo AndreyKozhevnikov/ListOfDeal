@@ -557,7 +557,31 @@ namespace ListOfDeal.Classes.Tests {
         }
 
 
-   
+        [Test]
+        public void HandleCompletedLODActions_ProjectBecomesInactive() {
+            //arrange
+            Initialize(MockBehavior.Default, true);
+
+
+            var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            projCollection.Add(proj);
+            proj.IsSimpleProject = true;
+            //create
+            MyAction myAction1 = new MyAction(new Action() { Project = proj.parentEntity }) { Name = "Newact1", WLId = "1", WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask };
+            proj.Actions.Add(myAction1);
+
+            //change
+            proj.Status = ProjectStatusEnum.Delayed;
+
+            //act
+            wlProc.HandleCompletedLODActions();
+            //assert
+
+            mockWlConnector.Verify(x => x.CompleteTask("1"), Times.Once);
+            //mockWlConnector.Verify(x => x.UpdateNoteContent("22", 5, "test comment2"), Times.Once);
+            //mockWlConnector.Verify(x => x.DeleteNote("99", 5), Times.Once);
+
+        }
 
 
         [Test]

@@ -556,6 +556,10 @@ namespace ListOfDeal.Classes.Tests {
 
         }
 
+
+   
+
+
         [Test]
         public void HandleChangedWLTask_Note() {
             Initialize(configureTaskList: true);

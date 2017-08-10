@@ -47,6 +47,23 @@ namespace ListOfDeal.Classes.Tests {
 
         }
         [Test]
+        public void SetProjectIsNotInWork_NullActionsScheduledTime() {
+            //arrange
+            MyProject pr = new MyProject(new Project());
+            var myAction = new MyAction(new Action()) { ScheduledTime = DateTime.Now };
+            myAction.WLId = "123";
+            var myAction1 = new MyAction(new Action());
+            pr.Actions.Add(myAction);
+            pr.Actions.Add(myAction1);
+            //act
+            pr.Status = ProjectStatusEnum.Delayed;
+            //assert
+            Assert.AreEqual(null, myAction.ScheduledTime);
+            
+
+
+        }
+        [Test]
         public void SetProjectIsNotInWork_Done() {
             //arrange
             MyProject pr = new MyProject(new Project());

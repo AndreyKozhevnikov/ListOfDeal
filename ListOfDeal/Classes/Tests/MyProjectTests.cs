@@ -50,7 +50,7 @@ namespace ListOfDeal.Classes.Tests {
         public void SetProjectIsNotInWork_NullActionsScheduledTime() {
             //arrange
             MyProject pr = new MyProject(new Project());
-            var myAction = new MyAction(new Action()) { ScheduledTime = DateTime.Now };
+            var myAction = new MyAction(new Action()) { ScheduledTime = DateTime.Today };
             myAction.WLId = "123";
             var myAction1 = new MyAction(new Action());
             pr.Actions.Add(myAction);
@@ -58,7 +58,7 @@ namespace ListOfDeal.Classes.Tests {
             //act
             pr.Status = ProjectStatusEnum.Delayed;
             //assert
-            Assert.AreEqual(null, myAction.ScheduledTime);
+            Assert.AreEqual(DateTime.Today, myAction.ScheduledTime);
             
 
 

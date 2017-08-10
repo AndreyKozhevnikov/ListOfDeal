@@ -131,7 +131,6 @@ namespace ListOfDeal {
                 if ((ProjectStatusEnum)value != ProjectStatusEnum.InWork) {
                     foreach (var act in Actions) {
                         act.SetDeleteTaskIfNeeded();
-                        act.ScheduledTime = null;
                     }
                     if ((ProjectStatusEnum)value == ProjectStatusEnum.Done || (ProjectStatusEnum)value == ProjectStatusEnum.Rejected) {
                         this.parentEntity.CompleteTime = DateTime.Now;

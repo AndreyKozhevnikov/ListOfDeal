@@ -53,7 +53,7 @@ namespace ListOfDeal {
             }
 #endif
 #if DEBUG
-            if (machineName == "KOZHEVNIKOV-W10")
+            if (machineName == "KOZHEVNIKOV-NB")
                 GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWork");
             else
                 GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesHomeTest");

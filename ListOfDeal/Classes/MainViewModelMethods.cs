@@ -211,18 +211,7 @@ namespace ListOfDeal {
             ed.DataContext = this;
             ed.ShowDialog();
         }
-        private void OpenNewType() {
-            CreateNewInfoWindow wnd = new CreateNewInfoWindow();
-            ProjectType tp = DataProvider.CreateProjectType();
-            wnd.DataContext = tp;
-            wnd.ShowDialog();
-            if (!string.IsNullOrEmpty(tp.Name)) {
-                DataProvider.AddProjectType(tp);
-                SaveChanges();
-                ProjectTypes.Add(tp);
-            }
-
-        }
+       
         private void ProvideActions() {
             var allActions = Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.Status == ActionsStatusEnum.InWork);
             var actActions = allActions.Where(x => x.ScheduledTime == null);

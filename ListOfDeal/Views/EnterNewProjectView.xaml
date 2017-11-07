@@ -40,9 +40,6 @@
                                               ItemsSource="{Binding ProjectTypes}"
                                               ValueMember="Id"
                                               >
-                                <dxe:ComboBoxEdit.Buttons>
-                                    <dxe:ButtonInfo Command="{Binding OpenNewTypeCommand}" Content="+" />
-                                </dxe:ComboBoxEdit.Buttons>
                             </dxe:ComboBoxEdit>
                         </dxlc:LayoutItem>
                     </dxlc:LayoutGroup>

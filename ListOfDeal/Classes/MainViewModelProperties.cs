@@ -51,7 +51,7 @@ namespace ListOfDeal {
         ICommand _addNewProjectCommand;
         ICommand _addActionCommand;
         ICommand _openEditProjectCommand;
-        ICommand _openNewInfoCommand;
+        
         ICommand _provideActionsCommand;
         ICommand _exportGridsCommand;
         ICommand _saveChangesCommand;
@@ -115,13 +115,7 @@ namespace ListOfDeal {
                 return _openEditProjectCommand;
             }
         }
-        public ICommand OpenNewTypeCommand {
-            get {
-                if (_openNewInfoCommand == null)
-                    _openNewInfoCommand = new DelegateCommand(OpenNewType);
-                return _openNewInfoCommand;
-            }
-        }
+       
         public ICommand ProvideActionsCommand {
             get {
                 if (_provideActionsCommand == null)

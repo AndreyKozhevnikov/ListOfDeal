@@ -43,8 +43,6 @@ namespace ListOfDeal.Classes.Tests {
             //assert
             Assert.AreEqual(WLTaskStatusEnum.DeletingNeeded, myAction.WLTaskStatus);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, myAction1.WLTaskStatus);
-
-
         }
         [Test]
         public void SetProjectIsNotInWork_NullActionsScheduledTime() {
@@ -127,7 +125,22 @@ namespace ListOfDeal.Classes.Tests {
             Assert.AreEqual(ActionsStatusEnum.Delay, act2.Status);
             Assert.AreEqual(ActionsStatusEnum.Delay, act2.Status);
         }
-
+        [Test]
+        public void MakeActionsActiveAfterPreviousDone() {
+            //arrange
+            var proj = new MyProject(new Project());
+            var act1 = new MyAction(new Action()) { Status = ActionsStatusEnum.InWork };
+            var act2 = new MyAction(new Action());
+            var act3 = new MyAction(new Action());
+            proj.AddAction(act1);
+            proj.AddAction(act2);
+            proj.AddAction(act3);
+            //act1
+            act1.Status = ActionsStatusEnum.Delay;
+       
+            //assert1
+            Assert.AreEqual(ActionsStatusEnum.InWork, act2.Status);
+        }
 
         [Test]
         public void ShouldNotMakeCompletedActionActive() {

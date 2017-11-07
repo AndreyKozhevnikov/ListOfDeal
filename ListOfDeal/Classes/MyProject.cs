@@ -64,7 +64,7 @@ namespace ListOfDeal {
                 if (!(act.Status == ActionsStatusEnum.InWork)) {
                     bool isThereIsNoActiveActions = GetIsThereIsNoActiveActions();
                     if (isThereIsNoActiveActions) {
-                        var targetAct = Actions.Where(x => x.Status == ActionsStatusEnum.InWork || x.Status == ActionsStatusEnum.Delay).OrderBy(x => x.OrderNumber).FirstOrDefault();
+                        var targetAct = Actions.Where(x =>x!=act&& (x.Status == ActionsStatusEnum.InWork || x.Status == ActionsStatusEnum.Delay)).OrderBy(x => x.OrderNumber).FirstOrDefault();
                         if (targetAct != null) {
                             targetAct.Status = ActionsStatusEnum.InWork;
                         }

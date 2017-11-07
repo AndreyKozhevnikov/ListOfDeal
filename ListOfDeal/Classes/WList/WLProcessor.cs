@@ -188,7 +188,7 @@ namespace ListOfDeal {
                 Task t = Task.Run(() => Thread.Sleep(20));
                 await t;
 #endif
-                var wlTask = allTasks.Where(x => x.id == act.WLId).First();
+                var wlTask = allTasks.Where(x => x.id == act.WLId).First(); //!!! to fix (call "handle completed task" first, if repeat - rethink)
                 if (act.changedProperties.Count == 0) {
                     act.changedProperties.Add("IsMajor");
                     act.changedProperties.Add("Name");

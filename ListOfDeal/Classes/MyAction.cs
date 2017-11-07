@@ -53,6 +53,9 @@ namespace ListOfDeal {
                 if (parentEntity.StatusId == (int)value)
                     return;
                 parentEntity.StatusId = (int)value;
+                if(value != ActionsStatusEnum.InWork && this.ScheduledTime != null) {
+                    this.ScheduledTime = null;
+                }
                 if (value == ActionsStatusEnum.Done || value == ActionsStatusEnum.Rejected || value == ActionsStatusEnum.Delay) {
                     this.CompleteTime = DateTime.Now;
                     this.OrderNumber = -1;
@@ -61,9 +64,7 @@ namespace ListOfDeal {
                 else {
                     this.CompleteTime = null;
                 }
-                if (value != ActionsStatusEnum.InWork && this.ScheduledTime != null) {
-                    this.ScheduledTime = null;
-                }
+               
                 RaisePropertyChanged("Status");
             }
         }

@@ -229,7 +229,19 @@ namespace ListOfDeal.Classes.Tests {
             act1.Status = ActionsStatusEnum.Delay;
             //assert
             Assert.AreEqual(WLTaskStatusEnum.DeletingNeeded, act1.WLTaskStatus);
+        }
 
+        [Test]
+        public void CompleteTaskIfScheduledActionCompleted() {
+            //arrange
+            var act1 = new MyAction(new Action());
+            act1.Status = ActionsStatusEnum.InWork;
+            act1.WLId = "1";
+            act1.ScheduledTime = DateTime.Today;
+            //act
+            act1.Status = ActionsStatusEnum.Done;
+            //assert
+            Assert.AreEqual(WLTaskStatusEnum.DeletingNeeded, act1.WLTaskStatus);
         }
     }
 #endif

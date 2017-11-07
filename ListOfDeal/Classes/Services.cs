@@ -41,8 +41,9 @@ namespace ListOfDeal {
 
 
         public void Export() {
-            (WaitedGrid.View as TableView).ExportToXlsx(@"f:\dropbox\common\Deals.xlsx");
-            (ScheduledGrid.View as TableView).ExportToXlsx(@"f:\dropbox\common\DealsSched.xlsx");
+            var dropBoxPath = SettingsStore.GetPropertyValue("Dropbox");
+            (WaitedGrid.View as TableView).ExportToXlsx(dropBoxPath + @"\common\Deals.xlsx");
+            (ScheduledGrid.View as TableView).ExportToXlsx(dropBoxPath + @"\common\DealsSched.xlsx");
         }
     }
 

@@ -94,7 +94,7 @@ namespace ListOfDeal {
         }
 
         public void SetWLStatusUpdatedIfNeeded() {
-            if (WLId != null)
+            if (WLId != null &&WLTaskStatus!=WLTaskStatusEnum.DeletingNeeded)
                 WLTaskStatus = WLTaskStatusEnum.UpdateNeeded;
         }
 

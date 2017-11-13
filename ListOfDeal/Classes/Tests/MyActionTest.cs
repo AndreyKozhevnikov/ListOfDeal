@@ -243,6 +243,22 @@ namespace ListOfDeal.Classes.Tests {
             //assert
             Assert.AreEqual(WLTaskStatusEnum.DeletingNeeded, act1.WLTaskStatus);
         }
+        [Test]
+        public void CompleteTaskIfTimeIsSetAfterCompleted() {
+            //arrange
+            var act1 = new MyAction(new Action());
+            var proj1 = new MyProject(new Project());
+            proj1.Status = ProjectStatusEnum.InWork;
+            act1.Status = ActionsStatusEnum.InWork;
+            act1.WLId = "1";
+            act1.ScheduledTime = DateTime.Today;
+            proj1.AddAction(act1);
+            //act
+            proj1.Status = ProjectStatusEnum.Delayed;
+            act1.ScheduledTime = null;
+            //assert
+            Assert.AreEqual(WLTaskStatusEnum.DeletingNeeded, act1.WLTaskStatus);
+        }
     }
 #endif
 }

@@ -22,6 +22,7 @@ namespace ListOfDeal {
     public interface IMainViewModelDataProvider {
         IEnumerable<ProjectType> GetProjectTypes();
         IEnumerable<Project> GetProjects();
+        IEnumerable<Project> GetActiveProejcts();
         IListOfDealBaseEntities GeneralEntity { get; set; }
         Project CreateProject();
         void AddProject(Project p);
@@ -68,6 +69,9 @@ namespace ListOfDeal {
 
         public IEnumerable<Project> GetProjects() {
             return GeneralEntity.Projects;
+        }
+        public IEnumerable<Project> GetActiveProejcts() {
+            return GeneralEntity.Projects.Where(x => x.StatusId ==(int)ProjectStatusEnum.InWork);
         }
         public IEnumerable<WeekRecord> GetWeekRecords() {
             return GeneralEntity.WeekRecords;

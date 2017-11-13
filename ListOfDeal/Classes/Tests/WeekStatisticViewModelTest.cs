@@ -36,7 +36,7 @@ namespace ListOfDeal.Classes.Tests {
             var pr3 = new Project() { StatusId = (int)ProjectStatusEnum.Delayed };
             lst.Add(pr3);
             pr3.Actions.Add(new Action() { Project = pr3, StatusId = (int)ActionsStatusEnum.InWork, ScheduledTime = DateTime.Today.AddDays(8) });//out of date action
-            dataProviderEntity.Setup(x => x.GetProjects()).Returns(lst);
+            dataProviderEntity.Setup(x => x.GetActiveProejcts()).Returns(lst);
             string wkId = DateTime.Today.AddDays(1).ToString("MMddyyyy");
             dataProviderEntity.Setup(x => x.GetWeekRecords()).Returns(new List<WeekRecord>() { new WeekRecord() { ActionId = 1, WeekId = wkId } });
             dataProviderEntity.Setup(x => x.CreateWeekRecord()).Returns(new WeekRecord());

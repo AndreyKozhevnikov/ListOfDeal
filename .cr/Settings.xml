@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Containers>
+  <Container Key="-1592402827">
+    <Items>
+      <Item Id="{a84d9f09-3934-4a75-8543-bda0ed600a7a}">
+        <Id>1</Id>
+        <File>ListOfDeal\Classes\MainViewModelMethods.cs</File>
+        <Line>70</Line>
+        <Character>32</Character>
+      </Item>
+      <Item Id="{dead3738-b5d1-4a00-b9aa-a18a30eb35f7}">
+        <Id>2</Id>
+        <File>ListOfDeal\Classes\WList\WLProcessor.cs</File>
+        <Line>147</Line>
+        <Character>71</Character>
+      </Item>
+    </Items>
+  </Container>
+</Containers>

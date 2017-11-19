@@ -512,7 +512,50 @@ namespace ListOfDeal.Classes.Tests {
             //assert
             mockWlConnector.Verify(x => x.ChangeTitleOfTask("1", "Newact1", 10), Times.Once);
         }
+        [Test]
+        public void HandleChangedLODActions_UpdateAllIfChangedListIsLost_DontCallChangeListIfNotNeed_hasSchedTime() {
+            //arrange 
+            Initialize(MockBehavior.Default, true);
 
+            var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            proj.IsSimpleProject = true;
+            MyAction myAction1 = new MyAction(new Action() { Name = "old name", WLId = "1", StatusId = (int)ActionsStatusEnum.InWork, Project = proj.parentEntity ,ScheduledTime=new DateTime(2017,11,19)});
+
+            proj.Actions.Add(myAction1);
+            projCollection.Add(proj);
+            taskList.Add(new WLTask() { id = "1", title = "old name", revision = 10,list_id=WLProcessor.MySchedId,due_date= "2017-11-19" });
+            mockWlConnector.Setup(x => x.ChangeTitleOfTask("1", "Newact1", 10)).Returns(new WLTask() { id = "1", revision = 10 });
+            mockWlConnector.Setup(x => x.ChangeListOfTask("1", WLProcessor.MyListId, 10)).Returns(new WLTask() { id = "1", revision = 10 });
+            //act
+            myAction1.Name = "Newact1";
+            myAction1.changedProperties.Clear();
+            wlProc.UpdateData();
+            wlProc.HandleChangedLODActions();
+            //assert
+            mockWlConnector.Verify(x => x.ChangeListOfTask("1", It.IsAny<int>(), It.IsAny<int>()), Times.Never);
+        }
+        [Test]
+        public void HandleChangedLODActions_UpdateAllIfChangedListIsLost_DontCallChangeListIfNotNeed_donthasSchedTime() {
+            //arrange 
+            Initialize(MockBehavior.Default, true);
+
+            var proj = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork };
+            proj.IsSimpleProject = true;
+            MyAction myAction1 = new MyAction(new Action() { Name = "old name", WLId = "1", StatusId = (int)ActionsStatusEnum.InWork, Project = proj.parentEntity });
+
+            proj.Actions.Add(myAction1);
+            projCollection.Add(proj);
+            taskList.Add(new WLTask() { id = "1", title = "old name", revision = 10, list_id = WLProcessor.MyListId });
+            mockWlConnector.Setup(x => x.ChangeTitleOfTask("1", "Newact1", 10)).Returns(new WLTask() { id = "1", revision = 10 });
+            mockWlConnector.Setup(x => x.ChangeListOfTask("1", WLProcessor.MyListId, 10)).Returns(new WLTask() { id = "1", revision = 10 });
+            //act
+            myAction1.Name = "Newact1";
+            myAction1.changedProperties.Clear();
+            wlProc.UpdateData();
+            wlProc.HandleChangedLODActions();
+            //assert
+            mockWlConnector.Verify(x => x.ChangeListOfTask("1", It.IsAny<int>(), It.IsAny<int>()), Times.Never);
+        }
         [Test]
         public void HandleChangedLODActions_Note() {
             //arrange

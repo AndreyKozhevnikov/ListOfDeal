@@ -152,7 +152,7 @@ namespace ListOfDeal {
 #if !DebugTest
         async public void HandleCompletedLODActions() {
 #else
-       public void HandleCompletedLODActions() {
+        public void HandleCompletedLODActions() {
 #endif
 
             RaiseLog("Handling completed LOD Actions", "Started");
@@ -176,7 +176,7 @@ namespace ListOfDeal {
 #if !DebugTest
         async public void HandleChangedLODActions() {
 #else
-           public void HandleChangedLODActions() {
+        public void HandleChangedLODActions() {
 #endif
 
             RaiseLog("Handling changed LOD actions", "Started");
@@ -260,10 +260,14 @@ namespace ListOfDeal {
                             }
                             if (!act.ToBuy) {
                                 if (act.ScheduledTime.HasValue) {
-                                    wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MySchedId, wlTask.revision);
+                                    if (wlTask.list_id != WLProcessor.MySchedId) {
+                                        wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MySchedId, wlTask.revision);
+                                    }
                                 }
                                 else {
-                                    wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MyListId, wlTask.revision);
+                                    if (wlTask.list_id != WLProcessor.MyListId) {
+                                        wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MyListId, wlTask.revision);
+                                    }
                                 }
                             }
                             break;

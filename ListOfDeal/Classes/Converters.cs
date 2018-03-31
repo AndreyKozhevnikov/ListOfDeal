@@ -53,14 +53,20 @@ namespace ListOfDeal {
     }
 
     public class SpecialDateBorderStyleConverter : MarkupExtension, IValueConverter {
+#if DebugTest
+        public DateTime ToDayToTest;
+#endif
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             DateTime dt = (DateTime)value;
             dt = dt.Date;
             var today = DateTime.Today;
-            var diff = today.DayOfWeek - DayOfWeek.Monday;
+#if DebugTest
+            today = ToDayToTest;
+#endif
+        var diff = today.DayOfWeek - DayOfWeek.Wednesday;
             if (diff < 0)
                 diff += 7;
-            var stDt = today.AddDays(-1 * diff).AddDays(7).Date;
+            var stDt = today.AddDays(-1 * diff).AddDays(5).Date;
             var fnDt = stDt.AddDays(6);
             if (dt >= stDt && dt <= fnDt)
                 return true;

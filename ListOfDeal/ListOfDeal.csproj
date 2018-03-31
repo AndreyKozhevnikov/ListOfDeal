@@ -149,6 +149,7 @@
     <Compile Include="Classes\HistoryActionItem.cs" />
     <Compile Include="Classes\Services.cs" />
     <Compile Include="Classes\SettingsStore.cs" />
+    <Compile Include="Classes\Tests\ConvertersTest.cs" />
     <Compile Include="Classes\Tests\EnterNewProjectViewTests.cs" />
     <Compile Include="Classes\Tests\MainViewModelTests.cs" />
     <Compile Include="Classes\Tests\MyActionTest.cs" />
@@ -333,7 +334,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>If $(ConfigurationName) == Release2 (  call $(SolutionDir)\..\..\Deploy\AssemblyInfoDeploy\AssemblyInfo.exe $(SolutionDir)ListOfDeal\Properties\AssemblyInfo.cs -set:
+    <PreBuildEvent>If $(ConfigurationName) == Release (  call $(SolutionDir)\..\..\Deploy\AssemblyInfoDeploy\AssemblyInfo.exe $(SolutionDir)ListOfDeal\Properties\AssemblyInfo.cs -set:
 echo "Release changed")</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>

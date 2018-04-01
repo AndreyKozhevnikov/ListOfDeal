@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -40,7 +41,9 @@ namespace ListOfDeal {
         string clientId;
 
         public void Test() {
-            var lst = GetTasksForList(WLProcessor.MyListId);
+            doOAuth();
+            //     var ll = GetAllLists();
+            //    var lst = GetTasksForList(WLProcessor.MyListId);
         }
 
         void GetSettings() {
@@ -49,7 +52,7 @@ namespace ListOfDeal {
             accessToken = st[2];
         }
 
-        private string GetHttpRequestResponse(string url, string requestType, string json = "", bool isBackUp=false) {
+        private string GetHttpRequestResponse(string url, string requestType, string json = "", bool isBackUp = false) {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Headers.Add(string.Format("X-Access-Token: {0}", accessToken));
@@ -73,7 +76,7 @@ namespace ListOfDeal {
                 streamReader.Close();
                 return responseText;
             }
-            catch(Exception e) {
+            catch (Exception e) {
                 MainViewModel.SaveChanges();
                 string st = e.Message + Environment.NewLine;
                 st = st + url + Environment.NewLine;
@@ -86,9 +89,9 @@ namespace ListOfDeal {
                 return null;
             }
         }
-    
+
         protected internal string NormalizeString(string title) {
-            return title.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\r\n","\\r\\n").Replace("\n\n", "\\r\\n");
+            return title.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\r\n", "\\r\\n").Replace("\n\n", "\\r\\n");
         }
         public WLTask CreateTask(string title, int listId, DateTime? dueDate, bool isMajor) {
             title = NormalizeString(title);
@@ -264,12 +267,12 @@ namespace ListOfDeal {
         }
         public string GetBackup() {
             string st = "https://backup.wunderlist.com/api/v1/export";
-            var responseText = GetHttpRequestResponse(st, "GET",isBackUp:true);
+            var responseText = GetHttpRequestResponse(st, "GET", isBackUp: true);
             return responseText;
         }
-   
 
-#if needNewToken
+
+        #if needNewToken
         const string authorizationEndpoint = "https://www.wunderlist.com/oauth/authorize";
         private async void doOAuth() {
             // Generates state and PKCE values.
@@ -346,60 +349,28 @@ namespace ListOfDeal {
             // Starts the code exchange at the Token Endpoint.
             performCodeExchange(code, code_verifier, redirectURI);
         }
-        string ClientSecret = "333";
+        string ClientSecret = "0e3567ca881eacc4a1c3473523ee47958dde7b92e21a342a21c48b100fa4";
         async void performCodeExchange(string code, string code_verifier, string redirectURI) {
             output("Exchanging code for tokens...");
-
-            // builds the  request
             string tokenRequestURI = "https://www.wunderlist.com/oauth/access_token";
-            string tokenRequestBody = string.Format("code={0}&redirect_uri={1}&client_id={2}&code_verifier={3}&client_secret={4}&scope=&grant_type=authorization_code",
-                code,
-                System.Uri.EscapeDataString(redirectURI),
-                clientId,
-                code_verifier,
-                ClientSecret
-                );
+            //request2
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(tokenRequestURI);
+            httpWebRequest.ContentType = "application/json; charset=utf-8";
+            httpWebRequest.Method = "POST";
 
-            // sends the request
-            HttpWebRequest tokenRequest = (HttpWebRequest)WebRequest.Create(tokenRequestURI);
-            tokenRequest.Method = "POST";
-            tokenRequest.ContentType = "application/x-www-form-urlencoded";
-            tokenRequest.Accept = "Accept=text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-            byte[] _byteVersion = Encoding.ASCII.GetBytes(tokenRequestBody);
-            tokenRequest.ContentLength = _byteVersion.Length;
-            Stream stream = tokenRequest.GetRequestStream();
-            await stream.WriteAsync(_byteVersion, 0, _byteVersion.Length);
-            stream.Close();
-
-            try {
-                // gets the response
-                WebResponse tokenResponse = await tokenRequest.GetResponseAsync();
-                using (StreamReader reader = new StreamReader(tokenResponse.GetResponseStream())) {
-                    // reads response body
-                    string responseText = await reader.ReadToEndAsync();
-                    Console.WriteLine(responseText);
-
-                    // converts to dictionary
-                    Dictionary<string, string> tokenEndpointDecoded = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseText);
-
-                    string access_token = tokenEndpointDecoded["access_token"]; //access toketn
-                    GetAllLists();
-                }
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream())) {
+                string json = String.Format(@"{{""client_id"":""{0}"",""client_secret"":""{1}"",""code"":""{2}""}}", clientId, ClientSecret, code);
+                Debug.Print(json);
+                streamWriter.Write(json);
+                streamWriter.Flush();
+                streamWriter.Close();
             }
-            catch (WebException ex) {
-                if (ex.Status == WebExceptionStatus.ProtocolError) {
-                    var response = ex.Response as HttpWebResponse;
-                    if (response != null) {
-                        output("HTTP: " + response.StatusCode);
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream())) {
-                            // reads response body
-                            //string responseText = reader.ReadToEndAsync();
-                            //output(responseText);
-                        }
-                    }
 
-                }
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream())) {
+                var requiredToken = streamReader.ReadToEnd();
             }
+
         }
 
         [DllImport("kernel32.dll", ExactSpelling = true)]
@@ -444,7 +415,7 @@ namespace ListOfDeal {
             SHA256Managed sha256 = new SHA256Managed();
             return sha256.ComputeHash(bytes);
         }
-#endif
+        #endif
     }
     public static class JsonCreator {
         static List<Tuple<string, object>> tList = new List<Tuple<string, object>>();

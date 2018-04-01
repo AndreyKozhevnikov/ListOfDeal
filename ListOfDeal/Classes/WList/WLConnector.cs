@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
+
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -41,7 +41,7 @@ namespace ListOfDeal {
         string clientId;
 
         public void Test() {
-            doOAuth();
+            //doOAuth();
             //     var ll = GetAllLists();
             //    var lst = GetTasksForList(WLProcessor.MyListId);
         }

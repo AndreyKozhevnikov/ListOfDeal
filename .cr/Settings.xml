@@ -2,16 +2,16 @@
 <Containers>
   <Container Key="-1592402827">
     <Items>
-      <Item Id="{8fbd82d6-df2a-4f01-8cdb-285f97faf1f6}">
+      <Item Id="{55c06e7a-e76d-4ea3-9570-43df1ab8450c}">
         <Id>1</Id>
         <File>ListOfDeal\Classes\MainViewModelMethods.cs</File>
         <Line>70</Line>
         <Character>32</Character>
       </Item>
-      <Item Id="{5e9ee958-ebe2-426d-8406-0eb20cd52cf3}">
+      <Item Id="{607e6c8a-59af-42cc-a8d7-4f6f785a84c9}">
         <Id>2</Id>
         <File>ListOfDeal\Classes\WList\WLProcessor.cs</File>
-        <Line>147</Line>
+        <Line>146</Line>
         <Character>71</Character>
       </Item>
     </Items>

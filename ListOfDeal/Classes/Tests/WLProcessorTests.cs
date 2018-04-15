@@ -114,6 +114,27 @@ namespace ListOfDeal.Classes.Tests {
         }
 
         [Test]
+        public void CreateWlTasks_MyProgs() {
+            //arrange
+            Initialize();
+           
+            var firstProject = new MyProject(new Project()) { Status = ProjectStatusEnum.InWork};
+            firstProject.Actions.Add(new MyAction(new Action() { Name = "act1", StatusId = (int)ActionsStatusEnum.InWork, Project = new Project() { Name = "Pr1", TypeId = 13 } }));
+           
+            projCollection.Add(firstProject);
+            mockWlConnector.Setup(x => x.CreateTask("act1 - Pr1", It.IsAny<int>(), It.IsAny<DateTime?>(), false)).Returns(new WLTask() { id = "234" });
+            mockWlConnector.Setup(x => x.GetTasksForList(It.IsAny<int>())).Returns(new List<WLTask>());
+
+            wlProc.UpdateData();
+            //act
+            wlProc.CreateWlTasks();
+            //assert
+            mockWlConnector.Verify(x => x.CreateTask("act1 - Pr1", WLProcessor.MyProgListId, null, false), Times.Once);
+            Assert.AreEqual("234", firstProject.Actions[0].WLId);
+            dataProviderEntity.Verify(x => x.SaveChanges(), Times.Exactly(2));
+        }
+
+        [Test]
         public void CreateWlTasks_SetWLRevision() {
             //arrange
             Initialize();

@@ -21,11 +21,15 @@ namespace ListOfDeal {
         public static int MyListId = 262335124;
         public static int MySchedId = 262630772;
         public static int MyBuyId = 263773374;
+        public static int MyProgListId = 346901038;
+
 #endif
 #if (DEBUG || DebugTest)
         public static int MyListId = 263984253;
         public static int MySchedId = 263984274;
         public static int MyBuyId = 263984295;
+        public static int MyProgListId = 346901038;
+        public static int ToReadListId = 346900957;
 #endif
         public static int MyDiarId = 289882019;
         public static int RejectedListId = 299386783;
@@ -73,6 +77,10 @@ namespace ListOfDeal {
                 if (act.ToBuy) { //to buy action
                     targetListId = MyBuyId;
                     lstName = "MyBuy";
+                }
+                if (act.ProjectType == 13) {
+                    targetListId = MyProgListId;
+                    lstName = "MyProg";
                 }
                 wlTask = wlConnector.CreateTask(title, targetListId, act.ScheduledTime, act.IsMajor);
                 act.WLId = wlTask.id;
@@ -379,7 +387,7 @@ namespace ListOfDeal {
         }
         public void Test() {
 
-            //var lst = this.wlConnector.GetAllLists();
+            var lst = this.wlConnector.GetAllLists();
             //foreach(var l in lst) {
             //    var res = this.wlConnector.GetTasksForList(l.id);
             //}

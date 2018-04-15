@@ -109,6 +109,36 @@ namespace ListOfDeal.Classes.Tests {
             Assert.AreEqual(1, proj.Actions.Count);
             Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj.Actions[0].WLTaskStatus);
         }
+
+        [Test]
+        public void AddActionToSimpleProject_DontreplaceIfHasComment() {
+            //arrange
+            var proj = new MyProject(new Project());
+            var myAction = new MyAction(new Action());
+            myAction.Comment = "test commetn";
+            proj.Actions.Add(myAction);
+            proj.IsSimpleProject = true;
+            //act
+            var act2 = new MyAction(new Action());
+            proj.AddAction(act2);
+            //assert
+            Assert.AreEqual(2, proj.Actions.Count);
+            Assert.AreEqual(WLTaskStatusEnum.UpToDateWLTask, proj.Actions[0].WLTaskStatus);
+        }
+        [Test]
+        public void AddActionToSimpleProject_MakeFirstActionActive() {
+            //arrange
+            var proj = new MyProject(new Project());
+            var myAction = new MyAction(new Action());
+            proj.Actions.Add(myAction);
+            proj.IsSimpleProject = true;
+            //act
+            var act2 = new MyAction(new Action());
+            proj.AddAction(act2);
+            //assert
+            Assert.AreEqual(1, proj.Actions.Count);
+            Assert.AreEqual(ActionsStatusEnum.InWork, proj.Actions[0].Status);
+        }
         [Test]
         public void MakeActionsActive() {
             //arrange

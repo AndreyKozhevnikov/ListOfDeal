@@ -33,9 +33,12 @@ namespace ListOfDeal {
 
         }
         public void AddAction(MyAction act) {
-            if (IsSimpleProject && Actions.Count == 1) {
+           
+            if (IsSimpleProject && Actions.Count == 1&&Actions[0].Comment==null) {
+               
                 var targetAction = Actions[0];
                 targetAction.CopyProperties(act);
+                targetAction.Status = ActionsStatusEnum.InWork;
                 IsSimpleProject = false;
             }
             else {

@@ -146,8 +146,10 @@ namespace ListOfDeal {
             var v0 = wlConnector.GetTasksForList(MyListId);
             var v1 = wlConnector.GetTasksForList(MySchedId);
             var v2 = wlConnector.GetTasksForList(MyBuyId);
+            var v3= wlConnector.GetTasksForList(MyProgListId);
             var v4 = v0.Concat(v1);
-            var v5 = v4.Concat(v2).ToList();
+            var v44 = v4.Concat(v3);
+            var v5 = v44.Concat(v2).ToList();
             return v5;
         }
         List<MyAction> GetActiveActions() {

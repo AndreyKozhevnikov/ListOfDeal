@@ -41,7 +41,7 @@ namespace ListOfDeal {
         string clientId;
 
         public void Test() {
-            //doOAuth();
+           // doOAuth();
             //     var ll = GetAllLists();
             //    var lst = GetTasksForList(WLProcessor.MyListId);
         }
@@ -272,7 +272,7 @@ namespace ListOfDeal {
         }
 
 
-        #if needNewToken
+      //  #if needNewToken
         const string authorizationEndpoint = "https://www.wunderlist.com/oauth/authorize";
         private async void doOAuth() {
             // Generates state and PKCE values.
@@ -415,7 +415,7 @@ namespace ListOfDeal {
             SHA256Managed sha256 = new SHA256Managed();
             return sha256.ComputeHash(bytes);
         }
-        #endif
+      //  #endif
     }
     public static class JsonCreator {
         static List<Tuple<string, object>> tList = new List<Tuple<string, object>>();

@@ -22,14 +22,15 @@ namespace ListOfDeal {
         public static int MySchedId = 262630772;
         public static int MyBuyId = 263773374;
         public static int MyProgListId = 346901038;
+        public static int ToReadListId = 346900957;
 
 #endif
 #if (DEBUG || DebugTest)
-        public static int MyListId = 263984253;
-        public static int MySchedId = 263984274;
-        public static int MyBuyId = 263984295;
-        public static int MyProgListId = 346901038;
-        public static int ToReadListId = 346900957;
+        //public static int MyListId = 263984253;
+        //public static int MySchedId = 263984274;
+        //public static int MyBuyId = 263984295;
+        //public static int MyProgListId = 346901038;
+        //public static int ToReadListId = 346900957;
 #endif
         public static int MyDiarId = 289882019;
         public static int RejectedListId = 299386783;
@@ -125,9 +126,14 @@ namespace ListOfDeal {
                 }
                 else {
                     act.Status = ActionsStatusEnum.Done;
-                    string dtSt = tsk.completed_at.Split('T')[0];
-                    DateTime completedTime = DateTime.Parse(dtSt);
-                    act.CompleteTime = completedTime;
+                    if (tsk.completed_at != null) {
+                        string dtSt = tsk.completed_at.Split('T')[0];
+                        DateTime completedTime = DateTime.Parse(dtSt);
+                        act.CompleteTime = completedTime;
+                    }
+                    else {
+                        act.CompleteTime = DateTime.Now;
+                    }
                 }
                 act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
                 act.WLId = null;
@@ -388,8 +394,8 @@ namespace ListOfDeal {
             RaiseLog("Backup", "created");
         }
         public void Test() {
-
-            var lst = this.wlConnector.GetAllLists();
+           // ((WLConnector)wlConnector).Test();
+            //var lst = this.wlConnector.GetAllLists();
             //foreach(var l in lst) {
             //    var res = this.wlConnector.GetTasksForList(l.id);
             //}

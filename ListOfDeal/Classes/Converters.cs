@@ -20,7 +20,7 @@ namespace ListOfDeal {
             var tv = sender as TableView;
             var gc = tv.DataControl as GridControl;
             var isGroup = gc.IsGroupRowHandle(rh);
-            if (isGroup) {
+            if(isGroup) {
                 var chRH = gc.GetChildRowHandle(rh, 0);
                 var ch = gc.GetRow(chRH) as MyProject;
                 return ch.TypeId;
@@ -63,12 +63,12 @@ namespace ListOfDeal {
 #if DebugTest
             today = ToDayToTest;
 #endif
-        var diff = today.DayOfWeek - DayOfWeek.Wednesday;
-            if (diff < 0)
+            var diff = today.DayOfWeek - DayOfWeek.Wednesday;
+            if(diff < 0)
                 diff += 7;
             var stDt = today.AddDays(-1 * diff).AddDays(5).Date;
             var fnDt = stDt.AddDays(6);
-            if (dt >= stDt && dt <= fnDt)
+            if(dt >= stDt && dt <= fnDt)
                 return true;
             return false;
         }
@@ -84,9 +84,13 @@ namespace ListOfDeal {
 
     public class DateToWeekDayConverter : MarkupExtension, IValueConverter {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
-            var dt = DateTime.Parse(value.ToString());
-            var st = dt.ToString("yyyy-MM-dd dddd");
-            return st;
+            DateTime dt;
+            DateTime.TryParse(value.ToString(), out dt);
+            if(dt != null) {
+                return dt.ToString("yyyy-MM-dd dddd");
+            } else {
+                return null;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {

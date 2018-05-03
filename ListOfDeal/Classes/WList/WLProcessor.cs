@@ -26,11 +26,11 @@ namespace ListOfDeal {
 
 #endif
 #if (DEBUG || DebugTest)
-        //public static int MyListId = 263984253;
-        //public static int MySchedId = 263984274;
-        //public static int MyBuyId = 263984295;
-        //public static int MyProgListId = 346901038;
-        //public static int ToReadListId = 346900957;
+        public static int MyListId = 263984253;
+        public static int MySchedId = 263984274;
+        public static int MyBuyId = 263984295;
+        public static int MyProgListId = 346901038;
+        public static int ToReadListId = 346900957;
 #endif
         public static int MyDiarId = 289882019;
         public static int RejectedListId = 299386783;

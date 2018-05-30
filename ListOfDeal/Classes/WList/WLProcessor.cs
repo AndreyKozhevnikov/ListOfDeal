@@ -29,7 +29,7 @@ namespace ListOfDeal {
         public static int MyListId = 263984253;
         public static int MySchedId = 263984274;
         public static int MyBuyId = 263984295;
-        public static int MyProgListId = 346901038;
+        public static int MyProgListId = 263984253;
         public static int ToReadListId = 346900957;
 #endif
         public static int MyDiarId = 289882019;
@@ -321,7 +321,7 @@ namespace ListOfDeal {
                         if (!act.parentEntity.Project.IsSimpleProject) {
                             var parsedTitle = tsk.title.Split('-');
                             if (parsedTitle.Count() == 2) {
-                                nameFromTitle = parsedTitle[1].Trim();
+                                nameFromTitle = parsedTitle[0].Trim();
                             }
                         }
                         RaiseLog(act, "changed name", string.Format("from {0} to {1}", act.Name, nameFromTitle));

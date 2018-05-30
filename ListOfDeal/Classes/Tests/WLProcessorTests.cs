@@ -930,7 +930,7 @@ namespace ListOfDeal.Classes.Tests {
             proj.Actions.Add(act1);
 
             projCollection.Add(proj);
-            taskList.Add(new WLTask() { id = "123", title = "Project1 - NewTestName1", revision = 2 });
+            taskList.Add(new WLTask() { id = "123", title = "NewTestName1 - Project1", revision = 2 });
 
             wlProc.UpdateData();
             //act

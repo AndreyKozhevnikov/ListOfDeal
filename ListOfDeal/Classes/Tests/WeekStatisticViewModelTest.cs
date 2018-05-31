@@ -41,11 +41,11 @@ namespace ListOfDeal.Classes.Tests {
             dataProviderEntity.Setup(x => x.GetWeekRecords()).Returns(new List<WeekRecord>() { new WeekRecord() { ActionId = 1, WeekId = wkId } });
             dataProviderEntity.Setup(x => x.CreateWeekRecord()).Returns(new WeekRecord());
             List<object> result = new List<object>();
-            dataProviderEntity.Setup(x => x.AddWeekRecord(It.IsAny<WeekRecord>())).Callback(() => { result.Add("test"); });
+            dataProviderEntity.Setup(x => x.AddWeekRecords(It.IsAny<IEnumerable<WeekRecord>>())).Callback(() => { result.Add("test"); });
             //act
             vm.CreateItemsCommand.Execute(null);
             //assert
-            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual(1, result.Count);
         }
         [Test]
         public void MarkItemsComplete() {

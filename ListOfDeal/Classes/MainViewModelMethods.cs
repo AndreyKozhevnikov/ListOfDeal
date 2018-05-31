@@ -27,6 +27,7 @@ namespace ListOfDeal {
         Project CreateProject();
         void AddProject(Project p);
         void AddWeekRecord(WeekRecord wr);
+        void AddWeekRecords(IEnumerable<WeekRecord> wrs);
         IEnumerable<Action> GetActions();
         IEnumerable<WeekRecord> GetWeekRecords();
         ProjectType CreateProjectType();
@@ -46,7 +47,7 @@ namespace ListOfDeal {
         private void ConnectToDataBase() {
             string machineName = System.Environment.MachineName;
 #if Release
-            if (machineName == "KOZHEVNIKOV-W10") {
+            if (machineName == "KOZHEVNIKOV-NB") {
                 GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWork");
             }
             else {
@@ -85,6 +86,10 @@ namespace ListOfDeal {
         }
         public void AddWeekRecord(WeekRecord wr) {
             GeneralEntity.WeekRecords.Add(wr);
+            
+        }
+        public void AddWeekRecords(IEnumerable<WeekRecord> wrs) {
+            GeneralEntity.WeekRecords.AddRange(wrs);
         }
         public IEnumerable<Action> GetActions() {
             return GeneralEntity.Actions;

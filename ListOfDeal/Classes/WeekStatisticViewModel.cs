@@ -90,6 +90,7 @@ namespace ListOfDeal.Classes {
             var filteredActions = activeActions.Where(x => !x.ScheduledTime.HasValue || x.ScheduledTime <= wkEndDate);
             string weekId = wkStartDate.ToString("MMddyyyy");
             var wRecords = MainViewModel.DataProvider.GetWeekRecords().Where(x => x.WeekId == weekId);
+            var weekRecords = new List<WeekRecord>();
             foreach (var act in filteredActions) {
                 var cnt = wRecords.Where(x => x.ActionId == act.Id).Count();
                 if (cnt > 0)
@@ -98,8 +99,9 @@ namespace ListOfDeal.Classes {
                 wr.ActionId = act.Id;
                 wr.WeekId = weekId;
                 wr.DateAdd = DateTime.Now;
-                MainViewModel.DataProvider.AddWeekRecord(wr);
+                weekRecords.Add(wr);
             }
+            MainViewModel.DataProvider.AddWeekRecords(weekRecords);
             MainViewModel.DataProvider.SaveChanges();
         }
 

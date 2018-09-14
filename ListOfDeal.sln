@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListOfDeal", "ListOfDeal\Li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WlConnectionLibrary", "WLConnector\WlConnectionLibrary.csproj", "{5E4CA4C5-CCEC-45EF-BBD1-66018A581AA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackupWL", "BackupWL\BackupWL.csproj", "{F3DF3B7E-2900-418B-B611-E9B315FF8EA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,12 @@ Global
 		{5E4CA4C5-CCEC-45EF-BBD1-66018A581AA5}.DebugTest|Any CPU.Build.0 = Debug|Any CPU
 		{5E4CA4C5-CCEC-45EF-BBD1-66018A581AA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E4CA4C5-CCEC-45EF-BBD1-66018A581AA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3DF3B7E-2900-418B-B611-E9B315FF8EA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3DF3B7E-2900-418B-B611-E9B315FF8EA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3DF3B7E-2900-418B-B611-E9B315FF8EA3}.DebugTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3DF3B7E-2900-418B-B611-E9B315FF8EA3}.DebugTest|Any CPU.Build.0 = Debug|Any CPU
+		{F3DF3B7E-2900-418B-B611-E9B315FF8EA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3DF3B7E-2900-418B-B611-E9B315FF8EA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

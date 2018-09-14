@@ -53,11 +53,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="WLConnector.cs" />
+    <Compile Include="Classes\WLConnector.cs" />
     <Compile Include="Tests\WLConnectorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Resource Include="settings.log" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

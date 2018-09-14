@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ListOfDeal.Classes.Tests {
+namespace WlConnectionLibrary.Classes.Tests {
     #if DebugTest
     [TestFixture]
     public class JsonCreatorTests {

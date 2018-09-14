@@ -16,6 +16,7 @@ namespace ListOfDeal {
     public class WLProcessor {
         List<MyAction> allActions;
         List<WLTask> allTasks;
+
         IWLConnector wlConnector;
 #if Release
         public static int MyListId = 262335124;
@@ -49,6 +50,47 @@ namespace ListOfDeal {
             allActions = GetActiveActions();
             allTasks = GetAllActiveTasks();
         }
+#if !DebugTest
+        async public void DeleteCompletedTask() {
+#else
+        public void DeleteCompletedTask() {
+#endif
+
+            wlConnector.ShowExceptions = false;
+            RaiseLog("Deleting completed tasks", "Started");
+            var allLists = wlConnector.GetAllLists();
+            RaiseLog("Count of lists", allLists.Count.ToString());
+            foreach(var list in allLists) {
+                RaiseLog("Start list", list.title);
+                var allTasks = wlConnector.GetCompletedTasksForList(list.id);
+                RaiseLog("Task count", allTasks.Count.ToString());
+                int k = 0;
+                foreach(var task in allTasks) {
+                    //2016-11-02T18:33:14.478Z
+                    var dateString = task.completed_at.Substring(0, 10);
+                    DateTime completedDate;
+                    DateTime.TryParse(dateString, out completedDate);
+                    var targetDate = DateTime.Today.AddDays(-30);
+                    if(completedDate < targetDate)
+                        wlConnector.DeleteTask(task);
+                    //   RaiseLog("Delete task", task.title);
+                    k++;
+#if !DebugTest
+                    Task t = Task.Run(() => Thread.Sleep(20));
+                    await t;
+#endif
+                    if(k % 20 == 0) {
+                        RaiseLog("Delete tasks", string.Format("{0}/{1}", k, allTasks.Count));
+
+                    }
+                }
+                RaiseLog("End list", list.title);
+            }
+            RaiseLog("Deleting completed tasks", "Finished");
+            wlConnector.ShowExceptions = false;
+        }
+
+
         public Action<string> SetClipboardText;
 #if !DebugTest
         async public void CreateWlTasks() {
@@ -60,9 +102,9 @@ namespace ListOfDeal {
             var emptyActions = allActions.Where(x => x.WLId == null);
             var v = emptyActions.Count();
             RaiseLog("Count of new tasks", v.ToString());
-            if (v == 0)
+            if(v == 0)
                 return;
-            foreach (var act in emptyActions) {
+            foreach(var act in emptyActions) {
 #if !DebugTest
                 Task t = Task.Run(() => Thread.Sleep(20));
                 await t;
@@ -71,22 +113,22 @@ namespace ListOfDeal {
                 WLTask wlTask;
                 int targetListId = MyListId;
                 string lstName = "MyList";
-                if (act.ScheduledTime.HasValue) {//scheduled action
+                if(act.ScheduledTime.HasValue) {//scheduled action
                     targetListId = MySchedId;
                     lstName = "MySched";
                 }
-                if (act.ToBuy) { //to buy action
+                if(act.ToBuy) { //to buy action
                     targetListId = MyBuyId;
                     lstName = "MyBuy";
                 }
-                if (act.ProjectType == 13) {
+                if(act.ProjectType == 13) {
                     targetListId = MyProgListId;
                     lstName = "MyProg";
                 }
                 wlTask = wlConnector.CreateTask(title, targetListId, act.ScheduledTime, act.IsMajor);
                 act.WLId = wlTask.id;
                 act.WLTaskRevision = wlTask.revision;
-                if (!string.IsNullOrEmpty(act.Comment)) {
+                if(!string.IsNullOrEmpty(act.Comment)) {
                     wlConnector.CreateNote(act.WLId, act.Comment);
                 }
                 RaiseLog(wlTask, "created", string.Format("list id - {0}({1}), new task's id={2}", lstName, targetListId.ToString(), wlTask.id));
@@ -108,7 +150,7 @@ namespace ListOfDeal {
             var lstwlIdInWL = allTasks.Select(x => x.id);
             var diff = lstwlIdinLod.Except(lstwlIdInWL);
             RaiseLog("", string.Format("wlId in LOD - {0}, wlId in WL-{1}", lstwlIdinLod.Count(), lstwlIdInWL.Count()));
-            foreach (string tskId in diff) {
+            foreach(string tskId in diff) {
 #if !DebugTest
                 Task t = Task.Run(() => Thread.Sleep(20));
                 await t;
@@ -117,30 +159,27 @@ namespace ListOfDeal {
                 var tsk = wlConnector.GetTask(tskId);
                 var act = actionsWithTasks.Where(x => x.WLId == tskId).First();
                 var notes = wlConnector.GetNodesForTask(tskId);
-                if (notes.Count > 0) {
+                if(notes.Count > 0) {
                     act.Comment = notes[0].content;
                 }
-                if (rejectedTasks.Contains(act.WLId)) {
+                if(rejectedTasks.Contains(act.WLId)) {
                     act.Status = ActionsStatusEnum.Rejected;
                     wlConnector.CompleteTask(act.WLId);
-                }
-                else {
+                } else {
                     act.Status = ActionsStatusEnum.Done;
-                    if (tsk.completed_at != null) {
+                    if(tsk.completed_at != null) {
                         string dtSt = tsk.completed_at.Split('T')[0];
                         DateTime completedTime = DateTime.Parse(dtSt);
                         act.CompleteTime = completedTime;
-                    }
-                    else {
+                    } else {
                         act.CompleteTime = DateTime.Now;
                     }
                 }
                 act.WLTaskStatus = WLTaskStatusEnum.UpToDateWLTask;
                 act.WLId = null;
-                if (act.Status == ActionsStatusEnum.Done) {
+                if(act.Status == ActionsStatusEnum.Done) {
                     RaiseLog(act, "completed");
-                }
-                else {
+                } else {
                     RaiseLog(act, "rejected");
                 }
             }
@@ -152,11 +191,16 @@ namespace ListOfDeal {
             var v0 = wlConnector.GetTasksForList(MyListId);
             var v1 = wlConnector.GetTasksForList(MySchedId);
             var v2 = wlConnector.GetTasksForList(MyBuyId);
-            var v3= wlConnector.GetTasksForList(MyProgListId);
+            var v3 = wlConnector.GetTasksForList(MyProgListId);
             var v4 = v0.Concat(v1);
             var v44 = v4.Concat(v3);
             var v5 = v44.Concat(v2).ToList();
             return v5;
+        }
+        public List<WLTask> GetCompletedTasks(int listId) {
+            var v0 = wlConnector.GetCompletedTasksForList(listId);
+
+            return v0;
         }
         List<MyAction> GetActiveActions() {
             return ReturnActiveActionsFromProjectList(parentVM.Projects);
@@ -175,7 +219,7 @@ namespace ListOfDeal {
             MainViewModel.SaveChanges();
             var lst = parentVM.Projects.SelectMany(x => x.Actions).Where(x => x.WLTaskStatus == WLTaskStatusEnum.DeletingNeeded).ToList();
             RaiseLog("Amount of actions", lst.Count.ToString());
-            foreach (var act in lst) {
+            foreach(var act in lst) {
 #if !DebugTest
                 Task t = Task.Run(() => Thread.Sleep(20));
                 await t;
@@ -199,13 +243,13 @@ namespace ListOfDeal {
             var changedActions = allActions.Where(x => x.WLTaskStatus == WLTaskStatusEnum.UpdateNeeded).ToList();
             RaiseLog("Actions to change", changedActions.Count.ToString());
             allTasks = GetAllActiveTasks();
-            foreach (var act in changedActions) {
+            foreach(var act in changedActions) {
 #if !DebugTest
                 Task t = Task.Run(() => Thread.Sleep(20));
                 await t;
 #endif
                 var wlTask = allTasks.Where(x => x.id == act.WLId).First(); //!!! to fix (call "handle completed task" first, if repeat - rethink)
-                if (act.changedProperties.Count == 0) {
+                if(act.changedProperties.Count == 0) {
                     act.changedProperties.Add("IsMajor");
                     act.changedProperties.Add("Name");
                     act.changedProperties.Add("Comment");
@@ -213,18 +257,18 @@ namespace ListOfDeal {
                     act.changedProperties.Add("ToBuy");
                 }
                 var changedPropertiesCount = act.changedProperties.Count - 1;
-                for (int i = changedPropertiesCount; i >= 0; i--) {
+                for(int i = changedPropertiesCount; i >= 0; i--) {
                     string propertyName = act.changedProperties[i];
-                    switch (propertyName) {
+                    switch(propertyName) {
                         case "IsMajor":
-                            if (act.IsMajor != wlTask.starred) {
+                            if(act.IsMajor != wlTask.starred) {
                                 wlTask = wlConnector.ChangeStarredOfTask(wlTask.id, act.IsMajor, wlTask.revision);
                                 RaiseLog(wlTask, "new IsMajor", act.IsMajor);
                             }
                             break;
                         case "Name":
                             string wlTitle = act.GetWLTitle();
-                            if (wlTitle != wlTask.title) {
+                            if(wlTitle != wlTask.title) {
                                 wlTask = wlConnector.ChangeTitleOfTask(wlTask.id, wlTitle, wlTask.revision);
                                 RaiseLog(wlTask, "change name", wlTitle);
                             }
@@ -233,16 +277,14 @@ namespace ListOfDeal {
                             var wlNotes = wlConnector.GetNodesForTask(wlTask.id);
                             var wlNote = wlNotes.Count == 0 ? null : wlNotes[0];
                             var wlNoteValue = wlNote == null ? null : wlNote.content;
-                            if (act.Comment != wlNoteValue) {
-                                if (act.Comment != null) {
-                                    if (wlNoteValue == null) {
+                            if(act.Comment != wlNoteValue) {
+                                if(act.Comment != null) {
+                                    if(wlNoteValue == null) {
                                         wlConnector.CreateNote(wlTask.id, act.Comment);
-                                    }
-                                    else {
+                                    } else {
                                         wlConnector.UpdateNoteContent(wlNote.id, wlNote.revision, act.Comment);
                                     }
-                                }
-                                else {
+                                } else {
                                     wlConnector.DeleteNote(wlNote.id, wlNote.revision);
                                 }
                                 wlTask = wlConnector.GetTask(wlTask.id);
@@ -250,19 +292,18 @@ namespace ListOfDeal {
                             }
                             break;
                         case "ScheduledTime":
-                            if (act.ScheduledTime.HasValue) {
+                            if(act.ScheduledTime.HasValue) {
                                 string currDT = WLConnector.ConvertToWLDate(act.ScheduledTime.Value);
-                                if (wlTask.list_id == WLProcessor.MyListId) {
+                                if(wlTask.list_id == WLProcessor.MyListId) {
                                     RaiseLog(wlTask, "moved", "MyShed -" + WLProcessor.MySchedId);
                                     wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MySchedId, wlTask.revision);
                                 }
-                                if (currDT != wlTask.due_date) {
+                                if(currDT != wlTask.due_date) {
                                     wlTask = wlConnector.ChangeScheduledTime(wlTask.id, currDT, wlTask.revision);
                                     RaiseLog(wlTask, "changed scheduled time", currDT);
                                 }
-                            }
-                            else {
-                                if (wlTask.list_id == WLProcessor.MySchedId) {
+                            } else {
+                                if(wlTask.list_id == WLProcessor.MySchedId) {
                                     RaiseLog(wlTask, "moved", "MyList  -  " + WLProcessor.MyListId);
                                     wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MyListId, wlTask.revision);
                                     RaiseLog(wlTask, "changed scheduled time", "null");
@@ -271,17 +312,16 @@ namespace ListOfDeal {
                             }
                             break;
                         case "ToBuy":
-                            if (act.ToBuy && wlTask.list_id != WLProcessor.MyBuyId) {
+                            if(act.ToBuy && wlTask.list_id != WLProcessor.MyBuyId) {
                                 wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MyBuyId, wlTask.revision);
                             }
-                            if (!act.ToBuy) {
-                                if (act.ScheduledTime.HasValue) {
-                                    if (wlTask.list_id != WLProcessor.MySchedId) {
+                            if(!act.ToBuy) {
+                                if(act.ScheduledTime.HasValue) {
+                                    if(wlTask.list_id != WLProcessor.MySchedId) {
                                         wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MySchedId, wlTask.revision);
                                     }
-                                }
-                                else {
-                                    if (wlTask.list_id != WLProcessor.MyListId) {
+                                } else {
+                                    if(wlTask.list_id != WLProcessor.MyListId) {
                                         wlTask = wlConnector.ChangeListOfTask(wlTask.id, WLProcessor.MyListId, wlTask.revision);
                                     }
                                 }
@@ -303,24 +343,24 @@ namespace ListOfDeal {
 #endif
             RaiseLog("Handling changed WLTasks", "Started");
             var actionsWithTasks = allActions.Where(x => x.WLId != null).ToList();
-            foreach (var act in actionsWithTasks) {
+            foreach(var act in actionsWithTasks) {
 #if !DebugTest
                 Task t = Task.Run(() => Thread.Sleep(20));
                 await t;
 #endif
                 var tsk = allTasks.Where(x => x.id == act.WLId).FirstOrDefault();
-                if (tsk == null) {
+                if(tsk == null) {
                     RaiseLog(act, "There are no tasks");
                     continue;
                 }
-                if (act.WLTaskRevision != tsk.revision) {
+                if(act.WLTaskRevision != tsk.revision) {
                     var actNameForWL = act.GetWLTitle();
                     RaiseLog(act, "has old revision");
-                    if (actNameForWL != tsk.title) {
+                    if(actNameForWL != tsk.title) {
                         string nameFromTitle = tsk.title;
-                        if (!act.parentEntity.Project.IsSimpleProject) {
+                        if(!act.parentEntity.Project.IsSimpleProject) {
                             var parsedTitle = tsk.title.Split('-');
-                            if (parsedTitle.Count() == 2) {
+                            if(parsedTitle.Count() == 2) {
                                 nameFromTitle = parsedTitle[0].Trim();
                             }
                         }
@@ -329,22 +369,20 @@ namespace ListOfDeal {
                     }
                     DateTime? wlDateTime = null;
                     DateTime tmpDateTime;
-                    if (DateTime.TryParse(tsk.due_date, out tmpDateTime))
+                    if(DateTime.TryParse(tsk.due_date, out tmpDateTime))
                         wlDateTime = tmpDateTime;
-                    if (act.ScheduledTime != wlDateTime) {
-                        if (act.ScheduledTime.HasValue) {
-                            if (wlDateTime.HasValue) {
+                    if(act.ScheduledTime != wlDateTime) {
+                        if(act.ScheduledTime.HasValue) {
+                            if(wlDateTime.HasValue) {
                                 RaiseLog(act, "changed time", string.Format("from {0} to {1}", act.ScheduledTime.Value.ToString("yyy-MM-dd"), tsk.due_date));
                                 var newDate = DateTime.Parse(tsk.due_date);
                                 act.ScheduledTime = newDate;
-                            }
-                            else {
+                            } else {
                                 act.ScheduledTime = null;
                                 RaiseLog(act, "delete time");
                             }
-                        }
-                        else {
-                            if (wlDateTime.HasValue) {
+                        } else {
+                            if(wlDateTime.HasValue) {
                                 RaiseLog(act, "set time", wlDateTime.Value.ToString("yyy-MM-dd"));
                                 act.ScheduledTime = wlDateTime;
                             }
@@ -353,11 +391,11 @@ namespace ListOfDeal {
                     var wlNotes = wlConnector.GetNodesForTask(tsk.id);
                     var wlNote = wlNotes.Count == 0 ? null : wlNotes[0];
                     var wlNoteValue = wlNote == null ? null : wlNote.content;
-                    if (wlNoteValue != act.Comment) {
+                    if(wlNoteValue != act.Comment) {
                         act.Comment = wlNoteValue;
                         RaiseLog(act, "new comment", act.Comment == null ? "null" : act.Comment);
                     }
-                    if (tsk.starred != act.IsMajor) {
+                    if(tsk.starred != act.IsMajor) {
                         act.IsMajor = tsk.starred;
                         RaiseLog(act, "new IsMajor", act.IsMajor);
                     }
@@ -370,7 +408,7 @@ namespace ListOfDeal {
 
         internal void RaiseLog(object subject, string description, object newValue = null) {
             string st = CreateLogString(subject.ToString(), description, newValue?.ToString());
-            if (Logged != null)
+            if(Logged != null)
                 Logged(st);
         }
 
@@ -387,14 +425,14 @@ namespace ListOfDeal {
             var dropBoxPath = SettingsStore.GetPropertyValue("Dropbox");
             var backupPath = dropBoxPath + string.Format(@"\BackupMSSQL\wlBackup{0}.json", DateTime.Now.ToString("yyyy.MM.dd_HHmm"));
             var backUpString = wlConnector.GetBackup();
-            using (var sw = new StreamWriter(backupPath)) {
+            using(var sw = new StreamWriter(backupPath)) {
                 sw.Write(backUpString);
                 sw.Close();
             }
             RaiseLog("Backup", "created");
         }
         public void Test() {
-           // ((WLConnector)wlConnector).Test();
+            // ((WLConnector)wlConnector).Test();
             //var lst = this.wlConnector.GetAllLists();
             //foreach(var l in lst) {
             //    var res = this.wlConnector.GetTasksForList(l.id);

@@ -31,6 +31,14 @@ namespace ListOfDeal {
         ICommand _handleChangedWLTaskCommand;
         ICommand _getDiaryEntriesCommand;
         ICommand _backupCommand;
+        ICommand _deleteCompletedTasksCommand;
+        public ICommand DeleteCompletedTasksCommand {
+            get {
+                if(_deleteCompletedTasksCommand == null)
+                    _deleteCompletedTasksCommand = new DelegateCommand(DeleteCompletedTasks);
+                return _deleteCompletedTasksCommand;
+            }
+        }
         public ICommand BackupCommand {
             get {
                 if (_backupCommand == null)
@@ -130,8 +138,17 @@ namespace ListOfDeal {
         void Backup() {
             wlProcessor.Backup();
         }
+        void DeleteCompletedTasks() {
+            wlProcessor.DeleteCompletedTask();
+        }
+
+
         void Test() {
 
+            //var lst = wlProcessor.GetCompletedTasks(249220592);
+            //foreach(var wl in lst) {
+            //    wlProcessor.DeleteTaks(wl);
+            //}
             //var lst = wlProcessor.Test();
             //var lst = MainViewModel.DataProvider.GetProjects().Where(x => x.TypeId == 10).ToList();
             //foreach(Project p in lst) {

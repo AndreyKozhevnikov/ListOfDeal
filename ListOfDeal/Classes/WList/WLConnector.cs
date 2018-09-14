@@ -21,6 +21,7 @@ namespace ListOfDeal {
         WLTask ChangeStarredOfTask(string wlId, bool isMajor, int revision);
         List<WLList> GetAllLists();
         List<WLTask> GetTasksForList(int listId);
+        List<WLTask> GetCompletedTasksForList(int listId);
         WLTask GetTask(string taskId);
         List<WLNote> GetNodesForTask(string taskId);
         WLTask CreateTask(string title, int listId, DateTime? dueDate, bool isMajor);
@@ -30,18 +31,21 @@ namespace ListOfDeal {
         WLNote CreateNote(string taskId, string content);
         WLNote UpdateNoteContent(string noteId, int revision, string content);
         void DeleteNote(string noteId, int revision);
+        void DeleteTask(WLTask task);
         string GetBackup();
+        bool ShowExceptions{ get; set; }
     }
     public class WLConnector : IWLConnector {
         public WLConnector() {
             GetSettings();
+            ShowExceptions = true;
             //  var v = GetAllLists();
         }
         string accessToken;
         string clientId;
 
         public void Test() {
-           // doOAuth();
+            // doOAuth();
             //     var ll = GetAllLists();
             //    var lst = GetTasksForList(WLProcessor.MyListId);
         }
@@ -57,13 +61,14 @@ namespace ListOfDeal {
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Headers.Add(string.Format("X-Access-Token: {0}", accessToken));
             httpWebRequest.Headers.Add(string.Format("X-Client-ID: {0}", clientId));
-            if (isBackUp) {
+            if(isBackUp) {
                 httpWebRequest.Headers.Add(string.Format("x-client-device-id: {0}", "custom id"));
                 httpWebRequest.Headers.Add(string.Format("x-client-current-time: {0}", "custom time"));
                 httpWebRequest.Headers.Add(string.Format("x-client-instance-id: {0}", "custom id"));
+                httpWebRequest.Timeout= (int)TimeSpan.FromMinutes(5).TotalMilliseconds;
             }
             httpWebRequest.Method = requestType;
-            if (json != "") {
+            if(json != "") {
                 StreamWriter writer = new StreamWriter(httpWebRequest.GetRequestStream());
                 writer.Write(json);
                 writer.Flush();
@@ -76,20 +81,21 @@ namespace ListOfDeal {
                 streamReader.Close();
                 return responseText;
             }
-            catch (Exception e) {
+            catch(Exception e) {
                 MainViewModel.SaveChanges();
                 string st = e.Message + Environment.NewLine;
                 st = st + url + Environment.NewLine;
                 st = st + json + Environment.NewLine;
                 st = st + e.StackTrace + Environment.NewLine;
-                MessageBox.Show("Error " + st);
+                if(ShowExceptions)
+                    MessageBox.Show("Error " + st);
                 StreamWriter sw = new StreamWriter("exception.txt");
                 sw.Write(st);
                 sw.Close();
                 return null;
             }
         }
-
+        public bool ShowExceptions { get; set; }
         protected internal string NormalizeString(string title) {
             return title.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\r\n", "\\r\\n").Replace("\n\n", "\\r\\n");
         }
@@ -98,10 +104,10 @@ namespace ListOfDeal {
             string st = "http://a.wunderlist.com/api/v1/tasks";
             JsonCreator.Add("list_id", listId);
             JsonCreator.Add("title", title);
-            if (dueDate != null) {
+            if(dueDate != null) {
                 JsonCreator.Add("due_date", ConvertToWLDate(dueDate.Value));
             }
-            if (isMajor == true) {
+            if(isMajor == true) {
                 JsonCreator.Add("starred", true);
             }
             string json = JsonCreator.GetString();
@@ -128,6 +134,14 @@ namespace ListOfDeal {
         public List<WLTask> GetTasksForList(int listId) {
             string st = "http://a.wunderlist.com/api/v1/tasks";
             string st2 = string.Format("{0}?list_id={1}", st, listId);
+            var responseText = GetHttpRequestResponse(st2, "GET");
+            var list = JsonConvert.DeserializeObject<List<WLTask>>(responseText);
+            return list;
+        }
+
+        public List<WLTask> GetCompletedTasksForList(int listId) {
+            string st = "http://a.wunderlist.com/api/v1/tasks";
+            string st2 = string.Format("{0}?list_id={1}&completed=true", st, listId);
             var responseText = GetHttpRequestResponse(st2, "GET");
             var list = JsonConvert.DeserializeObject<List<WLTask>>(responseText);
             return list;
@@ -211,13 +225,7 @@ namespace ListOfDeal {
             var wlTask = JsonConvert.DeserializeObject<WLTask>(responseText);
             return wlTask;
         }
-        public void DeleteTask(WLTask task) {
-            string st = "http://a.wunderlist.com/api/v1/tasks";
-            string st2 = string.Format(@"{0}/{1}?revision={2}", st, task.id, task.revision);
-            var responseText = GetHttpRequestResponse(st2, "DELETE");
 
-
-        }
 
         public WLNote CreateNote(string taskId, string content) {
             var normalContent = NormalizeString(content);
@@ -265,6 +273,11 @@ namespace ListOfDeal {
             string st2 = string.Format(@"{0}/{1}?revision={2}", st, noteId, revision);
             var responseText = GetHttpRequestResponse(st2, "DELETE");
         }
+        public void DeleteTask(WLTask task) {
+            string st = "http://a.wunderlist.com/api/v1/tasks";
+            string st2 = string.Format(@"{0}/{1}?revision={2}", st, task.id, task.revision);
+            var responseText = GetHttpRequestResponse(st2, "DELETE");
+        }
         public string GetBackup() {
             string st = "https://backup.wunderlist.com/api/v1/export";
             var responseText = GetHttpRequestResponse(st, "GET", isBackUp: true);
@@ -272,7 +285,7 @@ namespace ListOfDeal {
         }
 
 
-      //  #if needNewToken
+        //  #if needNewToken
         const string authorizationEndpoint = "https://www.wunderlist.com/oauth/authorize";
         private async void doOAuth() {
             // Generates state and PKCE values.
@@ -324,11 +337,11 @@ namespace ListOfDeal {
             });
 
             // Checks for errors.
-            if (context.Request.QueryString.Get("error") != null) {
+            if(context.Request.QueryString.Get("error") != null) {
                 output(String.Format("OAuth authorization error: {0}.", context.Request.QueryString.Get("error")));
                 return;
             }
-            if (context.Request.QueryString.Get("code") == null
+            if(context.Request.QueryString.Get("code") == null
                 || context.Request.QueryString.Get("state") == null) {
                 output("Malformed authorization response. " + context.Request.QueryString);
                 return;
@@ -340,7 +353,7 @@ namespace ListOfDeal {
 
             // Compares the receieved state to the expected value, to ensure that
             // this app made the request which resulted in authorization.
-            if (incoming_state != state) {
+            if(incoming_state != state) {
                 output(String.Format("Received request with invalid state ({0})", incoming_state));
                 return;
             }
@@ -358,7 +371,7 @@ namespace ListOfDeal {
             httpWebRequest.ContentType = "application/json; charset=utf-8";
             httpWebRequest.Method = "POST";
 
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream())) {
+            using(var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream())) {
                 string json = String.Format(@"{{""client_id"":""{0}"",""client_secret"":""{1}"",""code"":""{2}""}}", clientId, ClientSecret, code);
                 Debug.Print(json);
                 streamWriter.Write(json);
@@ -367,7 +380,7 @@ namespace ListOfDeal {
             }
 
             var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream())) {
+            using(var streamReader = new StreamReader(httpResponse.GetResponseStream())) {
                 var requiredToken = streamReader.ReadToEnd();
             }
 
@@ -415,7 +428,7 @@ namespace ListOfDeal {
             SHA256Managed sha256 = new SHA256Managed();
             return sha256.ComputeHash(bytes);
         }
-      //  #endif
+        //  #endif
     }
     public static class JsonCreator {
         static List<Tuple<string, object>> tList = new List<Tuple<string, object>>();
@@ -431,11 +444,11 @@ namespace ListOfDeal {
             return st;
         }
         static string GetTupleString(Tuple<string, object> t) {
-            if (t.Item1.Contains("id"))
+            if(t.Item1.Contains("id"))
                 return string.Format("\"{0}\":{1}", t.Item1, t.Item2);
-            if (t.Item2 is string)
+            if(t.Item2 is string)
                 return string.Format("\"{0}\":\"{1}\"", t.Item1, t.Item2);
-            if (t.Item2 is bool)
+            if(t.Item2 is bool)
                 return string.Format("\"{0}\":{1}", t.Item1, t.Item2.ToString().ToLower());
             return string.Format("\"{0}\":{1}", t.Item1, t.Item2);
         }

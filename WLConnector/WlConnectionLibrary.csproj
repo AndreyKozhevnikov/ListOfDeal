@@ -7,10 +7,11 @@
     <ProjectGuid>{5E4CA4C5-CCEC-45EF-BBD1-66018A581AA5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WLConnector</RootNamespace>
-    <AssemblyName>WLConnector</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>WlConnectionLibrary</RootNamespace>
+    <AssemblyName>WlConnectionLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,6 +48,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\WLInstances\Data.cs" />
+    <Compile Include="Classes\IWLConnector.cs" />
+    <Compile Include="Classes\WLInstances\JsonCreator.cs" />
+    <Compile Include="Classes\WLInstances\Reminder.cs" />
+    <Compile Include="Classes\WLInstances\RootObject.cs" />
+    <Compile Include="Classes\WLInstances\Subtask.cs" />
+    <Compile Include="Classes\WLInstances\SubtaskPosition.cs" />
+    <Compile Include="Classes\WLInstances\TaskPosition.cs" />
+    <Compile Include="Classes\WLInstances\WLList.cs" />
+    <Compile Include="Classes\WLInstances\WLNote.cs" />
+    <Compile Include="Classes\WLInstances\WLTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

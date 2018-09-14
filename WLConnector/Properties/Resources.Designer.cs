@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WLConnectorAssembly.Properties {
+namespace WlConnectionLibrary.Properties {
     using System;
-
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,29 +23,29 @@ namespace WLConnectorAssembly.Properties {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
-
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
-                if(object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WLConnector.Properties.Resources", typeof(Resources).Assembly);
+                if (object.ReferenceEquals(resourceMan, null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WlConnectionLibrary.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,15 +59,25 @@ namespace WLConnectorAssembly.Properties {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to 123.
+        ///   Looks up a localized string similar to f22159dc3742d30b73ef
+        ///0e3567ca881eacc4a1c3473523ee47958dde7b92e21a342a21c48b100fa4
+        ///fdc271524d647fd0a201d3ccbaa79e18c85c26606ffc70e4c5d5dbc83e2e.
         /// </summary>
         internal static string settings {
             get {
                 return ResourceManager.GetString("settings", resourceCulture);
             }
-
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 123.
+        /// </summary>
+        internal static string test33 {
+            get {
+                return ResourceManager.GetString("test33", resourceCulture);
+            }
         }
     }
 }

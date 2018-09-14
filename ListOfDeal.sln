@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListOfDeal", "ListOfDeal\ListOfDeal.csproj", "{57471358-1392-4B12-808E-FB44D976F16D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WLConnector", "WLConnector\WLConnector.csproj", "{5E4CA4C5-CCEC-45EF-BBD1-66018A581AA5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WlConnectionLibrary", "WLConnector\WlConnectionLibrary.csproj", "{5E4CA4C5-CCEC-45EF-BBD1-66018A581AA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

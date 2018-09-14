@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using WlConnectionLibrary;
 
 namespace ListOfDeal {
     public class WLProcessor {
@@ -36,14 +37,23 @@ namespace ListOfDeal {
         public static int MyDiarId = 289882019;
         public static int RejectedListId = 299386783;
         public event System.Action<string> Logged;
+        public bool ShowExceptions { get; set; }
         IMainViewModel parentVM;
         public WLProcessor(IMainViewModel _parentVM) {
             parentVM = _parentVM;
+            ShowExceptions = true;
         }
         public void CreateWlConnector(IWLConnector _conn) {
             wlConnector = _conn;
             UpdateData();
             RaiseLog("WLProcessor", "Created");
+            wlConnector.ConnectionErrorEvent += WlConnector_ConnectionErrorEvent;
+        }
+
+        private void WlConnector_ConnectionErrorEvent(object sender, UnhandledExceptionEventArgs e) {
+            MainViewModel.SaveChanges();
+            if(ShowExceptions)
+                MessageBox.Show((string)e.ExceptionObject);
         }
 
         public void UpdateData() {
@@ -56,7 +66,7 @@ namespace ListOfDeal {
         public void DeleteCompletedTask() {
 #endif
 
-            wlConnector.ShowExceptions = false;
+            ShowExceptions = false;
             RaiseLog("Deleting completed tasks", "Started");
             var allLists = wlConnector.GetAllLists();
             RaiseLog("Count of lists", allLists.Count.ToString());
@@ -87,7 +97,7 @@ namespace ListOfDeal {
                 RaiseLog("End list", list.title);
             }
             RaiseLog("Deleting completed tasks", "Finished");
-            wlConnector.ShowExceptions = false;
+            ShowExceptions = false;
         }
 
 

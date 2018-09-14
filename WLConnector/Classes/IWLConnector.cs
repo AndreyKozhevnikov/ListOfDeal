@@ -21,7 +21,7 @@ namespace WlConnectionLibrary {
         void DeleteNote(string noteId, int revision);
         void DeleteTask(WLTask task);
         string GetBackup();
-        bool ShowExceptions { get; set; }
+        event EventHandler<UnhandledExceptionEventArgs> ConnectionErrorEvent;
     }
 }
 

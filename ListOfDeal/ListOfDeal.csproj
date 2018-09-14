@@ -342,9 +342,9 @@
     <Resource Include="Resources\done_eM5_1.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WLConnector\WLConnector.csproj">
-      <Project>{5e4ca4c5-ccec-45ef-bbd1-66018a581aa5}</Project>
-      <Name>WLConnector</Name>
+    <ProjectReference Include="..\WLConnector\WlConnectionLibrary.csproj">
+      <Project>{5E4CA4C5-CCEC-45EF-BBD1-66018A581AA5}</Project>
+      <Name>WlConnectionLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

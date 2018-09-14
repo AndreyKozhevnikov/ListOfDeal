@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using WlConnectionLibrary;
 
 namespace ListOfDeal {
     public class WunderListViewModel {
@@ -134,6 +135,7 @@ namespace ListOfDeal {
             wlProcessor.Logged += WlProcessor_Logged;
             wlProcessor.CreateWlConnector(new WLConnector());
             wlProcessor.SetClipboardText = ClipboardHelper.ClipboardSetText;
+
         }
         void Backup() {
             wlProcessor.Backup();

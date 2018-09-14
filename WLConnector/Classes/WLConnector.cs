@@ -13,25 +13,21 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using WlConnectionLibrary.Properties;
 
 namespace WlConnectionLibrary {
     public class WLConnector : IWLConnector {
         public WLConnector() {
             GetSettings();
-            ShowExceptions = true;
-            //  var v = GetAllLists();
         }
         string accessToken;
         string clientId;
 
         public void Test() {
-            // doOAuth();
-            //     var ll = GetAllLists();
-            //    var lst = GetTasksForList(WLProcessor.MyListId);
         }
 
         void GetSettings() {
-            var st = WLConnectorAssembly.Properties.Resources.settings.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var st = Resources.settings.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             clientId = st[0];
             accessToken = st[2];
         }
@@ -69,16 +65,16 @@ namespace WlConnectionLibrary {
                 StreamWriter sw = new StreamWriter("exception.txt");
                 sw.Write(st);
                 sw.Close();
-                RaiseConnectionErrorEvent(e);
+                RaiseConnectionErrorEvent(st);
                 return null;
             }
         }
 
         public event EventHandler<UnhandledExceptionEventArgs> ConnectionErrorEvent;
-        void RaiseConnectionErrorEvent(Exception e) {
+        void RaiseConnectionErrorEvent(string e) {
             ConnectionErrorEvent?.Invoke(this, new UnhandledExceptionEventArgs(e, false));
         }
-        public bool ShowExceptions { get; set; }
+        
         protected internal string NormalizeString(string title) {
             return title.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\r\n", "\\r\\n").Replace("\n\n", "\\r\\n");
         }

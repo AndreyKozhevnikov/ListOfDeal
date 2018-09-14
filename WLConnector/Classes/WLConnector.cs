@@ -51,7 +51,7 @@ namespace ListOfDeal {
         }
 
         void GetSettings() {
-            var st = ListOfDeal.Properties.Resources.settings.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var st = WLConnectorAssembly.Properties.Resources.settings.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             clientId = st[0];
             accessToken = st[2];
         }
@@ -82,18 +82,21 @@ namespace ListOfDeal {
                 return responseText;
             }
             catch(Exception e) {
-                MainViewModel.SaveChanges();
                 string st = e.Message + Environment.NewLine;
                 st = st + url + Environment.NewLine;
                 st = st + json + Environment.NewLine;
                 st = st + e.StackTrace + Environment.NewLine;
-                if(ShowExceptions)
-                    MessageBox.Show("Error " + st);
                 StreamWriter sw = new StreamWriter("exception.txt");
                 sw.Write(st);
                 sw.Close();
+                RaiseConnectionErrorEvent(e);
                 return null;
             }
+        }
+
+        public event EventHandler<UnhandledExceptionEventArgs> ConnectionErrorEvent;
+        void RaiseConnectionErrorEvent(Exception e) {
+            ConnectionErrorEvent?.Invoke(this, new UnhandledExceptionEventArgs(e, false));
         }
         public bool ShowExceptions { get; set; }
         protected internal string NormalizeString(string title) {

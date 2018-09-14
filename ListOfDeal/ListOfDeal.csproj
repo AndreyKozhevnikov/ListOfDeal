@@ -125,10 +125,6 @@
     <Reference Include="Moq">
       <HintPath>..\..\THelper2\THelper\THelper\bin\Debug\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\WunderListConsole\WunderListConsole\bin\Debug\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\WunderListConsole\WunderListConsole\bin\Debug\nunit.framework.dll</HintPath>
     </Reference>
@@ -171,9 +167,7 @@
     <Compile Include="Classes\Tests\MyActionTest.cs" />
     <Compile Include="Classes\Tests\MyProjectTests.cs" />
     <Compile Include="Classes\Tests\WeekStatisticViewModelTest.cs" />
-    <Compile Include="Classes\Tests\WLConnectorTests.cs" />
     <Compile Include="Classes\WeekStatisticViewModel.cs" />
-    <Compile Include="Classes\WList\WLConnector.cs" />
     <Compile Include="Classes\WList\WLProcessor.cs" />
     <Compile Include="Classes\Tests\WLProcessorTests.cs" />
     <Compile Include="Classes\WList\WunderListViewModel.cs" />
@@ -348,7 +342,12 @@
   <ItemGroup>
     <Resource Include="Resources\done_eM5_1.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\WLConnector\WLConnector.csproj">
+      <Project>{5e4ca4c5-ccec-45ef-bbd1-66018a581aa5}</Project>
+      <Name>WLConnector</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>If $(ConfigurationName) == Release (  call $(SolutionDir)\..\..\Deploy\AssemblyInfoDeploy\AssemblyInfo.exe $(SolutionDir)ListOfDeal\Properties\AssemblyInfo.cs -set:

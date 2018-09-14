@@ -160,7 +160,6 @@
     <Compile Include="Classes\Enums.cs" />
     <Compile Include="Classes\HistoryActionItem.cs" />
     <Compile Include="Classes\Services.cs" />
-    <Compile Include="Classes\SettingsStore.cs" />
     <Compile Include="Classes\Tests\ConvertersTest.cs" />
     <Compile Include="Classes\Tests\EnterNewProjectViewTests.cs" />
     <Compile Include="Classes\Tests\MainViewModelTests.cs" />

@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using WlConnectionLibrary.Classes;
 using WlConnectionLibrary.Properties;
 
 namespace WlConnectionLibrary {
@@ -406,6 +407,16 @@ namespace WlConnectionLibrary {
             byte[] bytes = Encoding.ASCII.GetBytes(inputStirng);
             SHA256Managed sha256 = new SHA256Managed();
             return sha256.ComputeHash(bytes);
+        }
+
+        public void CreateBackup() {
+            var dropBoxPath = SettingsStore.GetPropertyValue("Dropbox");
+            var backupPath = dropBoxPath + string.Format(@"\BackupMSSQL\wlBackup{0}.json", DateTime.Now.ToString("yyyy.MM.dd_HHmm"));
+            var backUpString = this.GetBackup();
+            using(var sw = new StreamWriter(backupPath)) {
+                sw.Write(backUpString);
+                sw.Close();
+            }
         }
         //  #endif
     }

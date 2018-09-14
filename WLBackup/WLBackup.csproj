@@ -47,5 +47,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WLConnector\WlConnectionLibrary.csproj">
+      <Project>{5e4ca4c5-ccec-45ef-bbd1-66018a581aa5}</Project>
+      <Name>WlConnectionLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

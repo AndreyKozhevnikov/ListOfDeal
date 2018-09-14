@@ -431,14 +431,7 @@ namespace ListOfDeal {
             return result;
         }
         public void Backup() {
-
-            var dropBoxPath = SettingsStore.GetPropertyValue("Dropbox");
-            var backupPath = dropBoxPath + string.Format(@"\BackupMSSQL\wlBackup{0}.json", DateTime.Now.ToString("yyyy.MM.dd_HHmm"));
-            var backUpString = wlConnector.GetBackup();
-            using(var sw = new StreamWriter(backupPath)) {
-                sw.Write(backUpString);
-                sw.Close();
-            }
+            wlConnector.CreateBackup();
             RaiseLog("Backup", "created");
         }
         public void Test() {

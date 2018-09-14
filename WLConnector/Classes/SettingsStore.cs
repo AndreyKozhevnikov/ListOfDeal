@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace ListOfDeal {
-   public class SettingsStore {
+namespace WlConnectionLibrary.Classes {
+    public class SettingsStore {
         const string filePath = @"c:\mssqlsettings.ini";
         public static string GetPropertyValue(string nameProperty) {
-   
+
             StreamReader sr = new StreamReader(filePath);
             string st = sr.ReadToEnd();
             sr.Close();

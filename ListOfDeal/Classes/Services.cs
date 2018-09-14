@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using WlConnectionLibrary.Classes;
 
 namespace ListOfDeal {
     public interface IExportToExcelService {

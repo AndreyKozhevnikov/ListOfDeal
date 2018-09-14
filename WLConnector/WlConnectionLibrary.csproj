@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Classes\WLInstances\Data.cs" />
     <Compile Include="Classes\IWLConnector.cs" />
+	<Compile Include="Classes\SettingsStore.cs" />
     <Compile Include="Classes\WLInstances\JsonCreator.cs" />
     <Compile Include="Classes\WLInstances\Reminder.cs" />
     <Compile Include="Classes\WLInstances\RootObject.cs" />

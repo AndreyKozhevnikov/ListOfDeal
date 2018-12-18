@@ -14,8 +14,7 @@ namespace ListOfDeal {
     /// </summary>
     public partial class App : Application {
         private void OnAppStartup_UpdateThemeName(object sender, StartupEventArgs e) {
-
-            DevExpress.Xpf.Core.ApplicationThemeHelper.UpdateApplicationThemeName();
+            AssemblyResolverDll.AsseblyResolver.Attach("Dll181");
         }
         public App() {
 #if DebugTest

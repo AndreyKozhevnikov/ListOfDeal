@@ -13,10 +13,8 @@ namespace ListOfDeal {
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
-        private void OnAppStartup_UpdateThemeName(object sender, StartupEventArgs e) {
-            AssemblyResolverDll.AsseblyResolver.Attach("Dll181");
-        }
         public App() {
+            AssemblyResolverDll.AsseblyResolver.Attach("Dll181");
 #if DebugTest
             Application.Current.Shutdown();
 #endif

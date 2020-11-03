@@ -1,5 +1,6 @@
 ﻿using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Grid;
+using ListOfDeal.Classes;
 using ListOfDeal.Views;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using WlConnectionLibrary.Classes;
 
 namespace ListOfDeal {
     public interface IExportToExcelService {

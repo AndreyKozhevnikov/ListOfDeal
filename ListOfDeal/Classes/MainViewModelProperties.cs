@@ -72,7 +72,6 @@ namespace ListOfDeal {
             }
         }
 
-
         public ICommand ValidateColumnCommand {
             get {
                 if (_validateColumnCommand == null)
@@ -163,6 +162,7 @@ namespace ListOfDeal {
 
             }
         }
+
         public ICommand GoToParentProjectCommand {
             get {
                 if (_goToParentProjectCommand == null)
@@ -229,7 +229,6 @@ namespace ListOfDeal {
 
 
 
-        public WunderListViewModel WLViewModel { get; set; }
 
         public ObservableCollection<MyProject> Projects { get; set; }
         public ObservableCollection<ProjectType> ProjectTypes { get; set; }

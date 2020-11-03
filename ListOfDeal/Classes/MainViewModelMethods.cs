@@ -128,7 +128,6 @@ namespace ListOfDeal {
             CreateNewProject(null);
             CreateNewAction();
 
-            WLViewModel = new WunderListViewModel(this);
         }
 
         private void CreateNewProject(int? oldTypeId) {
@@ -270,9 +269,13 @@ namespace ListOfDeal {
         }
         private void CustomSummary(CustomSummaryEventArgs obj) {
             if (obj.SummaryProcess == CustomSummaryProcess.Finalize && Projects != null) {
-                var lst = WLProcessor.ReturnActiveActionsFromProjectList(Projects);
+                var lst = ReturnActiveActionsFromProjectList(Projects);
                 obj.TotalValue= string.Format("Actions count={0}", lst.Count);
             }
+        }
+        public static  List<MyAction> ReturnActiveActionsFromProjectList(IEnumerable<MyProject> list) {
+            var lst = list.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.Status == ActionsStatusEnum.InWork).ToList();
+            return lst;
         }
         private void GoToParentProject(MyAction act) {
             SelectedTabIndex = 0;

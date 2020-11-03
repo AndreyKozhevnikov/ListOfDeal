@@ -55,9 +55,6 @@
             <dx:DXTabItem Header="History">
                 <views:HistoryView />
             </dx:DXTabItem>
-            <dx:DXTabItem Header="WunderList">
-                <views:WunderListView DataContext="{Binding WLViewModel}" />
-            </dx:DXTabItem>
             <dx:DXTabItem Header="WeekStat">
                 <views:WeeksStatisitc />
             </dx:DXTabItem>

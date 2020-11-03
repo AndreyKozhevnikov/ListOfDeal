@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using WlConnectionLibrary;
 
 namespace ListOfDeal.Classes.Tests {
 #if DebugTest

@@ -164,6 +164,7 @@
     <Compile Include="Classes\Enums.cs" />
     <Compile Include="Classes\HistoryActionItem.cs" />
     <Compile Include="Classes\Services.cs" />
+    <Compile Include="Classes\SettignsStore.cs" />
     <Compile Include="Classes\Tests\ConvertersTest.cs" />
     <Compile Include="Classes\Tests\EnterNewProjectViewTests.cs" />
     <Compile Include="Classes\Tests\MainViewModelTests.cs" />
@@ -171,9 +172,7 @@
     <Compile Include="Classes\Tests\MyProjectTests.cs" />
     <Compile Include="Classes\Tests\WeekStatisticViewModelTest.cs" />
     <Compile Include="Classes\WeekStatisticViewModel.cs" />
-    <Compile Include="Classes\WList\WLProcessor.cs" />
     <Compile Include="Classes\Tests\WLProcessorTests.cs" />
-    <Compile Include="Classes\WList\WunderListViewModel.cs" />
     <Compile Include="IListOfDealBaseEntities.cs" />
     <Compile Include="Views\ChartView.xaml.cs">
       <DependentUpon>ChartView.xaml</DependentUpon>
@@ -192,9 +191,6 @@
     </Compile>
     <Compile Include="Views\WeeksStatistic.xaml.cs">
       <DependentUpon>WeeksStatistic.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WunderListView.xaml.cs">
-      <DependentUpon>WunderListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WeekRecord.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -260,10 +256,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\WeeksStatistic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\WunderListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -343,12 +335,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\done_eM5_1.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WLConnector\WlConnectionLibrary.csproj">
-      <Project>{5E4CA4C5-CCEC-45EF-BBD1-66018A581AA5}</Project>
-      <Name>WlConnectionLibrary</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

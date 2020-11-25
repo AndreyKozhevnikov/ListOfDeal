@@ -160,7 +160,7 @@
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
                     <dxg:GridColumn FieldName="DesiredResult" />
-                    <dxg:GridColumn FieldName="Status">
+                    <dxg:GridColumn FieldName="Status" SortIndex="1">
                         <dxmvvm:Interaction.Behaviors>
                             <dxmvvm:EventToCommand Command="{Binding ValidateColumnCommand}"
                                                    EventName="Validate"

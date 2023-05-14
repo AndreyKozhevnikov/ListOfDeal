@@ -29,7 +29,7 @@ namespace ListOfDeal.Views {
             var gc = sender as GridControl;
             gc.RefreshData();
 #if DEBUG
-            gc.UngroupBy("TypeId");
+        //    gc.UngroupBy("TypeId");
 #endif
             var descr = DependencyPropertyDescriptor.FromProperty(TableView.SearchStringProperty, typeof(TableView));
             EventHandler myE = new EventHandler(SearchChanged);

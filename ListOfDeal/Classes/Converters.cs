@@ -25,7 +25,7 @@ namespace ListOfDeal {
                 var ch = gc.GetRow(chRH) as MyProject;
                 return ch.ProjectType;
             }
-            return -1;
+            return null;
         }
     }
 

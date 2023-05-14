@@ -134,14 +134,14 @@
                 <dxg:GridControl.Columns>
                     <dxg:GridColumn Width="490" FieldName="Name" />
                     <dxg:GridColumn AllowEditing="False" FieldName="DateCreated" />
-                    <dxg:GridColumn FieldName="TypeId"
+                    <dxg:GridColumn FieldName="ProjectType"
                                     GroupIndex="0"
                                     SortMode="Custom"
                                     >
                         <dxg:GridColumn.EditSettings>
                             <dxe:ComboBoxEditSettings DisplayMember="Name"
                                                       ItemsSource="{Binding ProjectTypes}"
-                                                      ValueMember="Id" />
+                                                   />
                         </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
                     <dxg:GridColumn FieldName="Comment">

@@ -182,7 +182,7 @@ namespace ListOfDeal {
         public ICommand OnFocusedRowHandleChangedCommand {
             get {
                 if (_onFocusedRowHandleChangedCommand == null)
-                    _onFocusedRowHandleChangedCommand = new DelegateCommand<int>(OnFocusedRowHandleChanged);
+                    _onFocusedRowHandleChangedCommand = new DelegateCommand<ProjectType>(OnFocusedRowHandleChanged);
                 return _onFocusedRowHandleChangedCommand;
             }
         }

@@ -85,9 +85,9 @@ namespace ListOfDeal {
                 CurrentProject.ProjectType = SelectedProject.ProjectType;
         }
 
-        void OnFocusedRowHandleChanged(int typeId) {
-            if (typeId != -1)
-                CurrentProject.ProjectType = DataProvider.GetProjectTypeById( typeId);
+        void OnFocusedRowHandleChanged(ProjectType typeId) {
+            if (typeId != null)
+                CurrentProject.ProjectType =  typeId;
         }
         private void AddAction() {
             if (string.IsNullOrEmpty(CurrentAction.Name))
@@ -271,8 +271,8 @@ namespace ListOfDeal {
             return false;
         }
         private void CustomColumnSort(CustomColumnSortEventArgs e) {
-            var v1 = (int)e.Value1;
-            var v2 = (int)e.Value2;
+            var v1 = ((ProjectType)e.Value1).Id;
+            var v2 = ((ProjectType)e.Value2).Id;
 
             var ordNum1 = (int)this.ProjectTypes.Where(x => x.Id == v1).First().OrderNumber;
             var ordNum2 = (int)this.ProjectTypes.Where(x => x.Id == v2).First().OrderNumber;

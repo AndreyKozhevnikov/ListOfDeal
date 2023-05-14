@@ -1,5 +1,6 @@
 ﻿
 using DevExpress.Mvvm;
+using ListOfDeal.Classes.XPO;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -62,7 +63,7 @@ namespace ListOfDeal.Classes {
                 DateTime wDt = new DateTime(y, m, d);
                 DateTime endDt = wDt.AddDays(6);
                 foreach (var wr in week.records) {
-                    var act = wr.Action;
+                    var act = wr.ActionId;
                     if (act.CompleteTime.HasValue && act.CompleteTime.Value.Date <= endDt.Date) {
                         wr.IsCompletedInWeek = true;
                     }
@@ -90,18 +91,18 @@ namespace ListOfDeal.Classes {
             var filteredActions = activeActions.Where(x => !x.ScheduledTime.HasValue || x.ScheduledTime <= wkEndDate);
             string weekId = wkStartDate.ToString("MMddyyyy");
             var wRecords = MainViewModel.DataProvider.GetWeekRecords().Where(x => x.WeekId == weekId);
-            var weekRecords = new List<WeekRecord>();
+           // var weekRecords = new List<WeekRecord>();
             foreach (var act in filteredActions) {
-                var cnt = wRecords.Where(x => x.ActionId == act.Id).Count();
+                var cnt = wRecords.Where(x => x.ActionId.Id == act.Id).Count();
                 if (cnt > 0)
                     continue;
                 var wr = MainViewModel.DataProvider.CreateWeekRecord();
-                wr.ActionId = act.Id;
+                wr.ActionId = MainViewModel.DataProvider.GetActionById(act.Id);
                 wr.WeekId = weekId;
                 wr.DateAdd = DateTime.Now;
-                weekRecords.Add(wr);
+              //  weekRecords.Add(wr);
             }
-            MainViewModel.DataProvider.AddWeekRecords(weekRecords);
+           // MainViewModel.DataProvider.AddWeekRecords(weekRecords);
             MainViewModel.DataProvider.SaveChanges();
         }
 

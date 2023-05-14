@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using ListOfDeal.Classes.XPO;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,8 +11,8 @@ using System.Threading.Tasks;
 namespace ListOfDeal {
     [DebuggerDisplay("Name = {Name}")]
     public class MyAction : MyBindableBase {
-        public Action parentEntity;
-        public MyAction(Action _parentEntity) {
+        public ActionXP parentEntity;
+        public MyAction(ActionXP _parentEntity) {
             parentEntity = _parentEntity;
             changedProperties = new List<string>();
         }
@@ -129,17 +130,17 @@ namespace ListOfDeal {
 
         public string ProjectName {
             get {
-                return parentEntity.Project.Name;
+                return parentEntity.ProjectId.Name;
             }
         }
-        public int ProjectType {
+        public ProjectType ProjectType {
             get {
-                return parentEntity.Project.TypeId;
+                return parentEntity.ProjectId.TypeId;
             }
         }
         public int ProjectId {
             get {
-                return parentEntity.Project.Id;
+                return parentEntity.ProjectId.Id;
             }
         }
 
@@ -202,7 +203,7 @@ namespace ListOfDeal {
 
         internal string GetWLTitle() {
             string title;
-            if (parentEntity.Project.IsSimpleProject)
+            if (parentEntity.ProjectId.IsSimpleProject)
                 title = this.Name;
 
             else

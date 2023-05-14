@@ -127,14 +127,7 @@
     <Reference Include="DevExpress.Xpf.Themes.Office2016Colorful.v22.2, Version=22.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
+    <Reference Include="DevExpress.Xpo.v22.2, Version=22.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="Moq">
       <HintPath>..\..\THelper2\THelper\THelper\bin\Debug\Moq.dll</HintPath>
     </Reference>
@@ -169,9 +162,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\ConnectionHelper.cs" />
     <Compile Include="Classes\DayData.cs" />
     <Compile Include="Classes\Enums.cs" />
     <Compile Include="Classes\HistoryActionItem.cs" />
+    <Compile Include="Classes\IMainViewModelDataProvider.cs" />
+    <Compile Include="Classes\MainViewModelDataProvider.cs" />
     <Compile Include="Classes\Services.cs" />
     <Compile Include="Classes\SettignsStore.cs" />
     <Compile Include="Classes\Tests\ConvertersTest.cs" />
@@ -181,7 +177,10 @@
     <Compile Include="Classes\Tests\MyProjectTests.cs" />
     <Compile Include="Classes\Tests\WeekStatisticViewModelTest.cs" />
     <Compile Include="Classes\WeekStatisticViewModel.cs" />
-    <Compile Include="IListOfDealBaseEntities.cs" />
+    <Compile Include="Classes\XPO\Action.cs" />
+    <Compile Include="Classes\XPO\Project.cs" />
+    <Compile Include="Classes\XPO\ProjectType.cs" />
+    <Compile Include="Classes\XPO\WeekRecord.cs" />
     <Compile Include="Views\ChartView.xaml.cs">
       <DependentUpon>ChartView.xaml</DependentUpon>
     </Compile>
@@ -199,9 +198,6 @@
     </Compile>
     <Compile Include="Views\WeeksStatistic.xaml.cs">
       <DependentUpon>WeeksStatistic.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WeekRecord.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Page Include="Views\CustomDateEdit.xaml">
       <SubType>Designer</SubType>
@@ -227,9 +223,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Action.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -237,7 +230,6 @@
     <Compile Include="Classes\Converters.cs" />
     <Compile Include="Classes\MainViewModelMethods.cs" />
     <Compile Include="Classes\MyAction.cs" />
-    <Compile Include="Classes\ListOfDealBaseEntities.cs" />
     <Compile Include="Classes\MainViewModelProperties.cs" />
     <Compile Include="Classes\MyBindableBase.cs" />
     <Compile Include="Classes\MyProject.cs" />
@@ -269,27 +261,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model1.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Project.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ProjectType.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -307,23 +278,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EntityDeploy Include="Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="Model1.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.Context.cs</LastGenOutput>
-    </None>
-    <None Include="Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </None>
-    <None Include="Model1.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

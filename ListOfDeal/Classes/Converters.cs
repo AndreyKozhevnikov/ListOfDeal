@@ -23,7 +23,7 @@ namespace ListOfDeal {
             if(isGroup) {
                 var chRH = gc.GetChildRowHandle(rh, 0);
                 var ch = gc.GetRow(chRH) as MyProject;
-                return ch.TypeId;
+                return ch.ProjectType;
             }
             return -1;
         }

@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using DevExpress.Xpf.Grid;
 using DevExpress.Data;
+using ListOfDeal.Classes.XPO;
 
 namespace ListOfDeal {
     public partial class MainViewModel : MyBindableBase, ISupportServices {

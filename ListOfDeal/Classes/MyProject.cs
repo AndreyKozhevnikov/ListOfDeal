@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using ListOfDeal.Classes.XPO;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,7 +25,7 @@ namespace ListOfDeal {
 
         private void InitiateProject() {
             Actions = new ObservableCollection<MyAction>();
-            var listAction = parentEntity.Actions.OrderBy(x => x.OrderNumber);
+            var listAction = parentEntity.ActionsCollection.OrderBy(x => x.OrderNumber);
              foreach (var a in listAction) {
                 MyAction act = new MyAction(a);
                 act.PropertyChanged += act_PropertyChanged;
@@ -54,7 +55,7 @@ namespace ListOfDeal {
                 }
                 act.PropertyChanged += act_PropertyChanged;
                 Actions.Add(act);
-                parentEntity.Actions.Add(act.parentEntity);
+                parentEntity.ActionsCollection.Add(act.parentEntity);
                 RaisePropertyChanged("Actions");
             }
         }
@@ -89,12 +90,11 @@ namespace ListOfDeal {
         }
         public void DeleteAction(MyAction act) {
             Actions.Remove(act);
-            parentEntity.Actions.Remove(act.parentEntity);
+            parentEntity.ActionsCollection.Remove(act.parentEntity);
         }
 
         public void Save() {
-            if (parentEntity.Id <= 0)
-                MainViewModel.DataProvider.AddProject(parentEntity);
+         
             MainViewModel.SaveChanges();
         }
 
@@ -114,7 +114,7 @@ namespace ListOfDeal {
                 parentEntity.DateCreated = value;
             }
         }
-        public int TypeId {
+        public ProjectType ProjectType {
             get {
                 return parentEntity.TypeId;
             }

@@ -1,12 +1,12 @@
 ﻿using DevExpress.Data;
+using DevExpress.Entity.ProjectModel;
 using DevExpress.Xpf.Grid;
+using ListOfDeal.Classes.XPO;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.Entity;
-using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,98 +17,6 @@ namespace ListOfDeal {
     public interface IMainViewModel {
         ObservableCollection<MyProject> Projects { get; set; }
 
-    }
-
-    public interface IMainViewModelDataProvider {
-        IEnumerable<ProjectType> GetProjectTypes();
-        IEnumerable<Project> GetProjects();
-        IEnumerable<Project> GetActiveProejcts();
-        IListOfDealBaseEntities GeneralEntity { get; set; }
-        Project CreateProject();
-        void AddProject(Project p);
-        void AddWeekRecord(WeekRecord wr);
-        void AddWeekRecords(IEnumerable<WeekRecord> wrs);
-        IEnumerable<Action> GetActions();
-        IEnumerable<WeekRecord> GetWeekRecords();
-        ProjectType CreateProjectType();
-        void AddProjectType(ProjectType projectType);
-        void SaveChanges();
-        Action CreateAction();
-        WeekRecord CreateWeekRecord();
-
-    }
-    public class MainViewModelDataProvider : IMainViewModelDataProvider {
-        public MainViewModelDataProvider() {
-            ConnectToDataBase();
-
-        }
-        public IListOfDealBaseEntities GeneralEntity { get; set; }
-
-        private void ConnectToDataBase() {
-            string machineName = System.Environment.MachineName;
-#if Release
-            if (machineName == "KOZHEVNIKOV-NBX") {
-                GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWork");
-            }
-            else {
-                GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesHome");
-            }
-#endif
-#if DEBUG
-            if (machineName == "KOZHEVNIKOV-NB")
-                GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWork");
-            else
-                GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesHomeTest");
-#endif
-
-
-        }
-
-        public IEnumerable<ProjectType> GetProjectTypes() {
-            return GeneralEntity.ProjectTypes;
-        }
-
-        public IEnumerable<Project> GetProjects() {
-            return GeneralEntity.Projects;
-        }
-        public IEnumerable<Project> GetActiveProejcts() {
-            return GeneralEntity.Projects.Where(x => x.StatusId ==(int)ProjectStatusEnum.InWork);
-        }
-        public IEnumerable<WeekRecord> GetWeekRecords() {
-            return GeneralEntity.WeekRecords;
-        }
-        public Project CreateProject() {
-            return GeneralEntity.Projects.Create();
-        }
-
-        public void AddProject(Project p) {
-            GeneralEntity.Projects.Add(p);
-        }
-        public void AddWeekRecord(WeekRecord wr) {
-            GeneralEntity.WeekRecords.Add(wr);
-            
-        }
-        public void AddWeekRecords(IEnumerable<WeekRecord> wrs) {
-            GeneralEntity.WeekRecords.AddRange(wrs);
-        }
-        public IEnumerable<Action> GetActions() {
-            return GeneralEntity.Actions;
-        }
-        public ProjectType CreateProjectType() {
-            return GeneralEntity.ProjectTypes.Create();
-        }
-        public void AddProjectType(ProjectType projectType) {
-            GeneralEntity.ProjectTypes.Add(projectType);
-        }
-        public void SaveChanges() {
-            GeneralEntity.SaveChanges();
-        }
-        public Action CreateAction() {
-            return GeneralEntity.Actions.Create();
-        }
-        public WeekRecord CreateWeekRecord() {
-            return GeneralEntity.WeekRecords.Create();
-        }
     }
     public partial class MainViewModel : IMainViewModel {
 
@@ -135,9 +43,9 @@ namespace ListOfDeal {
             CurrentProject.Status = ProjectStatusEnum.InWork;
             CurrentProject.IsSimpleProject = true;
             if (oldTypeId == null)
-                CurrentProject.TypeId = 7;
+                CurrentProject.ProjectType = DataProvider.GetProjectTypeById( 7);
             else
-                CurrentProject.TypeId = oldTypeId.Value;
+                CurrentProject.ProjectType = DataProvider.GetProjectTypeById(oldTypeId.Value);
         }
         private void CreateNewAction() {
             CurrentAction = new MyAction();
@@ -147,7 +55,7 @@ namespace ListOfDeal {
             if (string.IsNullOrEmpty(CurrentProject.Name))
                 return;
             GridControlManagerService.ClearFilterAndSearchString();
-            var typeId = CurrentProject.TypeId;
+            var typeId = CurrentProject.ProjectType;
             CurrentProject.DateCreated = DateTime.Now;
             CurrentProject.Save();
             if (CurrentProject.IsSimpleProject) {
@@ -162,24 +70,24 @@ namespace ListOfDeal {
             Dispatcher.CurrentDispatcher.BeginInvoke((System.Action)(() => {
                 SelectedProject = CurrentProject;
                 SaveChanges();
-                CreateNewProject(typeId);
+                CreateNewProject(typeId.Id);
                 GridControlManagerService.ScrollToSeveralRows();
                 GridControlManagerService.ExpandFocusedMasterRow();
             }), DispatcherPriority.Input);
         }
         private void OnSelectedActionChanged() {
             if (SelectedAction != null) {
-                CurrentProject.TypeId = SelectedAction.ProjectType;
+                CurrentProject.ProjectType = SelectedAction.ProjectType;
             }
         }
         private void OnSelectedProjectChanged() {
             if (SelectedProject != null)
-                CurrentProject.TypeId = SelectedProject.TypeId;
+                CurrentProject.ProjectType = SelectedProject.ProjectType;
         }
 
         void OnFocusedRowHandleChanged(int typeId) {
             if (typeId != -1)
-                CurrentProject.TypeId = typeId;
+                CurrentProject.ProjectType = DataProvider.GetProjectTypeById( typeId);
         }
         private void AddAction() {
             if (string.IsNullOrEmpty(CurrentAction.Name))
@@ -240,15 +148,16 @@ namespace ListOfDeal {
             try {
                 DataProvider.SaveChanges();
             }
-            catch (DbEntityValidationException e) {
-                foreach (var eve in e.EntityValidationErrors) {
-                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
-                    foreach (var ve in eve.ValidationErrors) {
-                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
-                            ve.PropertyName, ve.ErrorMessage);
-                    }
-                }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+                //foreach (var eve in e.EntityValidationErrors) {
+                //    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                //        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                //    foreach (var ve in eve.ValidationErrors) {
+                //        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                //            ve.PropertyName, ve.ErrorMessage);
+                //    }
+                //}
 
             }
         }
@@ -336,7 +245,7 @@ namespace ListOfDeal {
         private void GetActionsHistory() {
             var allActEnt = DataProvider.GetActions();
             var allAct = new List<MyAction>();
-            foreach (Action a in allActEnt) {
+            foreach (ActionXP a in allActEnt) {
                 allAct.Add(new MyAction(a));
             }
             var complAct = allAct.Where(x => x.CompleteTime != null);

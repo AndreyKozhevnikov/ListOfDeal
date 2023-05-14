@@ -32,13 +32,13 @@
                     </dxmvvm:Interaction.Behaviors>
                     <dxlc:LayoutGroup>
                         <dxlc:LayoutItem Label="Name:">
-                            <dxe:TextEdit EditValue="{Binding CurrentProject.Name, UpdateSourceTrigger=PropertyChanged}" />
+                            <dxe:TextEdit EditValue="{Binding NewProjectName, UpdateSourceTrigger=PropertyChanged}" />
                         </dxlc:LayoutItem>
                         <dxlc:LayoutItem Label="Type:">
                             <dxe:ComboBoxEdit DisplayMember="Name"
-                                              EditValue="{Binding CurrentProject.TypeId,UpdateSourceTrigger=PropertyChanged}"
+                                              EditValue="{Binding SelectedProjectType,UpdateSourceTrigger=PropertyChanged}"
                                               ItemsSource="{Binding ProjectTypes}"
-                                              ValueMember="Id"
+                                             
                                               >
                             </dxe:ComboBoxEdit>
                         </dxlc:LayoutItem>
@@ -84,10 +84,10 @@
                     </dxmvvm:Interaction.Behaviors>
                     <dxlc:LayoutGroup>
                         <dxlc:LayoutItem Label="Name:">
-                            <dxe:TextEdit EditValue="{Binding CurrentAction.Name, UpdateSourceTrigger=PropertyChanged}" />
+                            <dxe:TextEdit EditValue="{Binding NewActionName, UpdateSourceTrigger=PropertyChanged}" />
                         </dxlc:LayoutItem>
                         <dxlc:LayoutItem Label="Status:">
-                            <dxe:ComboBoxEdit EditValue="{Binding CurrentAction.Status, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                            <dxe:ComboBoxEdit EditValue="{Binding NewActionStatus, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
                                 <dxmvvm:Interaction.Behaviors>
                                     <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type local:ActionsStatusEnum}" />
                                 </dxmvvm:Interaction.Behaviors>

@@ -29,8 +29,6 @@ namespace ListOfDeal {
 
 
 
-        MyProject _currentProject;
-        MyAction _currentAction;
         MyProject _selectedProject;
 
         MyAction _selectedAction;
@@ -52,7 +50,7 @@ namespace ListOfDeal {
         ICommand _addNewProjectCommand;
         ICommand _addActionCommand;
         ICommand _openEditProjectCommand;
-        
+
         ICommand _provideActionsCommand;
         ICommand _exportGridsCommand;
         ICommand _saveChangesCommand;
@@ -115,7 +113,7 @@ namespace ListOfDeal {
                 return _openEditProjectCommand;
             }
         }
-       
+
         public ICommand ProvideActionsCommand {
             get {
                 if (_provideActionsCommand == null)
@@ -191,22 +189,43 @@ namespace ListOfDeal {
 
 
 
-
-
-        public MyProject CurrentProject {
-            get { return _currentProject; }
-            set {
-                _currentProject = value;
-                RaisePropertyChanged("CurrentProject");
+        public string NewProjectName {
+            get => newProjectName; set {
+                newProjectName = value;
+                RaisePropertyChanged("NewProjectName");
             }
         }
-        public MyAction CurrentAction {
-            get { return _currentAction; }
-            set {
-                _currentAction = value;
-                RaisePropertyChanged("CurrentAction");
+        public string NewActionName {
+            get => newActionName; set {
+                newActionName = value;
+                RaisePropertyChanged("NewActionName");
             }
         }
+        public ActionsStatusEnum NewActionStatus { get => newActionStatus; set {
+                newActionStatus = value;
+                RaisePropertyChanged("NewActionStatus");
+            }
+        }
+        public ProjectType SelectedProjectType {
+            get => selectedProjectType; set {
+                selectedProjectType = value;
+                RaisePropertyChanged("SelectedProjectType");
+            }
+        }
+        //public MyProject CurrentProject {
+        //    get { return _currentProject; }
+        //    set {
+        //        _currentProject = value;
+        //        RaisePropertyChanged("CurrentProject");
+        //    }
+        //}
+        //public MyAction CurrentAction {
+        //    get { return _currentAction; }
+        //    set {
+        //        _currentAction = value;
+        //        RaisePropertyChanged("CurrentAction");
+        //    }
+        //}
         public MyProject SelectedProject {
             get { return _selectedProject; }
             set {
@@ -290,6 +309,11 @@ namespace ListOfDeal {
 
         IExportToExcelService ExportToExcelService { get { return ServiceContainer.GetService<IExportToExcelService>(); } }
         IGridControlManagerService _gridControlManagerService;
+        private string newActionName;
+        private string newProjectName;
+        private ProjectType selectedProjectType;
+        private ActionsStatusEnum newActionStatus;
+
         public IGridControlManagerService GridControlManagerService {
             get {
                 if (_gridControlManagerService == null)

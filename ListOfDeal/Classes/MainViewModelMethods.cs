@@ -33,83 +33,97 @@ namespace ListOfDeal {
             foreach (var p in actProjects) {
                 Projects.Add(new MyProject(p));
             }
-            CreateNewProject(null);
-            CreateNewAction();
+            //CreateNewProject(null);
+            //CreateNewAction();
 
         }
 
-        private void CreateNewProject(int? oldTypeId) {
-            CurrentProject = new MyProject();
-            CurrentProject.Status = ProjectStatusEnum.InWork;
-            CurrentProject.IsSimpleProject = true;
-            if (oldTypeId == null)
-                CurrentProject.ProjectType = DataProvider.GetProjectTypeById( 7);
-            else
-                CurrentProject.ProjectType = DataProvider.GetProjectTypeById(oldTypeId.Value);
-        }
-        private void CreateNewAction() {
-            CurrentAction = new MyAction();
-            CurrentAction.Status = ActionsStatusEnum.Delay;
-        }
+        //private void CreateNewProject(int? oldTypeId) {
+        //    CurrentProject = new MyProject();
+        //    CurrentProject.Name = "newlycreatedpojerct";
+        //    CurrentProject.DateCreated= DateTime.Now;
+        //    CurrentProject.Status = ProjectStatusEnum.InWork;
+        //    CurrentProject.IsSimpleProject = true;
+        //    if (oldTypeId == null)
+        //        CurrentProject.ProjectType = DataProvider.GetProjectTypeById( 7);
+        //    else
+        //        CurrentProject.ProjectType = DataProvider.GetProjectTypeById(oldTypeId.Value);
+        //}
+        //private void CreateNewAction() {
+        //    CurrentAction = new MyAction();
+        //    CurrentAction.Status = ActionsStatusEnum.Delay;
+        //}
         private void AddProject() {
-            if (string.IsNullOrEmpty(CurrentProject.Name))
+            if (string.IsNullOrEmpty(NewProjectName))
                 return;
             GridControlManagerService.ClearFilterAndSearchString();
-            var typeId = CurrentProject.ProjectType;
-            CurrentProject.DateCreated = DateTime.Now;
-            CurrentProject.Save();
-            if (CurrentProject.IsSimpleProject) {
-                MyAction act = new MyAction();
-                act.Name = CurrentProject.Name;
-                act.Status = ActionsStatusEnum.InWork;
-                CurrentProject.AddAction(act);
-            }
+
+            var newProject = new MyProject();
+            newProject.Name = NewProjectName;
+            newProject.ProjectType = SelectedProjectType;
+            newProject.Status = ProjectStatusEnum.InWork;
+            newProject.DateCreated = DateTime.Now;
+            newProject.IsSimpleProject = true;
+            // CurrentProject.Save();
+            //if (CurrentProject.IsSimpleProject) {
+            MyAction act = new MyAction();
+            act.Name = newProject.Name;
+            act.Status = ActionsStatusEnum.InWork;
+            newProject.AddAction(act);
+            //}
 
 
-            Projects.Add(CurrentProject);
+            Projects.Add(newProject);
             Dispatcher.CurrentDispatcher.BeginInvoke((System.Action)(() => {
-                SelectedProject = CurrentProject;
+                SelectedProject = newProject;
                 SaveChanges();
-                CreateNewProject(typeId.Id);
+                // CreateNewProject(typeId.Id);
+                // CreateNewAction();
                 GridControlManagerService.ScrollToSeveralRows();
                 GridControlManagerService.ExpandFocusedMasterRow();
             }), DispatcherPriority.Input);
         }
         private void OnSelectedActionChanged() {
             if (SelectedAction != null) {
-                CurrentProject.ProjectType = SelectedAction.ProjectType;
+                SelectedProjectType = SelectedAction.ProjectType;
             }
         }
         private void OnSelectedProjectChanged() {
             if (SelectedProject != null)
-                CurrentProject.ProjectType = SelectedProject.ProjectType;
+                SelectedProjectType = SelectedProject.ProjectType;
         }
 
         void OnFocusedRowHandleChanged(ProjectType typeId) {
             if (typeId != null)
-                CurrentProject.ProjectType =  typeId;
+                SelectedProjectType = typeId;
         }
         private void AddAction() {
-            if (string.IsNullOrEmpty(CurrentAction.Name))
+            if (string.IsNullOrEmpty(NewActionName))
                 return;
-            CurrentAction.DateCreated = DateTime.Now;
-
             MyProject projForSave = null;
             if (SelectedProject != null) {
                 projForSave = SelectedProject;
-            }
-            else {
+            } else {
                 if (SelectedAction != null) {
                     projForSave = GetProjectById(SelectedAction.ProjectId);
                 }
             }
             if (projForSave == null)
                 return;
-            projForSave.AddAction(CurrentAction);
-
+            if (projForSave.IsSimpleProject) {
+                projForSave.IsSimpleProject = false;
+                projForSave.Actions[0].Name = NewActionName;
+                projForSave.Actions[0].DateCreated = DateTime.Now;
+            } else {
+                var newAction = new MyAction();
+                newAction.Name = NewActionName;
+                newAction.Status = newActionStatus;
+                newAction.DateCreated = DateTime.Now;
+                projForSave.AddAction(newAction);
+            }
             SaveChanges();
             projForSave.RaisePropertyChanged("ActionsList");
-            CreateNewAction();
+
         }
         internal void Test() {
             //var v = Projects.Where(x => x.Actions.Count == 1);
@@ -127,7 +141,7 @@ namespace ListOfDeal {
             ed.DataContext = this;
             ed.ShowDialog();
         }
-       
+
         private void ProvideActions() {
             var allActions = Projects.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.Status == ActionsStatusEnum.InWork);
             var actActions = allActions.Where(x => x.ScheduledTime == null);
@@ -179,10 +193,10 @@ namespace ListOfDeal {
         private void CustomSummary(CustomSummaryEventArgs obj) {
             if (obj.SummaryProcess == CustomSummaryProcess.Finalize && Projects != null) {
                 var lst = ReturnActiveActionsFromProjectList(Projects);
-                obj.TotalValue= string.Format("Actions count={0}", lst.Count);
+                obj.TotalValue = string.Format("Actions count={0}", lst.Count);
             }
         }
-        public static  List<MyAction> ReturnActiveActionsFromProjectList(IEnumerable<MyProject> list) {
+        public static List<MyAction> ReturnActiveActionsFromProjectList(IEnumerable<MyProject> list) {
             var lst = list.Where(x => x.Status == ProjectStatusEnum.InWork).SelectMany(x => x.Actions).Where(x => x.Status == ActionsStatusEnum.InWork).ToList();
             return lst;
         }
@@ -271,6 +285,9 @@ namespace ListOfDeal {
             return false;
         }
         private void CustomColumnSort(CustomColumnSortEventArgs e) {
+            if (e.Value1 == null || e.Value2 == null) {
+                return;
+            }
             var v1 = ((ProjectType)e.Value1).Id;
             var v2 = ((ProjectType)e.Value2).Id;
 

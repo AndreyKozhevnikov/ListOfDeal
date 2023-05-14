@@ -47,7 +47,7 @@ namespace ListOfDeal {
         private void ConnectToDataBase() {
             string machineName = System.Environment.MachineName;
 #if Release
-            if (machineName == "KOZHEVNIKOV-NB") {
+            if (machineName == "KOZHEVNIKOV-NBX") {
                 GeneralEntity = new ListOfDealBaseEntities("ListOfDealBaseEntitiesWork");
             }
             else {

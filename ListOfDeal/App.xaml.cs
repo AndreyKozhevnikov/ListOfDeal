@@ -20,10 +20,10 @@ namespace ListOfDeal {
             StreamReader sr = new StreamReader(pathToSettingsFile);
             string st = sr.ReadToEnd();
             sr.Close();
-            XElement xl = XElement.Parse(st);
-            var pathDropbox = xl.Element("Dropbox").Value;
-            var dllPath = Path.Combine(pathDropbox, @"deploy\Dll181");
-            AssemblyResolverDll.AsseblyResolver.Attach(dllPath);
+            //XElement xl = XElement.Parse(st);
+            //var pathDropbox = xl.Element("Dropbox").Value;
+            //var dllPath = Path.Combine(pathDropbox, @"deploy\Dll181");
+            //AssemblyResolverDll.AsseblyResolver.Attach(dllPath);
 #if DebugTest
             Application.Current.Shutdown();
 #endif

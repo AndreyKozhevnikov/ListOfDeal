@@ -75,13 +75,13 @@ namespace ListOfDeal.Classes.XPO {
             set { SetPropertyValue<bool>(nameof(ToBuy), ref fToBuy, value); }
         }
         bool fIsMajor;
-        [ColumnDbDefaultValue("((0))")]
+        
         public bool IsMajor {
             get { return fIsMajor; }
             set { SetPropertyValue<bool>(nameof(IsMajor), ref fIsMajor, value); }
         }
         int fStatusId;
-        [ColumnDbDefaultValue("((0))")]
+        
         public int StatusId {
             get { return fStatusId; }
             set { SetPropertyValue<int>(nameof(StatusId), ref fStatusId, value); }

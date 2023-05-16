@@ -48,7 +48,7 @@ namespace ListOfDeal {
         //    GeneralEntity.WeekRecords.AddRange(wrs);
         //}
         public IEnumerable<ActionXP> GetActions() {
-            return new XPCollection<ActionXP>();
+            return new XPCollection<ActionXP>(uow);
         }
         public ProjectType CreateProjectType() {
             return new ProjectType(uow);

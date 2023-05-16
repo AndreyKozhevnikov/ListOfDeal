@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dataBaseObjectModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="bed5850d-6011-405f-b08e-5cfbc3a16a0d" namespace="ConsoleApp1.ListOfDealMy" dataBaseShemaInfo="H4sIAAAAAAAEAMVUwW6bQBC9V+o/IJ8NLAbbOMJEiZ1EUdo0ipMq12F3sLddFotdbPfvuxhMguO06qniwrx5w8ybfUt0vsuEtcFC8VxOe55Deufx50/RJShc6LyAJd7KNLcMS6qznWLT3krr9ZnrbrdbZ+s7ebF0B4R47svXLwu6wgx6LZn/nWxzqTRIij3T1bKiJ0gEqqrlPj4gb4ADdA8ZxjcosQDxsv6W/ECqvch9zbX0K1lhsS5KjNwmaJNzrirgec1AY5yCUIbUBVvuTcnZLYtxCBD4o9AeTkYjOyADak9ISG0/9INhMiIwHphBGnJbPMtFmUnVUfIhbBKVhjoZX3MUzHzyDdSh/kngv4p8KxRg6OOEhraHaWIHiNQOWRDYGBKfMfDGQ0LeCTXl7ilRp9DmuFqkiV8pUeVBZA9FTveg5dbw99qw8Rw3V7t1gUo5c9DgbAa+4/WtJj2tIvOQvjUrhS4LnEostTFM33ooE8HpHf56yn+inCZhyIyegI0JwWACkXtose83E6AUquoAHst2u9EFM6NhynfNXDW0KNMO9IhZvsFjYo0ec2fm3sXPkq5ALpGZnVVxvZpTM0RmM2ssNP/Ps30wRlTfT21cm2UotWo8+g7ukOeo+NK8XnNjhaOKbm5fNkeBGi+UyikHbY7sUHMisS+4L4WobHaJK9jwvDAuSsH4w1yw44z5E7pHv8L4NzQFQ2szBQAA" generateConnectionHelper="true" generateStoredProcedures="false" fieldNameCase="Unchanged" generateDefaultConstructors="false" useNameOf="true" connectionStringName="194.87.111.186ListOfDealMy" createdInVersion="23.1.1.0" generateJsonSerializationContractResolver="false" generateServiceCollectionExtensions="false" lastModifiedInVersion="23.1.1.0" name="ListOfDealMy" xmlns="http://schemas.microsoft.com/dsltools/ORMDataModel">
+  <classes>
+    <dataBaseObjectModelHasClasses Id="88a0b413-52d3-43e0-855f-b8e3ae3c50e1">
+      <xpObject Id="e5aa4368-5966-402c-908c-38345b60a721" name="GeneralXpObject1" baseClass="XPObject" userFileName="GeneralXpObject1" designerFileName="GeneralXpObject1.Designer" className="GeneralXpObject1" virtualName="GeneralXpObject1">
+        <fields>
+          <generalXpObjectHasFields Id="0fbf384b-6fe2-49c8-9cd0-0e88f4961b5a">
+            <field Id="aa53e9c8-1efb-4eec-8d44-e803dda17500" name="Field1" virtualColumnType="String" delayedUpdateModifiedOnly="false" />
+          </generalXpObjectHasFields>
+        </fields>
+      </xpObject>
+    </dataBaseObjectModelHasClasses>
+  </classes>
+</dataBaseObjectModel>

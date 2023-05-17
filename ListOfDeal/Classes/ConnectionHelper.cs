@@ -17,7 +17,8 @@ namespace ListOfDeal {
         }
         public static string ConnectionString { 
             get { 
-                return System.Configuration.ConfigurationManager.ConnectionStrings["KOZHEVNIKOV-NBXListOfDealBase"].ConnectionString; 
+                return System.Configuration.ConfigurationManager.ConnectionStrings["KOZHEVNIKOV-NBXListOfDealBaseMy"].ConnectionString; 
+                //return System.Configuration.ConfigurationManager.ConnectionStrings["KOZHEVNIKOV-NBXListOfDealBase"].ConnectionString; 
             } 
         }
         public static void Connect(DevExpress.Xpo.DB.AutoCreateOption autoCreateOption, bool threadSafe = false) {

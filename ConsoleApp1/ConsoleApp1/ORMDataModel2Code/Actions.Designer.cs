@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 namespace ConsoleApp1.ListOfDealBase {
-
+  
     public partial class ActionsMy : XPLiteObject {
         int fId;
         [Key(true)]

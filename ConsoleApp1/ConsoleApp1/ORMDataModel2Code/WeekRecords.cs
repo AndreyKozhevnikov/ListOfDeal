@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 namespace ConsoleApp1.ListOfDealBase {
-
+    [Persistent("WeekRecords")]
     public partial class WeekRecordsMy {
         public WeekRecordsMy(Session session) : base(session) { }
         public override void AfterConstruction() { base.AfterConstruction(); }

@@ -10,26 +10,44 @@ using System.Threading.Tasks;
 namespace ConsoleApp1 {
     internal class Program {
         static int k = 0;
+        static int prCount = 0;
+        static int prCountAll = 0;
+        static string prTypeName = "";
         static void Main(string[] args) {
             ConnectionHelperMYsql.Connect(DevExpress.Xpo.DB.AutoCreateOption.DatabaseAndSchema);
             ConnectionHelperLoc.Connect(DevExpress.Xpo.DB.AutoCreateOption.DatabaseAndSchema);
             var uowLoc = new UnitOfWork(ConnectionHelperLoc.MyDataLayer);
             var uowMy = new UnitOfWork(ConnectionHelperMYsql.MyDataLayer);
 
+
+            //var testP = new ProjectTypesMy(uowMy);
+            //testP.Name = "тестовое имя";
+            //uowMy.CommitChanges();
+
             var prTypes = new XPCollection<ProjectTypes>(uowLoc);
 
             foreach (var typeOld in prTypes) {
+                prTypeName = typeOld.Name;
                 var newType = new ProjectTypesMy(uowMy);
                 CheckK(uowMy);
                 newType.Name = typeOld.Name;
                 newType.OrderNumber = typeOld.OrderNumber;
+                prCountAll = typeOld.ProjectsCollection.Count;
+                prCount = 0;
                 foreach (var projectOld in typeOld.ProjectsCollection) {
+                    if (projectOld.StatusId == 3 || projectOld.StatusId == 4) {
+                        continue;
+                    }
+                    prCount++;
                     var newProject = new ProjectsMy(uowMy);
                     CheckK(uowMy);
                     CloneProperties(newProject, projectOld);
                     newProject.TypeId = newType;
 
                     foreach (var actionOld in projectOld.ActionsCollection) {
+                        if (actionOld.StatusId == 2 || actionOld.StatusId == 3) {
+                            continue;
+                        }
                         var newAction = new ActionsMy(uowMy);
                         CheckK(uowMy);
                         CloneProperties(newAction, actionOld);
@@ -54,6 +72,7 @@ namespace ConsoleApp1 {
             if (k == 100) {
                 k = 0;
                 uow.CommitChanges();
+                Console.WriteLine(string.Format("{0} - {1} - {2}", prCount, prCountAll, prTypeName));
             }
         }
         static void CloneProperties(WeekRecordsMy newWl, WeekRecords oldWl) {

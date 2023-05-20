@@ -15,15 +15,16 @@ namespace ListOfDeal {
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
-        string pathToSettingsFile = @"C:\MSSQLSettings.ini";
+       // string pathToSettingsFile = @"C:\MSSQLSettings.ini";
         public App() {
-            StreamReader sr = new StreamReader(pathToSettingsFile);
-            string st = sr.ReadToEnd();
-            sr.Close();
+            //StreamReader sr = new StreamReader(pathToSettingsFile);
+            //string st = sr.ReadToEnd();
+            //sr.Close();
             //XElement xl = XElement.Parse(st);
             //var pathDropbox = xl.Element("Dropbox").Value;
             //var dllPath = Path.Combine(pathDropbox, @"deploy\Dll181");
             //AssemblyResolverDll.AsseblyResolver.Attach(dllPath);
+            AssemblyResolverDll.AsseblyResolver.Attach(@"deploy\Dll2226");
 #if DebugTest
             Application.Current.Shutdown();
 #endif

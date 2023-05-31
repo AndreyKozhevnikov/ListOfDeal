@@ -74,6 +74,7 @@ namespace ListOfDeal {
 
 
             Projects.Add(newProject);
+            NewProjectName = string.Empty;
             Dispatcher.CurrentDispatcher.BeginInvoke((System.Action)(() => {
                 SelectedProject = newProject;
                 SaveChanges();
@@ -123,6 +124,7 @@ namespace ListOfDeal {
             }
             SaveChanges();
             projForSave.RaisePropertyChanged("ActionsList");
+            NewActionName = string.Empty;
 
         }
         internal void Test() {

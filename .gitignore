@@ -47,6 +47,8 @@ build/
 *.log
 *.scc
 
+MyConectionStrings.psw
+
 # Visual C++ cache files
 ipch/
 *.aps

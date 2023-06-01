@@ -1,6 +1,7 @@
 ﻿using DevExpress.Xpo;
 using ListOfDeal.Classes.XPO;
 using System;
+using System.IO;
 
 namespace ListOfDeal {
     public static class ConnectionHelper {
@@ -16,7 +17,9 @@ namespace ListOfDeal {
             return copy;
         }
         public static string ConnectionString { 
-            get { 
+            get {
+                var st = File.ReadAllText(@"..\..\MyConectionStrings.psw");
+                return st;
                 return System.Configuration.ConfigurationManager.ConnectionStrings["KOZHEVNIKOV-NBXListOfDealBaseMy"].ConnectionString; 
                 //return System.Configuration.ConfigurationManager.ConnectionStrings["KOZHEVNIKOV-NBXListOfDealBase"].ConnectionString; 
             } 
